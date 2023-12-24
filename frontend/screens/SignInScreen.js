@@ -17,7 +17,7 @@ function SignInScreen({ navigation, route }) {
 
   return (
     <ImageBackground
-      source={require('../../assets/images/Zinc.jpg')}
+      source={require('../assets/images/Zinc.jpg')}
       resizeMode="cover"
       style={styles.image}
     >

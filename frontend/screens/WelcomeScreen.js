@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { ImageBackground, StyleSheet, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 
-import { name as app_name, version as app_version } from '../../package.json';
+import { name as app_name, version as app_version } from '../package.json';
 import { Color } from '../constants/colors';
 
 function WelcomeScreen({ navigation }) {
@@ -10,7 +10,7 @@ function WelcomeScreen({ navigation }) {
     <>
       <StatusBar style="dark" />
       <ImageBackground
-        source={require('../../assets/images/home-background.jpg')}
+        source={require('../assets/images/home-background.jpg')}
         resizeMode="cover"
         style={styles.image}
       >
