@@ -4,6 +4,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Color } from '../constants/colors';
 import WelcomeScreen from '../screens/WelcomeScreen';
 import SignInScreen from '../screens/SignInScreen';
+import StudentsSignUpScreen from '../screens/StudentsSignUpScreen';
+import { View } from 'react-native';
 
 const AuthStack = createNativeStackNavigator();
 
@@ -29,6 +31,20 @@ function AuthStackScreens() {
             headerStyle: {
               backgroundColor: Color.Blue600,
             },
+          }}
+        />
+        <AuthStack.Screen
+          name="StudentsSignUpScreen"
+          component={StudentsSignUpScreen}
+          options={{
+            // headerShown: false,
+            title: '',
+            animation: 'simple_push',
+            header: () => (
+              <View
+                style={{ height: 50, backgroundColor: Color.Blue600 }}
+              ></View>
+            ),
           }}
         />
       </AuthStack.Navigator>

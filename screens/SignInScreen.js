@@ -10,7 +10,7 @@ import NavLink from '../components/NavLink';
 function SignInScreen({ navigation, route }) {
   const { userType } = route.params;
 
-  console.log(userType);
+  // console.log(userType);
 
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
