@@ -130,41 +130,41 @@ function StudentsSignUpScreen({ navigation, route }) {
         </View>
 
         {/* DropDown component for selecting academic institution */}
-       {isStudent && //if the user is student than the dropdown is visible
-        <View>
-          <View style={{ paddingHorizontal: 6 }}>
-            <DropDown
-              list={listAcademic}
-              label="מוסד אקדמאי"
-              listMode="MODAL"
-              searchable={true}
-              onValueChange={(selectedAcademic) => setAcademic(selectedAcademic)}
-            />
-          </View>
-
-          {/* Input fields for department and yearbook */}
+        {isStudent && //if the user is student than the dropdown is visible
           <View>
-            <View style={styles.inputsRow}>
-              <Input
-                style={styles.textInput}
-                label="מחלקה"
-                mode="outlined"
-                onValueChange={(selectedDepartment) =>
-                  setDepartment(selectedDepartment)
-                }
-              />
+            <View style={{ paddingHorizontal: 6 }}>
               <DropDown
-                list={listYear}
-                label="שנתון"
-                searchable={false}
-                listMode="SCROLLVIEW"
-                onValueChange={(selectedYearbook) =>
-                  setYearbook(selectedYearbook)
-                }
+                list={listAcademic}
+                label="מוסד אקדמאי"
+                listMode="MODAL"
+                searchable={true}
+                onValueChange={(selectedAcademic) => setAcademic(selectedAcademic)}
               />
             </View>
+
+            {/* Input fields for department and yearbook */}
+            <View>
+              <View style={styles.inputsRow}>
+                <Input
+                  style={styles.textInput}
+                  label="מחלקה"
+                  mode="outlined"
+                  onValueChange={(selectedDepartment) =>
+                    setDepartment(selectedDepartment)
+                  }
+                />
+                <DropDown
+                  list={listYear}
+                  label="שנתון"
+                  searchable={false}
+                  listMode="SCROLLVIEW"
+                  onValueChange={(selectedYearbook) =>
+                    setYearbook(selectedYearbook)
+                  }
+                />
+              </View>
+            </View>
           </View>
-        </View>
         }
         {/* Input fields for email and passwords */}
         <View style={styles.textInput}>
