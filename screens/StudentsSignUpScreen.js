@@ -15,12 +15,14 @@ function StudentsSignUpScreen({ navigation, route }) {
   const { userType } = route.params;
 
   // State variables for form inputs
-  const [name, setName] = useState();
+  const [privateName, setPrivateName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [age, setAge] = useState();
   const [academic, setAcademic] = useState();
   const [department, setDepartment] = useState();
   const [yearbook, setYearbook] = useState();
-  const [checked, setChecked] = useState('זכר');
+  const [checked, setChecked] = useState('');
+  const [isStudent, setIsStudent] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [passwordConfirm, setPasswordConfirm] = useState();
@@ -52,7 +54,7 @@ function StudentsSignUpScreen({ navigation, route }) {
         {/* Header text */}
         <View style={{ ...styles.container, ...styles.text }}>
           <Text variant="displaySmall" style={{ color: Color.Blue800 }}>
-            ──── הירשם ────
+            ─── הירשם ───
           </Text>
         </View>
 
@@ -60,54 +62,27 @@ function StudentsSignUpScreen({ navigation, route }) {
         <View style={styles.inputsRow}>
           <Input
             style={styles.textInput}
-            label="שם מלא"
+            label="שם פרטי"
             mode="outlined"
-            onValueChange={(selectedName) => setName(selectedName)}
+            onValueChange={(selectedName) => setPrivateName(selectedName)}
           />
 
           <Input
             style={styles.textInput}
-            label="גיל"
+            label="שם משפחה"
             mode="outlined"
-            keyboardType="decimal-pad"
-            maxLength={2}
-            onValueChange={(selectedAge) => setAge(selectedAge)}
+            onValueChange={(selectLastName) => setLastName(selectLastName)}
           />
         </View>
 
-        {/* DropDown component for selecting academic institution */}
-        <View style={{ paddingHorizontal: 6 }}>
-          <DropDown
-            list={listAcademic}
-            label="מוסד אקדמאי"
-            listMode="MODAL"
-            searchable={true}
-            onValueChange={(selectedAcademic) => setAcademic(selectedAcademic)}
-          />
-        </View>
-
-        {/* Input fields for department and yearbook */}
-        <View>
-          <View style={styles.inputsRow}>
-            <Input
-              style={styles.textInput}
-              label="מחלקה"
-              mode="outlined"
-              onValueChange={(selectedDepartment) =>
-                setDepartment(selectedDepartment)
-              }
-            />
-            <DropDown
-              list={listYear}
-              label="שנתון"
-              searchable={false}
-              listMode="SCROLLVIEW"
-              onValueChange={(selectedYearbook) =>
-                setYearbook(selectedYearbook)
-              }
-            />
-          </View>
-        </View>
+        <Input
+          style={styles.textInput}
+          label='גיל'
+          mode="outlined"
+          keyboardType="decimal-pad"
+          maxLength={2}
+          onValueChange={(selectedAge) => setAge(selectedAge)}
+        />
 
         {/* Radio buttons for selecting gender */}
         <Text style={styles.title} variant="titleMedium">
@@ -132,6 +107,65 @@ function StudentsSignUpScreen({ navigation, route }) {
           <Text style={styles.textRadio}>נקבה</Text>
         </View>
 
+        <Text style={styles.title} variant="titleMedium">
+          תפקיד
+        </Text>
+        <View style={styles.radioButtom}>
+          <RadioButton
+            value="משכיר"
+            color={Color.Blue500}
+            status={isStudent === false ? 'checked' : 'unchecked'}
+            onPress={() => setIsStudent(false)}
+          />
+          <Text style={styles.textRadio}>משכיר</Text>
+        </View>
+        <View style={styles.radioButtom}>
+          <RadioButton
+            value="שוכר"
+            color={Color.Blue500}
+            status={isStudent === true ? 'checked' : 'unchecked'}
+            onPress={() => setIsStudent(true)}
+          />
+          <Text style={styles.textRadio}>שוכר</Text>
+        </View>
+
+        {/* DropDown component for selecting academic institution */}
+       {isStudent && //if the user is student than the dropdown is visible
+        <View>
+          <View style={{ paddingHorizontal: 6 }}>
+            <DropDown
+              list={listAcademic}
+              label="מוסד אקדמאי"
+              listMode="MODAL"
+              searchable={true}
+              onValueChange={(selectedAcademic) => setAcademic(selectedAcademic)}
+            />
+          </View>
+
+          {/* Input fields for department and yearbook */}
+          <View>
+            <View style={styles.inputsRow}>
+              <Input
+                style={styles.textInput}
+                label="מחלקה"
+                mode="outlined"
+                onValueChange={(selectedDepartment) =>
+                  setDepartment(selectedDepartment)
+                }
+              />
+              <DropDown
+                list={listYear}
+                label="שנתון"
+                searchable={false}
+                listMode="SCROLLVIEW"
+                onValueChange={(selectedYearbook) =>
+                  setYearbook(selectedYearbook)
+                }
+              />
+            </View>
+          </View>
+        </View>
+        }
         {/* Input fields for email and passwords */}
         <View style={styles.textInput}>
           <Input
