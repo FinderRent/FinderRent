@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import AuthStackScreens from './frontend/navigation/AuthStackScreens';
+import AuthStackScreens from './navigation/AuthStackScreens';
 
 export default function App() {
   return (
