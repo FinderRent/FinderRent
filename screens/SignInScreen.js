@@ -39,13 +39,13 @@ function SignInScreen() {
         </View>
 
         <NavLink
-          style={{ color: Color.Blue100 }}
+          // style={{ color: Color.Blue100 }}
           text="שכחתי סיסמה"
           routeName="ForgotPasswordScreen"
         />
 
         <NavLink
-          style={{ color: Color.Blue100 }}
+          // style={{ color: Color.Blue100 }}
           text="אין לך חשבון? לחץ כאן להירשם "
           routeName="SignUpScreen"
         />
