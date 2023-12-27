@@ -51,7 +51,7 @@ function SignInScreen({ navigation, route }) {
           <NavLink
             text="אין לך חשבון? לחץ כאן להירשם "
             props={{ userType: userType }}
-            routeName="StudentsSignUpScreen"
+            routeName="SignUpScreen"
           />
         ) : (
           <NavLink

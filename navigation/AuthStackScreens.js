@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Color } from '../constants/colors';
 import WelcomeScreen from '../screens/WelcomeScreen';
 import SignInScreen from '../screens/SignInScreen';
-import StudentsSignUpScreen from '../screens/StudentsSignUpScreen';
+import SignUpScreen from '../screens/SignUpScreen';
 import { View } from 'react-native';
 
 const AuthStack = createNativeStackNavigator();
@@ -34,8 +34,8 @@ function AuthStackScreens() {
           }}
         />
         <AuthStack.Screen
-          name="StudentsSignUpScreen"
-          component={StudentsSignUpScreen}
+          name="SignUpScreen"
+          component={SignUpScreen}
           options={{
             // headerShown: false,
             title: '',
