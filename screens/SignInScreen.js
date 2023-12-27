@@ -40,13 +40,13 @@ function SignInScreen() {
           </View>
 
           <NavLink
-            // style={{ color: Color.Blue100 }}
+            style={{ color: Color.Blue50 }}
             text="שכחתי סיסמה"
             routeName="ForgotPasswordScreen"
           />
 
           <NavLink
-            // style={{ color: Color.Blue100 }}
+            style={{ color: Color.Blue50 }}
             text="אין לך חשבון? לחץ כאן להירשם "
             routeName="SignUpScreen"
           />
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: 'rgba(0,0,0, 0.25)',
+    backgroundColor: 'rgba(0,0,0, 0.35)',
     opacity: 0.85,
   },
   image: {
@@ -83,6 +83,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textInput: {
-    marginHorizontal: 10,
+    marginHorizontal: 15,
   },
 });
