@@ -58,7 +58,7 @@ function AuthStackScreens() {
             animation: 'slide_from_right',
             header: () => (
               <View
-                style={{ height: 40, backgroundColor: Color.Blue600 }}
+                style={{ height: 50, backgroundColor: Color.Blue600 }}
               ></View>
             ),
           }}
