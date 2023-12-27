@@ -1,5 +1,11 @@
 import { useState } from 'react';
-import { ImageBackground, ScrollView, StyleSheet, View, SafeAreaView } from 'react-native';
+import {
+  ImageBackground,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import { Button, RadioButton, Text } from 'react-native-paper';
 
 import { Color } from '../constants/colors';
@@ -10,9 +16,7 @@ import DropDown from '../components/DropDown';
 import NavLink from '../components/NavLink';
 import Spacer from '../components/ui/Spacer';
 
-function StudentsSignUpScreen({ navigation, route }) {
-
-
+function SignUpScreen({ navigation }) {
   // State variables for form inputs
   const [privateName, setPrivateName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -21,7 +25,7 @@ function StudentsSignUpScreen({ navigation, route }) {
   const [department, setDepartment] = useState();
   const [yearbook, setYearbook] = useState();
   const [checked, setChecked] = useState('');
-  const [isStudent, setIsStudent] = useState();
+  const [userType, setUserType] = useState('');
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [passwordConfirm, setPasswordConfirm] = useState();
@@ -75,47 +79,55 @@ function StudentsSignUpScreen({ navigation, route }) {
             />
           </View>
 
-          <Input
-            style={styles.textInput}
-            label='גיל'
-            mode="outlined"
-            keyboardType="decimal-pad"
-            maxLength={2}
-            onValueChange={(selectedAge) => setAge(selectedAge)}
-          />
-
-          {/* Radio buttons for selecting gender */}
-          <Text style={styles.title} variant="titleMedium">
-            מגדר:
-          </Text>
-          <View style={styles.radioButtom}>
-            <RadioButton
-              value="זכר"
-              color={Color.Blue500}
-              status={checked === 'זכר' ? 'checked' : 'unchecked'}
-              onPress={() => setChecked('זכר')}
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
+          >
+            <Input
+              style={styles.textInput}
+              label="גיל"
+              mode="outlined"
+              keyboardType="decimal-pad"
+              maxLength={2}
+              onValueChange={(selectedAge) => setAge(selectedAge)}
             />
-            <Text style={styles.textRadio}>זכר</Text>
-          </View>
-          <View style={styles.radioButtom}>
-            <RadioButton
-              value="נקבה"
-              color={Color.Blue500}
-              status={checked === 'נקבה' ? 'checked' : 'unchecked'}
-              onPress={() => setChecked('נקבה')}
-            />
-            <Text style={styles.textRadio}>נקבה</Text>
+
+            {/* Radio buttons for selecting gender */}
+            <View style={styles.genderView}>
+              <Text
+                style={{ ...styles.title, marginTop: 5 }}
+                variant="titleMedium"
+              >
+                מגדר:
+              </Text>
+              <RadioButton
+                value="זכר"
+                color={Color.Blue500}
+                status={checked === 'זכר' ? 'checked' : 'unchecked'}
+                onPress={() => setChecked('זכר')}
+              />
+              <Text style={styles.textRadio}>זכר</Text>
+              <RadioButton
+                value="נקבה"
+                color={Color.Blue500}
+                status={checked === 'נקבה' ? 'checked' : 'unchecked'}
+                onPress={() => setChecked('נקבה')}
+              />
+              <Text style={styles.textRadio}>נקבה</Text>
+            </View>
           </View>
 
           <Text style={styles.title} variant="titleMedium">
-            תפקיד
+            תפקיד:
           </Text>
           <View style={styles.radioButtom}>
             <RadioButton
               value="משכיר"
               color={Color.Blue500}
-              status={isStudent === false ? 'checked' : 'unchecked'}
-              onPress={() => setIsStudent(false)}
+              status={userType === 'landlord' ? 'checked' : 'unchecked'}
+              onPress={() => setUserType('landlord')}
             />
             <Text style={styles.textRadio}>משכיר</Text>
           </View>
@@ -123,22 +135,25 @@ function StudentsSignUpScreen({ navigation, route }) {
             <RadioButton
               value="שוכר"
               color={Color.Blue500}
-              status={isStudent === true ? 'checked' : 'unchecked'}
-              onPress={() => setIsStudent(true)}
+              status={userType === 'student' ? 'checked' : 'unchecked'}
+              onPress={() => setUserType('student')}
             />
             <Text style={styles.textRadio}>שוכר</Text>
           </View>
 
           {/* DropDown component for selecting academic institution */}
-          {isStudent && //if the user is student than the dropdown is visible
+          {userType === 'student' && ( //if the user is student than the dropdown is visible
             <View>
-              <View style={{ paddingHorizontal: 6 }}>
+              <View>
                 <DropDown
                   list={listAcademic}
                   label="מוסד אקדמאי"
                   listMode="MODAL"
                   searchable={true}
-                  onValueChange={(selectedAcademic) => setAcademic(selectedAcademic)}
+                  onValueChange={(selectedAcademic) =>
+                    setAcademic(selectedAcademic)
+                  }
+                  searchPlaceholder="חפש מוסד אקדמאי"
                 />
               </View>
 
@@ -165,11 +180,12 @@ function StudentsSignUpScreen({ navigation, route }) {
                 </View>
               </View>
             </View>
-          }
+          )}
+
           {/* Input fields for email and passwords */}
           <View style={styles.textInput}>
             <Input
-              label="מייל"
+              label="אימייל"
               mode="outlined"
               keyboardType="email-address"
               onValueChange={(selectedemail) => setEmail(selectedemail)}
@@ -225,7 +241,6 @@ const styles = StyleSheet.create({
   inputsRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    margin: 6,
   },
   textInput: {
     flex: 1,
@@ -235,13 +250,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     fontWeight: 'bold',
   },
+  genderView: {
+    flexDirection: 'row',
+    borderRadius: 5,
+    backgroundColor: Color.white,
+    margin: 7,
+    padding: 4,
+    marginBottom: 1,
+    paddingHorizontal: 10,
+  },
   radioButtom: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     flexDirection: 'row',
   },
   textRadio: {
-    paddingTop: 6,
+    paddingTop: 8,
   },
 });
 
-export default StudentsSignUpScreen;
+export default SignUpScreen;

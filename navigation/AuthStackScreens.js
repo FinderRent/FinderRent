@@ -1,11 +1,12 @@
+import { View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { Color } from '../constants/colors';
-import WelcomeScreen from '../screens/WelcomeScreen';
 import SignInScreen from '../screens/SignInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
-import { View } from 'react-native';
+import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
+import ResetPasswordScreen from '../screens/ResetPasswordScreen';
 
 const AuthStack = createNativeStackNavigator();
 
@@ -28,6 +29,7 @@ function AuthStackScreens() {
           name="SignInScreen"
           component={SignInScreen}
           options={{
+            headerShown: false,
             title: '',
             animation: 'simple_push',
             headerStyle: {
@@ -39,9 +41,32 @@ function AuthStackScreens() {
           name="SignUpScreen"
           component={SignUpScreen}
           options={{
-            // headerShown: false,
             title: '',
             animation: 'simple_push',
+            header: () => (
+              <View
+                style={{ height: 50, backgroundColor: Color.Blue600 }}
+              ></View>
+            ),
+          }}
+        />
+        <AuthStack.Screen
+          name="ForgotPasswordScreen"
+          component={ForgotPasswordScreen}
+          options={{
+            title: '',
+            animation: 'slide_from_right',
+            headerStyle: {
+              backgroundColor: Color.Blue600,
+            },
+          }}
+        />
+        <AuthStack.Screen
+          name="ResetPasswordScreen"
+          component={ResetPasswordScreen}
+          options={{
+            title: '',
+            animation: 'slide_from_right',
             header: () => (
               <View
                 style={{ height: 50, backgroundColor: Color.Blue600 }}

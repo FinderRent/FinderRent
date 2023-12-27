@@ -1,4 +1,5 @@
-import { Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { TouchableOpacity, StyleSheet } from 'react-native';
+import { Text } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
 import { Color } from '../constants/colors';
@@ -22,7 +23,7 @@ const NavLink = ({ text, routeName, props, style }) => {
 
 const styles = StyleSheet.create({
   link: {
-    color: Color.Blue800,
+    // color: Color.Blue800,
     fontSize: 16,
     textAlign: 'center',
   },
