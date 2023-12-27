@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ImageBackground, ScrollView, StyleSheet, View } from 'react-native';
+import { ImageBackground, ScrollView, StyleSheet, View, SafeAreaView } from 'react-native';
 import { Button, RadioButton, Text } from 'react-native-paper';
 
 import { Color } from '../constants/colors';
@@ -45,170 +45,172 @@ function StudentsSignUpScreen({ navigation, route }) {
 
   // Rendering the UI components
   return (
-    <ImageBackground
-      source={require('../assets/images/Zinc.jpg')}
-      resizeMode="cover"
-      style={styles.image}
-    >
-      <ScrollView>
-        {/* Header text */}
-        <View style={{ ...styles.container, ...styles.text }}>
-          <Text variant="displaySmall" style={{ color: Color.Blue800 }}>
-            ─── הירשם ───
+    <SafeAreaView style={{ flex: 1 }}>
+      <ImageBackground
+        source={require('../assets/images/Zinc.jpg')}
+        resizeMode="cover"
+        style={styles.image}
+      >
+        <ScrollView>
+          {/* Header text */}
+          <View style={{ ...styles.container, ...styles.text }}>
+            <Text variant="displaySmall" style={{ color: Color.Blue800 }}>
+              ─── הירשם ───
+            </Text>
+          </View>
+
+          {/* Input fields for name and age */}
+          <View style={styles.inputsRow}>
+            <Input
+              style={styles.textInput}
+              label="שם פרטי"
+              mode="outlined"
+              onValueChange={(selectedName) => setPrivateName(selectedName)}
+            />
+
+            <Input
+              style={styles.textInput}
+              label="שם משפחה"
+              mode="outlined"
+              onValueChange={(selectLastName) => setLastName(selectLastName)}
+            />
+          </View>
+
+          <Input
+            style={styles.textInput}
+            label='גיל'
+            mode="outlined"
+            keyboardType="decimal-pad"
+            maxLength={2}
+            onValueChange={(selectedAge) => setAge(selectedAge)}
+          />
+
+          {/* Radio buttons for selecting gender */}
+          <Text style={styles.title} variant="titleMedium">
+            מגדר:
           </Text>
-        </View>
+          <View style={styles.radioButtom}>
+            <RadioButton
+              value="זכר"
+              color={Color.Blue500}
+              status={checked === 'זכר' ? 'checked' : 'unchecked'}
+              onPress={() => setChecked('זכר')}
+            />
+            <Text style={styles.textRadio}>זכר</Text>
+          </View>
+          <View style={styles.radioButtom}>
+            <RadioButton
+              value="נקבה"
+              color={Color.Blue500}
+              status={checked === 'נקבה' ? 'checked' : 'unchecked'}
+              onPress={() => setChecked('נקבה')}
+            />
+            <Text style={styles.textRadio}>נקבה</Text>
+          </View>
 
-        {/* Input fields for name and age */}
-        <View style={styles.inputsRow}>
-          <Input
-            style={styles.textInput}
-            label="שם פרטי"
-            mode="outlined"
-            onValueChange={(selectedName) => setPrivateName(selectedName)}
-          />
+          <Text style={styles.title} variant="titleMedium">
+            תפקיד
+          </Text>
+          <View style={styles.radioButtom}>
+            <RadioButton
+              value="משכיר"
+              color={Color.Blue500}
+              status={isStudent === false ? 'checked' : 'unchecked'}
+              onPress={() => setIsStudent(false)}
+            />
+            <Text style={styles.textRadio}>משכיר</Text>
+          </View>
+          <View style={styles.radioButtom}>
+            <RadioButton
+              value="שוכר"
+              color={Color.Blue500}
+              status={isStudent === true ? 'checked' : 'unchecked'}
+              onPress={() => setIsStudent(true)}
+            />
+            <Text style={styles.textRadio}>שוכר</Text>
+          </View>
 
-          <Input
-            style={styles.textInput}
-            label="שם משפחה"
-            mode="outlined"
-            onValueChange={(selectLastName) => setLastName(selectLastName)}
-          />
-        </View>
-
-        <Input
-          style={styles.textInput}
-          label='גיל'
-          mode="outlined"
-          keyboardType="decimal-pad"
-          maxLength={2}
-          onValueChange={(selectedAge) => setAge(selectedAge)}
-        />
-
-        {/* Radio buttons for selecting gender */}
-        <Text style={styles.title} variant="titleMedium">
-          מגדר:
-        </Text>
-        <View style={styles.radioButtom}>
-          <RadioButton
-            value="זכר"
-            color={Color.Blue500}
-            status={checked === 'זכר' ? 'checked' : 'unchecked'}
-            onPress={() => setChecked('זכר')}
-          />
-          <Text style={styles.textRadio}>זכר</Text>
-        </View>
-        <View style={styles.radioButtom}>
-          <RadioButton
-            value="נקבה"
-            color={Color.Blue500}
-            status={checked === 'נקבה' ? 'checked' : 'unchecked'}
-            onPress={() => setChecked('נקבה')}
-          />
-          <Text style={styles.textRadio}>נקבה</Text>
-        </View>
-
-        <Text style={styles.title} variant="titleMedium">
-          תפקיד
-        </Text>
-        <View style={styles.radioButtom}>
-          <RadioButton
-            value="משכיר"
-            color={Color.Blue500}
-            status={isStudent === false ? 'checked' : 'unchecked'}
-            onPress={() => setIsStudent(false)}
-          />
-          <Text style={styles.textRadio}>משכיר</Text>
-        </View>
-        <View style={styles.radioButtom}>
-          <RadioButton
-            value="שוכר"
-            color={Color.Blue500}
-            status={isStudent === true ? 'checked' : 'unchecked'}
-            onPress={() => setIsStudent(true)}
-          />
-          <Text style={styles.textRadio}>שוכר</Text>
-        </View>
-
-        {/* DropDown component for selecting academic institution */}
-        {isStudent && //if the user is student than the dropdown is visible
-          <View>
-            <View style={{ paddingHorizontal: 6 }}>
-              <DropDown
-                list={listAcademic}
-                label="מוסד אקדמאי"
-                listMode="MODAL"
-                searchable={true}
-                onValueChange={(selectedAcademic) => setAcademic(selectedAcademic)}
-              />
-            </View>
-
-            {/* Input fields for department and yearbook */}
+          {/* DropDown component for selecting academic institution */}
+          {isStudent && //if the user is student than the dropdown is visible
             <View>
-              <View style={styles.inputsRow}>
-                <Input
-                  style={styles.textInput}
-                  label="מחלקה"
-                  mode="outlined"
-                  onValueChange={(selectedDepartment) =>
-                    setDepartment(selectedDepartment)
-                  }
-                />
+              <View style={{ paddingHorizontal: 6 }}>
                 <DropDown
-                  list={listYear}
-                  label="שנתון"
-                  searchable={false}
-                  listMode="SCROLLVIEW"
-                  onValueChange={(selectedYearbook) =>
-                    setYearbook(selectedYearbook)
-                  }
+                  list={listAcademic}
+                  label="מוסד אקדמאי"
+                  listMode="MODAL"
+                  searchable={true}
+                  onValueChange={(selectedAcademic) => setAcademic(selectedAcademic)}
                 />
               </View>
+
+              {/* Input fields for department and yearbook */}
+              <View>
+                <View style={styles.inputsRow}>
+                  <Input
+                    style={styles.textInput}
+                    label="מחלקה"
+                    mode="outlined"
+                    onValueChange={(selectedDepartment) =>
+                      setDepartment(selectedDepartment)
+                    }
+                  />
+                  <DropDown
+                    list={listYear}
+                    label="שנתון"
+                    searchable={false}
+                    listMode="SCROLLVIEW"
+                    onValueChange={(selectedYearbook) =>
+                      setYearbook(selectedYearbook)
+                    }
+                  />
+                </View>
+              </View>
             </View>
-          </View>
-        }
-        {/* Input fields for email and passwords */}
-        <View style={styles.textInput}>
-          <Input
-            label="מייל"
-            mode="outlined"
-            keyboardType="email-address"
-            onValueChange={(selectedemail) => setEmail(selectedemail)}
-          />
-
-          <PasswordInput
-            mode="outlined"
-            label="סיסמה"
-            onValueChange={(password) => setPassword(password)}
-          />
-
-          <PasswordInput
-            mode="outlined"
-            label="אשר סיסמה"
-            onValueChange={(passwordConfirm) =>
-              setPasswordConfirm(passwordConfirm)
-            }
-          />
-
-          {/* Link to sign in page */}
-          <Spacer>
-            <NavLink
-              text="כבר יש לך חשבון? היכנס במקום זאת"
-              routeName="SignInScreen"
-              props={{ userType: userType }}
+          }
+          {/* Input fields for email and passwords */}
+          <View style={styles.textInput}>
+            <Input
+              label="מייל"
+              mode="outlined"
+              keyboardType="email-address"
+              onValueChange={(selectedemail) => setEmail(selectedemail)}
             />
-          </Spacer>
 
-          {/* Sign-up button */}
-          <Button
-            buttonColor={Color.Blue800}
-            textColor={Color.defaultTheme}
-            mode="contained"
-          >
-            הרשם
-          </Button>
-        </View>
-      </ScrollView>
-    </ImageBackground>
+            <PasswordInput
+              mode="outlined"
+              label="סיסמה"
+              onValueChange={(password) => setPassword(password)}
+            />
+
+            <PasswordInput
+              mode="outlined"
+              label="אשר סיסמה"
+              onValueChange={(passwordConfirm) =>
+                setPasswordConfirm(passwordConfirm)
+              }
+            />
+
+            {/* Link to sign in page */}
+            <Spacer>
+              <NavLink
+                text="כבר יש לך חשבון? היכנס במקום זאת"
+                routeName="SignInScreen"
+                props={{ userType: userType }}
+              />
+            </Spacer>
+
+            {/* Sign-up button */}
+            <Button
+              buttonColor={Color.Blue800}
+              textColor={Color.defaultTheme}
+              mode="contained"
+            >
+              הרשם
+            </Button>
+          </View>
+        </ScrollView>
+      </ImageBackground>
+    </SafeAreaView>
   );
 }
 
