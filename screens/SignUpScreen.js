@@ -11,8 +11,7 @@ import NavLink from '../components/NavLink';
 import Spacer from '../components/ui/Spacer';
 
 function StudentsSignUpScreen({ navigation, route }) {
-  // Extracting user type from route parameters
-  const { userType } = route.params;
+
 
   // State variables for form inputs
   const [privateName, setPrivateName] = useState('');
@@ -195,7 +194,6 @@ function StudentsSignUpScreen({ navigation, route }) {
               <NavLink
                 text="כבר יש לך חשבון? היכנס במקום זאת"
                 routeName="SignInScreen"
-                props={{ userType: userType }}
               />
             </Spacer>
 

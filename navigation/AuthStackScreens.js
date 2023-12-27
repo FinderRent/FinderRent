@@ -13,7 +13,8 @@ function AuthStackScreens() {
   return (
     <NavigationContainer>
       <AuthStack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
-        <AuthStack.Screen
+        {/* -----removing the welcom screen for temporary time-------- */}
+        {/* <AuthStack.Screen
           name="WelcomeScreen"
           component={WelcomeScreen}
           options={{
@@ -21,7 +22,8 @@ function AuthStackScreens() {
             presentation: 'modal',
             animation: 'fade_from_bottom',
           }}
-        />
+        /> */}
+        {/* ------------------------------------------------------------------- */}
         <AuthStack.Screen
           name="SignInScreen"
           component={SignInScreen}

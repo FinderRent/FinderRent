@@ -8,9 +8,7 @@ import PasswordInput from '../components/PasswordInput';
 import NavLink from '../components/NavLink';
 
 function SignInScreen({ navigation, route }) {
-  const { userType } = route.params;
 
-  // console.log(userType);
 
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -45,22 +43,14 @@ function SignInScreen({ navigation, route }) {
           <NavLink
             text="שכחתי סיסמה"
             routeName="ForgotPasswordScreen"
-            props={{ userType: userType }}
           />
 
-          {userType === 'student' ? (
-            <NavLink
-              text="אין לך חשבון? לחץ כאן להירשם "
-              props={{ userType: userType }}
-              routeName="SignUpScreen"
-            />
-          ) : (
-            <NavLink
-              text="אין לך חשבון? לחץ כאן להירשם "
-              props={{ userType: userType }}
-              routeName="LandlordSignUpScreen"
-            />
-          )}
+
+          <NavLink
+            text="אין לך חשבון? לחץ כאן להירשם "
+            routeName="SignUpScreen"
+          />
+
 
           <Button
             buttonColor={Color.Blue800}
