@@ -7,7 +7,7 @@ import Input from '../components/Input';
 import PasswordInput from '../components/PasswordInput';
 import NavLink from '../components/NavLink';
 
-function SignInScreen({ navigation }) {
+function SignInScreen() {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     backgroundColor: 'rgba(0,0,0, 0.25)',
-    opacity: 0.9,
+    opacity: 0.85,
   },
   image: {
     flex: 1,
@@ -81,6 +81,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   textInput: {
-    marginHorizontal: 6,
+    marginHorizontal: 10,
   },
 });
