@@ -22,6 +22,7 @@ function PasswordInput({ mode, onValueChange, label }) {
           onPress={() => setIsSecure(!isSecure)}
         />
       }
+      style={{ backgroundColor: Color.white }}
       selectionColor={Color.Blue700}
       outlineColor={Color.Blue200}
       activeOutlineColor={Color.Blue800}

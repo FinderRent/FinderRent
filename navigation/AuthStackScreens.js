@@ -1,11 +1,10 @@
+import { View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { Color } from '../constants/colors';
-import WelcomeScreen from '../screens/WelcomeScreen';
 import SignInScreen from '../screens/SignInScreen';
-import StudentsSignUpScreen from '../screens/StudentsSignUpScreen';
-import { View } from 'react-native';
+import SignUpScreen from '../screens/SignUpScreen';
 
 const AuthStack = createNativeStackNavigator();
 
@@ -14,18 +13,10 @@ function AuthStackScreens() {
     <NavigationContainer>
       <AuthStack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
         <AuthStack.Screen
-          name="WelcomeScreen"
-          component={WelcomeScreen}
-          options={{
-            headerShown: false,
-            presentation: 'modal',
-            animation: 'fade_from_bottom',
-          }}
-        />
-        <AuthStack.Screen
           name="SignInScreen"
           component={SignInScreen}
           options={{
+            headerShown: false,
             title: '',
             animation: 'simple_push',
             headerStyle: {
@@ -34,10 +25,9 @@ function AuthStackScreens() {
           }}
         />
         <AuthStack.Screen
-          name="StudentsSignUpScreen"
-          component={StudentsSignUpScreen}
+          name="SignUpScreen"
+          component={SignUpScreen}
           options={{
-            // headerShown: false,
             title: '',
             animation: 'simple_push',
             header: () => (

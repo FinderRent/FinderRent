@@ -31,6 +31,7 @@ function Input({
         maxLength={maxLength ? maxLength : null}
         label={label}
         placeholder={placeholder}
+        style={{ backgroundColor: Color.white }}
         selectionColor={Color.Blue700}
         outlineColor={Color.Blue200}
         activeOutlineColor={Color.Blue800}

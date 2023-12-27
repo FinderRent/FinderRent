@@ -7,61 +7,51 @@ import Input from '../components/Input';
 import PasswordInput from '../components/PasswordInput';
 import NavLink from '../components/NavLink';
 
-function SignInScreen({ navigation, route }) {
-  const { userType } = route.params;
-
-  // console.log(userType);
-
+function SignInScreen({ navigation }) {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
   return (
     <ImageBackground
-      source={require('../assets/images/Zinc.jpg')}
+      source={require('../assets/images/home-background.jpg')}
       resizeMode="cover"
       style={styles.image}
     >
       <View style={styles.container}>
         <View style={styles.text}>
-          <Text variant="displaySmall" style={{ color: Color.Blue800 }}>
+          <Text variant="displaySmall" style={{ color: Color.Blue100 }}>
             ─── התחברות ───
           </Text>
         </View>
 
-        <Input
-          label="אימייל"
-          keyboardType="email-address"
-          mode="outlined"
-          onValueChange={(selectedMail) => setEmail(selectedMail)}
-        />
+        <View style={styles.textInput}>
+          <Input
+            label="אימייל"
+            keyboardType="email-address"
+            mode="outlined"
+            onValueChange={(selectedMail) => setEmail(selectedMail)}
+          />
+          <PasswordInput
+            mode="outlined"
+            label="סיסמה"
+            onValueChange={(password) => setPassword(password)}
+          />
+        </View>
 
-        <PasswordInput
-          mode="outlined"
-          label="סיסמה"
-          onValueChange={(password) => setPassword(password)}
+        <NavLink
+          style={{ color: Color.Blue100 }}
+          text="שכחתי סיסמה"
+          routeName="ForgotPasswordScreen"
         />
 
         <NavLink
-          text="שכחתי סיסמה"
-          routeName="ForgotPasswordScreen"
-          props={{ userType: userType }}
+          style={{ color: Color.Blue100 }}
+          text="אין לך חשבון? לחץ כאן להירשם "
+          routeName="SignUpScreen"
         />
 
-        {userType === 'student' ? (
-          <NavLink
-            text="אין לך חשבון? לחץ כאן להירשם "
-            props={{ userType: userType }}
-            routeName="StudentsSignUpScreen"
-          />
-        ) : (
-          <NavLink
-            text="אין לך חשבון? לחץ כאן להירשם "
-            props={{ userType: userType }}
-            routeName="LandlordSignUpScreen"
-          />
-        )}
-
         <Button
+          style={styles.textInput}
           buttonColor={Color.Blue800}
           textColor={Color.defaultTheme}
           mode="contained"
@@ -79,13 +69,18 @@ export default SignInScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 10,
     justifyContent: 'center',
+    backgroundColor: 'rgba(0,0,0, 0.25)',
+    opacity: 0.9,
   },
   image: {
     flex: 1,
   },
   text: {
+    marginBottom: 20,
     alignItems: 'center',
+  },
+  textInput: {
+    marginHorizontal: 6,
   },
 });
