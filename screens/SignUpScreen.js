@@ -7,6 +7,8 @@ import {
   View,
 } from 'react-native';
 import { Button, RadioButton, Text } from 'react-native-paper';
+import { useMutation } from '@tanstack/react-query';
+import Toast from 'react-native-toast-message';
 
 import { Color } from '../constants/colors';
 import { academicList } from '../data/academic';
@@ -15,20 +17,22 @@ import PasswordInput from '../components/PasswordInput';
 import DropDown from '../components/DropDown';
 import NavLink from '../components/NavLink';
 import Spacer from '../components/ui/Spacer';
+import signUp from '../api/authentication/signUp';
+import ErrorMessage from '../components/ui/ErrorMessage';
 
 function SignUpScreen({ navigation }) {
   // State variables for form inputs
-  const [privateName, setPrivateName] = useState('');
+  const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [age, setAge] = useState();
-  const [academic, setAcademic] = useState();
-  const [department, setDepartment] = useState();
-  const [yearbook, setYearbook] = useState();
-  const [checked, setChecked] = useState('');
+  const [age, setAge] = useState('');
+  const [academic, setAcademic] = useState('');
+  const [department, setDepartment] = useState('');
+  const [yearbook, setYearbook] = useState('');
+  const [gender, setGender] = useState('');
   const [userType, setUserType] = useState('');
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [passwordConfirm, setPasswordConfirm] = useState();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
 
   // Mapping academic list for DropDown component
   const listAcademic = academicList.map((item) => ({
@@ -45,6 +49,37 @@ function SignUpScreen({ navigation }) {
     { label: "שנה ד'", value: "שנה ד'" },
     { label: 'תואר שני', value: 'תואר שני' },
   ];
+
+  const userData = {
+    userType,
+    firstName,
+    lastName,
+    age,
+    academic,
+    department,
+    yearbook,
+    gender,
+    email,
+    password,
+    passwordConfirm,
+  };
+
+  const { mutate, isPending, isError, error } = useMutation({
+    mutationFn: (userData) => signUp(userData),
+    onSuccess: () => {
+      Toast.show({
+        type: 'success',
+        text1: 'חשבון נוצר בהצלחה',
+      });
+    },
+    onError: (err) => {
+      console.log(err.message);
+    },
+  });
+
+  const handleSignUp = () => {
+    mutate(userData);
+  };
 
   // Rendering the UI components
   return (
@@ -68,14 +103,18 @@ function SignUpScreen({ navigation }) {
               style={styles.textInput}
               label="שם פרטי"
               mode="outlined"
-              onValueChange={(selectedName) => setPrivateName(selectedName)}
+              onValueChange={(selectedFirstName) =>
+                setFirstName(selectedFirstName)
+              }
             />
 
             <Input
               style={styles.textInput}
               label="שם משפחה"
               mode="outlined"
-              onValueChange={(selectLastName) => setLastName(selectLastName)}
+              onValueChange={(selectedLastName) =>
+                setLastName(selectedLastName)
+              }
             />
           </View>
 
@@ -105,15 +144,15 @@ function SignUpScreen({ navigation }) {
               <RadioButton
                 value="זכר"
                 color={Color.Blue500}
-                status={checked === 'זכר' ? 'checked' : 'unchecked'}
-                onPress={() => setChecked('זכר')}
+                status={gender === 'זכר' ? 'checked' : 'unchecked'}
+                onPress={() => setGender('זכר')}
               />
               <Text style={styles.textRadio}>זכר</Text>
               <RadioButton
                 value="נקבה"
                 color={Color.Blue500}
-                status={checked === 'נקבה' ? 'checked' : 'unchecked'}
-                onPress={() => setChecked('נקבה')}
+                status={gender === 'נקבה' ? 'checked' : 'unchecked'}
+                onPress={() => setGender('נקבה')}
               />
               <Text style={styles.textRadio}>נקבה</Text>
             </View>
@@ -148,6 +187,7 @@ function SignUpScreen({ navigation }) {
                 <DropDown
                   list={listAcademic}
                   label="מוסד אקדמאי"
+                  placeholder={academic}
                   listMode="MODAL"
                   searchable={true}
                   onValueChange={(selectedAcademic) =>
@@ -163,6 +203,7 @@ function SignUpScreen({ navigation }) {
                   <Input
                     style={styles.textInput}
                     label="מחלקה"
+                    value={department}
                     mode="outlined"
                     onValueChange={(selectedDepartment) =>
                       setDepartment(selectedDepartment)
@@ -171,6 +212,7 @@ function SignUpScreen({ navigation }) {
                   <DropDown
                     list={listYear}
                     label="שנתון"
+                    placeholder={yearbook}
                     searchable={false}
                     listMode="SCROLLVIEW"
                     onValueChange={(selectedYearbook) =>
@@ -188,7 +230,7 @@ function SignUpScreen({ navigation }) {
               label="אימייל"
               mode="outlined"
               keyboardType="email-address"
-              onValueChange={(selectedemail) => setEmail(selectedemail)}
+              onValueChange={(selectedEmail) => setEmail(selectedEmail)}
             />
 
             <PasswordInput
@@ -205,6 +247,8 @@ function SignUpScreen({ navigation }) {
               }
             />
 
+            {isError && <ErrorMessage errorMessage={error.message} />}
+
             {/* Link to sign in page */}
             <Spacer>
               <NavLink
@@ -218,8 +262,10 @@ function SignUpScreen({ navigation }) {
               buttonColor={Color.Blue800}
               textColor={Color.defaultTheme}
               mode="contained"
+              onPress={handleSignUp}
+              loading={isPending}
             >
-              הרשם
+              {!isPending && 'הרשם'}
             </Button>
           </View>
         </ScrollView>

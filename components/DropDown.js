@@ -9,9 +9,10 @@ function DropDown({
   listMode,
   onValueChange,
   searchPlaceholder,
+  placeholder,
 }) {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState(placeholder);
   const [items, setItems] = useState(list);
 
   const handleValueChange = (selectedValue) => {

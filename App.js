@@ -1,5 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import Toast from 'react-native-toast-message';
+
 import AuthStackScreens from './navigation/AuthStackScreens';
 
 const queryClient = new QueryClient({
@@ -16,6 +18,7 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <StatusBar style="dark" />
       <AuthStackScreens />
+      <Toast />
     </QueryClientProvider>
   );
 }
