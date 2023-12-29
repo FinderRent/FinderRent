@@ -7,7 +7,7 @@ function ProfileScreen() {
             <ScrollView>
                 <View>
                     <Text>
-                        Home Screen
+                        Profile Screen
                     </Text>
                 </View>
             </ScrollView>
