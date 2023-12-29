@@ -74,6 +74,15 @@ function AuthStackScreens() {
             ),
           }}
         />
+        {/* <AuthStack.Screen
+          name="HomeScreen"
+          component={HomeScreen}
+          options={{
+            headerShown: false,
+            title: '',
+            animation: 'simple_push'
+          }}
+        /> */}
       </AuthStack.Navigator>
     </NavigationContainer>
   );

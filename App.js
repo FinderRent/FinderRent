@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Toast from 'react-native-toast-message';
 
 import AuthStackScreens from './navigation/AuthStackScreens';
+import DrawerScreens from './navigation/DrawerScreens';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,6 +19,7 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <StatusBar style="dark" />
       <AuthStackScreens />
+      {/* <DrawerScreens /> */}
       <Toast />
     </QueryClientProvider>
   );
