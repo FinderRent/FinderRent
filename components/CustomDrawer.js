@@ -6,8 +6,10 @@ import {
 } from '@react-navigation/drawer';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useUsers } from '../context/UserContext';
 
 function CustomDrawer(props) {
+  const { userData } = useUsers();
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView
@@ -39,13 +41,13 @@ function CustomDrawer(props) {
           borderTopColor: '#ccc',
         }}
       >
-        <TouchableOpacity onPress={() => { }} style={{ paddingVertical: 15 }} />
+        <TouchableOpacity onPress={() => {}} style={{ paddingVertical: 15 }} />
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           {/* TODO:change the login-logout button to be dynamic */}
           <Ionicons name="share-social-outline" size={22} />
           <Text style={{ fontSize: 15, marginLeft: 15 }}>Tell a friend</Text>
         </View>
-        <TouchableOpacity onPress={() => { }} style={{ paddingVertical: 15 }} />
+        <TouchableOpacity onPress={() => {}} style={{ paddingVertical: 15 }} />
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           {/* TODO:change the login-logout button to be dynamic */}
           <Ionicons name="log-out-outline" size={22} />

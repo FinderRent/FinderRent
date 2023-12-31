@@ -5,6 +5,7 @@ import Toast from 'react-native-toast-message';
 
 import AuthStackScreens from './navigation/AuthStackScreens';
 import DrawerScreens from './navigation/DrawerScreens';
+import { UserContext, useUsers } from './context/UserContext';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -16,14 +17,17 @@ const queryClient = new QueryClient({
 });
 
 export default function App() {
+  const { login, logout, userData } = useUsers();
   I18nManager.forceRTL(false);
 
   return (
     <QueryClientProvider client={queryClient}>
-      <StatusBar style="dark" />
-      {/* <AuthStackScreens /> */}
-      <DrawerScreens />
-      <Toast />
+      <UserContext.Provider value={{ login, logout, userData }}>
+        <StatusBar style="dark" />
+        {/* <AuthStackScreens /> */}
+        <DrawerScreens />
+        <Toast />
+      </UserContext.Provider>
     </QueryClientProvider>
   );
 }

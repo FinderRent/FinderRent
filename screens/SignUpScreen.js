@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import {
   ImageBackground,
   SafeAreaView,
@@ -8,8 +8,10 @@ import {
 } from 'react-native';
 import { Button, RadioButton, Text } from 'react-native-paper';
 import { useMutation } from '@tanstack/react-query';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
 
+import { UserContext } from '../context/UserContext';
 import { Color } from '../constants/colors';
 import { academicList } from '../data/academic';
 import Input from '../components/Input';
@@ -21,6 +23,8 @@ import signUp from '../api/authentication/signUp';
 import ErrorMessage from '../components/ui/ErrorMessage';
 
 function SignUpScreen({ navigation }) {
+  const auth = useContext(UserContext);
+
   // State variables for form inputs
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -64,13 +68,26 @@ function SignUpScreen({ navigation }) {
     passwordConfirm,
   };
 
+  const storeData = async (key, value) => {
+    try {
+      await AsyncStorage.setItem(key, value);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: (userData) => signUp(userData),
-    onSuccess: () => {
-      Toast.show({
-        type: 'success',
-        text1: 'חשבון נוצר בהצלחה',
-      });
+    onSuccess: (user) => {
+      storeData('token', user.token);
+      auth.login(user.data.user, user.token);
+      Toast.show(
+        {
+          type: 'success',
+          text1: 'חשבון נוצר בהצלחה',
+        }
+        // navigation.navigate('DrawerScreens')
+      );
     },
     onError: (err) => {
       console.log(err.message);
