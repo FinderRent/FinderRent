@@ -16,13 +16,13 @@ const queryClient = new QueryClient({
 });
 
 export default function App() {
-  I18nManager.forceRTL(true);
+  I18nManager.forceRTL(false);
 
   return (
     <QueryClientProvider client={queryClient}>
       <StatusBar style="dark" />
-      <AuthStackScreens />
-      {/* <DrawerScreens /> */}
+      {/* <AuthStackScreens /> */}
+      <DrawerScreens />
       <Toast />
     </QueryClientProvider>
   );

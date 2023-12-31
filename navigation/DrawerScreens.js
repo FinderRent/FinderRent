@@ -5,6 +5,7 @@ import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import ChatScreen from '../screens/ChatScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -29,6 +30,13 @@ function DrawerScreens() {
                     options={{
                         drawerIcon: ({ color }) => (
                             <Ionicons name="person-outline" size={22} color={color} />)
+                    }} />
+                <Drawer.Screen
+                    name="Chat"
+                    component={ChatScreen}
+                    options={{
+                        drawerIcon: ({ color }) => (
+                            <Ionicons name="chatbox-ellipses-outline" size={22} color={color} />)
                     }} />
             </Drawer.Navigator>
         </NavigationContainer>
