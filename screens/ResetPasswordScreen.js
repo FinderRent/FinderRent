@@ -10,8 +10,8 @@ import PasswordInput from '../components/PasswordInput';
 
 function ResetPasswordScreen({ route }) {
   const [otp, setOtp] = useState();
-  const [password, setPassword] = useState();
-  const [passwordConfirm, setPasswordConfirm] = useState();
+  const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
 
   return (
     <View>
@@ -48,6 +48,11 @@ function ResetPasswordScreen({ route }) {
           label="סיסמה"
           onValueChange={(password) => setPassword(password)}
         />
+        {password.length > 0 && password.length < 6 && (
+          <Text style={{ color: Color.errorText, paddingRight: 10 }}>
+            סיסמה צריכה להכיל 6 תווים לפחות
+          </Text>
+        )}
         <PasswordInput
           mode="outlined"
           label="אשר סיסמה"

@@ -7,7 +7,7 @@ import Input from '../components/Input';
 import PasswordInput from '../components/PasswordInput';
 import NavLink from '../components/NavLink';
 
-function SignInScreen() {
+function SignInScreen({ navigation }) {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 

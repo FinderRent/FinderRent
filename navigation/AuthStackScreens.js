@@ -80,7 +80,7 @@ function AuthStackScreens() {
           options={{
             headerShown: false,
             title: '',
-            animation: 'simple_push'
+            animation: 'simple_push',
           }}
         /> */}
       </AuthStack.Navigator>
