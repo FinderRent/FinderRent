@@ -7,6 +7,7 @@ import SignInScreen from '../screens/SignInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 import ResetPasswordScreen from '../screens/ResetPasswordScreen';
+import DrawerScreens from './DrawerScreens';
 
 const AuthStack = createNativeStackNavigator();
 
@@ -74,15 +75,15 @@ function AuthStackScreens() {
             ),
           }}
         />
-        {/* <AuthStack.Screen
-          name="HomeScreen"
-          component={HomeScreen}
+        <AuthStack.Screen
+          name={'DrawerScreens'}
+          component={DrawerScreens}
           options={{
             headerShown: false,
             title: '',
             animation: 'simple_push',
           }}
-        /> */}
+        />
       </AuthStack.Navigator>
     </NavigationContainer>
   );

@@ -85,8 +85,8 @@ function SignUpScreen({ navigation }) {
         {
           type: 'success',
           text1: 'חשבון נוצר בהצלחה',
-        }
-        // navigation.navigate('DrawerScreens')
+        },
+        navigation.navigate('DrawerScreens')
       );
     },
     onError: (err) => {

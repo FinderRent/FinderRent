@@ -60,6 +60,16 @@ function SignInScreen({ navigation }) {
           >
             התחבר
           </Button>
+
+          <Button
+            style={{ margin: 20 }}
+            buttonColor={Color.Brown500}
+            textColor={Color.white}
+            mode="elevated"
+            onPress={() => navigation.navigate('DrawerScreens')}
+          >
+            עמוד הבית
+          </Button>
         </View>
       </ImageBackground>
     </SafeAreaView>

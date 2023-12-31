@@ -24,8 +24,8 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <UserContext.Provider value={{ login, logout, userData }}>
         <StatusBar style="dark" />
-        {/* <AuthStackScreens /> */}
-        <DrawerScreens />
+        <AuthStackScreens />
+        {/* <DrawerScreens /> */}
         <Toast />
       </UserContext.Provider>
     </QueryClientProvider>
