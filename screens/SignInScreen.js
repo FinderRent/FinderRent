@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ImageBackground, StyleSheet, View, SafeAreaView } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 
+import { version as app_version } from '../package.json';
 import { Color } from '../constants/colors';
 import Input from '../components/Input';
 import PasswordInput from '../components/PasswordInput';
@@ -71,6 +72,10 @@ function SignInScreen({ navigation }) {
             עמוד הבית
           </Button>
         </View>
+        <View style={styles.footer}>
+          <Text style={styles.name}>FinderRent</Text>
+          <Text style={styles.version}> גרסה: {app_version}</Text>
+        </View>
       </ImageBackground>
     </SafeAreaView>
   );
@@ -94,5 +99,18 @@ const styles = StyleSheet.create({
   },
   textInput: {
     marginHorizontal: 15,
+  },
+  footer: {
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0, 0.35)',
+    opacity: 0.85,
+  },
+  name: {
+    color: Color.Blue400,
+    letterSpacing: 0.1,
+  },
+  version: {
+    color: Color.darkTheme,
+    fontSize: 11,
   },
 });
