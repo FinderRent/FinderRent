@@ -5,6 +5,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import { Color } from '../constants/colors';
 import ProfileScreen from '../screens/ProfileScreen';
+import EditProfileScreen from '../screens/EditProfileScreen';
 
 const ProfileStack = createNativeStackNavigator();
 
@@ -54,19 +55,19 @@ function ProfileStackScreen({ navigation }) {
                 color={Color.darkTheme}
                 backgroundColor={Color.Brown100}
                 underlayColor="transparent"
-                onPress={() => navigation.navigate('EditStudentProfileScreen')}
+                onPress={() => navigation.navigate('EditProfileScreen')}
               />
             </View>
           ),
         }}
       />
-      {/* <ProfileStack.Screen
+      <ProfileStack.Screen
         name="EditProfileScreen"
         component={EditProfileScreen}
         options={{
           headerTintColor: Color.darkTheme,
         }}
-      /> */}
+      />
     </ProfileStack.Navigator>
   );
 }

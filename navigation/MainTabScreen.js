@@ -10,6 +10,7 @@ import {
 import { Color } from '../constants/colors';
 import HomeStackScreen from './HomeStackScreen ';
 import ProfileStackScreen from './ProfileStackScreen';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -35,71 +36,73 @@ function MainTabScreen() {
   const theme = CustomDefaultTheme;
 
   return (
-    <PaperProvider theme={theme}>
-      <Tab.Navigator
-        initialRouteName="HomeStackScreen"
-        activeColor={Color.black}
-        inactiveColor={Color.black}
-        barStyle={{
-          backgroundColor: Color.white,
-          borderTopColor: Color.Brown100,
-          borderTopWidth: 1,
-          height: 55,
-          position: 'absolute',
-        }}
-      >
-        <Tab.Screen
-          name="HomeStackScreen"
-          component={HomeStackScreen}
-          options={{
-            tabBarLabel: '',
-            tabBarIcon: ({ focused, color }) => (
-              <View style={{ alignItems: 'center' }}>
-                <MaterialCommunityIcons
-                  name={focused ? 'home' : 'home-outline'}
-                  style={{ marginTop: -10 }}
-                  color={color}
-                  size={26}
-                />
-                <Text
-                  style={{
-                    fontSize: 11,
-                    color: Color.black,
-                  }}
-                >
-                  בית
-                </Text>
-              </View>
-            ),
+    <BottomSheetModalProvider>
+      <PaperProvider theme={theme}>
+        <Tab.Navigator
+          initialRouteName="HomeStackScreen"
+          activeColor={Color.black}
+          inactiveColor={Color.black}
+          barStyle={{
+            backgroundColor: Color.white,
+            borderTopColor: Color.Brown100,
+            borderTopWidth: 1,
+            height: 55,
+            position: 'absolute',
           }}
-        />
-        <Tab.Screen
-          name="ProfileScreen"
-          component={ProfileStackScreen}
-          options={{
-            tabBarLabel: '',
-            tabBarIcon: ({ focused, color }) => (
-              <View style={{ alignItems: 'center' }}>
-                <MaterialCommunityIcons
-                  name={focused ? 'account' : 'account-outline'}
-                  style={{ marginTop: -10 }}
-                  color={color}
-                  size={26}
-                />
-                <Text
-                  style={{
-                    fontSize: 11,
-                    color: Color.black,
-                  }}
-                >
-                  פרופיל
-                </Text>
-              </View>
-            ),
-          }}
-        />
-      </Tab.Navigator>
-    </PaperProvider>
+        >
+          <Tab.Screen
+            name="HomeStackScreen"
+            component={HomeStackScreen}
+            options={{
+              tabBarLabel: '',
+              tabBarIcon: ({ focused, color }) => (
+                <View style={{ alignItems: 'center' }}>
+                  <MaterialCommunityIcons
+                    name={focused ? 'home' : 'home-outline'}
+                    style={{ marginTop: -10 }}
+                    color={color}
+                    size={26}
+                  />
+                  <Text
+                    style={{
+                      fontSize: 11,
+                      color: Color.black,
+                    }}
+                  >
+                    בית
+                  </Text>
+                </View>
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="ProfileScreen"
+            component={ProfileStackScreen}
+            options={{
+              tabBarLabel: '',
+              tabBarIcon: ({ focused, color }) => (
+                <View style={{ alignItems: 'center' }}>
+                  <MaterialCommunityIcons
+                    name={focused ? 'account' : 'account-outline'}
+                    style={{ marginTop: -10 }}
+                    color={color}
+                    size={26}
+                  />
+                  <Text
+                    style={{
+                      fontSize: 11,
+                      color: Color.black,
+                    }}
+                  >
+                    פרופיל
+                  </Text>
+                </View>
+              ),
+            }}
+          />
+        </Tab.Navigator>
+      </PaperProvider>
+    </BottomSheetModalProvider>
   );
 }
 
