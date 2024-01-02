@@ -6,7 +6,6 @@ import Toast from 'react-native-toast-message';
 import { UserContext, useUsers } from './context/UserContext';
 import { DarkModeProvider } from './context/DarkModeContext';
 import AuthStackScreens from './navigation/AuthStackScreens';
-import DrawerScreens from './navigation/DrawerScreens';
 
 const queryClient = new QueryClient({
   defaultOptions: {

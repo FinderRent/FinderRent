@@ -33,7 +33,7 @@ import TakePhoto from '../components/TakePhoto';
 function EditProfileScreen({ navigation }) {
   const { isDarkMode } = useDarkMode();
   const { userData } = useUsers();
-  // const auth = useContext(UserContext);
+  const auth = useContext(UserContext);
 
   // const { token } = userData;
   const [isLoading, setIsLoading] = useState(true);
@@ -200,41 +200,46 @@ function EditProfileScreen({ navigation }) {
           maxLength={2}
           onValueChange={(selectedAge) => setAge(selectedAge)}
         />
-        <View>
-          <DropDown
-            list={listAcademic}
-            label={academic}
-            listMode="MODAL"
-            searchable={true}
-            searchPlaceholder="חפש מוסד אקדמאי"
-            onValueChange={(selectedAcademic) => setAcademic(selectedAcademic)}
-          />
-        </View>
+        {userType === 'stuednt' && (
+          <View>
+            <View>
+              <DropDown
+                list={listAcademic}
+                label={academic}
+                listMode="MODAL"
+                searchable={true}
+                searchPlaceholder="חפש מוסד אקדמאי"
+                onValueChange={(selectedAcademic) =>
+                  setAcademic(selectedAcademic)
+                }
+              />
+            </View>
 
-        <View>
-          <View style={styles.inputsRow}>
-            <Input
-              style={styles.textInput}
-              label={department ? '' : 'מחלקה'}
-              value={department}
-              left={<TextInput.Icon icon={'school-outline'} />}
-              mode="outlined"
-              onValueChange={(selectedDepartment) =>
-                setDepartment(selectedDepartment)
-              }
-            />
-            <DropDown
-              list={listYear}
-              label={yearbook}
-              searchable={false}
-              listMode="SCROLLVIEW"
-              onValueChange={(selectedYearbook) =>
-                setYearbook(selectedYearbook)
-              }
-            />
+            <View>
+              <View style={styles.inputsRow}>
+                <Input
+                  style={styles.textInput}
+                  label={department ? '' : 'מחלקה'}
+                  value={department}
+                  left={<TextInput.Icon icon={'school-outline'} />}
+                  mode="outlined"
+                  onValueChange={(selectedDepartment) =>
+                    setDepartment(selectedDepartment)
+                  }
+                />
+                <DropDown
+                  list={listYear}
+                  label={yearbook}
+                  searchable={false}
+                  listMode="SCROLLVIEW"
+                  onValueChange={(selectedYearbook) =>
+                    setYearbook(selectedYearbook)
+                  }
+                />
+              </View>
+            </View>
           </View>
-        </View>
-
+        )}
         <View style={styles.textInput}>
           <Input
             label={email ? '' : 'אימייל'}

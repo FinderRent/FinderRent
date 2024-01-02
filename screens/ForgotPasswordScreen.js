@@ -3,15 +3,24 @@ import { ImageBackground, StyleSheet, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 
 import { Color } from '../constants/colors';
+import { useDarkMode } from '../context/DarkModeContext';
 import Input from '../components/Input';
 import Spacer from '../components/ui/Spacer';
 
 function ForgotPasswordScreen({ navigation }) {
+  const { isDarkMode } = useDarkMode();
+
   const [email, setEmail] = useState();
+
+  const getBackgroundImage = (isDarkMode) => {
+    return isDarkMode
+      ? require('../assets/images/MidnightCity.jpg')
+      : require('../assets/images/Zinc.jpg');
+  };
 
   return (
     <ImageBackground
-      source={require('../assets/images/Zinc.jpg')}
+      source={getBackgroundImage(isDarkMode)}
       resizeMode="cover"
       style={styles.image}
     >

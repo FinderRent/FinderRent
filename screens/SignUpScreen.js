@@ -270,7 +270,13 @@ function SignUpScreen({ navigation }) {
               onValueChange={(password) => setPassword(password)}
             />
             {password.length > 0 && password.length < 6 && (
-              <Text style={{ color: Color.errorText, paddingRight: 10 }}>
+              <Text
+                style={
+                  isDarkMode
+                    ? { color: Color.error100, paddingRight: 10 }
+                    : { color: Color.errorText, paddingRight: 10 }
+                }
+              >
                 סיסמה צריכה להכיל 6 תווים לפחות
               </Text>
             )}

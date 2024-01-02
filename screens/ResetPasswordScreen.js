@@ -4,12 +4,15 @@ import { Button, Text } from 'react-native-paper';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 
 import { Color } from '../constants/colors';
+import { useDarkMode } from '../context/DarkModeContext';
 import Spacer from '../components/ui/Spacer';
 import NavLink from '../components/NavLink';
 import PasswordInput from '../components/PasswordInput';
 
 function ResetPasswordScreen({ route }) {
-  const [otp, setOtp] = useState();
+  const { isDarkMode } = useDarkMode();
+
+  const [otp, setOtp] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
 
@@ -49,7 +52,13 @@ function ResetPasswordScreen({ route }) {
           onValueChange={(password) => setPassword(password)}
         />
         {password.length > 0 && password.length < 6 && (
-          <Text style={{ color: Color.errorText, paddingRight: 10 }}>
+          <Text
+            style={
+              isDarkMode
+                ? { color: Color.error100, paddingRight: 10 }
+                : { color: Color.errorText, paddingRight: 10 }
+            }
+          >
             סיסמה צריכה להכיל 6 תווים לפחות
           </Text>
         )}
