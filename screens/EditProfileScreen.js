@@ -19,6 +19,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { UserContext, useUsers } from '../context/UserContext';
+import { useDarkMode } from '../context/DarkModeContext';
 import { academicList } from '../data/academic';
 import { Color } from '../constants/colors';
 import DropDown from '../components/DropDown';
@@ -30,6 +31,7 @@ import ImagePicker from '../components/ImagePicker';
 import TakePhoto from '../components/TakePhoto';
 
 function EditProfileScreen({ navigation }) {
+  const { isDarkMode } = useDarkMode();
   const { userData } = useUsers();
   // const auth = useContext(UserContext);
 
@@ -84,9 +86,7 @@ function EditProfileScreen({ navigation }) {
         console.log(err);
       }
 
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 100);
+      setIsLoading(false);
     };
 
     fetchData();
@@ -263,10 +263,14 @@ function EditProfileScreen({ navigation }) {
           ref={bottomSheetModalRef}
           snapPoints={snapPoints}
           backgroundStyle={{
-            backgroundColor: Color.defaultTheme,
+            backgroundColor: isDarkMode
+              ? Color.buttomSheetDarkTheme
+              : Color.defaultTheme,
           }}
           handleIndicatorStyle={{
-            backgroundColor: Color.buttomSheetDarkTheme,
+            backgroundColor: isDarkMode
+              ? Color.defaultTheme
+              : Color.buttomSheetDarkTheme,
           }}
           onDismiss={() => setIsBottomSheetOpen(false)}
         >
@@ -279,8 +283,12 @@ function EditProfileScreen({ navigation }) {
 
             <Button
               style={styles.button}
-              textColor={Color.defaultTheme}
-              buttonColor={Color.buttomSheetDarkTheme}
+              textColor={
+                isDarkMode ? Color.buttomSheetDarkTheme : Color.defaultTheme
+              }
+              buttonColor={
+                isDarkMode ? Color.defaultTheme : Color.buttomSheetDarkTheme
+              }
               mode="contained"
               onPress={() => setAvatar(url)}
             >
@@ -288,10 +296,12 @@ function EditProfileScreen({ navigation }) {
             </Button>
 
             <Button
-              style={{ marginTop: -15 }}
+              style={{ marginTop: -10 }}
               onPress={handlePresentModalClose}
               mode="text"
-              textColor={Color.buttomSheetDarkTheme}
+              textColor={
+                isDarkMode ? Color.defaultTheme : Color.buttomSheetDarkTheme
+              }
             >
               בטל
             </Button>

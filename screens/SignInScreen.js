@@ -31,7 +31,7 @@ function SignInScreen({ navigation }) {
         >
           <View style={styles.text}>
             <Text variant="displaySmall" style={{ color: Color.Blue100 }}>
-              ─── התחברות ───
+              ── התחברות ──
             </Text>
           </View>
 
