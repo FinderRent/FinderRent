@@ -11,6 +11,7 @@ import { Color } from '../constants/colors';
 import HomeStackScreen from './HomeStackScreen ';
 import ProfileStackScreen from './ProfileStackScreen';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { useDarkMode } from '../context/DarkModeContext';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -33,20 +34,22 @@ const CustomDefaultTheme = {
 };
 
 function MainTabScreen() {
-  const theme = CustomDefaultTheme;
+  const { isDarkMode } = useDarkMode();
+
+  const theme = isDarkMode ? CustomDarkTheme : CustomDefaultTheme;
 
   return (
     <BottomSheetModalProvider>
       <PaperProvider theme={theme}>
         <Tab.Navigator
           initialRouteName="HomeStackScreen"
-          activeColor={Color.black}
-          inactiveColor={Color.black}
+          activeColor={isDarkMode ? Color.white : Color.black}
+          inactiveColor={isDarkMode ? Color.white : Color.black}
           barStyle={{
-            backgroundColor: Color.white,
+            backgroundColor: isDarkMode ? Color.darkTheme : Color.white,
             borderTopColor: Color.Brown100,
             borderTopWidth: 1,
-            height: 55,
+            height: 50,
             position: 'absolute',
           }}
         >
@@ -66,7 +69,7 @@ function MainTabScreen() {
                   <Text
                     style={{
                       fontSize: 11,
-                      color: Color.black,
+                      color: isDarkMode ? Color.white : Color.black,
                     }}
                   >
                     בית
@@ -91,7 +94,7 @@ function MainTabScreen() {
                   <Text
                     style={{
                       fontSize: 11,
-                      color: Color.black,
+                      color: isDarkMode ? Color.white : Color.black,
                     }}
                   >
                     פרופיל

@@ -1,34 +1,47 @@
+import * as NavigationBar from 'expo-navigation-bar';
+
 import CustomDrawer from '../components/CustomDrawer';
-import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import HomeScreen from '../screens/HomeScreen';
-import ProfileScreen from '../screens/ProfileScreen';
 import { Color } from '../constants/colors';
+import { useDarkMode } from '../context/DarkModeContext';
 import MainTabScreen from './MainTabScreen';
 import ChatScreen from '../screens/ChatScreen';
 
 const Drawer = createDrawerNavigator();
 
 function DrawerScreens() {
+  const { isDarkMode } = useDarkMode();
+
+  NavigationBar.setBackgroundColorAsync(
+    isDarkMode ? Color.darkTheme : Color.white
+  );
+
   return (
     <Drawer.Navigator
       initialRouteName="MainTabScreen"
       drawerContent={(props) => <CustomDrawer {...props} />}
       screenOptions={{
         headerShown: false,
-        drawerLabelStyle: { marginLeft: -20, fontSize: 15 },
+        drawerActiveTintColor: !isDarkMode
+          ? Color.darkTheme
+          : Color.defaultTheme,
+        drawerInactiveTintColor: !isDarkMode
+          ? Color.darkTheme
+          : Color.defaultTheme,
+        drawerActiveBackgroundColor: Color.Brown400,
+        drawerLabelStyle: {
+          marginLeft: -20,
+          fontSize: 15,
+        },
+        swipeEdgeWidth: 300,
       }}
     >
       <Drawer.Screen
-        name="Home"
+        name="בית"
         component={MainTabScreen}
         options={{
-          headerStyle: {
-            backgroundColor: Color.Brown100,
-          },
-          headerTitle: '',
           drawerIcon: ({ color }) => (
             <Ionicons name="home-outline" size={22} color={color} />
           ),
@@ -44,7 +57,7 @@ function DrawerScreens() {
           }}
         /> */}
       <Drawer.Screen
-        name="Chat"
+        name="צאט"
         component={ChatScreen}
         options={{
           drawerIcon: ({ color }) => (

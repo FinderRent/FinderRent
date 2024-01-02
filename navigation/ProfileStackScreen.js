@@ -4,25 +4,32 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { Color } from '../constants/colors';
+import { useDarkMode } from '../context/DarkModeContext';
 import ProfileScreen from '../screens/ProfileScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
 
 const ProfileStack = createNativeStackNavigator();
 
 function ProfileStackScreen({ navigation }) {
+  const { isDarkMode } = useDarkMode();
+
   return (
     <ProfileStack.Navigator
       initialRouteName="StudentProfileScreen"
       screenOptions={{
         headerStyle: {
-          backgroundColor: Color.Brown100,
+          backgroundColor: isDarkMode ? Color.Brown700 : Color.Brown100,
         },
         drawerContentStyle: {
-          backgroundColor: Color.defaultTheme,
+          backgroundColor: isDarkMode ? Color.darkTheme : Color.defaultTheme,
         },
         headerTitle: '',
-        drawerActiveTintColor: Color.defaultTheme,
-        drawerInactiveTintColor: Color.defaultTheme,
+        drawerActiveTintColor: !isDarkMode
+          ? Color.darkTheme
+          : Color.defaultTheme,
+        drawerInactiveTintColor: !isDarkMode
+          ? Color.darkTheme
+          : Color.defaultTheme,
         drawerActiveBackgroundColor: Color.Brown400,
         drawerLabelStyle: {
           marginLeft: -20,
@@ -41,7 +48,7 @@ function ProfileStackScreen({ navigation }) {
                 name="ios-menu"
                 size={25}
                 color={Color.darkTheme}
-                backgroundColor={Color.Brown100}
+                backgroundColor={isDarkMode ? Color.Brown700 : Color.Brown100}
                 onPress={() => navigation.openDrawer()}
                 // underlayColor="transparent"
               />
@@ -53,7 +60,7 @@ function ProfileStackScreen({ navigation }) {
                 name="account-edit"
                 size={25}
                 color={Color.darkTheme}
-                backgroundColor={Color.Brown100}
+                backgroundColor={isDarkMode ? Color.Brown700 : Color.Brown100}
                 underlayColor="transparent"
                 onPress={() => navigation.navigate('EditProfileScreen')}
               />

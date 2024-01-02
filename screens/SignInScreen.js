@@ -4,11 +4,14 @@ import { Button, Text } from 'react-native-paper';
 
 import { version as app_version } from '../package.json';
 import { Color } from '../constants/colors';
+import { useDarkMode } from '../context/DarkModeContext';
 import Input from '../components/Input';
 import PasswordInput from '../components/PasswordInput';
 import NavLink from '../components/NavLink';
 
 function SignInScreen({ navigation }) {
+  const { isDarkMode } = useDarkMode();
+
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
@@ -19,7 +22,13 @@ function SignInScreen({ navigation }) {
         resizeMode="cover"
         style={styles.image}
       >
-        <View style={styles.container}>
+        <View
+          style={
+            isDarkMode
+              ? { ...styles.container, backgroundColor: 'rgba(0,0,0, 0.65)' }
+              : styles.container
+          }
+        >
           <View style={styles.text}>
             <Text variant="displaySmall" style={{ color: Color.Blue100 }}>
               ─── התחברות ───
@@ -72,7 +81,13 @@ function SignInScreen({ navigation }) {
             עמוד הבית
           </Button>
         </View>
-        <View style={styles.footer}>
+        <View
+          style={
+            isDarkMode
+              ? { ...styles.footer, backgroundColor: 'rgba(0,0,0, 0.65)' }
+              : styles.footer
+          }
+        >
           <Text style={styles.name}>FinderRent</Text>
           <Text style={styles.version}> גרסה: {app_version}</Text>
         </View>
@@ -110,7 +125,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.1,
   },
   version: {
-    color: Color.darkTheme,
+    color: Color.Brown200,
     fontSize: 11,
   },
 });

@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { TextInput } from 'react-native-paper';
 
 import { Color } from '../constants/colors';
+import { useDarkMode } from '../context/DarkModeContext';
 
 function Input({
   label,
@@ -17,6 +18,7 @@ function Input({
   left,
   value,
 }) {
+  const { isDarkMode } = useDarkMode();
   const [changeValue, setChangeValue] = useState();
 
   const handleValueChange = (selectedValue) => {
@@ -31,7 +33,11 @@ function Input({
         maxLength={maxLength ? maxLength : null}
         label={label}
         placeholder={placeholder}
-        style={{ backgroundColor: Color.white }}
+        style={
+          isDarkMode
+            ? { backgroundColor: Color.darkTheme }
+            : { backgroundColor: Color.white }
+        }
         selectionColor={Color.Blue700}
         outlineColor={Color.Blue200}
         activeOutlineColor={Color.Blue800}

@@ -36,8 +36,7 @@ const ProfileScreen = ({ navigation }) => {
           />
           <View>
             <Title style={styles.title}>
-              {userData.firstName}
-              {userData.lastName}
+              {userData.firstName} {userData.lastName}
             </Title>
           </View>
         </View>

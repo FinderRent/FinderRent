@@ -26,6 +26,8 @@ import Input from '../components/Input';
 import Spacer from '../components/ui/Spacer';
 import NavLink from '../components/NavLink';
 import Loader from '../components/ui/Loader';
+import ImagePicker from '../components/ImagePicker';
+import TakePhoto from '../components/TakePhoto';
 
 function EditProfileScreen({ navigation }) {
   const { userData } = useUsers();
@@ -271,6 +273,9 @@ function EditProfileScreen({ navigation }) {
           <View style={styles.sheetContainer}>
             <Text style={styles.panelTitle}>עדכן תמונה</Text>
             <Text style={styles.panelSubtitle}>בחר את תמונת הפרופיל שלך</Text>
+
+            <ImagePicker onPickImage={(image) => setAvatar(image)} />
+            <TakePhoto onTakeImage={(image) => setAvatar(image)} />
 
             <Button
               style={styles.button}

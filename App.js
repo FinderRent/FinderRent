@@ -3,9 +3,10 @@ import { I18nManager } from 'react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Toast from 'react-native-toast-message';
 
+import { UserContext, useUsers } from './context/UserContext';
+import { DarkModeProvider } from './context/DarkModeContext';
 import AuthStackScreens from './navigation/AuthStackScreens';
 import DrawerScreens from './navigation/DrawerScreens';
-import { UserContext, useUsers } from './context/UserContext';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -21,13 +22,15 @@ export default function App() {
   I18nManager.forceRTL(false);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <UserContext.Provider value={{ login, logout, userData }}>
-        <StatusBar style="dark" />
-        <AuthStackScreens />
-        {/* <DrawerScreens /> */}
-        <Toast />
-      </UserContext.Provider>
-    </QueryClientProvider>
+    <DarkModeProvider>
+      <QueryClientProvider client={queryClient}>
+        <UserContext.Provider value={{ login, logout, userData }}>
+          <StatusBar style="dark" />
+          <AuthStackScreens />
+          {/* <DrawerScreens /> */}
+          <Toast />
+        </UserContext.Provider>
+      </QueryClientProvider>
+    </DarkModeProvider>
   );
 }

@@ -11,8 +11,9 @@ import { useMutation } from '@tanstack/react-query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-toast-message';
 
-import { UserContext } from '../context/UserContext';
 import { Color } from '../constants/colors';
+import { useDarkMode } from '../context/DarkModeContext';
+import { UserContext } from '../context/UserContext';
 import { academicList } from '../data/academic';
 import Input from '../components/Input';
 import PasswordInput from '../components/PasswordInput';
@@ -23,6 +24,7 @@ import signUp from '../api/authentication/signUp';
 import ErrorMessage from '../components/ui/ErrorMessage';
 
 function SignUpScreen({ navigation }) {
+  const { isDarkMode } = useDarkMode();
   const auth = useContext(UserContext);
 
   // State variables for form inputs
@@ -98,11 +100,17 @@ function SignUpScreen({ navigation }) {
     mutate(userData);
   };
 
+  const getBackgroundImage = (isDarkMode) => {
+    return isDarkMode
+      ? require('../assets/images/MidnightCity.jpg')
+      : require('../assets/images/Zinc.jpg');
+  };
+
   // Rendering the UI components
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ImageBackground
-        source={require('../assets/images/Zinc.jpg')}
+        source={getBackgroundImage(isDarkMode)}
         resizeMode="cover"
         style={styles.image}
       >
@@ -151,7 +159,13 @@ function SignUpScreen({ navigation }) {
             />
 
             {/* Radio buttons for selecting gender */}
-            <View style={styles.genderView}>
+            <View
+              style={
+                isDarkMode
+                  ? { ...styles.genderView, backgroundColor: Color.darkTheme }
+                  : styles.genderView
+              }
+            >
               <Text
                 style={{ ...styles.title, marginTop: 5 }}
                 variant="titleMedium"
