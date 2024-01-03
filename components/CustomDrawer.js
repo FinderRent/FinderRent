@@ -87,7 +87,7 @@ function CustomDrawer(props) {
 
       <View
         style={{
-          padding: 10,
+          padding: 5,
           backgroundColor: isDarkMode ? Color.darkTheme : Color.defaultTheme,
           borderTopWidth: 1,
           borderTopColor: Color.Brown300,

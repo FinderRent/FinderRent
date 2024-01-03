@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   ImageBackground,
   KeyboardAvoidingView,
@@ -10,13 +10,65 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import moment from 'moment';
+import 'moment/locale/he';
 
 import { Color } from '../constants/colors';
 import { useDarkMode } from '../context/DarkModeContext';
+import { useUsers } from '../context/UserContext';
+import { Text } from 'react-native-paper';
 
-function ChatScreen() {
+function ChatScreen({ navigation, route }) {
+  const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
+  const { image, title, ouid } = route.params;
+
   const [messageText, setMessageText] = useState('');
+
+  useEffect(() => {
+    const CustomHeader = () => (
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}
+      >
+        <View>
+          <TouchableOpacity
+            style={{
+              paddingRight: 5,
+            }}
+            onPress={() => navigation.navigate('ChatListScreen')}
+          >
+            <Ionicons name="arrow-forward" size={24} color={Color.darkTheme} />
+          </TouchableOpacity>
+        </View>
+        <ImageBackground
+          style={{ height: 40, width: 40 }}
+          imageStyle={{
+            borderRadius: 50,
+            borderWidth: 0.5,
+            borderColor: Color.gray,
+          }}
+          source={{
+            uri: image,
+          }}
+        />
+        <Text
+          style={{
+            marginHorizontal: 5,
+            fontSize: 18,
+          }}
+        >
+          {title}
+        </Text>
+      </View>
+    );
+    navigation.setOptions({
+      headerRight: () => <CustomHeader />,
+    });
+    moment.locale('he');
+  }, [isDarkMode]);
 
   const sendMessage = useCallback(() => {
     setMessageText('');
