@@ -8,7 +8,7 @@ import { Color } from '../constants/colors';
 import { useDarkMode } from '../context/DarkModeContext';
 import CustomDrawer from '../components/CustomDrawer';
 import MainTabScreen from './MainTabScreen';
-import ChatScreen from '../screens/ChatScreen';
+import ChatStackScreen from './ChatStackScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -62,7 +62,7 @@ function DrawerScreens({ navigation }) {
       />
       <Drawer.Screen
         name="צאט"
-        component={ChatScreen}
+        component={ChatStackScreen}
         options={{
           drawerIcon: ({ color }) => (
             <Ionicons name="chatbox-ellipses-outline" size={22} color={color} />
