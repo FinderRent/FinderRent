@@ -1,24 +1,31 @@
-import { useContext } from 'react';
-import { View, SafeAreaView, StyleSheet } from 'react-native';
-import { Avatar, Title, Text, TouchableRipple } from 'react-native-paper';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useContext, useState } from "react";
+import { View, SafeAreaView, StyleSheet } from "react-native";
+import { Avatar, Title, Text, TouchableRipple } from "react-native-paper";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { Color } from '../constants/colors';
-import { UserContext, useUsers } from '../context/UserContext';
+import { Color } from "../constants/colors";
+import { UserContext, useUsers } from "../context/UserContext";
+import SignInModal from "../modals/SignInModal";
 
 const ProfileScreen = ({ navigation }) => {
   const auth = useContext(UserContext);
   const { userData } = useUsers();
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   async function logoutHandler(auth, navigation) {
     try {
-      await AsyncStorage.removeItem('token');
+      await AsyncStorage.removeItem("token");
       auth.logout();
-      navigation.navigate('SignInScreen');
+      navigation.navigate("SignInScreen");
     } catch (err) {
       console.log(err);
     }
+  }
+
+  if (userData.token === null) {
+    return <SignInModal />;
   }
 
   return (
@@ -46,7 +53,7 @@ const ProfileScreen = ({ navigation }) => {
         <Text style={styles.infoTitle}>חשבון</Text>
       </View>
 
-      {userData.userType === 'student' ? (
+      {userData.userType === "student" ? (
         <View style={styles.userInfoSection}>
           <View style={styles.row}>
             <Icon
@@ -97,7 +104,7 @@ const ProfileScreen = ({ navigation }) => {
           </View>
         </TouchableRipple>
 
-        <TouchableRipple onPress={() => navigation.navigate('SecurityScreen')}>
+        <TouchableRipple onPress={() => navigation.navigate("SecurityScreen")}>
           <View style={styles.menuItem}>
             <Icon name="shield-lock-outline" color={Color.icon} size={25} />
             <Text style={styles.menuItemText}>אבטחה</Text>
@@ -126,13 +133,13 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   avatar: {
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 20,
   },
   title: {
     marginTop: 8,
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   info: {
     marginBottom: 20,
@@ -142,7 +149,7 @@ const styles = StyleSheet.create({
     borderColor: Color.Blue500,
   },
   infoTitle: {
-    fontWeight: '800',
+    fontWeight: "800",
     fontSize: 15,
     color: Color.Blue900,
     marginBottom: 5,
@@ -154,7 +161,7 @@ const styles = StyleSheet.create({
   },
 
   row: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginBottom: 10,
   },
 
@@ -162,8 +169,8 @@ const styles = StyleSheet.create({
     marginTop: -15,
   },
   menuItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingVertical: 10,
     paddingHorizontal: 30,
   },

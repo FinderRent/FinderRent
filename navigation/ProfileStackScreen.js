@@ -1,12 +1,12 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { View } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { View } from "react-native";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { Color } from '../constants/colors';
-import { useDarkMode } from '../context/DarkModeContext';
-import ProfileScreen from '../screens/ProfileScreen';
-import EditProfileScreen from '../screens/EditProfileScreen';
+import { Color } from "../constants/colors";
+import { useDarkMode } from "../context/DarkModeContext";
+import ProfileScreen from "../screens/ProfileScreen";
+import EditProfileScreen from "../screens/EditProfileScreen";
 
 const ProfileStack = createNativeStackNavigator();
 
@@ -17,13 +17,14 @@ function ProfileStackScreen({ navigation }) {
     <ProfileStack.Navigator
       initialRouteName="StudentProfileScreen"
       screenOptions={{
+        headerShown: false,
         headerStyle: {
           backgroundColor: isDarkMode ? Color.Brown700 : Color.Brown100,
         },
         drawerContentStyle: {
           backgroundColor: isDarkMode ? Color.darkTheme : Color.defaultTheme,
         },
-        headerTitle: '',
+        headerTitle: "",
         drawerActiveTintColor: !isDarkMode
           ? Color.darkTheme
           : Color.defaultTheme,
@@ -41,7 +42,7 @@ function ProfileStackScreen({ navigation }) {
         name="פרופיל"
         component={ProfileScreen}
         options={{
-          title: '',
+          title: "",
           headerRight: () => (
             <View style={{ marginLeft: -10 }}>
               <Ionicons.Button
@@ -62,7 +63,7 @@ function ProfileStackScreen({ navigation }) {
                 color={Color.darkTheme}
                 backgroundColor={isDarkMode ? Color.Brown700 : Color.Brown100}
                 underlayColor="transparent"
-                onPress={() => navigation.navigate('EditProfileScreen')}
+                onPress={() => navigation.navigate("EditProfileScreen")}
               />
             </View>
           ),
