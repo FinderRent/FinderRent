@@ -26,8 +26,7 @@ export default function App() {
   const [appIsLoaded, setAppIsLoaded] = useState(false);
 
   const { login, logout, userData } = useUsers();
-  I18nManager.forceRTL(false);
-  I18nManager.forceRTL(false);
+  I18nManager.forceRTL(true);
 
   useEffect(() => {
     const prepare = async () => {

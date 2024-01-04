@@ -1,10 +1,10 @@
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { View } from "react-native";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { View } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { Color } from "../constants/colors";
-import { useDarkMode } from "../context/DarkModeContext";
-import HomeScreen from "../screens/HomeScreen";
+import { Color } from '../constants/colors';
+import { useDarkMode } from '../context/DarkModeContext';
+import HomeScreen from '../screens/HomeScreen';
 
 const HomeStack = createNativeStackNavigator();
 
@@ -21,7 +21,7 @@ function HomeStackScreen({ navigation }) {
         drawerContentStyle: {
           backgroundColor: isDarkMode ? Color.darkTheme : Color.defaultTheme,
         },
-        headerTitle: "",
+        headerTitle: '',
       }}
     >
       <HomeStack.Screen
