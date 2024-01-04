@@ -12,7 +12,7 @@ const ProfileScreen = ({ navigation }) => {
   const auth = useContext(UserContext);
   const { userData } = useUsers();
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   async function logoutHandler(auth, navigation) {
     try {
@@ -24,9 +24,9 @@ const ProfileScreen = ({ navigation }) => {
     }
   }
 
-  if (userData.token === null) {
-    return <SignInModal />;
-  }
+  // if (userData.token === null) {
+  //   return <SignInModal />;
+  // }
 
   return (
     <SafeAreaView style={styles.container}>

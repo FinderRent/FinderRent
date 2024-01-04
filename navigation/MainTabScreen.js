@@ -1,19 +1,21 @@
-import { Text, View } from "react-native";
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { Platform, Text, View } from 'react-native';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
   MD3LightTheme as DefaultTheme,
   MD3DarkTheme as DarkTheme,
   Provider as PaperProvider,
-} from "react-native-paper";
+} from 'react-native-paper';
 
-import { Color } from "../constants/colors";
-import HomeStackScreen from "./HomeStackScreen ";
-import ProfileStackScreen from "./ProfileStackScreen";
-import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import { useDarkMode } from "../context/DarkModeContext";
-import ChatStackScreen from "./ChatStackScreen";
-import SignInModal from "../modals/SignInModal";
+import { Color } from '../constants/colors';
+import HomeStackScreen from './HomeStackScreen ';
+import ProfileStackScreen from './ProfileStackScreen';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { useDarkMode } from '../context/DarkModeContext';
+import ChatStackScreen from './ChatStackScreen';
+import SignInModal from '../modals/SignInModal';
+import { useUsers } from '../context/UserContext';
+import { useState } from 'react';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -36,9 +38,16 @@ const CustomDefaultTheme = {
 };
 
 function MainTabScreen() {
+  const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const theme = isDarkMode ? CustomDarkTheme : CustomDefaultTheme;
+
+  if (userData.token !== null) {
+    setIsLoggedIn(true);
+  }
 
   return (
     <BottomSheetModalProvider>
@@ -52,8 +61,8 @@ function MainTabScreen() {
             borderTopColor: Color.Brown100,
             borderTopWidth: 1,
             marginTop: 20,
-            height: 70,
-            position: "absolute",
+            height: Platform.OS === 'ios' ? 70 : 55,
+            position: 'absolute',
             padding: 5,
           }}
         >
@@ -61,18 +70,18 @@ function MainTabScreen() {
             name="HomeStackScreen"
             component={HomeStackScreen}
             options={{
-              tabBarLabel: "",
+              tabBarLabel: '',
               tabBarIcon: ({ focused, color }) => (
-                <View style={{ alignItems: "center" }}>
+                <View style={{ alignItems: 'center' }}>
                   <MaterialCommunityIcons
-                    name={focused ? "home" : "home-outline"}
+                    name={focused ? 'home' : 'home-outline'}
                     style={{ marginTop: -10 }}
                     color={color}
                     size={26}
                   />
                   <Text
                     style={{
-                      fontSize: 11,
+                      fontSize: 10,
                       color: isDarkMode ? Color.white : Color.black,
                     }}
                   >
@@ -87,14 +96,14 @@ function MainTabScreen() {
             name="ProfileScreen"
             component={ProfileStackScreen}
             options={{
-              tabBarLabel: "",
+              tabBarLabel: '',
               tabBarIcon: ({ focused, color }) => (
-                <View style={{ alignItems: "center" }}>
+                <View style={{ alignItems: 'center' }}>
                   <MaterialCommunityIcons
-                    name={focused ? "account" : "account-outline"}
+                    name={focused ? 'account' : 'account-outline'}
                     style={{ marginTop: -10 }}
                     color={color}
-                    size={24}
+                    size={26}
                   />
                   <Text
                     style={{
@@ -102,7 +111,7 @@ function MainTabScreen() {
                       color: isDarkMode ? Color.white : Color.black,
                     }}
                   >
-                    Profile
+                    {isLoggedIn ? 'Profile' : 'Login'}
                   </Text>
                 </View>
               ),

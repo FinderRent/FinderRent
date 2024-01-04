@@ -3,7 +3,7 @@ import * as Font from 'expo-font';
 import { useCallback, useEffect, useState } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
-import { I18nManager } from 'react-native';
+import { I18nManager, Platform } from 'react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Toast from 'react-native-toast-message';
 
@@ -26,7 +26,7 @@ export default function App() {
   const [appIsLoaded, setAppIsLoaded] = useState(false);
 
   const { login, logout, userData } = useUsers();
-  I18nManager.forceRTL(true);
+  I18nManager.allowRTL(false);
 
   useEffect(() => {
     const prepare = async () => {
@@ -55,7 +55,10 @@ export default function App() {
   }
 
   return (
-    <SafeAreaProvider onLayout={onLayout}>
+    <SafeAreaProvider
+      onLayout={onLayout}
+      style={{ flex: 1, paddingTop: Platform.OS === 'ios' ? 0 : 35 }}
+    >
       <DarkModeProvider>
         <QueryClientProvider client={queryClient}>
           <UserContext.Provider value={{ login, logout, userData }}>

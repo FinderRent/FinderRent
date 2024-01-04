@@ -6,10 +6,12 @@ import {
   Text,
   ScrollView,
   Image,
+  Platform,
 } from 'react-native';
 import HouseCard from '../components/HouseCard';
 import ProfileLocation from '../components/ProfileLocation';
 import Map from '../components/Map';
+
 /**
  * TODO:
  * when press on the profile photo, go to profile page.
