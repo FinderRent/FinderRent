@@ -1,5 +1,6 @@
+import React from 'react';
 import { Platform, Text, View } from 'react-native';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'; // Updated import
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
   MD3LightTheme as DefaultTheme,
@@ -15,9 +16,8 @@ import { useDarkMode } from '../context/DarkModeContext';
 import ChatStackScreen from './ChatStackScreen';
 import SignInModal from '../modals/SignInModal';
 import { useUsers } from '../context/UserContext';
-import { useState } from 'react';
 
-const Tab = createMaterialBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
 const CustomDarkTheme = {
   ...DarkTheme,
@@ -41,28 +41,25 @@ function MainTabScreen() {
   const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
 
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   const theme = isDarkMode ? CustomDarkTheme : CustomDefaultTheme;
-
-  // if (userData.token !== null) {
-  //   setIsLoggedIn(true);
-  // }
 
   return (
     <BottomSheetModalProvider>
       <PaperProvider theme={theme}>
         <Tab.Navigator
           initialRouteName="HomeStackScreen"
-          activeColor={isDarkMode ? Color.white : Color.black}
-          inactiveColor={isDarkMode ? Color.white : Color.black}
-          barStyle={{
-            backgroundColor: isDarkMode ? Color.darkTheme : Color.white,
-            borderTopColor: Color.Brown100,
-            borderTopWidth: 1,
-            height: Platform.OS === 'ios' ? 70 : 60,
-            position: 'absolute',
-            padding: Platform.OS === 'ios' ? 5 : 0,
+          screenOptions={{
+            headerShown: false,
+            activeTintColor: isDarkMode ? Color.white : Color.black,
+            inactiveTintColor: isDarkMode ? Color.white : Color.black,
+            tabBarStyle: {
+              backgroundColor: isDarkMode ? Color.darkTheme : Color.white,
+              borderTopColor: Color.Brown100,
+              borderTopWidth: 1,
+              height: Platform.OS === 'ios' ? 70 : 60,
+              position: 'absolute',
+              padding: Platform.OS === 'ios' ? 5 : 20,
+            },
           }}
         >
           <Tab.Screen
@@ -75,7 +72,7 @@ function MainTabScreen() {
                   <MaterialCommunityIcons
                     name={focused ? 'home' : 'home-outline'}
                     style={{ marginTop: -10 }}
-                    color={color}
+                    color={Color.white}
                     size={26}
                   />
                   <Text
@@ -100,7 +97,7 @@ function MainTabScreen() {
                   <MaterialCommunityIcons
                     name={focused ? 'account' : 'account-outline'}
                     style={{ marginTop: -10 }}
-                    color={color}
+                    color={Color.white}
                     size={26}
                   />
                   <Text
@@ -126,7 +123,7 @@ function MainTabScreen() {
                   <MaterialCommunityIcons
                     name={focused ? 'chat' : 'chat-outline'}
                     style={{ marginTop: -10 }}
-                    color={color}
+                    color={Color.white}
                     size={26}
                   />
                   <Text

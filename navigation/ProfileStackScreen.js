@@ -44,7 +44,7 @@ function ProfileStackScreen({ navigation }) {
         component={ProfileScreen}
         options={{
           title: '',
-          headerRight: () => (
+          headerLeft: () => (
             <View style={{ marginLeft: -10 }}>
               <Ionicons.Button
                 name="ios-menu"
@@ -58,7 +58,7 @@ function ProfileStackScreen({ navigation }) {
               />
             </View>
           ),
-          headerLeft: () => (
+          headerRight: () => (
             <View style={{ marginRight: -10 }}>
               <MaterialCommunityIcons.Button
                 name="account-edit"

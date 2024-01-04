@@ -1,4 +1,6 @@
+import { useLayoutEffect } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -9,8 +11,27 @@ import ChatScreen from '../screens/ChatScreen';
 
 const ChatStack = createNativeStackNavigator();
 
-function ChatStackScreen({ navigation }) {
+function ChatStackScreen({ navigation, route }) {
   const { isDarkMode } = useDarkMode();
+
+  useLayoutEffect(() => {
+    const tabHiddenRoutes = ['ChatScreen'];
+    if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))) {
+      navigation.setOptions({ tabBarStyle: { display: 'none' } });
+    } else {
+      navigation.setOptions({
+        tabBarStyle: {
+          backgroundColor: isDarkMode ? Color.darkTheme : Color.white,
+          borderTopColor: Color.Brown100,
+          borderTopWidth: 1,
+          height: Platform.OS === 'ios' ? 70 : 60,
+          position: 'absolute',
+          padding: Platform.OS === 'ios' ? 5 : 20,
+        },
+      });
+    }
+  });
+
   return (
     <ChatStack.Navigator
       initialRouteName="ChatListScreen"
@@ -41,11 +62,11 @@ function ChatStackScreen({ navigation }) {
         name="ChatListScreen"
         component={ChatListScreen}
         options={{
-          headerTitle: "צ'אטים",
+          headerTitle: 'ChatsList',
           headerTitleAlign: 'center',
           headerTintColor: isDarkMode ? Color.white : Color.darkTheme,
-          // headerTitleStyle: { fontFamily: 'varelaRound' },
-          headerRight: () => (
+          headerTitleStyle: { fontFamily: 'varelaRound' },
+          headerLeft: () => (
             <View style={{ marginLeft: -10 }}>
               <Ionicons.Button
                 name="ios-menu"
@@ -67,7 +88,7 @@ function ChatStackScreen({ navigation }) {
         options={{
           headerTintColor: Color.darkTheme,
           headerTitle: '',
-          // headerTitleStyle: { fontFamily: 'varelaRound' },
+          headerTitleStyle: { fontFamily: 'varelaRound' },
           headerBackVisible: false,
         }}
       />

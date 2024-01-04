@@ -11,7 +11,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import moment from 'moment';
-import 'moment/locale/he';
+// import 'moment/locale/he';
 
 import { Color } from '../constants/colors';
 import { useDarkMode } from '../context/DarkModeContext';
@@ -40,7 +40,11 @@ function ChatScreen({ navigation, route }) {
             }}
             onPress={() => navigation.navigate('ChatListScreen')}
           >
-            <Ionicons name="arrow-forward" size={24} color={Color.darkTheme} />
+            <Ionicons
+              name="arrow-back"
+              size={24}
+              color={isDarkMode ? Color.white : Color.darkTheme}
+            />
           </TouchableOpacity>
         </View>
         <ImageBackground
@@ -65,9 +69,9 @@ function ChatScreen({ navigation, route }) {
       </View>
     );
     navigation.setOptions({
-      headerRight: () => <CustomHeader />,
+      headerLeft: () => <CustomHeader />,
     });
-    moment.locale('he');
+    moment.locale('en');
   }, [isDarkMode]);
 
   const sendMessage = useCallback(() => {

@@ -5,7 +5,7 @@ import { Button, Text } from 'react-native-paper';
 import { useQuery } from '@tanstack/react-query';
 import { FontAwesome5 } from '@expo/vector-icons';
 import moment from 'moment';
-import 'moment/locale/he';
+// import 'moment/locale/he';
 
 import { Color } from '../constants/colors';
 import { useUsers } from '../context/UserContext';
@@ -27,32 +27,42 @@ function ChatListScreen({ navigation }) {
       const fetched = async () => {
         await refetch();
       };
-      moment.locale('he');
+      // moment.locale('he');
       fetched();
     }, [])
   );
 
-  // if (isLoading) {
-  //   return <Loader color={Color.Brown400} size={30} />;
-  // }
+  if (isLoading) {
+    return <Loader color={Color.Brown400} size={30} />;
+  }
 
   if (error) {
     return <ErrorMessage errorMessage={error.message} />;
   }
 
-  // if (data?.results == 0) {
-  return (
-    <View style={styles.container}>
-      <FontAwesome5
-        name="users"
-        size={60}
-        color={Color.Brown400}
-        style={styles.noResultsIcon}
-      />
-      <Text style={styles.noResultsText}>עדיין אין צאטי'ם</Text>
-    </View>
-  );
-  // }
+  if (data?.results == 0) {
+    return (
+      <View style={styles.container}>
+        <FontAwesome5
+          name="users"
+          size={60}
+          color={Color.Brown400}
+          style={styles.noResultsIcon}
+        />
+        <Text style={styles.noResultsText}>There's No Chats Yet</Text>
+
+        {/* <Button
+          style={{ margin: 20 }}
+          buttonColor={Color.Brown500}
+          textColor={Color.white}
+          mode="elevated"
+          onPress={() => navigation.navigate('ChatScreen')}
+        >
+          מסך צאט
+        </Button> */}
+      </View>
+    );
+  }
 
   const sortedChats = data.chat.sort((a, b) => {
     const dateA = new Date(a.updatedAt);
@@ -91,16 +101,6 @@ function ChatListScreen({ navigation }) {
         }}
       />
       <View style={styles.line}></View>
-
-      {/* <Button
-        style={{ margin: 20 }}
-        buttonColor={Color.Brown500}
-        textColor={Color.white}
-        mode="elevated"
-        onPress={() => navigation.navigate('ChatScreen')}
-      >
-        מסך צאט
-      </Button> */}
     </View>
   );
 }

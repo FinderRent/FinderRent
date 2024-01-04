@@ -24,10 +24,12 @@ const queryClient = new QueryClient({
 });
 
 export default function App() {
+  I18nManager.forceRTL(false);
+  I18nManager.allowRTL(false);
+
   const [appIsLoaded, setAppIsLoaded] = useState(false);
 
   const { login, logout, userData } = useUsers();
-  I18nManager.allowRTL(false);
 
   useEffect(() => {
     const prepare = async () => {

@@ -50,7 +50,7 @@ const ProfileScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.info}>
-        <Text style={styles.infoTitle}>חשבון</Text>
+        <Text style={styles.infoTitle}>{userData.userType} Profile</Text>
       </View>
 
       {userData.userType === 'student' ? (
@@ -93,28 +93,28 @@ const ProfileScreen = ({ navigation }) => {
         </View>
       )}
       <View style={styles.info}>
-        <Text style={styles.infoTitle}>אחר</Text>
+        <Text style={styles.infoTitle}>other</Text>
       </View>
 
       <View style={styles.menuWrapper}>
         <TouchableRipple onPress={() => {}}>
           <View style={styles.menuItem}>
             <Icon name="heart-outline" color={Color.icon} size={25} />
-            <Text style={styles.menuItemText}>מועדפים</Text>
+            <Text style={styles.menuItemText}>Favorites</Text>
           </View>
         </TouchableRipple>
 
         <TouchableRipple onPress={() => navigation.navigate('SecurityScreen')}>
           <View style={styles.menuItem}>
             <Icon name="shield-lock-outline" color={Color.icon} size={25} />
-            <Text style={styles.menuItemText}>אבטחה</Text>
+            <Text style={styles.menuItemText}>Security</Text>
           </View>
         </TouchableRipple>
 
         <TouchableRipple onPress={() => logoutHandler(auth, navigation)}>
           <View style={styles.menuItem}>
             <Icon name="logout-variant" color={Color.icon} size={25} />
-            <Text style={styles.menuItemText}>התנתק</Text>
+            <Text style={styles.menuItemText}>LogOut</Text>
           </View>
         </TouchableRipple>
       </View>
@@ -156,8 +156,8 @@ const styles = StyleSheet.create({
   },
   text: {
     color: Color.icon,
-    marginLeft: 20,
-    // fontFamily: 'varelaRound',
+    marginLeft: 10,
+    fontFamily: 'varelaRound',
   },
 
   row: {
@@ -178,6 +178,6 @@ const styles = StyleSheet.create({
     color: Color.icon,
     marginLeft: 10,
     fontSize: 16,
-    // fontFamily: 'varelaRound',
+    fontFamily: 'varelaRound',
   },
 });
