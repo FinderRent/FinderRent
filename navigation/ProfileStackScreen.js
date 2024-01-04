@@ -18,7 +18,9 @@ function ProfileStackScreen({ navigation }) {
       initialRouteName="StudentProfileScreen"
       screenOptions={{
         headerStyle: {
-          backgroundColor: isDarkMode ? Color.Brown700 : Color.Brown100,
+          backgroundColor: isDarkMode
+            ? Color.buttomSheetDarkTheme
+            : Color.defaultTheme,
         },
         drawerContentStyle: {
           backgroundColor: isDarkMode ? Color.darkTheme : Color.defaultTheme,
@@ -47,8 +49,10 @@ function ProfileStackScreen({ navigation }) {
               <Ionicons.Button
                 name="ios-menu"
                 size={25}
-                color={Color.darkTheme}
-                backgroundColor={isDarkMode ? Color.Brown700 : Color.Brown100}
+                color={isDarkMode ? Color.white : Color.darkTheme}
+                backgroundColor={
+                  isDarkMode ? Color.buttomSheetDarkTheme : Color.defaultTheme
+                }
                 onPress={() => navigation.openDrawer()}
                 // underlayColor="transparent"
               />
@@ -59,8 +63,10 @@ function ProfileStackScreen({ navigation }) {
               <MaterialCommunityIcons.Button
                 name="account-edit"
                 size={25}
-                color={Color.darkTheme}
-                backgroundColor={isDarkMode ? Color.Brown700 : Color.Brown100}
+                color={isDarkMode ? Color.white : Color.darkTheme}
+                backgroundColor={
+                  isDarkMode ? Color.buttomSheetDarkTheme : Color.defaultTheme
+                }
                 underlayColor="transparent"
                 onPress={() => navigation.navigate('EditProfileScreen')}
               />

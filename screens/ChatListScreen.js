@@ -32,27 +32,27 @@ function ChatListScreen({ navigation }) {
     }, [])
   );
 
-  if (isLoading) {
-    return <Loader color={Color.Blue400} size={50} />;
-  }
+  // if (isLoading) {
+  //   return <Loader color={Color.Brown400} size={30} />;
+  // }
 
   if (error) {
     return <ErrorMessage errorMessage={error.message} />;
   }
 
-  if (data.results == 0) {
-    return (
-      <View style={styles.container}>
-        <FontAwesome5
-          name="users"
-          size={60}
-          color={Color.Brown400}
-          style={styles.noResultsIcon}
-        />
-        <Text style={styles.noResultsText}>עדיין אין צאטי'ם</Text>
-      </View>
-    );
-  }
+  // if (data?.results == 0) {
+  return (
+    <View style={styles.container}>
+      <FontAwesome5
+        name="users"
+        size={60}
+        color={Color.Brown400}
+        style={styles.noResultsIcon}
+      />
+      <Text style={styles.noResultsText}>עדיין אין צאטי'ם</Text>
+    </View>
+  );
+  // }
 
   const sortedChats = data.chat.sort((a, b) => {
     const dateA = new Date(a.updatedAt);

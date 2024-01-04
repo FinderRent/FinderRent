@@ -1,16 +1,11 @@
-import {
-  ImageBackground,
-  StyleSheet,
-  View,
-  SafeAreaView,
-  Text,
-  ScrollView,
-  Image,
-  Platform,
-} from 'react-native';
+import { StyleSheet, SafeAreaView, ScrollView, Platform } from 'react-native';
+import Map from '../components/Map';
+
+import { Color } from '../constants/colors';
 import HouseCard from '../components/HouseCard';
 import ProfileLocation from '../components/ProfileLocation';
-import Map from '../components/Map';
+import { useDarkMode } from '../context/DarkModeContext';
+import { StatusBar } from 'expo-status-bar';
 
 /**
  * TODO:
@@ -20,8 +15,18 @@ import Map from '../components/Map';
  */
 
 function HomeScreen() {
+  const { isDarkMode } = useDarkMode();
+
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        paddingTop: Platform.OS === 'ios' ? 0 : 35,
+        backgroundColor: isDarkMode ? Color.darkTheme : Color.white,
+      }}
+    >
+      <StatusBar style={isDarkMode ? 'light' : 'dark'} />
+
       <ProfileLocation />
       <ScrollView>
         <HouseCard />

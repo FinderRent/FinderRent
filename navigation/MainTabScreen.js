@@ -41,13 +41,13 @@ function MainTabScreen() {
   const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const theme = isDarkMode ? CustomDarkTheme : CustomDefaultTheme;
 
-  if (userData.token !== null) {
-    setIsLoggedIn(true);
-  }
+  // if (userData.token !== null) {
+  //   setIsLoggedIn(true);
+  // }
 
   return (
     <BottomSheetModalProvider>
@@ -60,10 +60,9 @@ function MainTabScreen() {
             backgroundColor: isDarkMode ? Color.darkTheme : Color.white,
             borderTopColor: Color.Brown100,
             borderTopWidth: 1,
-            marginTop: 20,
-            height: Platform.OS === 'ios' ? 70 : 55,
+            height: Platform.OS === 'ios' ? 70 : 60,
             position: 'absolute',
-            padding: 5,
+            padding: Platform.OS === 'ios' ? 5 : 0,
           }}
         >
           <Tab.Screen
@@ -91,7 +90,6 @@ function MainTabScreen() {
               ),
             }}
           />
-
           <Tab.Screen
             name="ProfileScreen"
             component={ProfileStackScreen}
@@ -111,7 +109,33 @@ function MainTabScreen() {
                       color: isDarkMode ? Color.white : Color.black,
                     }}
                   >
-                    {isLoggedIn ? 'Profile' : 'Login'}
+                    Profile
+                  </Text>
+                </View>
+              ),
+            }}
+          />
+
+          <Tab.Screen
+            name="ChatStackScreen"
+            component={ChatStackScreen}
+            options={{
+              tabBarLabel: '',
+              tabBarIcon: ({ focused, color }) => (
+                <View style={{ alignItems: 'center' }}>
+                  <MaterialCommunityIcons
+                    name={focused ? 'chat' : 'chat-outline'}
+                    style={{ marginTop: -10 }}
+                    color={color}
+                    size={26}
+                  />
+                  <Text
+                    style={{
+                      fontSize: 10,
+                      color: isDarkMode ? Color.white : Color.black,
+                    }}
+                  >
+                    Chat
                   </Text>
                 </View>
               ),

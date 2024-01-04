@@ -10,6 +10,7 @@ import Toast from 'react-native-toast-message';
 import { UserContext, useUsers } from './context/UserContext';
 import { DarkModeProvider } from './context/DarkModeContext';
 import AuthStackScreens from './navigation/AuthStackScreens';
+import { Color } from './constants/colors';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -55,14 +56,11 @@ export default function App() {
   }
 
   return (
-    <SafeAreaProvider
-      onLayout={onLayout}
-      style={{ flex: 1, paddingTop: Platform.OS === 'ios' ? 0 : 35 }}
-    >
+    <SafeAreaProvider onLayout={onLayout}>
       <DarkModeProvider>
         <QueryClientProvider client={queryClient}>
           <UserContext.Provider value={{ login, logout, userData }}>
-            <StatusBar style="dark" />
+            {/* <StatusBar style="dark" /> */}
             <AuthStackScreens />
             {/* <DrawerScreens /> */}
             <Toast />

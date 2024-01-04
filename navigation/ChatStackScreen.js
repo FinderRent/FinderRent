@@ -16,7 +16,9 @@ function ChatStackScreen({ navigation }) {
       initialRouteName="ChatListScreen"
       screenOptions={{
         headerStyle: {
-          backgroundColor: isDarkMode ? Color.Brown700 : Color.Brown100,
+          backgroundColor: isDarkMode
+            ? Color.buttomSheetDarkTheme
+            : Color.defaultTheme,
         },
         drawerContentStyle: {
           backgroundColor: isDarkMode ? Color.darkTheme : Color.defaultTheme,
@@ -41,15 +43,17 @@ function ChatStackScreen({ navigation }) {
         options={{
           headerTitle: "צ'אטים",
           headerTitleAlign: 'center',
-          headerTintColor: Color.darkTheme,
+          headerTintColor: isDarkMode ? Color.white : Color.darkTheme,
           // headerTitleStyle: { fontFamily: 'varelaRound' },
           headerRight: () => (
             <View style={{ marginLeft: -10 }}>
               <Ionicons.Button
                 name="ios-menu"
                 size={25}
-                color={Color.darkTheme}
-                backgroundColor={isDarkMode ? Color.Brown700 : Color.Brown100}
+                color={isDarkMode ? Color.white : Color.darkTheme}
+                backgroundColor={
+                  isDarkMode ? Color.buttomSheetDarkTheme : Color.defaultTheme
+                }
                 underlayColor="transparent"
                 onPress={() => navigation.openDrawer()}
               />
