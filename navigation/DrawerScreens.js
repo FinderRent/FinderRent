@@ -1,14 +1,14 @@
-import * as NavigationBar from 'expo-navigation-bar';
-import { useCallback } from 'react';
-import { DrawerActions, useFocusEffect } from '@react-navigation/native';
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+// import * as NavigationBar from "expo-navigation-bar";
+import { useCallback } from "react";
+import { DrawerActions, useFocusEffect } from "@react-navigation/native";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
-import { Color } from '../constants/colors';
-import { useDarkMode } from '../context/DarkModeContext';
-import CustomDrawer from '../components/CustomDrawer';
-import MainTabScreen from './MainTabScreen';
-import ChatStackScreen from './ChatStackScreen';
+import { Color } from "../constants/colors";
+import { useDarkMode } from "../context/DarkModeContext";
+import CustomDrawer from "../components/CustomDrawer";
+import MainTabScreen from "./MainTabScreen";
+import ChatStackScreen from "./ChatStackScreen";
 
 const Drawer = createDrawerNavigator();
 
@@ -26,9 +26,9 @@ function DrawerScreens({ navigation }) {
     }, [navigation])
   );
 
-  NavigationBar.setBackgroundColorAsync(
-    isDarkMode ? Color.darkTheme : Color.white
-  );
+  // NavigationBar.setBackgroundColorAsync(
+  //   isDarkMode ? Color.darkTheme : Color.white
+  // );
 
   return (
     <Drawer.Navigator

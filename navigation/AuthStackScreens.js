@@ -1,25 +1,25 @@
-import { View } from 'react-native';
+import { View } from "react-native";
 import {
   NavigationContainer,
   DarkTheme,
   DefaultTheme,
-} from '@react-navigation/native';
+} from "@react-navigation/native";
 
 import {
   MD3LightTheme,
   MD3DarkTheme,
   Provider as PaperProvider,
-} from 'react-native-paper';
+} from "react-native-paper";
 
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import { Color } from '../constants/colors';
-import { useDarkMode } from '../context/DarkModeContext';
-import SignInScreen from '../screens/SignInScreen';
-import SignUpScreen from '../screens/SignUpScreen';
-import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
-import ResetPasswordScreen from '../screens/ResetPasswordScreen';
-import DrawerScreens from './DrawerScreens';
+import { Color } from "../constants/colors";
+import { useDarkMode } from "../context/DarkModeContext";
+import SignInScreen from "../screens/SignInScreen";
+import SignUpScreen from "../screens/SignUpScreen";
+import ForgotPasswordScreen from "../screens/ForgotPasswordScreen";
+import ResetPasswordScreen from "../screens/ResetPasswordScreen";
+import DrawerScreens from "./DrawerScreens";
 
 const AuthStack = createNativeStackNavigator();
 
@@ -68,7 +68,7 @@ function AuthStackScreens() {
   return (
     <NavigationContainer theme={theme}>
       <PaperProvider theme={paperTheme}>
-        <AuthStack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
+        <AuthStack.Navigator screenOptions={{ headerTitleAlign: "center" }}>
           {/* -----removing the welcom screen for temporary time-------- */}
           {/* <AuthStack.Screen
           name="WelcomeScreen"
@@ -81,12 +81,21 @@ function AuthStackScreens() {
         /> */}
           {/* ------------------------------------------------------------------- */}
           <AuthStack.Screen
+            name={"DrawerScreens"}
+            component={DrawerScreens}
+            options={{
+              headerShown: false,
+              title: "",
+              animation: "simple_push",
+            }}
+          />
+          <AuthStack.Screen
             name="SignInScreen"
             component={SignInScreen}
             options={{
               headerShown: false,
-              title: '',
-              animation: 'simple_push',
+              title: "",
+              animation: "simple_push",
               headerStyle: {
                 backgroundColor: Color.Blue600,
               },
@@ -96,8 +105,8 @@ function AuthStackScreens() {
             name="SignUpScreen"
             component={SignUpScreen}
             options={{
-              title: '',
-              animation: 'simple_push',
+              title: "",
+              animation: "simple_push",
               header: () => (
                 <View
                   style={{ height: 50, backgroundColor: Color.Blue600 }}
@@ -109,8 +118,8 @@ function AuthStackScreens() {
             name="ForgotPasswordScreen"
             component={ForgotPasswordScreen}
             options={{
-              title: '',
-              animation: 'slide_from_right',
+              title: "",
+              animation: "slide_from_right",
               headerStyle: {
                 backgroundColor: Color.Blue600,
               },
@@ -120,22 +129,13 @@ function AuthStackScreens() {
             name="ResetPasswordScreen"
             component={ResetPasswordScreen}
             options={{
-              title: '',
-              animation: 'slide_from_right',
+              title: "",
+              animation: "slide_from_right",
               header: () => (
                 <View
                   style={{ height: 50, backgroundColor: Color.Blue600 }}
                 ></View>
               ),
-            }}
-          />
-          <AuthStack.Screen
-            name={'DrawerScreens'}
-            component={DrawerScreens}
-            options={{
-              headerShown: false,
-              title: '',
-              animation: 'simple_push',
             }}
           />
         </AuthStack.Navigator>
