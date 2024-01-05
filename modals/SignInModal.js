@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import {
   View,
-  Text,
   Image,
   Alert,
   Modal,
@@ -10,37 +10,35 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
 } from 'react-native';
+import { Button, Text } from 'react-native-paper';
+
+import { Color } from '../constants/colors';
+import { useDarkMode } from '../context/DarkModeContext';
 import Input from '../components/Input';
 import PasswordInput from '../components/PasswordInput';
-import { Button } from 'react-native-paper';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
-function SignInModal() {
+function SignInModal({ showVisible }) {
+  const { isDarkMode } = useDarkMode();
   const navigation = useNavigation();
 
   const [signInModalVisible, setSignInModalVisible] = useState(true);
-  const [signUpModalVisible, setSignUpModalVisible] = useState(false);
-
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
-  useFocusEffect(
-    useCallback(() => {
-      setSignInModalVisible(true);
-      // navigation.navigate('HomeScreen');
-    }, [])
-  );
-
   const handleForgotPassword = () => {
     setSignInModalVisible(!signInModalVisible);
+    showVisible(!signInModalVisible);
   };
 
   const handleCancel = () => {
     setSignInModalVisible(!signInModalVisible);
+    showVisible(!signInModalVisible);
   };
 
   const handleRegister = () => {
     setSignInModalVisible(!signInModalVisible);
+    showVisible(!signInModalVisible);
+    navigation.navigate('SignUpScreen');
   };
 
   return (
@@ -59,7 +57,16 @@ function SignInModal() {
           style={{ flex: 1 }}
         >
           <View style={styles.centeredView}>
-            <View style={styles.modalView}>
+            <View
+              style={
+                isDarkMode
+                  ? {
+                      ...styles.modalView,
+                      backgroundColor: Color.buttomSheetDarkTheme,
+                    }
+                  : styles.modalView
+              }
+            >
               <Text style={styles.modalText}>Login</Text>
 
               {/* <Image
@@ -95,7 +102,7 @@ function SignInModal() {
 
               <TouchableOpacity onPress={handleRegister}>
                 <Text style={styles.textInput}>
-                  doesn't have an account? Register
+                  Doesn't have an account? Register
                 </Text>
               </TouchableOpacity>
 
@@ -152,7 +159,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#2196F3',
   },
   textStyle: {
-    color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
   },
@@ -168,7 +174,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     margin: 10,
     justifyContent: 'center',
-    color: 'blue',
+    color: '#2196F3',
   },
   textRow: {
     flex: 1,

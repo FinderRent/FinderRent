@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
-import { View, SafeAreaView, StyleSheet } from 'react-native';
-import { Avatar, Title, Text, TouchableRipple } from 'react-native-paper';
+import { View, SafeAreaView, StyleSheet, ImageBackground } from 'react-native';
+import { Title, Text, TouchableRipple } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -32,14 +32,16 @@ const ProfileScreen = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.userInfoSection}>
         <View style={styles.avatar}>
-          <Avatar.Image
-            style={{
-              backgroundColor: Color.defaultTheme,
+          <ImageBackground
+            style={{ height: 90, width: 90 }}
+            imageStyle={{
+              borderRadius: 50,
+              borderWidth: 0.5,
+              borderColor: Color.gray,
             }}
             source={{
               uri: userData.avatar?.url,
             }}
-            size={80}
           />
           <View>
             <Title style={styles.title}>

@@ -103,7 +103,7 @@ function SignUpScreen({ navigation }) {
   const getBackgroundImage = (isDarkMode) => {
     return isDarkMode
       ? require('../assets/images/MidnightCity.jpg')
-      : require('../assets/images/Zinc.jpg');
+      : require('../assets/images/Clouds.jpg');
   };
 
   // Rendering the UI components
@@ -118,7 +118,7 @@ function SignUpScreen({ navigation }) {
           {/* Header text */}
           <View style={{ ...styles.container, ...styles.text }}>
             <Text variant="displaySmall" style={{ color: Color.Blue800 }}>
-              ─── הירשם ───
+              ─── SignUp ───
             </Text>
           </View>
 
@@ -126,7 +126,7 @@ function SignUpScreen({ navigation }) {
           <View style={styles.inputsRow}>
             <Input
               style={styles.textInput}
-              label="שם פרטי"
+              label="First Name"
               mode="outlined"
               onValueChange={(selectedFirstName) =>
                 setFirstName(selectedFirstName)
@@ -135,7 +135,7 @@ function SignUpScreen({ navigation }) {
 
             <Input
               style={styles.textInput}
-              label="שם משפחה"
+              label="Last Name"
               mode="outlined"
               onValueChange={(selectedLastName) =>
                 setLastName(selectedLastName)
@@ -151,7 +151,7 @@ function SignUpScreen({ navigation }) {
           >
             <Input
               style={styles.textInput}
-              label="גיל"
+              label="Age"
               mode="outlined"
               keyboardType="decimal-pad"
               maxLength={2}
@@ -170,45 +170,41 @@ function SignUpScreen({ navigation }) {
                 style={{ ...styles.title, marginTop: 5 }}
                 variant="titleMedium"
               >
-                מגדר:
+                Gender:
               </Text>
               <RadioButton
-                value="זכר"
                 color={Color.Blue500}
-                status={gender === 'זכר' ? 'checked' : 'unchecked'}
-                onPress={() => setGender('זכר')}
+                status={gender === 'Male' ? 'checked' : 'unchecked'}
+                onPress={() => setGender('Male')}
               />
-              <Text style={styles.textRadio}>זכר</Text>
+              <Text style={styles.textRadio}>Male</Text>
               <RadioButton
-                value="נקבה"
                 color={Color.Blue500}
-                status={gender === 'נקבה' ? 'checked' : 'unchecked'}
-                onPress={() => setGender('נקבה')}
+                status={gender === 'Female' ? 'checked' : 'unchecked'}
+                onPress={() => setGender('Female')}
               />
-              <Text style={styles.textRadio}>נקבה</Text>
+              <Text style={styles.textRadio}>Female</Text>
             </View>
           </View>
 
           <Text style={styles.title} variant="titleMedium">
-            תפקיד:
+            Role:
           </Text>
           <View style={styles.radioButtom}>
             <RadioButton
-              value="משכיר"
               color={Color.Blue500}
               status={userType === 'landlord' ? 'checked' : 'unchecked'}
               onPress={() => setUserType('landlord')}
             />
-            <Text style={styles.textRadio}>משכיר</Text>
+            <Text style={styles.textRadio}>LandLord</Text>
           </View>
           <View style={styles.radioButtom}>
             <RadioButton
-              value="שוכר"
               color={Color.Blue500}
               status={userType === 'student' ? 'checked' : 'unchecked'}
               onPress={() => setUserType('student')}
             />
-            <Text style={styles.textRadio}>שוכר</Text>
+            <Text style={styles.textRadio}>Student</Text>
           </View>
 
           {/* DropDown component for selecting academic institution */}
@@ -217,14 +213,14 @@ function SignUpScreen({ navigation }) {
               <View>
                 <DropDown
                   list={listAcademic}
-                  label="מוסד אקדמאי"
+                  label="Academic Institution"
                   placeholder={academic}
                   listMode="MODAL"
                   searchable={true}
                   onValueChange={(selectedAcademic) =>
                     setAcademic(selectedAcademic)
                   }
-                  searchPlaceholder="חפש מוסד אקדמאי"
+                  searchPlaceholder="Search For Academic Institution"
                 />
               </View>
 
@@ -233,7 +229,7 @@ function SignUpScreen({ navigation }) {
                 <View style={styles.inputsRow}>
                   <Input
                     style={styles.textInput}
-                    label="מחלקה"
+                    label="Department"
                     value={department}
                     mode="outlined"
                     onValueChange={(selectedDepartment) =>
@@ -242,7 +238,7 @@ function SignUpScreen({ navigation }) {
                   />
                   <DropDown
                     list={listYear}
-                    label="שנתון"
+                    label="Yearbook"
                     placeholder={yearbook}
                     searchable={false}
                     listMode="SCROLLVIEW"
@@ -258,7 +254,7 @@ function SignUpScreen({ navigation }) {
           {/* Input fields for email and passwords */}
           <View style={styles.textInput}>
             <Input
-              label="אימייל"
+              label="Email"
               mode="outlined"
               keyboardType="email-address"
               onValueChange={(selectedEmail) => setEmail(selectedEmail)}
@@ -266,24 +262,24 @@ function SignUpScreen({ navigation }) {
 
             <PasswordInput
               mode="outlined"
-              label="סיסמה"
+              label="Password"
               onValueChange={(password) => setPassword(password)}
             />
             {password.length > 0 && password.length < 6 && (
               <Text
                 style={
                   isDarkMode
-                    ? { color: Color.error100, paddingRight: 10 }
-                    : { color: Color.errorText, paddingRight: 10 }
+                    ? { color: Color.error100, paddingLeft: 5 }
+                    : { color: Color.errorText, paddingLeft: 5 }
                 }
               >
-                סיסמה צריכה להכיל 6 תווים לפחות
+                Password must contain at least 6 characters
               </Text>
             )}
 
             <PasswordInput
               mode="outlined"
-              label="אשר סיסמה"
+              label="Password Confirm"
               onValueChange={(passwordConfirm) =>
                 setPasswordConfirm(passwordConfirm)
               }
@@ -291,24 +287,20 @@ function SignUpScreen({ navigation }) {
 
             {isError && <ErrorMessage errorMessage={error.message} />}
 
-            {/* Link to sign in page */}
-            <Spacer>
-              <NavLink
-                text="כבר יש לך חשבון? היכנס במקום זאת"
-                routeName="SignInScreen"
-              />
-            </Spacer>
-
             {/* Sign-up button */}
             <Button
+              style={{ marginTop: 10 }}
               buttonColor={Color.Blue800}
               textColor={Color.defaultTheme}
               mode="contained"
               onPress={handleSignUp}
               loading={isPending}
             >
-              {!isPending && 'הרשם'}
+              {!isPending && 'SignUp'}
             </Button>
+            <Spacer>
+              <NavLink text="Back" style={{ marginTop: -5, fontSize: 14 }} />
+            </Spacer>
           </View>
         </ScrollView>
       </ImageBackground>
@@ -337,6 +329,7 @@ const styles = StyleSheet.create({
   title: {
     paddingHorizontal: 20,
     fontWeight: 'bold',
+    paddingRight: 5,
   },
   genderView: {
     flexDirection: 'row',
