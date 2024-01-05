@@ -24,7 +24,7 @@ function ChatStackScreen({ navigation, route }) {
           backgroundColor: isDarkMode ? Color.darkTheme : Color.white,
           borderTopColor: Color.Brown100,
           borderTopWidth: 1,
-          height: Platform.OS === 'ios' ? 70 : 60,
+          height: Platform.OS === 'ios' ? 70 : 50,
           position: 'absolute',
           padding: Platform.OS === 'ios' ? 5 : 20,
         },

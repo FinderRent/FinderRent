@@ -56,7 +56,7 @@ function MainTabScreen() {
               backgroundColor: isDarkMode ? Color.darkTheme : Color.white,
               borderTopColor: Color.Brown100,
               borderTopWidth: 1,
-              height: Platform.OS === 'ios' ? 70 : 60,
+              height: Platform.OS === 'ios' ? 70 : 50,
               position: 'absolute',
               padding: Platform.OS === 'ios' ? 5 : 20,
             },
@@ -67,12 +67,12 @@ function MainTabScreen() {
             component={HomeStackScreen}
             options={{
               tabBarLabel: '',
-              tabBarIcon: ({ focused, color }) => (
+              tabBarIcon: ({ focused }) => (
                 <View style={{ alignItems: 'center' }}>
                   <MaterialCommunityIcons
                     name={focused ? 'home' : 'home-outline'}
                     style={{ marginTop: -10 }}
-                    color={Color.white}
+                    color={isDarkMode ? Color.white : Color.darkTheme}
                     size={26}
                   />
                   <Text
@@ -92,12 +92,12 @@ function MainTabScreen() {
             component={ProfileStackScreen}
             options={{
               tabBarLabel: '',
-              tabBarIcon: ({ focused, color }) => (
+              tabBarIcon: ({ focused }) => (
                 <View style={{ alignItems: 'center' }}>
                   <MaterialCommunityIcons
                     name={focused ? 'account' : 'account-outline'}
                     style={{ marginTop: -10 }}
-                    color={Color.white}
+                    color={isDarkMode ? Color.white : Color.darkTheme}
                     size={26}
                   />
                   <Text
@@ -118,12 +118,12 @@ function MainTabScreen() {
             component={ChatStackScreen}
             options={{
               tabBarLabel: '',
-              tabBarIcon: ({ focused, color }) => (
+              tabBarIcon: ({ focused }) => (
                 <View style={{ alignItems: 'center' }}>
                   <MaterialCommunityIcons
                     name={focused ? 'chat' : 'chat-outline'}
                     style={{ marginTop: -10 }}
-                    color={Color.white}
+                    color={isDarkMode ? Color.white : Color.darkTheme}
                     size={26}
                   />
                   <Text
@@ -132,7 +132,7 @@ function MainTabScreen() {
                       color: isDarkMode ? Color.white : Color.black,
                     }}
                   >
-                    Chat
+                    Chats
                   </Text>
                 </View>
               ),

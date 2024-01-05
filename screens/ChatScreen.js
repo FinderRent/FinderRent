@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import moment from 'moment';
@@ -16,7 +17,6 @@ import moment from 'moment';
 import { Color } from '../constants/colors';
 import { useDarkMode } from '../context/DarkModeContext';
 import { useUsers } from '../context/UserContext';
-import { Text } from 'react-native-paper';
 
 function ChatScreen({ navigation, route }) {
   const { userData } = useUsers();
@@ -110,7 +110,7 @@ function ChatScreen({ navigation, route }) {
                 : { ...styles.textbox }
             }
             selectionColor={Color.Brown500}
-            placeholder="הודעה"
+            placeholder="message"
             placeholderTextColor={
               isDarkMode ? Color.defaultTheme : Color.darkTheme
             }
@@ -118,7 +118,6 @@ function ChatScreen({ navigation, route }) {
             onChangeText={(text) => setMessageText(text)}
             onSubmitEditing={sendMessage}
           />
-
           {messageText === '' && (
             <TouchableOpacity
               style={styles.mediaButton}
@@ -127,7 +126,6 @@ function ChatScreen({ navigation, route }) {
               <Ionicons name="camera" size={24} color={Color.Blue500} />
             </TouchableOpacity>
           )}
-
           {messageText !== '' && (
             <TouchableOpacity style={styles.mediaButton} onPress={sendMessage}>
               <Ionicons name="send" size={24} color={Color.Blue500} />
@@ -154,7 +152,7 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   inputContainer: {
-    flexDirection: 'row-reverse',
+    flexDirection: 'row',
     paddingVertical: 7,
     paddingHorizontal: 10,
     height: 55,
@@ -162,8 +160,8 @@ const styles = StyleSheet.create({
   textbox: {
     flex: 1,
     fontSize: 16,
-    // fontFamily: "varelaRound",
-    textAlign: 'right',
+    fontFamily: 'varelaRound',
+    // textAlign: 'right',
     borderWidth: 1,
     borderRadius: 50,
     borderColor: Color.Blue500,
