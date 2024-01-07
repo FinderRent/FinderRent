@@ -12,7 +12,7 @@ function LoginScreen({ navigation, route }) {
 
   const [showModal, setShowModal] = useState(false);
   const headerTitle = route.name;
-  let screenName = 'null';
+  let screenName = null;
 
   if (headerTitle === 'Profile') {
     screenName = 'profile';
@@ -35,11 +35,11 @@ function LoginScreen({ navigation, route }) {
         name="user-lock"
         size={100}
         color={Color.Blue200}
-        style={styles.noResultsIcon}
+        style={styles.icon}
       />
       <Text style={styles.text}>Sign in to see the {screenName} screen.</Text>
       <Button
-        style={{ margin: 20, paddingHorizontal: 60 }}
+        style={{ margin: 20 }}
         buttonColor={Color.Blue700}
         textColor={Color.white}
         mode="elevated"
@@ -60,9 +60,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    // alignItems: 'center',
+  },
+  icon: {
+    textAlign: 'center',
   },
   text: {
+    textAlign: 'center',
     color: Color.gray,
     fontFamily: 'varelaRound',
     fontSize: 17,

@@ -22,7 +22,7 @@ const ProfileScreen = ({ navigation }) => {
     try {
       await AsyncStorage.removeItem('token');
       auth.logout();
-      navigation.navigate('SignInScreen');
+      navigation.navigate('HomeScreen');
     } catch (err) {
       console.log(err);
     }
