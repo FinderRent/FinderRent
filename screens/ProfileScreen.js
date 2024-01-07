@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { View, SafeAreaView, StyleSheet, ImageBackground } from 'react-native';
 import { Title, Text, TouchableRipple } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -19,6 +19,12 @@ const ProfileScreen = ({ navigation }) => {
   const userType =
     userData?.userType?.charAt(0).toUpperCase() +
     userData?.userType?.slice(1).toLowerCase();
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerShown: true,
+    });
+  }, []);
 
   async function logoutHandler(auth, navigation) {
     try {

@@ -17,6 +17,7 @@ function Input({
   right,
   left,
   value,
+  color,
 }) {
   const { isDarkMode } = useDarkMode();
   const [changeValue, setChangeValue] = useState();
@@ -40,7 +41,7 @@ function Input({
         }
         selectionColor={Color.Blue700}
         outlineColor={Color.Blue200}
-        activeOutlineColor={Color.Blue800}
+        activeOutlineColor={color ? color : Color.Blue800}
         mode={mode}
         value={value}
         error={error}

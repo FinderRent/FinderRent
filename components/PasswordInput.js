@@ -4,7 +4,7 @@ import { TextInput } from 'react-native-paper';
 import { Color } from '../constants/colors';
 import { useDarkMode } from '../context/DarkModeContext';
 
-function PasswordInput({ mode, onValueChange, label }) {
+function PasswordInput({ mode, onValueChange, label, color }) {
   const { isDarkMode } = useDarkMode();
   const [isSecure, setIsSecure] = useState(true);
   const [changeValue, setChangeValue] = useState();
@@ -31,7 +31,7 @@ function PasswordInput({ mode, onValueChange, label }) {
       }
       selectionColor={Color.Blue700}
       outlineColor={Color.Blue200}
-      activeOutlineColor={Color.Blue800}
+      activeOutlineColor={color ? color : Color.Blue800}
       mode={mode}
       onChangeText={(value) => handleValueChange(value)}
       secureTextEntry={isSecure}

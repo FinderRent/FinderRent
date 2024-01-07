@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Platform, Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'; // Updated import
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -16,6 +16,7 @@ import HomeStackScreen from './HomeStackScreen ';
 import ProfileStackScreen from './ProfileStackScreen';
 import ChatStackScreen from './ChatStackScreen';
 import SignInModal from '../modals/SignInModal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Tab = createBottomTabNavigator();
 
@@ -41,7 +42,23 @@ function MainTabScreen() {
   const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
 
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   const theme = isDarkMode ? CustomDarkTheme : CustomDefaultTheme;
+
+  useEffect(() => {
+    async function fetchToken() {
+      const storedToken = await AsyncStorage.getItem('token');
+
+      if (storedToken) {
+        setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
+      }
+    }
+
+    fetchToken();
+  }, [userData]);
 
   return (
     <BottomSheetModalProvider>
@@ -90,8 +107,17 @@ function MainTabScreen() {
             }}
           />
           <Tab.Screen
-            name="ProfileScreen"
+            name="ProfileStackScreen"
             component={ProfileStackScreen}
+            initialParams={{ isAuthenticated }}
+            listeners={({ navigation }) => ({
+              tabPress: (e) => {
+                e.preventDefault();
+                navigation.navigate('ProfileStackScreen', {
+                  isAuthenticated,
+                });
+              },
+            })}
             options={{
               tabBarLabel: '',
               tabBarIcon: ({ focused }) => (
@@ -117,6 +143,15 @@ function MainTabScreen() {
           <Tab.Screen
             name="ChatStackScreen"
             component={ChatStackScreen}
+            initialParams={{ isAuthenticated }}
+            listeners={({ navigation }) => ({
+              tabPress: (e) => {
+                e.preventDefault();
+                navigation.navigate('ChatStackScreen', {
+                  isAuthenticated,
+                });
+              },
+            })}
             options={{
               tabBarLabel: '',
               tabBarIcon: ({ focused }) => (

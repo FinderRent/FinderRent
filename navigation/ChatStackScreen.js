@@ -4,24 +4,22 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 import { Color } from '../constants/colors';
 import { useDarkMode } from '../context/DarkModeContext';
-import { useUsers } from '../context/UserContext';
 import ChatListScreen from '../screens/ChatListScreen';
 import ChatScreen from '../screens/ChatScreen';
 import LoginScreen from '../screens/LoginScreen';
-import Loader from '../components/ui/Loader';
 
 const ChatStack = createNativeStackNavigator();
 
 function ChatStackScreen({ navigation, route }) {
-  const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
 
-  let Screen = Loader;
+  const { isAuthenticated } = route.params;
+  let Screen = null;
 
-  if (userData.token === null) {
-    Screen = LoginScreen;
-  } else {
+  if (isAuthenticated) {
     Screen = ChatListScreen;
+  } else {
+    Screen = LoginScreen;
   }
 
   useLayoutEffect(() => {

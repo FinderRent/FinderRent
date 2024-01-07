@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
@@ -21,6 +21,12 @@ function ChatListScreen({ navigation }) {
     queryKey: ['chatList', userData.id],
     queryFn: () => fetchChatsList(userData.id),
   });
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerShown: true,
+    });
+  }, []);
 
   useFocusEffect(
     useCallback(() => {

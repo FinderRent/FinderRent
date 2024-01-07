@@ -5,7 +5,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import { Color } from '../constants/colors';
 import { useDarkMode } from '../context/DarkModeContext';
-import { useUsers } from '../context/UserContext';
 import ProfileScreen from '../screens/ProfileScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
 import LoginScreen from '../screens/LoginScreen';
@@ -13,21 +12,21 @@ import SecurityScreen from '../screens/SecurityScreen';
 
 const ProfileStack = createNativeStackNavigator();
 
-function ProfileStackScreen({ navigation }) {
-  const { userData } = useUsers();
+function ProfileStackScreen({ navigation, route }) {
   const { isDarkMode } = useDarkMode();
 
+  const { isAuthenticated } = route.params;
   let Screen = null;
 
-  if (userData.token === null) {
-    Screen = LoginScreen;
-  } else {
+  if (isAuthenticated) {
     Screen = ProfileScreen;
+  } else {
+    Screen = LoginScreen;
   }
 
   return (
     <ProfileStack.Navigator
-      initialRouteName="StudentProfileScreen"
+      initialRouteName="ProfileScreen"
       screenOptions={{
         headerStyle: {
           backgroundColor: isDarkMode
@@ -52,7 +51,7 @@ function ProfileStackScreen({ navigation }) {
       }}
     >
       <ProfileStack.Screen
-        name="Profile"
+        name="ProfileScreen"
         component={Screen}
         options={{
           title: '',

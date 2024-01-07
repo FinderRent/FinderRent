@@ -14,7 +14,7 @@ function LoginScreen({ navigation, route }) {
   const headerTitle = route.name;
   let screenName = null;
 
-  if (headerTitle === 'Profile') {
+  if (headerTitle === 'ProfileScreen') {
     screenName = 'profile';
   }
   if (headerTitle === 'ChatListScreen') {

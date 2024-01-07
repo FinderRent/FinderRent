@@ -121,11 +121,13 @@ function SignInModal({ showVisible }) {
                   label="Email"
                   keyboardType="email-address"
                   mode="outlined"
+                  color="#2196F3"
                   onValueChange={(selectedMail) => setEmail(selectedMail)}
                 />
                 <PasswordInput
                   mode="outlined"
                   label="Password"
+                  color="#2196F3"
                   onValueChange={(password) => setPassword(password)}
                 />
               </View>
@@ -209,7 +211,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     fontSize: 15,
-    margin: 10,
+    margin: 5,
     justifyContent: 'center',
     color: '#2196F3',
   },
