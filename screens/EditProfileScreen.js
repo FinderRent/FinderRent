@@ -167,7 +167,7 @@ function EditProfileScreen({ navigation }) {
                   />
                 </View>
               </ImageBackground>
-              <Text style={{ marginBottom: 30 }}>עדכן תמונה</Text>
+              <Text style={{ marginBottom: 30 }}>Update Picture</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -175,7 +175,7 @@ function EditProfileScreen({ navigation }) {
         <View style={styles.inputsRow}>
           <Input
             style={styles.textInput}
-            label={firstName ? '' : 'שם פרטי'}
+            label={firstName ? '' : 'First Name'}
             value={firstName}
             left={<TextInput.Icon icon={'account-outline'} />}
             mode="outlined"
@@ -183,7 +183,7 @@ function EditProfileScreen({ navigation }) {
           />
           <Input
             style={styles.textInput}
-            label={lastName ? '' : 'שם משפחה'}
+            label={lastName ? '' : 'Last Name'}
             value={lastName}
             left={<TextInput.Icon icon={'account-outline'} />}
             mode="outlined"
@@ -192,7 +192,7 @@ function EditProfileScreen({ navigation }) {
         </View>
         <Input
           style={styles.textInput}
-          label={age ? '' : 'גיל'}
+          label={age ? '' : 'Age'}
           value={age}
           left={<TextInput.Icon icon={'calendar-account-outline'} />}
           mode="outlined"
@@ -208,7 +208,7 @@ function EditProfileScreen({ navigation }) {
                 label={academic}
                 listMode="MODAL"
                 searchable={true}
-                searchPlaceholder="חפש מוסד אקדמאי"
+                searchPlaceholder="Search For Academic Institution"
                 onValueChange={(selectedAcademic) =>
                   setAcademic(selectedAcademic)
                 }
@@ -219,7 +219,7 @@ function EditProfileScreen({ navigation }) {
               <View style={styles.inputsRow}>
                 <Input
                   style={styles.textInput}
-                  label={department ? '' : 'מחלקה'}
+                  label={department ? '' : 'Department'}
                   value={department}
                   left={<TextInput.Icon icon={'school-outline'} />}
                   mode="outlined"
@@ -242,7 +242,7 @@ function EditProfileScreen({ navigation }) {
         )}
         <View style={styles.textInput}>
           <Input
-            label={email ? '' : 'אימייל'}
+            label={email ? '' : 'Email'}
             value={email}
             left={<TextInput.Icon icon={'email-outline'} />}
             mode="outlined"
@@ -257,10 +257,10 @@ function EditProfileScreen({ navigation }) {
               buttonColor={Color.Blue800}
               mode="contained"
             >
-              עדכן
+              Update
             </Button>
           </Spacer>
-          <NavLink text="חזור" style={{ marginTop: -5, fontSize: 14 }} />
+          <NavLink text="Back" style={{ marginTop: -5, fontSize: 14 }} />
         </View>
         <View style={{ marginTop: 45 }}></View>
 
@@ -280,8 +280,10 @@ function EditProfileScreen({ navigation }) {
           onDismiss={() => setIsBottomSheetOpen(false)}
         >
           <View style={styles.sheetContainer}>
-            <Text style={styles.panelTitle}>עדכן תמונה</Text>
-            <Text style={styles.panelSubtitle}>בחר את תמונת הפרופיל שלך</Text>
+            <Text style={styles.panelTitle}>Update Picture</Text>
+            <Text style={styles.panelSubtitle}>
+              Choose Your Profile Picture
+            </Text>
 
             <ImagePicker onPickImage={(image) => setAvatar(image)} />
             <TakePhoto onTakeImage={(image) => setAvatar(image)} />
@@ -297,7 +299,7 @@ function EditProfileScreen({ navigation }) {
               mode="contained"
               onPress={() => setAvatar(url)}
             >
-              מחק תמונה
+              Delete Picture
             </Button>
 
             <Button
@@ -308,7 +310,7 @@ function EditProfileScreen({ navigation }) {
                 isDarkMode ? Color.defaultTheme : Color.buttomSheetDarkTheme
               }
             >
-              בטל
+              Cancel
             </Button>
           </View>
         </BottomSheetModal>

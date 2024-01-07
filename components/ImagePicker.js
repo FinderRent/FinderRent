@@ -1,5 +1,5 @@
-import { StyleSheet, View } from 'react-native';
 import * as ImagePickerFromGallery from 'expo-image-picker';
+import { StyleSheet, View } from 'react-native';
 import { Button } from 'react-native-paper';
 
 import { useDarkMode } from '../context/DarkModeContext';
@@ -32,7 +32,7 @@ function ImagePicker({ onPickImage }) {
         mode="contained"
         onPress={pickedImageHandler}
       >
-        בחר מהגלרייה
+        Choose From Gallery
       </Button>
     </View>
   );

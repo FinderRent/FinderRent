@@ -50,15 +50,17 @@ function MainTabScreen() {
           initialRouteName="HomeStackScreen"
           screenOptions={{
             headerShown: false,
+            // keyboardHidesTabBar: true,
+            tabBarHideOnKeyboard: true,
             activeTintColor: isDarkMode ? Color.white : Color.black,
             inactiveTintColor: isDarkMode ? Color.white : Color.black,
             tabBarStyle: {
               backgroundColor: isDarkMode ? Color.darkTheme : Color.white,
               borderTopColor: Color.Brown100,
               borderTopWidth: 1,
-              height: Platform.OS === 'ios' ? 70 : 50,
+              height: Platform.OS === 'ios' ? 70 : 55,
               position: 'absolute',
-              padding: Platform.OS === 'ios' ? 5 : 20,
+              padding: Platform.OS === 'ios' ? 5 : 25,
             },
           }}
         >

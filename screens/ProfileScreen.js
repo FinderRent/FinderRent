@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { View, SafeAreaView, StyleSheet, ImageBackground } from 'react-native';
 import { Title, Text, TouchableRipple } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -6,13 +6,17 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { Color } from '../constants/colors';
 import { UserContext, useUsers } from '../context/UserContext';
-import SignInModal from '../modals/SignInModal';
+import { useDarkMode } from '../context/DarkModeContext';
+import DarkModeSwitch from '../components/ui/DarkModeSwitch';
 
 const ProfileScreen = ({ navigation }) => {
   const auth = useContext(UserContext);
   const { userData } = useUsers();
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
 
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const userType =
+    userData?.userType?.charAt(0).toUpperCase() +
+    userData?.userType?.slice(1).toLowerCase();
 
   async function logoutHandler(auth, navigation) {
     try {
@@ -23,10 +27,6 @@ const ProfileScreen = ({ navigation }) => {
       console.log(err);
     }
   }
-
-  // if (userData.token === null) {
-  //   return <SignInModal />;
-  // }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -52,7 +52,7 @@ const ProfileScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.info}>
-        <Text style={styles.infoTitle}>{userData.userType} Profile</Text>
+        <Text style={styles.infoTitle}>{userType} Profile</Text>
       </View>
 
       {userData.userType === 'student' ? (
@@ -95,7 +95,7 @@ const ProfileScreen = ({ navigation }) => {
         </View>
       )}
       <View style={styles.info}>
-        <Text style={styles.infoTitle}>other</Text>
+        <Text style={styles.infoTitle}>Other</Text>
       </View>
 
       <View style={styles.menuWrapper}>
@@ -105,20 +105,27 @@ const ProfileScreen = ({ navigation }) => {
             <Text style={styles.menuItemText}>Favorites</Text>
           </View>
         </TouchableRipple>
-
         <TouchableRipple onPress={() => navigation.navigate('SecurityScreen')}>
           <View style={styles.menuItem}>
             <Icon name="shield-lock-outline" color={Color.icon} size={25} />
             <Text style={styles.menuItemText}>Security</Text>
           </View>
         </TouchableRipple>
-
         <TouchableRipple onPress={() => logoutHandler(auth, navigation)}>
           <View style={styles.menuItem}>
             <Icon name="logout-variant" color={Color.icon} size={25} />
             <Text style={styles.menuItemText}>LogOut</Text>
           </View>
         </TouchableRipple>
+
+        {/* <View style={styles.menuItem}>
+          <Icon name="theme-light-dark" color={Color.icon} size={25} />
+          <DarkModeSwitch
+            value={true}
+            color={Color.Brown400}
+            onToggle={toggleDarkMode}
+          />
+        </View> */}
       </View>
     </SafeAreaView>
   );
@@ -139,7 +146,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   title: {
-    marginTop: 8,
+    marginTop: 5,
+    marginBottom: 25,
     fontSize: 24,
     fontWeight: 'bold',
   },

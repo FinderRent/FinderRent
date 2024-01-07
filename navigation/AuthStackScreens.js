@@ -10,11 +10,11 @@ import {
   MD3DarkTheme,
   Provider as PaperProvider,
 } from 'react-native-paper';
-
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { Color } from '../constants/colors';
 import { useDarkMode } from '../context/DarkModeContext';
+import MainTabScreen from './MainTabScreen';
 import SignInScreen from '../screens/SignInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
@@ -81,8 +81,8 @@ function AuthStackScreens() {
         /> */}
           {/* ------------------------------------------------------------------- */}
           <AuthStack.Screen
-            name="DrawerScreens"
-            component={DrawerScreens}
+            name="MainTabScreen"
+            component={MainTabScreen}
             options={{
               headerShown: false,
               title: '',

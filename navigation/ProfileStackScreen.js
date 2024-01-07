@@ -9,6 +9,7 @@ import { useUsers } from '../context/UserContext';
 import ProfileScreen from '../screens/ProfileScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
 import LoginScreen from '../screens/LoginScreen';
+import SecurityScreen from '../screens/SecurityScreen';
 
 const ProfileStack = createNativeStackNavigator();
 
@@ -16,7 +17,6 @@ function ProfileStackScreen({ navigation }) {
   const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
 
-  // const [isLoggedIn, setIsLoggedIn] = useState();
   let Screen = null;
 
   if (userData.token === null) {
@@ -52,24 +52,24 @@ function ProfileStackScreen({ navigation }) {
       }}
     >
       <ProfileStack.Screen
-        name="פרופיל"
+        name="Profile"
         component={Screen}
         options={{
           title: '',
-          headerLeft: () => (
-            <View style={{ marginLeft: -10 }}>
-              <Ionicons.Button
-                name="ios-menu"
-                size={25}
-                color={isDarkMode ? Color.white : Color.darkTheme}
-                backgroundColor={
-                  isDarkMode ? Color.buttomSheetDarkTheme : Color.defaultTheme
-                }
-                onPress={() => navigation.openDrawer()}
-                // underlayColor="transparent"
-              />
-            </View>
-          ),
+          // headerLeft: () => (
+          //   <View style={{ marginLeft: -10 }}>
+          //     <Ionicons.Button
+          //       name="ios-menu"
+          //       size={25}
+          //       color={isDarkMode ? Color.white : Color.darkTheme}
+          //       backgroundColor={
+          //         isDarkMode ? Color.buttomSheetDarkTheme : Color.defaultTheme
+          //       }
+          //       onPress={() => navigation.openDrawer()}
+          //       // underlayColor="transparent"
+          //     />
+          //   </View>
+          // ),
           headerRight: () => (
             <View style={{ marginRight: -10 }}>
               <MaterialCommunityIcons.Button
@@ -90,7 +90,16 @@ function ProfileStackScreen({ navigation }) {
         name="EditProfileScreen"
         component={EditProfileScreen}
         options={{
-          headerTintColor: Color.darkTheme,
+          headerTintColor: isDarkMode ? Color.white : Color.darkTheme,
+        }}
+      />
+      <ProfileStack.Screen
+        name="SecurityScreen"
+        component={SecurityScreen}
+        options={{
+          headerTintColor: isDarkMode ? Color.white : Color.darkTheme,
+          presentation: 'modal',
+          animation: 'fade_from_bottom',
         }}
       />
     </ProfileStack.Navigator>

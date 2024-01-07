@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 import { Switch } from 'react-native-paper';
 
-function Switchr({ color, onToggle }) {
+function DarkModeSwitch({ color, onToggle }) {
   const [isSwitchOn, setIsSwitchOn] = useState(false);
 
   useEffect(() => {
@@ -29,4 +29,4 @@ function Switchr({ color, onToggle }) {
   );
 }
 
-export default Switchr;
+export default DarkModeSwitch;

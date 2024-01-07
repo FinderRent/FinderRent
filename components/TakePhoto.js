@@ -31,7 +31,7 @@ function TakePhoto({ onTakeImage }) {
         mode="contained"
         onPress={takeImageHandler}
       >
-        צלם תמונה
+        Take Picture
       </Button>
     </View>
   );

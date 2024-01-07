@@ -76,7 +76,7 @@ function SignInScreen({ navigation }) {
             buttonColor={Color.Brown500}
             textColor={Color.white}
             mode="elevated"
-            onPress={() => navigation.navigate('DrawerScreens')}
+            onPress={() => navigation.navigate('MainTabScreen')}
           >
             עמוד הבית
           </Button>
