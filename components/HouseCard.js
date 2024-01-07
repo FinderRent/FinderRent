@@ -1,11 +1,11 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
+import React from "react";
+import { View, Text, StyleSheet, Image, Dimensions } from "react-native";
 
 const HouseCard = () => {
   return (
     <View style={styles.card}>
       <Image
-        source={require('../assets/images/house.jpg')}
+        source={require("../assets/images/house.jpg")}
         style={styles.image}
       />
       <View style={styles.detailsContainer}>
@@ -21,20 +21,24 @@ const HouseCard = () => {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 12,
-    overflow: 'hidden',
+    overflow: "hidden",
     elevation: 4,
     margin: 10,
+    borderColor: "#ccc",
+    borderWidth: 1, // You can adjust the width of the border as needed
+
+    elevation: 3,
   },
   image: {
-    width: '100%',
+    width: "100%",
     height: 200,
-    resizeMode: 'cover',
+    resizeMode: "cover",
   },
   detailsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     padding: 15,
   },
   addressContainer: {
@@ -42,7 +46,7 @@ const styles = StyleSheet.create({
   },
   city: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 5,
   },
   street: {
@@ -51,8 +55,8 @@ const styles = StyleSheet.create({
   },
   price: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#2ecc71',
+    fontWeight: "bold",
+    color: "#2ecc71",
   },
 });
 
