@@ -116,9 +116,9 @@ function SignUpScreen({ navigation }) {
       >
         <ScrollView>
           {/* Header text */}
-          <View style={{ ...styles.container, ...styles.text }}>
-            <Text variant="displaySmall" style={{ color: Color.Blue800 }}>
-              ─── SignUp ───
+          <View style={styles.container}>
+            <Text variant="displaySmall" style={styles.text}>
+              ── SignUp ──
             </Text>
           </View>
 
@@ -196,7 +196,7 @@ function SignUpScreen({ navigation }) {
               status={userType === 'landlord' ? 'checked' : 'unchecked'}
               onPress={() => setUserType('landlord')}
             />
-            <Text style={styles.textRadio}>LandLord</Text>
+            <Text style={styles.textRadio}>Landlord</Text>
           </View>
           <View style={styles.radioButtom}>
             <RadioButton
@@ -287,7 +287,6 @@ function SignUpScreen({ navigation }) {
 
             {isError && <ErrorMessage errorMessage={error.message} />}
 
-            {/* Sign-up button */}
             <Button
               style={{ marginTop: 10 }}
               buttonColor={Color.Blue800}
@@ -296,10 +295,10 @@ function SignUpScreen({ navigation }) {
               onPress={handleSignUp}
               loading={isPending}
             >
-              {!isPending && 'SignUp'}
+              {!isPending && 'SignUp   '}
             </Button>
             <Spacer>
-              <NavLink text="Back" style={{ marginTop: -5, fontSize: 14 }} />
+              <NavLink text="Back   " style={{ marginTop: -5, fontSize: 14 }} />
             </Spacer>
           </View>
         </ScrollView>
@@ -310,13 +309,16 @@ function SignUpScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 35,
+    paddingTop: 25,
+    paddingBottom: 10,
+    alignItems: 'center',
   },
   image: {
     flex: 1,
   },
   text: {
-    alignItems: 'center',
+    color: Color.Blue800,
+    fontFamily: 'OrbitronMedium',
   },
   inputsRow: {
     flexDirection: 'row',

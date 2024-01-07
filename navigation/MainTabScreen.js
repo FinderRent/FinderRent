@@ -8,6 +8,7 @@ import {
   Provider as PaperProvider,
 } from 'react-native-paper';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Color } from '../constants/colors';
 import { useDarkMode } from '../context/DarkModeContext';
@@ -15,8 +16,6 @@ import { useUsers } from '../context/UserContext';
 import HomeStackScreen from './HomeStackScreen ';
 import ProfileStackScreen from './ProfileStackScreen';
 import ChatStackScreen from './ChatStackScreen';
-import SignInModal from '../modals/SignInModal';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Tab = createBottomTabNavigator();
 
@@ -43,7 +42,6 @@ function MainTabScreen() {
   const { isDarkMode } = useDarkMode();
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
   const theme = isDarkMode ? CustomDarkTheme : CustomDefaultTheme;
 
   useEffect(() => {
@@ -67,7 +65,6 @@ function MainTabScreen() {
           initialRouteName="HomeStackScreen"
           screenOptions={{
             headerShown: false,
-            // keyboardHidesTabBar: true,
             tabBarHideOnKeyboard: true,
             activeTintColor: isDarkMode ? Color.white : Color.black,
             inactiveTintColor: isDarkMode ? Color.white : Color.black,

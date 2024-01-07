@@ -36,6 +36,9 @@ export default function App() {
       try {
         await Font.loadAsync({
           varelaRound: require('./assets/fonts/VarelaRound-Regular.ttf'),
+          DancingScript: require('./assets/fonts/DancingScript-Regular.ttf'),
+          OrbitronMedium: require('./assets/fonts/Orbitron-Medium.ttf'),
+          Merienda: require('./assets/fonts/Merienda-Regular.ttf'),
         });
       } catch (error) {
         console.log.error();

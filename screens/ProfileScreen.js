@@ -130,14 +130,14 @@ const ProfileScreen = ({ navigation }) => {
           </View>
         </TouchableRipple>
 
-        {/* <View style={styles.menuItem}>
+        <View style={styles.menuItem}>
           <Icon name="theme-light-dark" color={Color.icon} size={25} />
           <DarkModeSwitch
             value={true}
             color={Color.Brown400}
             onToggle={toggleDarkMode}
           />
-        </View> */}
+        </View>
       </View>
     </SafeAreaView>
   );

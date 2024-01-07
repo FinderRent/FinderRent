@@ -15,11 +15,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Color } from '../constants/colors';
 import { useDarkMode } from '../context/DarkModeContext';
 import MainTabScreen from './MainTabScreen';
-import SignInScreen from '../screens/SignInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 import ResetPasswordScreen from '../screens/ResetPasswordScreen';
-import DrawerScreens from './DrawerScreens';
 
 const AuthStack = createNativeStackNavigator();
 
@@ -89,7 +87,7 @@ function AuthStackScreens() {
               animation: 'simple_push',
             }}
           />
-          <AuthStack.Screen
+          {/* <AuthStack.Screen
             name="SignInScreen"
             component={SignInScreen}
             options={{
@@ -100,18 +98,29 @@ function AuthStackScreens() {
                 backgroundColor: Color.Blue600,
               },
             }}
-          />
+          /> */}
           <AuthStack.Screen
             name="SignUpScreen"
             component={SignUpScreen}
             options={{
-              title: '',
+              headerStyle: {
+                backgroundColor: isDarkMode
+                  ? Color.buttomSheetDarkTheme
+                  : Color.defaultTheme,
+              },
+              title: 'FinderRent',
+              headerTitleStyle: {
+                fontFamily: 'DancingScript',
+                fontSize: 32,
+                color: Color.Blue900,
+              },
+              headerTintColor: Color.Blue900,
               animation: 'simple_push',
-              header: () => (
-                <View
-                  style={{ height: 50, backgroundColor: Color.Blue600 }}
-                ></View>
-              ),
+              // header: () => (
+              //   <View
+              //     style={{ height: 50, backgroundColor: Color.Blue600 }}
+              //   ></View>
+              // ),
             }}
           />
           <AuthStack.Screen
