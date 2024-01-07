@@ -3,6 +3,7 @@ import { View, SafeAreaView, StyleSheet, ImageBackground } from 'react-native';
 import { Title, Text, TouchableRipple } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Toast from 'react-native-toast-message';
 
 import { Color } from '../constants/colors';
 import { UserContext, useUsers } from '../context/UserContext';
@@ -11,6 +12,7 @@ import DarkModeSwitch from '../components/ui/DarkModeSwitch';
 
 const ProfileScreen = ({ navigation }) => {
   const auth = useContext(UserContext);
+
   const { userData } = useUsers();
   const { isDarkMode, toggleDarkMode } = useDarkMode();
 
@@ -22,6 +24,10 @@ const ProfileScreen = ({ navigation }) => {
     try {
       await AsyncStorage.removeItem('token');
       auth.logout();
+      Toast.show({
+        type: 'success',
+        text1: "You've Successfully Logged Out",
+      });
       navigation.navigate('HomeScreen');
     } catch (err) {
       console.log(err);
