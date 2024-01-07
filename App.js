@@ -62,7 +62,6 @@ export default function App() {
       <DarkModeProvider>
         <QueryClientProvider client={queryClient}>
           <UserContext.Provider value={{ login, logout, userData }}>
-            {/* <StatusBar style="dark" /> */}
             <AuthStackScreens />
             {/* <DrawerScreens /> */}
             <Toast />

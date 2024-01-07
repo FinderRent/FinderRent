@@ -7,15 +7,15 @@ import {
   MD3DarkTheme as DarkTheme,
   Provider as PaperProvider,
 } from 'react-native-paper';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 import { Color } from '../constants/colors';
+import { useDarkMode } from '../context/DarkModeContext';
+import { useUsers } from '../context/UserContext';
 import HomeStackScreen from './HomeStackScreen ';
 import ProfileStackScreen from './ProfileStackScreen';
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { useDarkMode } from '../context/DarkModeContext';
 import ChatStackScreen from './ChatStackScreen';
 import SignInModal from '../modals/SignInModal';
-import { useUsers } from '../context/UserContext';
 
 const Tab = createBottomTabNavigator();
 
@@ -114,7 +114,6 @@ function MainTabScreen() {
               ),
             }}
           />
-
           <Tab.Screen
             name="ChatStackScreen"
             component={ChatStackScreen}

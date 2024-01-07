@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useContext, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import {
   View,
   Image,
@@ -11,19 +11,52 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { Button, Text } from 'react-native-paper';
+import { useMutation } from '@tanstack/react-query';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
 
 import { Color } from '../constants/colors';
 import { useDarkMode } from '../context/DarkModeContext';
+import { UserContext } from '../context/UserContext';
 import Input from '../components/Input';
 import PasswordInput from '../components/PasswordInput';
+import login from '../api/authentication/login';
+import ErrorMessage from '../components/ui/ErrorMessage';
 
 function SignInModal({ showVisible }) {
+  const auth = useContext(UserContext);
+
   const { isDarkMode } = useDarkMode();
   const navigation = useNavigation();
 
   const [signInModalVisible, setSignInModalVisible] = useState(true);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+
+  const storeData = async (key, value) => {
+    try {
+      await AsyncStorage.setItem(key, value);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const { mutate, isPending, error, isError } = useMutation({
+    mutationFn: ({ email, password }) => login({ email, password }),
+    onSuccess: (user) => {
+      storeData('token', user.token);
+      auth.login(user.data.user, user.token);
+      Toast.show({
+        type: 'success',
+        text1: "You've Logged In Successfully",
+      });
+      navigation.navigate('HomeScreen');
+    },
+  });
+
+  const handleLogin = () => {
+    mutate({ email, password });
+  };
 
   const handleForgotPassword = () => {
     setSignInModalVisible(!signInModalVisible);
@@ -76,6 +109,7 @@ function SignInModal({ showVisible }) {
                   width: 280,
                 }}
               /> */}
+
               <Pressable
                 onPress={() => handleCancel()}
                 style={{ position: 'absolute', margin: 10 }}
@@ -96,6 +130,8 @@ function SignInModal({ showVisible }) {
                 />
               </View>
 
+              {isError && <ErrorMessage errorMessage={error.message} />}
+
               <TouchableOpacity onPress={handleForgotPassword}>
                 <Text style={styles.textInput}>Forgot Password?</Text>
               </TouchableOpacity>
@@ -109,9 +145,10 @@ function SignInModal({ showVisible }) {
               <Button
                 style={styles.button}
                 mode="contained"
-                onPress={() => console.log('preesed')}
+                onPress={handleLogin}
+                loading={isPending}
               >
-                Login
+                {!isPending && 'Login'}
               </Button>
             </View>
           </View>

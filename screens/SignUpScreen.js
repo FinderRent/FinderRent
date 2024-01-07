@@ -86,7 +86,7 @@ function SignUpScreen({ navigation }) {
       Toast.show(
         {
           type: 'success',
-          text1: 'חשבון נוצר בהצלחה',
+          text1: 'Account Successfully Created',
         },
         navigation.navigate('HomeStackScreen')
       );

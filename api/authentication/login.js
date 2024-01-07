@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { ADDRESS } from '@env';
 
-async function signUp(userData) {
+async function login({ email, password }) {
   try {
     const response = await axios.post(
-      `http://${ADDRESS}:3000/api/v1/users/signup`,
-      userData,
+      `http://${ADDRESS}:3000/api/v1/users/login`,
+      { email, password },
       {
         headers: {
           'Content-Type': 'application/json',
@@ -25,4 +25,4 @@ async function signUp(userData) {
   }
 }
 
-export default signUp;
+export default login;
