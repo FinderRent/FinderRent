@@ -21,6 +21,7 @@ function useUsers() {
   const [firstName, setFirstName] = useState(null);
   const [lastName, setLastName] = useState(null);
   const [age, setAge] = useState(null);
+  const [phone, setPhone] = useState(null);
   const [academic, setAcademic] = useState(null);
   const [department, setDepartment] = useState(null);
   const [yearbook, setYearbook] = useState(null);
@@ -41,6 +42,7 @@ function useUsers() {
         academic,
         department,
         yearbook,
+        phone,
         gender,
         email,
         avatar,
@@ -52,6 +54,7 @@ function useUsers() {
       setFirstName(firstName);
       setLastName(lastName);
       setAge(age);
+      setPhone(phone);
       setAcademic(academic);
       setDepartment(department);
       setYearbook(yearbook);
@@ -87,6 +90,7 @@ function useUsers() {
       setFirstName(null);
       setLastName(null);
       setAge(null);
+      setPhone(null);
       setAcademic(null);
       setDepartment(null);
       setYearbook(null);
@@ -135,6 +139,7 @@ function useUsers() {
     firstName,
     lastName,
     age,
+    phone,
     gender,
     academic,
     department,
@@ -142,8 +147,6 @@ function useUsers() {
     email,
     avatar,
   };
-
-  // return { login, logout, userData };
 }
 
 export { UserContext, useUsers };

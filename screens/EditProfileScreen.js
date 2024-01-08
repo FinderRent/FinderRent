@@ -46,6 +46,7 @@ function EditProfileScreen({ navigation }) {
   const [firstName, setFirstName] = useState(userData.firstName);
   const [lastName, setLastName] = useState(userData.lastName);
   const [age, setAge] = useState(userData.age);
+  const [phone, setPhone] = useState(userData.phone);
   const [academic, setAcademic] = useState(userData.academic);
   const [department, setDepartment] = useState(userData.department);
   const [yearbook, setYearbook] = useState(userData.yearbook);
@@ -109,6 +110,7 @@ function EditProfileScreen({ navigation }) {
       firstName,
       lastName,
       age,
+      phone,
       academic,
       department,
       yearbook,
@@ -121,6 +123,7 @@ function EditProfileScreen({ navigation }) {
         firstName,
         lastName,
         age,
+        phone,
         academic,
         department,
         yearbook,
@@ -144,6 +147,7 @@ function EditProfileScreen({ navigation }) {
       firstName,
       lastName,
       age,
+      phone,
       academic,
       department,
       yearbook,
@@ -252,7 +256,18 @@ function EditProfileScreen({ navigation }) {
           maxLength={2}
           onValueChange={(selectedAge) => setAge(selectedAge)}
         />
-        {userType === 'stuednt' && (
+        {userType === 'landlord' && (
+          <Input
+            style={styles.textInput}
+            label={phone ? '' : 'phone'}
+            value={phone}
+            left={<TextInput.Icon icon={'phone-outline'} />}
+            mode="outlined"
+            keyboardType="decimal-pad"
+            onValueChange={(selectedPhone) => setPhone(selectedPhone)}
+          />
+        )}
+        {userType === 'student' && (
           <View>
             <View>
               <DropDown

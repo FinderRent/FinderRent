@@ -7,6 +7,8 @@ async function updateUser({
   firstName,
   lastName,
   age,
+  phone,
+
   academic,
   department,
   yearbook,
@@ -20,6 +22,7 @@ async function updateUser({
     formData.append('firstName', firstName);
     formData.append('lastName', lastName);
     formData.append('age', age);
+    formData.append('phone', phone);
     formData.append('academic', academic);
     formData.append('department', department);
     formData.append('yearbook', yearbook);

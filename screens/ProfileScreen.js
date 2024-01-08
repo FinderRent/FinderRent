@@ -97,10 +97,12 @@ const ProfileScreen = ({ navigation }) => {
         </View>
       ) : (
         <View style={styles.userInfoSection}>
-          {/* <View style={styles.row}>
+          <View style={styles.row}>
             <Icon name="phone-outline" color={Color.icon} size={20} />
-            <Text style={styles.text}>אין</Text>
-          </View> */}
+            <Text style={styles.text}>
+              {userData.phone ? userData.phone : 'Not available'}
+            </Text>
+          </View>
 
           <View style={styles.row}>
             <Icon name="email-outline" color={Color.icon} size={20} />
