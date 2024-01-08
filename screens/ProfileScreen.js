@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import { View, SafeAreaView, StyleSheet, ImageBackground } from 'react-native';
 import { Title, Text, TouchableRipple } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -9,12 +9,14 @@ import { Color } from '../constants/colors';
 import { UserContext, useUsers } from '../context/UserContext';
 import { useDarkMode } from '../context/DarkModeContext';
 import DarkModeSwitch from '../components/ui/DarkModeSwitch';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 
 const ProfileScreen = ({ navigation }) => {
   const auth = useContext(UserContext);
 
   const { userData } = useUsers();
-  const { isDarkMode, toggleDarkMode } = useDarkMode();
+  const { toggleDarkMode } = useDarkMode();
+  const isFocused = useIsFocused();
 
   const userType =
     userData?.userType?.charAt(0).toUpperCase() +
@@ -24,7 +26,7 @@ const ProfileScreen = ({ navigation }) => {
     navigation.setOptions({
       headerShown: true,
     });
-  }, []);
+  }, [isFocused]);
 
   async function logoutHandler(auth, navigation) {
     try {
@@ -45,7 +47,7 @@ const ProfileScreen = ({ navigation }) => {
       <View style={styles.userInfoSection}>
         <View style={styles.avatar}>
           <ImageBackground
-            style={{ height: 90, width: 90 }}
+            style={{ height: 100, width: 100 }}
             imageStyle={{
               borderRadius: 50,
               borderWidth: 0.5,

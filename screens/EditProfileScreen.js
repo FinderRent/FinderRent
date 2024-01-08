@@ -15,7 +15,9 @@ import {
 } from 'react-native';
 import { Button, Text, TextInput } from 'react-native-paper';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { useMutation } from '@tanstack/react-query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { UserContext, useUsers } from '../context/UserContext';
@@ -29,14 +31,16 @@ import NavLink from '../components/NavLink';
 import Loader from '../components/ui/Loader';
 import ImagePicker from '../components/ImagePicker';
 import TakePhoto from '../components/TakePhoto';
+import ErrorMessage from '../components/ui/ErrorMessage';
+import updateUser from '../api/updateUser';
 
 function EditProfileScreen({ navigation }) {
   const { isDarkMode } = useDarkMode();
   const { userData } = useUsers();
   const auth = useContext(UserContext);
 
-  // const { token } = userData;
-  const [isLoading, setIsLoading] = useState(true);
+  const { token } = userData;
+  // const [isLoading, setIsLoading] = useState(true);
   const [userType, setUserType] = useState(userData.userType);
   const [avatar, setAvatar] = useState(userData.avatar?.url);
   const [firstName, setFirstName] = useState(userData.firstName);
@@ -65,32 +69,32 @@ function EditProfileScreen({ navigation }) {
     { label: 'תואר שני', value: 'תואר שני' },
   ];
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     setIsLoading(true);
 
-      try {
-        // Retrieve stored user data and token from AsyncStorage
-        const storedData = await AsyncStorage.getItem('userData');
-        const userData = JSON.parse(storedData);
-        setUserType(userData.userType);
-        setAvatar(userData.avatar.url);
-        setFirstName(userData.firstName);
-        setLastName(userData.lastName);
-        setAge(userData.age);
-        setAcademic(userData.academic);
-        setDepartment(userData.department);
-        setYearbook(userData.yearbook);
-        setEmail(userData.email);
-      } catch (err) {
-        console.log(err);
-      }
+  //     try {
+  //       // Retrieve stored user data and token from AsyncStorage
+  //       const storedData = await AsyncStorage.getItem('userData');
+  //       const userData = JSON.parse(storedData);
+  //       setUserType(userData.userType);
+  //       setAvatar(userData.avatar.url);
+  //       setFirstName(userData.firstName);
+  //       setLastName(userData.lastName);
+  //       setAge(userData.age);
+  //       setAcademic(userData.academic);
+  //       setDepartment(userData.department);
+  //       setYearbook(userData.yearbook);
+  //       setEmail(userData.email);
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
 
-      setIsLoading(false);
-    };
+  //     setIsLoading(false);
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
   useEffect(() => {
     if (avatar !== userData.avatar?.url) {
@@ -98,9 +102,57 @@ function EditProfileScreen({ navigation }) {
     }
   }, [avatar]);
 
-  const bottomSheetModalRef = useRef(null);
+  const { mutate, isPending, isError, error } = useMutation({
+    mutationFn: ({
+      userType,
+      avatar,
+      firstName,
+      lastName,
+      age,
+      academic,
+      department,
+      yearbook,
+      email,
+      token,
+    }) =>
+      updateUser({
+        userType,
+        avatar,
+        firstName,
+        lastName,
+        age,
+        academic,
+        department,
+        yearbook,
+        email,
+        token,
+      }),
+    onSuccess: (user) => {
+      auth.login(user.data.updatedUser, token);
+      Toast.show({
+        type: 'success',
+        text1: 'Profile successfully updated',
+      });
+      navigation.goBack();
+    },
+  });
 
-  // const snapPoints = useMemo(() => ["20%", "40%", "60%", "80%"], []);
+  const handleUpdateUser = () => {
+    mutate({
+      userType,
+      avatar,
+      firstName,
+      lastName,
+      age,
+      academic,
+      department,
+      yearbook,
+      email,
+      token,
+    });
+  };
+
+  const bottomSheetModalRef = useRef(null);
   const snapPoints = useMemo(() => ['40%'], []);
 
   const handlePresentModalOpen = useCallback(() => {
@@ -113,9 +165,9 @@ function EditProfileScreen({ navigation }) {
     setIsBottomSheetOpen(false);
   }, []);
 
-  if (isLoading) {
-    return <Loader color={Color.Brown400} />;
-  }
+  // if (isLoading) {
+  //   return <Loader color={Color.Brown400} />;
+  // }
 
   return (
     <ScrollView>
@@ -250,17 +302,21 @@ function EditProfileScreen({ navigation }) {
             onValueChange={(selectedemail) => setEmail(selectedemail)}
           />
 
+          {isError && <ErrorMessage errorMessage={error.message} />}
+
           <Spacer>
             <Button
               style={{ marginTop: 10 }}
               textColor={Color.defaultTheme}
               buttonColor={Color.Blue800}
               mode="contained"
+              onPress={handleUpdateUser}
+              loading={isPending}
             >
-              Update
+              {!isPending && 'Update    '}
             </Button>
           </Spacer>
-          <NavLink text="Back" style={{ marginTop: -5, fontSize: 14 }} />
+          <NavLink text="Back    " style={{ marginTop: -5, fontSize: 14 }} />
         </View>
         <View style={{ marginTop: 45 }}></View>
 

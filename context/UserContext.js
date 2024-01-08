@@ -30,6 +30,7 @@ function useUsers() {
 
   // Function to login the user and save data to AsyncStorage
   const login = useCallback((data, token) => {
+    // console.log('data:', data);
     const saveData = async () => {
       const {
         _id,
@@ -118,14 +119,16 @@ function useUsers() {
   }, [login]);
 
   // Check if the hook is used outside of the UserProvider
-  const context = useContext(UserContext);
-  if (context === undefined) {
+  const userData = useContext(UserContext);
+  if (userData === undefined) {
     throw new Error('UserContext was used outside of the UserProvider');
   }
 
   // Object containing login, logout functions, and user data
-  const userData = {
-    context,
+  return {
+    userData,
+    login,
+    logout,
     token,
     userType,
     id,
@@ -140,7 +143,7 @@ function useUsers() {
     avatar,
   };
 
-  return { login, logout, userData };
+  // return { login, logout, userData };
 }
 
 export { UserContext, useUsers };

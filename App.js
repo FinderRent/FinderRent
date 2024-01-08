@@ -2,15 +2,13 @@ import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
 import { useCallback, useEffect, useState } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { StatusBar } from 'expo-status-bar';
-import { I18nManager, Platform } from 'react-native';
+import { I18nManager } from 'react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Toast from 'react-native-toast-message';
 
 import { UserContext, useUsers } from './context/UserContext';
 import { DarkModeProvider } from './context/DarkModeContext';
 import AuthStackScreens from './navigation/AuthStackScreens';
-import { Color } from './constants/colors';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -29,7 +27,22 @@ export default function App() {
 
   const [appIsLoaded, setAppIsLoaded] = useState(false);
 
-  const { login, logout, userData } = useUsers();
+  const {
+    login,
+    logout,
+    token,
+    userType,
+    id,
+    firstName,
+    lastName,
+    avatar,
+    age,
+    gender,
+    academic,
+    department,
+    yearbook,
+    email,
+  } = useUsers();
 
   useEffect(() => {
     const prepare = async () => {
@@ -64,9 +77,25 @@ export default function App() {
     <SafeAreaProvider onLayout={onLayout}>
       <DarkModeProvider>
         <QueryClientProvider client={queryClient}>
-          <UserContext.Provider value={{ login, logout, userData }}>
+          <UserContext.Provider
+            value={{
+              login,
+              logout,
+              token,
+              userType,
+              id,
+              firstName,
+              lastName,
+              avatar,
+              age,
+              gender,
+              academic,
+              department,
+              yearbook,
+              email,
+            }}
+          >
             <AuthStackScreens />
-            {/* <DrawerScreens /> */}
             <Toast />
           </UserContext.Provider>
         </QueryClientProvider>
