@@ -32,9 +32,9 @@ function ChatStackScreen({ navigation, route }) {
           backgroundColor: isDarkMode ? Color.darkTheme : Color.white,
           borderTopColor: Color.Brown100,
           borderTopWidth: 1,
-          height: Platform.OS === 'ios' ? 70 : 55,
+          height: Platform.OS === 'ios' ? '9.5%' : '7%',
           position: 'absolute',
-          padding: Platform.OS === 'ios' ? 5 : 25,
+          padding: Platform.OS === 'ios' ? '6%' : '6%',
         },
       });
     }

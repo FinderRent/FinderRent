@@ -32,7 +32,7 @@ const ProfileScreen = ({ navigation }) => {
       auth.logout();
       Toast.show({
         type: 'success',
-        text1: "You've Successfully Logged Out",
+        text1: 'Logged Out Successfully',
       });
       navigation.navigate('HomeScreen');
     } catch (err) {

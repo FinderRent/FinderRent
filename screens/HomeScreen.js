@@ -1,11 +1,13 @@
-import { StyleSheet, SafeAreaView, ScrollView, Platform } from 'react-native';
-import Map from '../components/Map';
+import { StyleSheet, SafeAreaView, ScrollView, Platform } from "react-native";
+import Map from "../components/Map";
+import { useState } from "react";
 
-import { Color } from '../constants/colors';
-import HouseCard from '../components/HouseCard';
-import ProfileLocation from '../components/ProfileLocation';
-import { useDarkMode } from '../context/DarkModeContext';
-import { StatusBar } from 'expo-status-bar';
+import { Color } from "../constants/colors";
+import HouseCard from "../components/HouseCard";
+import ProfileLocation from "../components/ProfileLocation";
+import { useDarkMode } from "../context/DarkModeContext";
+import { StatusBar } from "expo-status-bar";
+import MapModal from "../modals/MapModal";
 
 /**
  * TODO:
@@ -16,24 +18,30 @@ import { StatusBar } from 'expo-status-bar';
 
 function HomeScreen() {
   const { isDarkMode } = useDarkMode();
+  const [mapPress, setMapPress] = useState(false);
+
+  const handleMapPress = () => {
+    setMapPress(!mapPress);
+  };
 
   return (
     <SafeAreaView
       style={{
         flex: 1,
-        paddingTop: Platform.OS === 'ios' ? 0 : 35,
+        paddingTop: Platform.OS === "ios" ? 0 : 35,
         backgroundColor: isDarkMode ? Color.darkTheme : Color.white,
       }}
     >
-      <StatusBar style={isDarkMode ? 'light' : 'dark'} />
+      <StatusBar style={isDarkMode ? "light" : "dark"} />
 
       <ProfileLocation />
       <ScrollView>
         <HouseCard />
-        <Map />
+        <Map handleMapPress={handleMapPress} />
         {/* <HouseCard />
         <HouseCard />
         <HouseCard /> */}
+        {mapPress && <MapModal handleMapPress={handleMapPress} />}
       </ScrollView>
     </SafeAreaView>
   );

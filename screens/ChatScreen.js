@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from "react";
 import {
   ImageBackground,
   KeyboardAvoidingView,
@@ -7,30 +7,30 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-} from 'react-native';
-import { Text } from 'react-native-paper';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Ionicons } from '@expo/vector-icons';
-import moment from 'moment';
+} from "react-native";
+import { Text } from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Ionicons } from "@expo/vector-icons";
+import moment from "moment";
 // import 'moment/locale/he';
 
-import { Color } from '../constants/colors';
-import { useDarkMode } from '../context/DarkModeContext';
-import { useUsers } from '../context/UserContext';
+import { Color } from "../constants/colors";
+import { useDarkMode } from "../context/DarkModeContext";
+import { useUsers } from "../context/UserContext";
 
 function ChatScreen({ navigation, route }) {
   const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
   const { image, title, ouid } = route.params;
 
-  const [messageText, setMessageText] = useState('');
+  const [messageText, setMessageText] = useState("");
 
   useEffect(() => {
     const CustomHeader = () => (
       <View
         style={{
-          flexDirection: 'row',
-          alignItems: 'center',
+          flexDirection: "row",
+          alignItems: "center",
         }}
       >
         <View>
@@ -38,7 +38,7 @@ function ChatScreen({ navigation, route }) {
             style={{
               paddingRight: 5,
             }}
-            onPress={() => navigation.navigate('ChatListScreen')}
+            onPress={() => navigation.navigate("ChatListScreen")}
           >
             <Ionicons
               name="arrow-back"
@@ -71,24 +71,24 @@ function ChatScreen({ navigation, route }) {
     navigation.setOptions({
       headerLeft: () => <CustomHeader />,
     });
-    moment.locale('en');
+    moment.locale("en");
   }, [isDarkMode]);
 
   const sendMessage = useCallback(() => {
-    setMessageText('');
+    setMessageText("");
   }, [messageText]);
 
   const getBackgroundImage = (isDarkMode) => {
     return isDarkMode
-      ? require('../assets/images/ChatDarkBackground.jpg')
-      : require('../assets/images/ChatWhiteBackground.jpg');
+      ? require("../assets/images/ChatDarkBackground.jpg")
+      : require("../assets/images/ChatWhiteBackground.jpg");
   };
 
   return (
-    <SafeAreaView edges={['right', 'left', 'bottom']} style={styles.container}>
+    <SafeAreaView edges={["right", "left", "bottom"]} style={styles.container}>
       <KeyboardAvoidingView
         style={styles.screen}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
         keyboardVerticalOffset={100}
       >
         <ImageBackground
@@ -98,7 +98,7 @@ function ChatScreen({ navigation, route }) {
         <View style={styles.inputContainer}>
           <TouchableOpacity
             style={styles.mediaButton}
-            onPress={() => console.log('Pressed!')}
+            onPress={() => console.log("Pressed!")}
           >
             <Ionicons name="add" size={24} color={Color.Blue500} />
           </TouchableOpacity>
@@ -118,15 +118,15 @@ function ChatScreen({ navigation, route }) {
             onChangeText={(text) => setMessageText(text)}
             onSubmitEditing={sendMessage}
           />
-          {messageText === '' && (
+          {messageText === "" && (
             <TouchableOpacity
               style={styles.mediaButton}
-              onPress={() => console.log('Pressed!')}
+              onPress={() => console.log("Pressed!")}
             >
               <Ionicons name="camera" size={24} color={Color.Blue500} />
             </TouchableOpacity>
           )}
-          {messageText !== '' && (
+          {messageText !== "" && (
             <TouchableOpacity style={styles.mediaButton} onPress={sendMessage}>
               <Ionicons name="send" size={24} color={Color.Blue500} />
             </TouchableOpacity>
@@ -142,7 +142,7 @@ export default ChatScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column-reverse',
+    flexDirection: "column-reverse",
   },
   screen: {
     flex: 1,
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   inputContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     paddingVertical: 7,
     paddingHorizontal: 10,
     height: 55,
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
   textbox: {
     flex: 1,
     fontSize: 16,
-    fontFamily: 'varelaRound',
+    fontFamily: "varelaRound",
     // textAlign: 'right',
     borderWidth: 1,
     borderRadius: 50,
@@ -169,8 +169,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   mediaButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     width: 35,
   },
 });

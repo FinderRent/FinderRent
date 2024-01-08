@@ -48,7 +48,7 @@ function SignInModal({ showVisible }) {
       auth.login(user.data.user, user.token);
       Toast.show({
         type: 'success',
-        text1: "You've Logged In Successfully",
+        text1: 'Logged In Successfully',
       });
       navigation.navigate('HomeScreen');
     },
