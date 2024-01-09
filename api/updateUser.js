@@ -8,7 +8,6 @@ async function updateUser({
   lastName,
   age,
   phone,
-
   academic,
   department,
   yearbook,
