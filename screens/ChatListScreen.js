@@ -52,29 +52,24 @@ function ChatListScreen({ navigation }) {
     return dateB - dateA;
   });
 
-  // if (data.results === 0) {
-  //   return (
-  //     <View style={styles.container}>
-  //       <FontAwesome5
-  //         name="users"
-  //         size={60}
-  //         color={Color.Brown400}
-  //         style={styles.noResultsIcon}
-  //       />
-  //       <Text style={styles.noResultsText}>There's No Chats Yet</Text>
+  if (data.results === 0) {
+    return (
+      <View style={styles.container}>
+        <FontAwesome5 name="users" size={100} color={Color.Brown400} />
+        <Text style={styles.noResultsText}>There's No Chats Yet.</Text>
 
-  //       <Button
-  //         style={{ margin: 20 }}
-  //         buttonColor={Color.Brown500}
-  //         textColor={Color.white}
-  //         mode="elevated"
-  //         onPress={() => navigation.navigate('ChatScreen')}
-  //       >
-  //         מסך צאט
-  //       </Button>
-  //     </View>
-  //   );
-  // }
+        {/* <Button
+          style={{ margin: 20 }}
+          buttonColor={Color.Brown500}
+          textColor={Color.white}
+          mode="elevated"
+          onPress={() => navigation.navigate('ChatScreen')}
+        >
+          מסך צאט
+        </Button> */}
+      </View>
+    );
+  }
 
   return (
     <View>
