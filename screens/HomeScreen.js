@@ -36,11 +36,8 @@ function HomeScreen() {
 
       <ProfileLocation />
       <ScrollView>
-        <HouseCard />
         <Map handleMapPress={handleMapPress} />
-        {/* <HouseCard />
         <HouseCard />
-        <HouseCard /> */}
         {mapPress && <MapModal handleMapPress={handleMapPress} />}
       </ScrollView>
     </SafeAreaView>
