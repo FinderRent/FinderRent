@@ -55,7 +55,7 @@ function ChatListScreen({ navigation }) {
   if (data.results === 0) {
     return (
       <View style={styles.container}>
-        <FontAwesome5 name="users" size={100} color={Color.Brown400} />
+        <FontAwesome5 name="users" size={100} color={Color.Blue200} />
         <Text style={styles.noResultsText}>There's No Chats Yet.</Text>
 
         {/* <Button
@@ -82,10 +82,6 @@ function ChatListScreen({ navigation }) {
           const lastMessage = chatData?.lastMessage;
           const updatedAt = chatData.updatedAt;
           let time = moment(updatedAt).fromNow();
-
-          // if (time.includes('בעוד')) {
-          //   time = time.replace('בעוד', 'לפני');
-          // }
 
           const otherUserId = chatData.members.find(
             (uid) => uid !== userData.id
@@ -118,9 +114,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   noResultsText: {
-    color: Color.Brown500,
+    textAlign: 'center',
+    color: Color.gray,
     fontFamily: 'varelaRound',
-    fontSize: 15,
+    fontSize: 17,
     letterSpacing: 0.3,
   },
   line: {

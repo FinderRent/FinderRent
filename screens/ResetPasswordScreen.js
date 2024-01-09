@@ -81,11 +81,7 @@ function ResetPasswordScreen({ route }) {
           אפס סיסמה
         </Button>
       </Spacer>
-      <NavLink
-        text="התחבר"
-        routeName="SignInScreen"
-        style={{ marginTop: -5, fontSize: 14 }}
-      />
+      <NavLink text="Back" style={{ marginTop: -5, fontSize: 14 }} />
     </View>
   );
 }

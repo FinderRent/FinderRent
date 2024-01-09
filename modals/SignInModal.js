@@ -1,5 +1,5 @@
-import { useContext, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { useContext, useEffect, useState } from 'react';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import {
   View,
   Image,
@@ -22,16 +22,26 @@ import Input from '../components/Input';
 import PasswordInput from '../components/PasswordInput';
 import login from '../api/authentication/login';
 import ErrorMessage from '../components/ui/ErrorMessage';
+import ForgotPasswordModal from './ForgotPasswordModal';
 
 function SignInModal({ showVisible }) {
   const auth = useContext(UserContext);
 
   const { isDarkMode } = useDarkMode();
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
 
   const [signInModalVisible, setSignInModalVisible] = useState(true);
+  const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
+
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+
+  useEffect(() => {
+    if (!isFocused) {
+      showVisible(!signInModalVisible);
+    }
+  }, [isFocused]);
 
   const storeData = async (key, value) => {
     try {
@@ -59,8 +69,8 @@ function SignInModal({ showVisible }) {
   };
 
   const handleForgotPassword = () => {
-    setSignInModalVisible(!signInModalVisible);
-    showVisible(!signInModalVisible);
+    setShowForgotPasswordModal(true);
+    showVisible(true);
   };
 
   const handleCancel = () => {
@@ -137,6 +147,14 @@ function SignInModal({ showVisible }) {
               <TouchableOpacity onPress={handleForgotPassword}>
                 <Text style={styles.textInput}>Forgot Password?</Text>
               </TouchableOpacity>
+
+              {showForgotPasswordModal && (
+                <ForgotPasswordModal
+                  showVisible={(showVisible) =>
+                    setShowForgotPasswordModal(showVisible)
+                  }
+                />
+              )}
 
               <TouchableOpacity onPress={handleRegister}>
                 <Text style={styles.textInput}>

@@ -15,7 +15,7 @@ function ErrorMessage({ errorMessage }) {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 10,
+    marginTop: 5,
     marginHorizontal: 5,
     padding: 10,
     borderRadius: 5,
