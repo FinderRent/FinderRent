@@ -1,17 +1,18 @@
 import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 
 import { Color } from '../constants/colors';
 import { useDarkMode } from '../context/DarkModeContext';
 import Spacer from '../components/ui/Spacer';
-import NavLink from '../components/NavLink';
 import PasswordInput from '../components/PasswordInput';
+import SignInModal from '../modals/SignInModal';
 
-function ResetPasswordScreen({ route }) {
+function ResetPasswordScreen() {
   const { isDarkMode } = useDarkMode();
 
+  const [showSignInModal, setShowSignInModal] = useState(false);
   const [otp, setOtp] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
@@ -19,8 +20,8 @@ function ResetPasswordScreen({ route }) {
   return (
     <View>
       <View style={styles.container}>
-        <Text style={styles.text} variant="headlineMedium">
-          הכנס קוד אימות
+        <Text style={styles.text} variant="headlineSmall">
+          Verification Code
         </Text>
         <OTPInputView
           style={styles.otp}
@@ -36,19 +37,20 @@ function ResetPasswordScreen({ route }) {
           mode="text"
           style={{ marginTop: -15 }}
           textColor={Color.Brown800}
+          onPress={() => console.log('pressed')}
         >
-          שלח קוד מחדש
+          Resend Email
         </Button>
 
-        <Text style={styles.text} variant="headlineMedium">
-          מלא סיסמה חדשה
+        <Text style={styles.text} variant="headlineSmall">
+          Enter New Password
         </Text>
       </View>
 
       <View style={styles.textInput}>
         <PasswordInput
           mode="outlined"
-          label="סיסמה"
+          label="Password"
           onValueChange={(password) => setPassword(password)}
         />
         {password.length > 0 && password.length < 6 && (
@@ -59,12 +61,12 @@ function ResetPasswordScreen({ route }) {
                 : { color: Color.errorText, paddingRight: 10 }
             }
           >
-            סיסמה צריכה להכיל 6 תווים לפחות
+            Password must contain at least 6 characters
           </Text>
         )}
         <PasswordInput
           mode="outlined"
-          label="אשר סיסמה"
+          label="Password Confirm"
           onValueChange={(passwordConfirm) =>
             setPasswordConfirm(passwordConfirm)
           }
@@ -73,15 +75,27 @@ function ResetPasswordScreen({ route }) {
 
       <Spacer>
         <Button
-          style={{ marginHorizontal: 10 }}
+          style={{ marginHorizontal: 10, marginTop: 10 }}
           buttonColor={Color.Blue800}
           textColor={Color.defaultTheme}
           mode="contained"
+          onPress={() => console.log('pressed')}
         >
-          אפס סיסמה
+          Reset Password
         </Button>
       </Spacer>
-      <NavLink text="Back" style={{ marginTop: -5, fontSize: 14 }} />
+      <TouchableOpacity
+        style={{ marginHorizontal: 150 }}
+        onPress={() => setShowSignInModal(true)}
+      >
+        <Text style={{ textAlign: 'center' }}>Login</Text>
+      </TouchableOpacity>
+
+      {showSignInModal && (
+        <SignInModal
+          showVisible={(showVisible) => setShowSignInModal(showVisible)}
+        />
+      )}
     </View>
   );
 }
@@ -91,10 +105,10 @@ export default ResetPasswordScreen;
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    marginTop: 125,
+    marginTop: 100,
   },
   text: {
-    fontWeight: 'bold',
+    fontFamily: 'OrbitronMedium',
     color: Color.Blue800,
   },
   otp: {

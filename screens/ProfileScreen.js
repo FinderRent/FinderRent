@@ -1,15 +1,15 @@
-import { useCallback, useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { View, SafeAreaView, StyleSheet, ImageBackground } from 'react-native';
 import { Title, Text, TouchableRipple } from 'react-native-paper';
+import { useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Toast from 'react-native-toast-message';
 
 import { Color } from '../constants/colors';
-import { UserContext, useUsers } from '../context/UserContext';
 import { useDarkMode } from '../context/DarkModeContext';
+import { UserContext, useUsers } from '../context/UserContext';
 import DarkModeSwitch from '../components/ui/DarkModeSwitch';
-import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 
 const ProfileScreen = ({ navigation }) => {
   const auth = useContext(UserContext);

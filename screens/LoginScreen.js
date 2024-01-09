@@ -10,7 +10,8 @@ import SignInModal from '../modals/SignInModal';
 function LoginScreen({ navigation, route }) {
   const { userData } = useUsers();
 
-  const [showModal, setShowModal] = useState(false);
+  const [showSignInModal, setShowSignInModal] = useState(false);
+
   const headerTitle = route.name;
   let screenName = null;
 
@@ -38,17 +39,21 @@ function LoginScreen({ navigation, route }) {
         style={styles.icon}
       />
       <Text style={styles.text}>Sign in to see the {screenName} screen.</Text>
+
       <Button
         style={{ margin: 20 }}
         buttonColor={Color.Blue700}
         textColor={Color.white}
         mode="elevated"
-        onPress={() => setShowModal(true)}
+        onPress={() => setShowSignInModal(true)}
       >
         SignIn
       </Button>
-      {showModal && (
-        <SignInModal showVisible={(showVisible) => setShowModal(showVisible)} />
+
+      {showSignInModal && (
+        <SignInModal
+          showVisible={(showVisible) => setShowSignInModal(showVisible)}
+        />
       )}
     </View>
   );

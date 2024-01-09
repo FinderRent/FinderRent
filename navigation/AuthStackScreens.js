@@ -1,4 +1,3 @@
-import { View } from 'react-native';
 import {
   NavigationContainer,
   DarkTheme,
@@ -16,7 +15,6 @@ import { Color } from '../constants/colors';
 import { useDarkMode } from '../context/DarkModeContext';
 import MainTabScreen from './MainTabScreen';
 import SignUpScreen from '../screens/SignUpScreen';
-import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 import ResetPasswordScreen from '../screens/ResetPasswordScreen';
 
 const AuthStack = createNativeStackNavigator();
@@ -67,17 +65,6 @@ function AuthStackScreens() {
     <NavigationContainer theme={theme}>
       <PaperProvider theme={paperTheme}>
         <AuthStack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
-          {/* -----removing the welcom screen for temporary time-------- */}
-          {/* <AuthStack.Screen
-          name="WelcomeScreen"
-          component={WelcomeScreen}
-          options={{
-            headerShown: false,
-            presentation: 'modal',
-            animation: 'fade_from_bottom',
-          }}
-        /> */}
-          {/* ------------------------------------------------------------------- */}
           <AuthStack.Screen
             name="MainTabScreen"
             component={MainTabScreen}
@@ -87,18 +74,6 @@ function AuthStackScreens() {
               animation: 'simple_push',
             }}
           />
-          {/* <AuthStack.Screen
-            name="SignInScreen"
-            component={SignInScreen}
-            options={{
-              headerShown: false,
-              title: '',
-              animation: 'simple_push',
-              headerStyle: {
-                backgroundColor: Color.Blue600,
-              },
-            }}
-          /> */}
           <AuthStack.Screen
             name="SignUpScreen"
             component={SignUpScreen}
@@ -124,27 +99,22 @@ function AuthStackScreens() {
             }}
           />
           <AuthStack.Screen
-            name="ForgotPasswordScreen"
-            component={ForgotPasswordScreen}
-            options={{
-              title: '',
-              animation: 'slide_from_right',
-              headerStyle: {
-                backgroundColor: Color.Blue600,
-              },
-            }}
-          />
-          <AuthStack.Screen
             name="ResetPasswordScreen"
             component={ResetPasswordScreen}
             options={{
-              title: '',
-              animation: 'slide_from_right',
-              header: () => (
-                <View
-                  style={{ height: 50, backgroundColor: Color.Blue600 }}
-                ></View>
-              ),
+              headerStyle: {
+                backgroundColor: isDarkMode
+                  ? Color.buttomSheetDarkTheme
+                  : Color.defaultTheme,
+              },
+              title: 'ResetPassword',
+              headerTitleStyle: {
+                fontFamily: 'DancingScript',
+                fontSize: 32,
+                color: Color.Blue900,
+              },
+              headerTintColor: Color.Blue900,
+              animation: 'simple_push',
             }}
           />
         </AuthStack.Navigator>

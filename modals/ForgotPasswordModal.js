@@ -93,6 +93,7 @@ function ForgotPasswordModal({ showVisible }) {
               <Button
                 style={styles.button}
                 mode="contained"
+                textColor={Color.defaultTheme}
                 onPress={handleSendEmail}
                 loading={isPending}
               >
