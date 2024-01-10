@@ -35,9 +35,12 @@ function HomeScreen() {
       <StatusBar style={isDarkMode ? "light" : "dark"} />
 
       <ProfileLocation />
-      <ScrollView>
+      <ScrollView style={{ flex: 1 }}>
         <Map handleMapPress={handleMapPress} />
         <HouseCard />
+        <HouseCard />
+        <HouseCard />
+
         {mapPress && <MapModal handleMapPress={handleMapPress} />}
       </ScrollView>
     </SafeAreaView>

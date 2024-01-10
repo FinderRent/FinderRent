@@ -32,6 +32,7 @@ const HouseCard = () => {
         <View style={styles.addressContainer}>
           <Text style={styles.city}>Beer Sheva</Text>
           <Text style={styles.street}>Avigdor hameiri 21/3</Text>
+          <Text style={styles.distance}>2 kilometers away</Text>
         </View>
         <Text style={styles.price}>1000$</Text>
       </View>
@@ -41,16 +42,15 @@ const HouseCard = () => {
 
 const styles = StyleSheet.create({
   card: {
+    position: "relative",
     backgroundColor: "#fff",
     borderRadius: 12,
     overflow: "hidden",
     elevation: 4,
     margin: 10,
-    position: "relative",
   },
-  image: {
+  images: {
     width: "100%",
-    height: 200,
     overflow: "hidden",
     alignSelf: "center",
     borderRadius: 12,
@@ -64,13 +64,18 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   city: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
     marginBottom: 5,
   },
   street: {
-    fontSize: 16,
+    fontSize: 15,
     marginBottom: 5,
+  },
+
+  distance: {
+    fontSize: 15,
+    color: "#65B741",
   },
   price: {
     fontSize: 20,
