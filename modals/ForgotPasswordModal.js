@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 import {
   View,
   Image,
@@ -7,16 +7,16 @@ import {
   Pressable,
   StyleSheet,
   KeyboardAvoidingView,
-} from 'react-native';
-import { Button, Text } from 'react-native-paper';
-import { useMutation } from '@tanstack/react-query';
-import Toast from 'react-native-toast-message';
+} from "react-native";
+import { Button, Text } from "react-native-paper";
+import { useMutation } from "@tanstack/react-query";
+import Toast from "react-native-toast-message";
 
-import { Color } from '../constants/colors';
-import { useDarkMode } from '../context/DarkModeContext';
-import Input from '../components/Input';
-import login from '../api/authentication/login';
-import ErrorMessage from '../components/ui/ErrorMessage';
+import { Color } from "../constants/colors";
+import { useDarkMode } from "../context/DarkModeContext";
+import Input from "../components/Input";
+import ErrorMessage from "../components/ui/ErrorMessage";
+import sendEmail from "../api/sendEmail";
 
 function ForgotPasswordModal({ showVisible }) {
   const { isDarkMode } = useDarkMode();
@@ -26,18 +26,18 @@ function ForgotPasswordModal({ showVisible }) {
   const [email, setEmail] = useState();
 
   const { mutate, isPending, error, isError } = useMutation({
-    mutationFn: ({ email }) => login({ email }),
+    mutationFn: ({ email }) => sendEmail({ email }),
     onSuccess: () => {
       Toast.show({
-        type: 'success',
-        text1: 'Logged In Successfully',
+        type: "success",
+        text1: "Password reset code sent to email",
       });
-      navigation.navigate('ResetPasswordScreen');
+      navigation.navigate("ResetPasswordScreen", { email });
     },
   });
 
   const handleSendEmail = () => {
-    navigation.navigate('ResetPasswordScreen');
+    mutate({ email });
   };
 
   const handleCancel = () => {
@@ -53,7 +53,7 @@ function ForgotPasswordModal({ showVisible }) {
         visible={forgotPasswordVisible}
       >
         <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={{ flex: 1 }}
         >
           <View style={styles.centeredView}>
@@ -72,10 +72,10 @@ function ForgotPasswordModal({ showVisible }) {
               </Text>
               <Pressable
                 onPress={() => handleCancel()}
-                style={{ position: 'absolute', margin: 12 }}
+                style={{ position: "absolute", margin: 12 }}
               >
                 <Image
-                  source={require('../assets/images/close.png')}
+                  source={require("../assets/images/close.png")}
                   style={{ height: 25, width: 25 }}
                 />
               </Pressable>
@@ -97,7 +97,7 @@ function ForgotPasswordModal({ showVisible }) {
                 onPress={handleSendEmail}
                 loading={isPending}
               >
-                {!isPending && 'Send'}
+                {!isPending && "Send   "}
               </Button>
             </View>
           </View>
@@ -112,14 +112,14 @@ export default ForgotPasswordModal;
 const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   modalView: {
     margin: 10,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -131,16 +131,16 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 0,
     marginTop: 15,
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 11,
     color: Color.Blue800,
-    fontFamily: 'OrbitronMedium',
+    fontFamily: "OrbitronMedium",
   },
   textInput: {
     fontSize: 15,
     margin: 5,
-    justifyContent: 'center',
-    color: '#2196F3',
+    justifyContent: "center",
+    color: "#2196F3",
   },
   button: {
     elevation: 2,

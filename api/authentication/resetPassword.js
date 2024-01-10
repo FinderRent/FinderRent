@@ -1,11 +1,11 @@
 import axios from "axios";
 import { ADDRESS } from "@env";
 
-async function sendEmail({ email }) {
+async function resetPassword({ otp, password, passwordConfirm }) {
   try {
-    const response = await axios.post(
-      `http://${ADDRESS}:3000/api/v1/users/forgotPassword`,
-      { email },
+    const response = await axios.patch(
+      `http://${ADDRESS}:3000/api/v1/users/resetPassword`,
+      { otp, password, passwordConfirm },
       {
         headers: {
           "Content-Type": "application/json",
@@ -25,4 +25,4 @@ async function sendEmail({ email }) {
   }
 }
 
-export default sendEmail;
+export default resetPassword;
