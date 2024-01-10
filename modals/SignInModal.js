@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from 'react';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useContext, useEffect, useState } from "react";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import {
   View,
   Image,
@@ -9,20 +9,20 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   TouchableOpacity,
-} from 'react-native';
-import { Button, Text } from 'react-native-paper';
-import { useMutation } from '@tanstack/react-query';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import Toast from 'react-native-toast-message';
+} from "react-native";
+import { Button, Text } from "react-native-paper";
+import { useMutation } from "@tanstack/react-query";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Toast from "react-native-toast-message";
 
-import { Color } from '../constants/colors';
-import { useDarkMode } from '../context/DarkModeContext';
-import { UserContext } from '../context/UserContext';
-import Input from '../components/Input';
-import PasswordInput from '../components/PasswordInput';
-import login from '../api/authentication/login';
-import ErrorMessage from '../components/ui/ErrorMessage';
-import ForgotPasswordModal from './ForgotPasswordModal';
+import { Color } from "../constants/colors";
+import { useDarkMode } from "../context/DarkModeContext";
+import { UserContext } from "../context/UserContext";
+import Input from "../components/Input";
+import PasswordInput from "../components/PasswordInput";
+import login from "../api/authentication/login";
+import ErrorMessage from "../components/ui/ErrorMessage";
+import ForgotPasswordModal from "./ForgotPasswordModal";
 
 function SignInModal({ showVisible }) {
   const auth = useContext(UserContext);
@@ -54,13 +54,13 @@ function SignInModal({ showVisible }) {
   const { mutate, isPending, error, isError } = useMutation({
     mutationFn: ({ email, password }) => login({ email, password }),
     onSuccess: (user) => {
-      storeData('token', user.token);
+      storeData("token", user.token);
       auth.login(user.data.user, user.token);
       Toast.show({
-        type: 'success',
-        text1: 'Logged In Successfully',
+        type: "success",
+        text1: "Logged In Successfully",
       });
-      navigation.navigate('HomeScreen');
+      navigation.navigate("HomeScreen");
     },
   });
 
@@ -81,7 +81,7 @@ function SignInModal({ showVisible }) {
   const handleRegister = () => {
     setSignInModalVisible(!signInModalVisible);
     showVisible(!signInModalVisible);
-    navigation.navigate('SignUpScreen');
+    navigation.navigate("SignUpScreen");
   };
 
   return (
@@ -91,12 +91,12 @@ function SignInModal({ showVisible }) {
         transparent={true}
         visible={signInModalVisible}
         onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
+          Alert.alert("Modal has been closed.");
           setSignInModalVisible(!signInModalVisible);
         }}
       >
         <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
           style={{ flex: 1 }}
         >
           <View style={styles.centeredView}>
@@ -122,9 +122,9 @@ function SignInModal({ showVisible }) {
 
               <Pressable
                 onPress={() => handleCancel()}
-                style={{ position: 'absolute', margin: 10 }}
+                style={{ position: "absolute", margin: 10 }}
               >
-                <Image source={require('../assets/images/close.png')} />
+                <Image source={require("../assets/images/close.png")} />
               </Pressable>
               <View style={styles.textInput}>
                 <Input
@@ -168,7 +168,7 @@ function SignInModal({ showVisible }) {
                 onPress={handleLogin}
                 loading={isPending}
               >
-                {!isPending && 'Login'}
+                {!isPending && "Login   "}
               </Button>
             </View>
           </View>
@@ -181,15 +181,15 @@ function SignInModal({ showVisible }) {
 const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     marginTop: 30,
   },
   modalView: {
     margin: 10,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -203,39 +203,39 @@ const styles = StyleSheet.create({
     padding: 5,
     elevation: 2,
     marginVertical: 10,
-    backgroundColor: '#2196F3',
+    backgroundColor: "#2196F3",
   },
   buttonOpen: {
     borderRadius: 20,
     padding: 5,
     elevation: 2,
     marginVertical: 10,
-    backgroundColor: '#2196F3',
+    backgroundColor: "#2196F3",
   },
   buttonClose: {
-    backgroundColor: '#2196F3',
+    backgroundColor: "#2196F3",
   },
   textStyle: {
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: "bold",
+    textAlign: "center",
   },
   modalText: {
     marginBottom: 0,
     marginTop: 15,
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 44,
-    color: '#2196F3',
-    fontWeight: 'bold',
+    color: "#2196F3",
+    fontWeight: "bold",
   },
   textInput: {
     fontSize: 15,
     margin: 5,
-    justifyContent: 'center',
-    color: '#2196F3',
+    justifyContent: "center",
+    color: "#2196F3",
   },
   textRow: {
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     margin: 5,
   },
 });

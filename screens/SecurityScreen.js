@@ -1,18 +1,22 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
   KeyboardAvoidingView,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   View,
-} from 'react-native';
-import { Button, Text } from 'react-native-paper';
+} from "react-native";
+import { Button, Text } from "react-native-paper";
+import { useMutation } from "@tanstack/react-query";
+import Toast from "react-native-toast-message";
 
-import { Color } from '../constants/colors';
-import { useUsers } from '../context/UserContext';
-import Spacer from '../components/ui/Spacer';
-import PasswordInput from '../components/PasswordInput';
-import NavLink from '../components/NavLink';
+import { Color } from "../constants/colors";
+import { useUsers } from "../context/UserContext";
+import Spacer from "../components/ui/Spacer";
+import PasswordInput from "../components/PasswordInput";
+import NavLink from "../components/NavLink";
+import ErrorMessage from "../components/ui/ErrorMessage";
+import changePassword from "../api/authentication/changePassword";
 
 function SecurityScreen() {
   const { userData } = useUsers();
@@ -22,12 +26,32 @@ function SecurityScreen() {
   const [password, setPassword] = useState();
   const [passwordConfirm, setPasswordConfirm] = useState();
 
+  const { mutate, isPending, isError, error } = useMutation({
+    mutationFn: ({ passwordCurrent, password, passwordConfirm, token }) =>
+      changePassword({
+        passwordCurrent,
+        password,
+        passwordConfirm,
+        token,
+      }),
+    onSuccess: () => {
+      Toast.show({
+        type: "success",
+        text1: "Password successfully updated",
+      });
+    },
+  });
+
+  const handleChangePassword = () => {
+    mutate({ passwordCurrent, password, passwordConfirm, token });
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <ScrollView>
           <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={{ flex: 1 }}
             keyboardVerticalOffset={100}
           >
@@ -36,7 +60,7 @@ function SecurityScreen() {
             </Text>
             <View style={{ marginTop: 25 }}>
               <Text style={styles.text} variant="titleMedium">
-                Enter current password:{' '}
+                Enter current password:
               </Text>
 
               <PasswordInput
@@ -64,19 +88,21 @@ function SecurityScreen() {
                 setPasswordConfirm(passwordConfirm)
               }
             />
+            {isError && <ErrorMessage errorMessage={error.message} />}
 
             <Spacer>
               <Button
-                style={{ marginTop: 40 }}
+                style={{ marginTop: 20 }}
                 buttonColor={Color.Blue800}
                 textColor={Color.defaultTheme}
                 mode="contained"
-                onPress={() => console.log('ok')}
+                onPress={handleChangePassword}
+                loading={isPending}
               >
-                Update Password
+                {!isPending && "Update Password    "}
               </Button>
             </Spacer>
-            <NavLink text="Back" style={{ marginTop: -5, fontSize: 14 }} />
+            <NavLink text="Back    " style={{ marginTop: -5, fontSize: 14 }} />
           </KeyboardAvoidingView>
         </ScrollView>
       </View>
@@ -95,8 +121,9 @@ const styles = StyleSheet.create({
   },
   title: {
     margin: 25,
-    textAlign: 'center',
-    fontWeight: 'bold',
+    textAlign: "center",
+    fontFamily: "OrbitronMedium",
+    // fontWeight: "bold",
     borderBottomWidth: 0.4,
     borderBottomColor: Color.Blue500,
     color: Color.Blue900,
@@ -104,7 +131,7 @@ const styles = StyleSheet.create({
   text: {
     marginLeft: 2,
     marginBottom: 5,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: Color.Blue700,
   },
 });

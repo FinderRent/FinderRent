@@ -86,7 +86,7 @@ function ResetPasswordScreen({ route }) {
           onPress={handleSendEmail}
           loading={isSendEmailPanding}
         >
-          {!isSendEmailPanding && "Resend Email   "}
+          {!isSendEmailPanding && "Resend Email"}
         </Button>
 
         <Text style={styles.text} variant="headlineSmall">
@@ -133,7 +133,7 @@ function ResetPasswordScreen({ route }) {
           onPress={handleResetPassword}
           loading={isResetPasswordPending}
         >
-          {!isResetPasswordPending && "Reset    "}
+          {!isResetPasswordPending && "Reset"}
         </Button>
       </Spacer>
       <TouchableOpacity

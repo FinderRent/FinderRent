@@ -97,7 +97,7 @@ function ForgotPasswordModal({ showVisible }) {
                 onPress={handleSendEmail}
                 loading={isPending}
               >
-                {!isPending && "Send   "}
+                {!isPending && "Send     "}
               </Button>
             </View>
           </View>
