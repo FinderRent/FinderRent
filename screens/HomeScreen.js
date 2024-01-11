@@ -5,7 +5,7 @@ import {
   Platform,
   TouchableOpacity,
 } from "react-native";
-import Map from "../components/Map";
+import Map from "../components/Map/Map";
 import { useState } from "react";
 
 import { Color } from "../constants/colors";
@@ -14,6 +14,7 @@ import ProfileLocation from "../components/ProfileLocation";
 import { useDarkMode } from "../context/DarkModeContext";
 import { StatusBar } from "expo-status-bar";
 import MapModal from "../modals/MapModal";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 
 /**
  * TODO:
@@ -30,6 +31,8 @@ function HomeScreen({ navigation }) {
     setMapPress(!mapPress);
   };
 
+  const tabBarHeight = useBottomTabBarHeight();
+
   return (
     <SafeAreaView
       style={{
@@ -39,12 +42,21 @@ function HomeScreen({ navigation }) {
       }}
     >
       <StatusBar style={isDarkMode ? "light" : "dark"} />
-
       <ProfileLocation />
-      <ScrollView style={{ flex: 1 }}>
-        <Map handleMapPress={handleMapPress} />
-        {mapPress && <MapModal handleMapPress={handleMapPress} />}
+      <ScrollView style={{ flex: 1, marginBottom: tabBarHeight - 50 }}>
+        {/* <Map handleMapPress={handleMapPress} />
+        {mapPress && <MapModal handleMapPress={handleMapPress} />} */}
 
+        <TouchableOpacity
+          onPress={() => navigation.navigate("HouseDetailsScreen")}
+        >
+          <HouseCard navigation={navigation} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("HouseDetailsScreen")}
+        >
+          <HouseCard navigation={navigation} />
+        </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate("HouseDetailsScreen")}
         >

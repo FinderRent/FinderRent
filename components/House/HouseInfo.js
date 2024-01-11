@@ -27,14 +27,15 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "#ccc",
     borderRadius: 15,
-    height: "17%",
-    marginVertical: "7%",
+    height: 75,
+    marginVertical: 10,
     flexDirection: "row",
   },
   innerInfo: {
     flex: 1,
-    margin: "3%",
+    margin: 4,
     flexDirection: "col",
+    marginVertical: 10,
   },
   numberInfo: {
     fontSize: 25,
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
   },
   line: {
     borderWidth: 1,
-    margin: "2%",
+    margin: 8,
     borderColor: "#ccc",
   },
 });
