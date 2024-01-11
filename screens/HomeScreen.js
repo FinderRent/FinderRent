@@ -1,4 +1,10 @@
-import { StyleSheet, SafeAreaView, ScrollView, Platform } from "react-native";
+import {
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  Platform,
+  TouchableOpacity,
+} from "react-native";
 import Map from "../components/Map";
 import { useState } from "react";
 
@@ -16,7 +22,7 @@ import MapModal from "../modals/MapModal";
  * make the cards dynamic data from the DB
  */
 
-function HomeScreen() {
+function HomeScreen({ navigation }) {
   const { isDarkMode } = useDarkMode();
   const [mapPress, setMapPress] = useState(false);
 
@@ -35,10 +41,15 @@ function HomeScreen() {
       <StatusBar style={isDarkMode ? "light" : "dark"} />
 
       <ProfileLocation />
-      <ScrollView>
+      <ScrollView style={{ flex: 1 }}>
         <Map handleMapPress={handleMapPress} />
-        <HouseCard />
         {mapPress && <MapModal handleMapPress={handleMapPress} />}
+
+        <TouchableOpacity
+          onPress={() => navigation.navigate("HouseDetailsScreen")}
+        >
+          <HouseCard navigation={navigation} />
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );

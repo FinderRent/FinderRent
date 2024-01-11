@@ -1,15 +1,6 @@
-import React, { useState, useRef } from "react";
-import {
-  View,
-  StyleSheet,
-  Dimensions,
-  TouchableOpacity,
-  Text,
-  Animated,
-} from "react-native";
-import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
-import { SafeAreaView } from "react-native-safe-area-context";
-import MapModal from "../modals/MapModal";
+import React from "react";
+import { View, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
+import MapView from "react-native-maps";
 
 /**
  *
@@ -17,8 +8,6 @@ import MapModal from "../modals/MapModal";
  */
 
 const Map = (props) => {
-  const animation = useRef(new Animated.Value(200)).current;
-
   const handleMapPress = () => {
     props.handleMapPress();
   };
@@ -34,16 +23,15 @@ const Map = (props) => {
 
 const styles = StyleSheet.create({
   mapWindow: {
-    backgroundColor: "#fff",
     borderRadius: 12,
     overflow: "hidden",
-    elevation: 4,
     margin: 10,
+    height: 200,
   },
 
   map: {
     width: "100%",
-    height: "80%",
+    height: "100%",
     resizeMode: "cover",
   },
 });
