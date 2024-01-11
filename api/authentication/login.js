@@ -4,7 +4,7 @@ import { ADDRESS } from "@env";
 async function login({ email, password }) {
   try {
     const response = await axios.post(
-      `http://${ADDRESS}/api/v1/users/login`,
+      `http://${ADDRESS}:3000/api/v1/users/login`,
       { email, password },
       {
         headers: {
