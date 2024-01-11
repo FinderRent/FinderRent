@@ -8,7 +8,7 @@ import Toast from "react-native-toast-message";
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import Spacer from "../components/ui/Spacer";
-import PasswordInput from "../components/PasswordInput";
+import PasswordInput from "../components/inputs/PasswordInput";
 import SignInModal from "../modals/SignInModal";
 import resetPassword from "../api/authentication/resetPassword";
 import sendEmail from "../api/sendEmail";

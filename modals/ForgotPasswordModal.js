@@ -14,7 +14,7 @@ import Toast from "react-native-toast-message";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
-import Input from "../components/Input";
+import Input from "../components/inputs/Input";
 import ErrorMessage from "../components/ui/ErrorMessage";
 import sendEmail from "../api/sendEmail";
 

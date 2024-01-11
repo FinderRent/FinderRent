@@ -13,8 +13,8 @@ import Toast from "react-native-toast-message";
 import { Color } from "../constants/colors";
 import { useUsers } from "../context/UserContext";
 import Spacer from "../components/ui/Spacer";
-import PasswordInput from "../components/PasswordInput";
-import NavLink from "../components/NavLink";
+import PasswordInput from "../components/inputs/PasswordInput";
+import NavLink from "../components/ui/NavLink";
 import ErrorMessage from "../components/ui/ErrorMessage";
 import changePassword from "../api/authentication/changePassword";
 

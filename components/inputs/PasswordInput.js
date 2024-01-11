@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { TextInput } from "react-native-paper";
 
-import { Color } from "../constants/colors";
-import { useDarkMode } from "../context/DarkModeContext";
+import { Color } from "../../constants/colors";
+import { useDarkMode } from "../../context/DarkModeContext";
 
 function PasswordInput({ mode, onValueChange, label, color }) {
   const { isDarkMode } = useDarkMode();

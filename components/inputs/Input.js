@@ -2,8 +2,8 @@ import { useState } from "react";
 import { View } from "react-native";
 import { TextInput } from "react-native-paper";
 
-import { Color } from "../constants/colors";
-import { useDarkMode } from "../context/DarkModeContext";
+import { Color } from "../../constants/colors";
+import { useDarkMode } from "../../context/DarkModeContext";
 
 function Input({
   label,

@@ -18,8 +18,8 @@ import Toast from "react-native-toast-message";
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { UserContext } from "../context/UserContext";
-import Input from "../components/Input";
-import PasswordInput from "../components/PasswordInput";
+import Input from "../components/inputs/Input";
+import PasswordInput from "../components/inputs/PasswordInput";
 import login from "../api/authentication/login";
 import ErrorMessage from "../components/ui/ErrorMessage";
 import ForgotPasswordModal from "./ForgotPasswordModal";
@@ -109,14 +109,6 @@ function SignInModal({ showVisible }) {
               }}
             >
               <Text style={styles.modalText}>Login</Text>
-
-              {/* <Image
-                source={require("../assets/images/sign-in-photo.jpg")}
-                style={{
-                  height: 300,
-                  width: 280,
-                }}
-              /> */}
 
               <Pressable
                 onPress={() => handleCancel()}

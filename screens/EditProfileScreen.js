@@ -16,7 +16,6 @@ import {
 import { Button, Text, TextInput } from "react-native-paper";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useMutation } from "@tanstack/react-query";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-toast-message";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -24,11 +23,10 @@ import { UserContext, useUsers } from "../context/UserContext";
 import { useDarkMode } from "../context/DarkModeContext";
 import { academicList } from "../data/academic";
 import { Color } from "../constants/colors";
-import DropDown from "../components/DropDown";
-import Input from "../components/Input";
+import DropDown from "../components/inputs/DropDown";
+import Input from "../components/inputs/Input";
 import Spacer from "../components/ui/Spacer";
-import NavLink from "../components/NavLink";
-import Loader from "../components/ui/Loader";
+import NavLink from "../components/ui/NavLink";
 import ImagePicker from "../components/ImagePicker";
 import TakePhoto from "../components/TakePhoto";
 import ErrorMessage from "../components/ui/ErrorMessage";
@@ -40,7 +38,6 @@ function EditProfileScreen({ navigation }) {
   const auth = useContext(UserContext);
 
   const { token } = userData;
-  // const [isLoading, setIsLoading] = useState(true);
   const [userType, setUserType] = useState(userData.userType);
   const [avatar, setAvatar] = useState(userData.avatar?.url);
   const [firstName, setFirstName] = useState(userData.firstName);
@@ -69,33 +66,6 @@ function EditProfileScreen({ navigation }) {
     { label: "שנה ד'", value: "שנה ד'" },
     { label: "תואר שני", value: "תואר שני" },
   ];
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     setIsLoading(true);
-
-  //     try {
-  //       // Retrieve stored user data and token from AsyncStorage
-  //       const storedData = await AsyncStorage.getItem('userData');
-  //       const userData = JSON.parse(storedData);
-  //       setUserType(userData.userType);
-  //       setAvatar(userData.avatar.url);
-  //       setFirstName(userData.firstName);
-  //       setLastName(userData.lastName);
-  //       setAge(userData.age);
-  //       setAcademic(userData.academic);
-  //       setDepartment(userData.department);
-  //       setYearbook(userData.yearbook);
-  //       setEmail(userData.email);
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-
-  //     setIsLoading(false);
-  //   };
-
-  //   fetchData();
-  // }, []);
 
   useEffect(() => {
     if (avatar !== userData.avatar?.url) {
@@ -168,10 +138,6 @@ function EditProfileScreen({ navigation }) {
     bottomSheetModalRef.current?.dismiss();
     setIsBottomSheetOpen(false);
   }, []);
-
-  // if (isLoading) {
-  //   return <Loader color={Color.Brown400} />;
-  // }
 
   return (
     <ScrollView>
