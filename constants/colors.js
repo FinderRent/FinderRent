@@ -10,6 +10,12 @@ export const Color = {
   icon: "#777777",
   gray: "#bdc3c7",
 
+  Blue100: "#71c7ec",
+  Blue300: "#1ebbd7",
+  Blue500: "#189ad3",
+  Blue700: "#107dac",
+  Blue900: "#005073",
+
   // Blue: '#2196F3',
   // Blue50: '#f1f5f7',
   // Blue100: '#e3ebee',
@@ -21,12 +27,6 @@ export const Color = {
   // Blue700: '#8eaebd',
   // Blue800: '#80a4b4',
   // Blue900: '#517d92',
-
-  Blue100: "#71c7ec",
-  Blue300: "#1ebbd7",
-  Blue500: "#189ad3",
-  Blue700: "#107dac",
-  Blue900: "#005073",
 
   Brown50: "#f5f3ef",
   Brown100: "#ebe6df",
