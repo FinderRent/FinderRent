@@ -15,7 +15,12 @@ const Map = (props) => {
   return (
     <TouchableOpacity activeOpacity={1} style={styles.mapWindow}>
       <View style={styles.map}>
-        <MapView style={{ flex: 1 }} onPress={handleMapPress} />
+        <MapView
+          style={{ flex: 1 }}
+          onPress={handleMapPress}
+          zoomEnabled={props.zoomEnabled}
+          scrollEnabled={props.scrollEnabled}
+        />
       </View>
     </TouchableOpacity>
   );
@@ -25,8 +30,8 @@ const styles = StyleSheet.create({
   mapWindow: {
     borderRadius: 12,
     overflow: "hidden",
-    margin: 10,
     height: 200,
+    marginVertical: 10,
   },
 
   map: {
