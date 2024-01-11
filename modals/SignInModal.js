@@ -100,14 +100,13 @@ function SignInModal({ showVisible }) {
         >
           <View style={styles.centeredView}>
             <View
-              style={
-                isDarkMode
-                  ? {
-                      ...styles.modalView,
-                      backgroundColor: Color.buttomSheetDarkTheme,
-                    }
-                  : styles.modalView
-              }
+              style={{
+                ...styles.modalView,
+                height: showForgotPasswordModal ? 1 : undefined,
+                backgroundColor: isDarkMode
+                  ? Color.buttomSheetDarkTheme
+                  : styles.modalView.backgroundColor,
+              }}
             >
               <Text style={styles.modalText}>Login</Text>
 
