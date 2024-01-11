@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { ADDRESS } from '@env';
+import axios from "axios";
+import { ADDRESS } from "@env";
 
 async function signUp(userData) {
   try {
@@ -8,7 +8,7 @@ async function signUp(userData) {
       userData,
       {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
     );
