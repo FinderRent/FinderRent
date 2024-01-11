@@ -1,24 +1,24 @@
-import { useCallback, useEffect } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
-import { FlatList, StyleSheet, View } from 'react-native';
-import { Button, Text } from 'react-native-paper';
-import { useQuery } from '@tanstack/react-query';
-import { FontAwesome5 } from '@expo/vector-icons';
-import moment from 'moment';
+import { useCallback, useEffect } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import { FlatList, StyleSheet, View } from "react-native";
+import { Button, Text } from "react-native-paper";
+import { useQuery } from "@tanstack/react-query";
+import { FontAwesome5 } from "@expo/vector-icons";
+import moment from "moment";
 // import 'moment/locale/he';
 
-import { Color } from '../constants/colors';
-import { useUsers } from '../context/UserContext';
-import ErrorMessage from '../components/ui/ErrorMessage';
-import Loader from '../components/ui/Loader';
-import ChatList from '../components/chats/ChatList';
-import fetchChatsList from '../api/chats/fetchChatsList';
+import { Color } from "../constants/colors";
+import { useUsers } from "../context/UserContext";
+import ErrorMessage from "../components/ui/ErrorMessage";
+import Loader from "../components/ui/Loader";
+import ChatList from "../components/chats/ChatList";
+import fetchChatsList from "../api/chats/fetchChatsList";
 
 function ChatListScreen({ navigation }) {
   const { userData } = useUsers();
 
   const { data, error, isLoading, refetch } = useQuery({
-    queryKey: ['chatList', userData.id],
+    queryKey: ["chatList", userData.id],
     queryFn: () => fetchChatsList(userData.id),
   });
 
@@ -55,7 +55,7 @@ function ChatListScreen({ navigation }) {
   if (data.results === 0) {
     return (
       <View style={styles.container}>
-        <FontAwesome5 name="users" size={100} color={Color.Blue200} />
+        <FontAwesome5 name="users" size={100} color={Color.Blue300} />
         <Text style={styles.noResultsText}>There's No Chats Yet.</Text>
 
         {/* <Button
@@ -107,22 +107,22 @@ export default ChatListScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   noResultsIcon: {
     marginBottom: 10,
   },
   noResultsText: {
-    textAlign: 'center',
+    textAlign: "center",
     color: Color.gray,
-    fontFamily: 'varelaRound',
+    fontFamily: "varelaRound",
     fontSize: 17,
     letterSpacing: 0.3,
   },
   line: {
     margin: 10,
     borderBottomWidth: 0.5,
-    borderBottomColor: Color.Blue400,
+    borderBottomColor: Color.Blue500,
   },
 });

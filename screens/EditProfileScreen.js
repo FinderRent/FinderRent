@@ -5,34 +5,34 @@ import React, {
   useMemo,
   useRef,
   useState,
-} from 'react';
+} from "react";
 import {
   ImageBackground,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
   View,
-} from 'react-native';
-import { Button, Text, TextInput } from 'react-native-paper';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { useMutation } from '@tanstack/react-query';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import Toast from 'react-native-toast-message';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+} from "react-native";
+import { Button, Text, TextInput } from "react-native-paper";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { useMutation } from "@tanstack/react-query";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Toast from "react-native-toast-message";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { UserContext, useUsers } from '../context/UserContext';
-import { useDarkMode } from '../context/DarkModeContext';
-import { academicList } from '../data/academic';
-import { Color } from '../constants/colors';
-import DropDown from '../components/DropDown';
-import Input from '../components/Input';
-import Spacer from '../components/ui/Spacer';
-import NavLink from '../components/NavLink';
-import Loader from '../components/ui/Loader';
-import ImagePicker from '../components/ImagePicker';
-import TakePhoto from '../components/TakePhoto';
-import ErrorMessage from '../components/ui/ErrorMessage';
-import updateUser from '../api/updateUser';
+import { UserContext, useUsers } from "../context/UserContext";
+import { useDarkMode } from "../context/DarkModeContext";
+import { academicList } from "../data/academic";
+import { Color } from "../constants/colors";
+import DropDown from "../components/DropDown";
+import Input from "../components/Input";
+import Spacer from "../components/ui/Spacer";
+import NavLink from "../components/NavLink";
+import Loader from "../components/ui/Loader";
+import ImagePicker from "../components/ImagePicker";
+import TakePhoto from "../components/TakePhoto";
+import ErrorMessage from "../components/ui/ErrorMessage";
+import updateUser from "../api/updateUser";
 
 function EditProfileScreen({ navigation }) {
   const { isDarkMode } = useDarkMode();
@@ -54,7 +54,7 @@ function EditProfileScreen({ navigation }) {
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
   const url =
-    'https://res.cloudinary.com/dtkpp77xw/image/upload/v1701189732/default_nk5c5h.png';
+    "https://res.cloudinary.com/dtkpp77xw/image/upload/v1701189732/default_nk5c5h.png";
 
   const listAcademic = academicList.map((item) => ({
     label: item.name,
@@ -62,12 +62,12 @@ function EditProfileScreen({ navigation }) {
   }));
 
   const listYear = [
-    { label: 'מכינה', value: 'מכינה' },
+    { label: "מכינה", value: "מכינה" },
     { label: "שנה א'", value: "שנה א'" },
     { label: "שנה ב'", value: "שנה ב'" },
     { label: "שנה ג'", value: "שנה ג'" },
     { label: "שנה ד'", value: "שנה ד'" },
-    { label: 'תואר שני', value: 'תואר שני' },
+    { label: "תואר שני", value: "תואר שני" },
   ];
 
   // useEffect(() => {
@@ -133,8 +133,8 @@ function EditProfileScreen({ navigation }) {
     onSuccess: (user) => {
       auth.login(user.data.updatedUser, token);
       Toast.show({
-        type: 'success',
-        text1: 'Profile successfully updated',
+        type: "success",
+        text1: "Profile successfully updated",
       });
       navigation.goBack();
     },
@@ -157,7 +157,7 @@ function EditProfileScreen({ navigation }) {
   };
 
   const bottomSheetModalRef = useRef(null);
-  const snapPoints = useMemo(() => ['40%'], []);
+  const snapPoints = useMemo(() => ["40%"], []);
 
   const handlePresentModalOpen = useCallback(() => {
     bottomSheetModalRef.current?.present();
@@ -182,7 +182,7 @@ function EditProfileScreen({ navigation }) {
             : styles.container
         }
       >
-        <View style={{ alignItems: 'center' }}>
+        <View style={{ alignItems: "center" }}>
           <TouchableOpacity
             onPress={
               isBottomSheetOpen
@@ -194,8 +194,8 @@ function EditProfileScreen({ navigation }) {
               style={{
                 height: 100,
                 width: 100,
-                justifyContent: 'center',
-                alignItems: 'center',
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
               <ImageBackground
@@ -204,15 +204,15 @@ function EditProfileScreen({ navigation }) {
                 imageStyle={{
                   borderRadius: 50,
                   borderWidth: 2,
-                  borderColor: Color.Blue600,
+                  borderColor: Color.gray,
                   backgroundColor: Color.white,
                 }}
               >
                 <View
                   style={{
                     flex: 1,
-                    justifyContent: 'flex-end',
-                    alignItems: 'center',
+                    justifyContent: "flex-end",
+                    alignItems: "center",
                   }}
                 >
                   <Icon
@@ -231,43 +231,43 @@ function EditProfileScreen({ navigation }) {
         <View style={styles.inputsRow}>
           <Input
             style={styles.textInput}
-            label={firstName ? '' : 'First Name'}
+            label={firstName ? "" : "First Name"}
             value={firstName}
-            left={<TextInput.Icon icon={'account-outline'} />}
+            left={<TextInput.Icon icon={"account-outline"} />}
             mode="outlined"
             onValueChange={(firstName) => setFirstName(firstName)}
           />
           <Input
             style={styles.textInput}
-            label={lastName ? '' : 'Last Name'}
+            label={lastName ? "" : "Last Name"}
             value={lastName}
-            left={<TextInput.Icon icon={'account-outline'} />}
+            left={<TextInput.Icon icon={"account-outline"} />}
             mode="outlined"
             onValueChange={(lastName) => setLastName(lastName)}
           />
         </View>
         <Input
           style={styles.textInput}
-          label={age ? '' : 'Age'}
+          label={age ? "" : "Age"}
           value={age}
-          left={<TextInput.Icon icon={'calendar-account-outline'} />}
+          left={<TextInput.Icon icon={"calendar-account-outline"} />}
           mode="outlined"
           keyboardType="decimal-pad"
           maxLength={2}
           onValueChange={(selectedAge) => setAge(selectedAge)}
         />
-        {userType === 'landlord' && (
+        {userType === "landlord" && (
           <Input
             style={styles.textInput}
-            label={phone ? '' : 'phone'}
+            label={phone ? "" : "phone"}
             value={phone}
-            left={<TextInput.Icon icon={'phone-outline'} />}
+            left={<TextInput.Icon icon={"phone-outline"} />}
             mode="outlined"
             keyboardType="decimal-pad"
             onValueChange={(selectedPhone) => setPhone(selectedPhone)}
           />
         )}
-        {userType === 'student' && (
+        {userType === "student" && (
           <View>
             <View>
               <DropDown
@@ -286,9 +286,9 @@ function EditProfileScreen({ navigation }) {
               <View style={styles.inputsRow}>
                 <Input
                   style={styles.textInput}
-                  label={department ? '' : 'Department'}
+                  label={department ? "" : "Department"}
                   value={department}
-                  left={<TextInput.Icon icon={'school-outline'} />}
+                  left={<TextInput.Icon icon={"school-outline"} />}
                   mode="outlined"
                   onValueChange={(selectedDepartment) =>
                     setDepartment(selectedDepartment)
@@ -309,9 +309,9 @@ function EditProfileScreen({ navigation }) {
         )}
         <View style={styles.textInput}>
           <Input
-            label={email ? '' : 'Email'}
+            label={email ? "" : "Email"}
             value={email}
-            left={<TextInput.Icon icon={'email-outline'} />}
+            left={<TextInput.Icon icon={"email-outline"} />}
             mode="outlined"
             keyboardType="email-address"
             onValueChange={(selectedemail) => setEmail(selectedemail)}
@@ -323,12 +323,12 @@ function EditProfileScreen({ navigation }) {
             <Button
               style={{ marginTop: 10 }}
               textColor={Color.defaultTheme}
-              buttonColor={Color.Blue800}
+              buttonColor={Color.Blue700}
               mode="contained"
               onPress={handleUpdateUser}
               loading={isPending}
             >
-              {!isPending && 'Update    '}
+              {!isPending && "Update    "}
             </Button>
           </Spacer>
           <NavLink text="Back    " style={{ marginTop: -5, fontSize: 14 }} />
@@ -397,8 +397,8 @@ const styles = StyleSheet.create({
     paddingTop: 40,
   },
   inputsRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   textInput: {
     flex: 1,
@@ -406,20 +406,20 @@ const styles = StyleSheet.create({
   },
   title: {
     paddingHorizontal: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   sheetContainer: {
     flex: 1,
     marginHorizontal: 20,
   },
   panelTitle: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 27,
     height: 35,
   },
   panelSubtitle: {
-    textAlign: 'center',
-    color: 'gray',
+    textAlign: "center",
+    color: "gray",
     fontSize: 14,
     height: 30,
     marginBottom: 10,

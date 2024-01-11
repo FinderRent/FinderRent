@@ -2,20 +2,20 @@ import {
   NavigationContainer,
   DarkTheme,
   DefaultTheme,
-} from '@react-navigation/native';
+} from "@react-navigation/native";
 
 import {
   MD3LightTheme,
   MD3DarkTheme,
   Provider as PaperProvider,
-} from 'react-native-paper';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+} from "react-native-paper";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import { Color } from '../constants/colors';
-import { useDarkMode } from '../context/DarkModeContext';
-import MainTabScreen from './MainTabScreen';
-import SignUpScreen from '../screens/SignUpScreen';
-import ResetPasswordScreen from '../screens/ResetPasswordScreen';
+import { Color } from "../constants/colors";
+import { useDarkMode } from "../context/DarkModeContext";
+import MainTabScreen from "./MainTabScreen";
+import SignUpScreen from "../screens/SignUpScreen";
+import ResetPasswordScreen from "../screens/ResetPasswordScreen";
 
 const AuthStack = createNativeStackNavigator();
 
@@ -64,14 +64,14 @@ function AuthStackScreens() {
   return (
     <NavigationContainer theme={theme}>
       <PaperProvider theme={paperTheme}>
-        <AuthStack.Navigator screenOptions={{ headerTitleAlign: 'center' }}>
+        <AuthStack.Navigator screenOptions={{ headerTitleAlign: "center" }}>
           <AuthStack.Screen
             name="MainTabScreen"
             component={MainTabScreen}
             options={{
               headerShown: false,
-              title: '',
-              animation: 'simple_push',
+              title: "",
+              animation: "simple_push",
             }}
           />
           <AuthStack.Screen
@@ -83,14 +83,14 @@ function AuthStackScreens() {
                   ? Color.buttomSheetDarkTheme
                   : Color.defaultTheme,
               },
-              title: 'FinderRent',
+              title: "FinderRent",
               headerTitleStyle: {
-                fontFamily: 'DancingScript',
+                fontFamily: "DancingScript",
                 fontSize: 32,
-                color: Color.Blue900,
+                color: Color.Blue700,
               },
-              headerTintColor: Color.Blue900,
-              animation: 'simple_push',
+              headerTintColor: Color.Blue700,
+              animation: "simple_push",
               // header: () => (
               //   <View
               //     style={{ height: 50, backgroundColor: Color.Blue600 }}
@@ -107,14 +107,14 @@ function AuthStackScreens() {
                   ? Color.buttomSheetDarkTheme
                   : Color.defaultTheme,
               },
-              title: 'ResetPassword',
+              title: "ResetPassword",
               headerTitleStyle: {
-                fontFamily: 'DancingScript',
+                fontFamily: "DancingScript",
                 fontSize: 32,
-                color: Color.Blue900,
+                color: Color.Blue700,
               },
-              headerTintColor: Color.Blue900,
-              animation: 'simple_push',
+              headerTintColor: Color.Blue700,
+              animation: "simple_push",
             }}
           />
         </AuthStack.Navigator>

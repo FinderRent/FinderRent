@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { TextInput } from 'react-native-paper';
+import { useState } from "react";
+import { TextInput } from "react-native-paper";
 
-import { Color } from '../constants/colors';
-import { useDarkMode } from '../context/DarkModeContext';
+import { Color } from "../constants/colors";
+import { useDarkMode } from "../context/DarkModeContext";
 
 function PasswordInput({ mode, onValueChange, label, color }) {
   const { isDarkMode } = useDarkMode();
@@ -20,7 +20,7 @@ function PasswordInput({ mode, onValueChange, label, color }) {
       label={label}
       right={
         <TextInput.Icon
-          icon={isSecure ? 'eye' : 'eye-off'}
+          icon={isSecure ? "eye" : "eye-off"}
           onPress={() => setIsSecure(!isSecure)}
         />
       }
@@ -29,9 +29,9 @@ function PasswordInput({ mode, onValueChange, label, color }) {
           ? { backgroundColor: Color.darkTheme }
           : { backgroundColor: Color.white }
       }
-      selectionColor={Color.Blue700}
-      outlineColor={Color.Blue200}
-      activeOutlineColor={color ? color : Color.Blue800}
+      // selectionColor={Color.Blue700}
+      // outlineColor={Color.Blue700}
+      activeOutlineColor={color ? color : Color.Blue700}
       mode={mode}
       onChangeText={(value) => handleValueChange(value)}
       secureTextEntry={isSecure}

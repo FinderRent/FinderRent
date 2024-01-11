@@ -1,44 +1,44 @@
-import { useContext, useState } from 'react';
+import { useContext, useState } from "react";
 import {
   ImageBackground,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   View,
-} from 'react-native';
-import { Button, RadioButton, Text } from 'react-native-paper';
-import { useMutation } from '@tanstack/react-query';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import Toast from 'react-native-toast-message';
+} from "react-native";
+import { Button, RadioButton, Text } from "react-native-paper";
+import { useMutation } from "@tanstack/react-query";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Toast from "react-native-toast-message";
 
-import { Color } from '../constants/colors';
-import { useDarkMode } from '../context/DarkModeContext';
-import { UserContext } from '../context/UserContext';
-import { academicList } from '../data/academic';
-import Input from '../components/Input';
-import PasswordInput from '../components/PasswordInput';
-import DropDown from '../components/DropDown';
-import NavLink from '../components/NavLink';
-import Spacer from '../components/ui/Spacer';
-import signUp from '../api/authentication/signUp';
-import ErrorMessage from '../components/ui/ErrorMessage';
+import { Color } from "../constants/colors";
+import { useDarkMode } from "../context/DarkModeContext";
+import { UserContext } from "../context/UserContext";
+import { academicList } from "../data/academic";
+import Input from "../components/Input";
+import PasswordInput from "../components/PasswordInput";
+import DropDown from "../components/DropDown";
+import NavLink from "../components/NavLink";
+import Spacer from "../components/ui/Spacer";
+import signUp from "../api/authentication/signUp";
+import ErrorMessage from "../components/ui/ErrorMessage";
 
 function SignUpScreen({ navigation }) {
   const { isDarkMode } = useDarkMode();
   const auth = useContext(UserContext);
 
   // State variables for form inputs
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [age, setAge] = useState('');
-  const [academic, setAcademic] = useState('');
-  const [department, setDepartment] = useState('');
-  const [yearbook, setYearbook] = useState('');
-  const [gender, setGender] = useState('');
-  const [userType, setUserType] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('');
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [age, setAge] = useState("");
+  const [academic, setAcademic] = useState("");
+  const [department, setDepartment] = useState("");
+  const [yearbook, setYearbook] = useState("");
+  const [gender, setGender] = useState("");
+  const [userType, setUserType] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
 
   // Mapping academic list for DropDown component
   const listAcademic = academicList.map((item) => ({
@@ -48,12 +48,12 @@ function SignUpScreen({ navigation }) {
 
   // List of year options for DropDown component
   const listYear = [
-    { label: 'מכינה', value: 'מכינה' },
+    { label: "מכינה", value: "מכינה" },
     { label: "שנה א'", value: "שנה א'" },
     { label: "שנה ב'", value: "שנה ב'" },
     { label: "שנה ג'", value: "שנה ג'" },
     { label: "שנה ד'", value: "שנה ד'" },
-    { label: 'תואר שני', value: 'תואר שני' },
+    { label: "תואר שני", value: "תואר שני" },
   ];
 
   const userData = {
@@ -81,14 +81,14 @@ function SignUpScreen({ navigation }) {
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: (userData) => signUp(userData),
     onSuccess: (user) => {
-      storeData('token', user.token);
+      storeData("token", user.token);
       auth.login(user.data.user, user.token);
       Toast.show(
         {
-          type: 'success',
-          text1: 'Account Successfully Created',
+          type: "success",
+          text1: "Account Successfully Created",
         },
-        navigation.navigate('HomeStackScreen')
+        navigation.navigate("HomeStackScreen")
       );
     },
     onError: (err) => {
@@ -102,8 +102,8 @@ function SignUpScreen({ navigation }) {
 
   const getBackgroundImage = (isDarkMode) => {
     return isDarkMode
-      ? require('../assets/images/MidnightCity.jpg')
-      : require('../assets/images/Clouds.jpg');
+      ? require("../assets/images/MidnightCity.jpg")
+      : require("../assets/images/Clouds.jpg");
   };
 
   // Rendering the UI components
@@ -145,8 +145,8 @@ function SignUpScreen({ navigation }) {
 
           <View
             style={{
-              flexDirection: 'row',
-              alignItems: 'center',
+              flexDirection: "row",
+              alignItems: "center",
             }}
           >
             <Input
@@ -174,14 +174,14 @@ function SignUpScreen({ navigation }) {
               </Text>
               <RadioButton
                 color={Color.Blue500}
-                status={gender === 'Male' ? 'checked' : 'unchecked'}
-                onPress={() => setGender('Male')}
+                status={gender === "Male" ? "checked" : "unchecked"}
+                onPress={() => setGender("Male")}
               />
               <Text style={styles.textRadio}>Male</Text>
               <RadioButton
                 color={Color.Blue500}
-                status={gender === 'Female' ? 'checked' : 'unchecked'}
-                onPress={() => setGender('Female')}
+                status={gender === "Female" ? "checked" : "unchecked"}
+                onPress={() => setGender("Female")}
               />
               <Text style={styles.textRadio}>Female</Text>
             </View>
@@ -193,22 +193,22 @@ function SignUpScreen({ navigation }) {
           <View style={styles.radioButtom}>
             <RadioButton
               color={Color.Blue500}
-              status={userType === 'landlord' ? 'checked' : 'unchecked'}
-              onPress={() => setUserType('landlord')}
+              status={userType === "landlord" ? "checked" : "unchecked"}
+              onPress={() => setUserType("landlord")}
             />
             <Text style={styles.textRadio}>Landlord</Text>
           </View>
           <View style={styles.radioButtom}>
             <RadioButton
               color={Color.Blue500}
-              status={userType === 'student' ? 'checked' : 'unchecked'}
-              onPress={() => setUserType('student')}
+              status={userType === "student" ? "checked" : "unchecked"}
+              onPress={() => setUserType("student")}
             />
             <Text style={styles.textRadio}>Student</Text>
           </View>
 
           {/* DropDown component for selecting academic institution */}
-          {userType === 'student' && ( //if the user is student than the dropdown is visible
+          {userType === "student" && ( //if the user is student than the dropdown is visible
             <View>
               <View>
                 <DropDown
@@ -289,13 +289,13 @@ function SignUpScreen({ navigation }) {
 
             <Button
               style={{ marginTop: 10 }}
-              buttonColor={Color.Blue800}
+              buttonColor={Color.Blue700}
               textColor={Color.defaultTheme}
               mode="contained"
               onPress={handleSignUp}
               loading={isPending}
             >
-              {!isPending && 'SignUp   '}
+              {!isPending && "SignUp   "}
             </Button>
             <Spacer>
               <NavLink text="Back   " style={{ marginTop: -5, fontSize: 14 }} />
@@ -311,18 +311,18 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: 25,
     paddingBottom: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
   image: {
     flex: 1,
   },
   text: {
-    color: Color.Blue800,
-    fontFamily: 'OrbitronMedium',
+    color: Color.Blue700,
+    fontFamily: "OrbitronMedium",
   },
   inputsRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   textInput: {
     flex: 1,
@@ -330,11 +330,11 @@ const styles = StyleSheet.create({
   },
   title: {
     paddingHorizontal: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     paddingRight: 5,
   },
   genderView: {
-    flexDirection: 'row',
+    flexDirection: "row",
     borderRadius: 5,
     backgroundColor: Color.white,
     margin: 7,
@@ -344,7 +344,7 @@ const styles = StyleSheet.create({
   },
   radioButtom: {
     paddingHorizontal: 10,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   textRadio: {
     paddingTop: 8,

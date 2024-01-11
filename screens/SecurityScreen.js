@@ -93,7 +93,7 @@ function SecurityScreen() {
             <Spacer>
               <Button
                 style={{ marginTop: 20 }}
-                buttonColor={Color.Blue800}
+                buttonColor={Color.Blue700}
                 textColor={Color.defaultTheme}
                 mode="contained"
                 onPress={handleChangePassword}
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     // fontWeight: "bold",
     borderBottomWidth: 0.4,
     borderBottomColor: Color.Blue500,
-    color: Color.Blue900,
+    color: Color.Blue700,
   },
   text: {
     marginLeft: 2,

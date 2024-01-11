@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { View } from 'react-native';
-import { TextInput } from 'react-native-paper';
+import { useState } from "react";
+import { View } from "react-native";
+import { TextInput } from "react-native-paper";
 
-import { Color } from '../constants/colors';
-import { useDarkMode } from '../context/DarkModeContext';
+import { Color } from "../constants/colors";
+import { useDarkMode } from "../context/DarkModeContext";
 
 function Input({
   label,
@@ -39,9 +39,9 @@ function Input({
             ? { backgroundColor: Color.darkTheme }
             : { backgroundColor: Color.white }
         }
-        selectionColor={Color.Blue700}
-        outlineColor={Color.Blue200}
-        activeOutlineColor={color ? color : Color.Blue800}
+        // selectionColor={Color.Blue700}
+        // outlineColor={Color.Blue700}
+        activeOutlineColor={color ? color : Color.Blue700}
         mode={mode}
         value={value}
         error={error}
