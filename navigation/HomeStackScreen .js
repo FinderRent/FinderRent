@@ -59,36 +59,6 @@ function HomeStackScreen({ navigation }) {
           ),
         }}
       />
-
-      {/* <HomeStack.Screen
-        name="HouseDetailsScreen"
-        component={HouseDetailsScreen}
-        options={{
-          headerRight: () => (
-            <View style={{ marginLeft: -10 }}>
-              <Ionicons.Button
-                name="ios-menu"
-                size={25}
-                color={Color.darkTheme}
-                backgroundColor={isDarkMode ? Color.Brown700 : Color.Brown100}
-                onPress={() => navigation.openDrawer()}
-              />
-            </View>
-          ),
-          gestureEnabled: true,
-          transitionSpec: {
-            open: { animation: "timing", config: { duration: 300 } },
-            close: { animation: "timing", config: { duration: 300 } },
-          },
-          cardStyleInterpolator: ({ current: { progress } }) => {
-            return {
-              cardStyle: {
-                opacity: progress,
-              },
-            };
-          },
-        }}
-      /> */}
     </HomeStack.Navigator>
   );
 }

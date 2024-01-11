@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   price: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#2ecc71",
+    color: "#65B741",
   },
   favoriteButton: {
     position: "absolute",

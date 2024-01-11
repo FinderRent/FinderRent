@@ -1,10 +1,44 @@
 import React from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { SliderBox } from "react-native-image-slider-box";
+import HouseInfo from "../components/House/HouseInfo";
+import { Paragraph } from "react-native-paper";
 
+import { Color } from "../constants/colors";
 const DetailPage = ({ navigation, route }) => {
+  const images = [
+    "https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/home-improvement/wp-content/uploads/2022/07/download-23.jpg",
+    "https://www.bhg.com/thmb/3Vf9GXp3T-adDlU6tKpTbb-AEyE=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/white-modern-house-curved-patio-archway-c0a4a3b3-aa51b24d14d0464ea15d36e05aa85ac9.jpg",
+    "https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/home-improvement/wp-content/uploads/2022/07/download-23.jpg",
+  ];
+  const ParagraphDeatails =
+    "Discover the perfect three-bedroom rental nestled in a tranquil suburban setting. This charming house features an open-concept living area with ample natural light, a modern kitchen, and a master bedroom with an en-suite bathroom. Enjoy the peaceful backyard with a patio and fire pit. Conveniently located near parks and shopping, this home offers both comfort and convenience for your lifestyle.";
+
   return (
-    <View>
-      <Text>check</Text>
+    <View style={styles.pageContainer}>
+      <ScrollView>
+        <View style={styles.images}>
+          <SliderBox images={images} sliderBoxHeight={"100%"} />
+        </View>
+        <View style={styles.houseInfo}>
+          {/* <Text style={styles.price}>1000$</Text> */}
+          <Text style={styles.city}>Beer Sheva</Text>
+          <Text style={styles.street}>Avigdor hameiri 21/3</Text>
+          <Text style={styles.distance}>
+            2 kilometers away from SCE College
+          </Text>
+          <HouseInfo />
+          <Text style={styles.about}>About</Text>
+          <Paragraph>{ParagraphDeatails}</Paragraph>
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -12,49 +46,39 @@ const DetailPage = ({ navigation, route }) => {
 export default DetailPage;
 
 const styles = StyleSheet.create({
-  container: {
+  pageContainer: {
     flex: 1,
   },
-  title: {
-    fontSize: 16,
-    fontWeight: "700",
+  images: {
+    height: "60%",
+    marginBottom: "5%",
   },
-  caption: {},
-  image: {
-    height: 450,
-    width: null,
-    marginBottom: 1,
-    marginHorizontal: 16,
-    borderRadius: 16,
+  houseInfo: {
+    flexDirection: "col",
+    marginHorizontal: "4%",
   },
-  bottomView: {
-    alignItems: "center",
-    flexDirection: "row",
-    padding: 16,
+  price: {
+    fontSize: 35,
+    fontWeight: "bold",
+    color: "#65B741",
   },
-  content: {
-    alignItems: "center",
-    flexDirection: "row",
-    marginHorizontal: 16,
-    paddingVertical: 8,
+  city: {
+    fontSize: 35,
+    marginBottom: 5,
+    fontWeight: "bold",
   },
-  textContainer: {
-    marginHorizontal: 16,
+  street: {
+    fontSize: 25,
+    marginBottom: 5,
+    fontWeight: "bold",
+    // color: Color.gray,
   },
-  avatar: {
-    height: 35,
-    width: 35,
-    borderRadius: 20,
+  distance: {
+    fontSize: 20,
+    color: "#65B741",
   },
-  rowView: {
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "space-around",
-  },
-  icon: {
-    marginHorizontal: 5,
-  },
-  text: {
-    fontSize: 16,
+  about: {
+    fontSize: 25,
+    fontWeight: "bold",
   },
 });
