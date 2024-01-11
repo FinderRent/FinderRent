@@ -9,7 +9,7 @@ import Map from "../components/Map";
 import { useState } from "react";
 
 import { Color } from "../constants/colors";
-import HouseCard from "../components/HouseCard";
+import HouseCard from "../components/House/HouseCard";
 import ProfileLocation from "../components/ProfileLocation";
 import { useDarkMode } from "../context/DarkModeContext";
 import { StatusBar } from "expo-status-bar";
