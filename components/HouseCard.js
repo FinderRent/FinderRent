@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { SliderBox } from "react-native-image-slider-box";
 
-const HouseCard = () => {
+const HouseCard = ({ navigation }) => {
   const [isFavorite, setIsFavorite] = useState(false);
 
   const toggleFavorite = () => {
@@ -25,9 +25,17 @@ const HouseCard = () => {
           color={isFavorite ? "red" : "#E5E1DA"}
         />
       </TouchableOpacity>
-      <View style={styles.images}>
-        <SliderBox images={images} />
-      </View>
+      <TouchableOpacity>
+        <View style={styles.images}>
+          <SliderBox
+            images={images}
+            onCurrentImagePressed={() =>
+              navigation.navigate("HouseDetailsScreen")
+            }
+          />
+        </View>
+      </TouchableOpacity>
+
       <View style={styles.detailsContainer}>
         <View style={styles.addressContainer}>
           <Text style={styles.city}>Beer Sheva</Text>
