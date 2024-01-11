@@ -5,7 +5,7 @@ async function sendEmail({ email }) {
   console.log(ADDRESS);
   try {
     const response = await axios.post(
-      `http://172.19.32.216:3000/api/v1/users/forgotPassword`,
+      `http://${ADDRESS}:3000/api/v1/users/forgotPassword`,
       { email },
       {
         headers: {

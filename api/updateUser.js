@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { ADDRESS } from '@env';
+import axios from "axios";
+import { ADDRESS } from "@env";
 
 async function updateUser({
   userType,
@@ -17,24 +17,24 @@ async function updateUser({
   try {
     const formData = new FormData();
 
-    formData.append('userType', userType);
-    formData.append('firstName', firstName);
-    formData.append('lastName', lastName);
-    formData.append('age', age);
-    formData.append('phone', phone);
-    formData.append('academic', academic);
-    formData.append('department', department);
-    formData.append('yearbook', yearbook);
-    formData.append('email', email);
+    formData.append("userType", userType);
+    formData.append("firstName", firstName);
+    formData.append("lastName", lastName);
+    formData.append("age", age);
+    formData.append("phone", phone);
+    formData.append("academic", academic);
+    formData.append("department", department);
+    formData.append("yearbook", yearbook);
+    formData.append("email", email);
 
     if (avatar) {
       const localUri = avatar;
-      const filename = localUri.split('/').pop();
+      const filename = localUri.split("/").pop();
 
       const match = /\.(\w+)$/.exec(filename);
-      const type = match ? `image/${match[1]}` : 'image';
+      const type = match ? `image/${match[1]}` : "image";
 
-      formData.append('avatar', {
+      formData.append("avatar", {
         uri: localUri,
         name: filename,
         type,
@@ -47,7 +47,7 @@ async function updateUser({
       {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
         },
       }
     );

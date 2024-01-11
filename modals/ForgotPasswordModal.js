@@ -48,7 +48,7 @@ function ForgotPasswordModal({ showVisible }) {
   return (
     <View>
       <Modal
-        animationType="fade"
+        animationType="slide"
         transparent={true}
         visible={forgotPasswordVisible}
       >
