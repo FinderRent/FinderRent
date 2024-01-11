@@ -1,14 +1,14 @@
-import axios from 'axios';
-import { ADDRESS } from '@env';
+import axios from "axios";
+import { ADDRESS } from "@env";
 
 async function login({ email, password }) {
   try {
     const response = await axios.post(
-      `http://${ADDRESS}:3000/api/v1/users/login`,
+      `http://172.19.32.216:3000/api/v1/users/login`,
       { email, password },
       {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       }
     );

@@ -1,13 +1,13 @@
-import { useState } from 'react';
-import { ImageBackground, StyleSheet, View, SafeAreaView } from 'react-native';
-import { Button, Text } from 'react-native-paper';
+import { useState } from "react";
+import { ImageBackground, StyleSheet, View, SafeAreaView } from "react-native";
+import { Button, Text } from "react-native-paper";
 
-import { version as app_version } from '../package.json';
-import { Color } from '../constants/colors';
-import { useDarkMode } from '../context/DarkModeContext';
-import Input from '../components/Input';
-import PasswordInput from '../components/PasswordInput';
-import NavLink from '../components/NavLink';
+import { version as app_version } from "../package.json";
+import { Color } from "../constants/colors";
+import { useDarkMode } from "../context/DarkModeContext";
+import Input from "../components/Input";
+import PasswordInput from "../components/PasswordInput";
+import NavLink from "../components/NavLink";
 
 function SignInScreen({ navigation }) {
   const { isDarkMode } = useDarkMode();
@@ -18,14 +18,14 @@ function SignInScreen({ navigation }) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ImageBackground
-        source={require('../assets/images/home-background.jpg')}
+        source={require("../assets/images/home-background.jpg")}
         resizeMode="cover"
         style={styles.image}
       >
         <View
           style={
             isDarkMode
-              ? { ...styles.container, backgroundColor: 'rgba(0,0,0, 0.65)' }
+              ? { ...styles.container, backgroundColor: "rgba(0,0,0, 0.65)" }
               : styles.container
           }
         >
@@ -50,23 +50,23 @@ function SignInScreen({ navigation }) {
           </View>
 
           <NavLink
-            style={{ color: Color.Blue50 }}
+            style={{ color: Color.Blue100 }}
             text="שכחתי סיסמה"
             routeName="ForgotPasswordScreen"
           />
 
           <NavLink
-            style={{ color: Color.Blue50 }}
+            style={{ color: Color.Blue100 }}
             text="אין לך חשבון? לחץ כאן להירשם "
             routeName="SignUpScreen"
           />
 
           <Button
             style={styles.textInput}
-            buttonColor={Color.Blue800}
+            buttonColor={Color.Blue900}
             textColor={Color.defaultTheme}
             mode="contained"
-            onPress={() => console.log('preesed')}
+            onPress={() => console.log("preesed")}
           >
             התחבר
           </Button>
@@ -76,7 +76,7 @@ function SignInScreen({ navigation }) {
             buttonColor={Color.Brown500}
             textColor={Color.white}
             mode="elevated"
-            onPress={() => navigation.navigate('MainTabScreen')}
+            onPress={() => navigation.navigate("MainTabScreen")}
           >
             עמוד הבית
           </Button>
@@ -84,7 +84,7 @@ function SignInScreen({ navigation }) {
         <View
           style={
             isDarkMode
-              ? { ...styles.footer, backgroundColor: 'rgba(0,0,0, 0.65)' }
+              ? { ...styles.footer, backgroundColor: "rgba(0,0,0, 0.65)" }
               : styles.footer
           }
         >
@@ -101,8 +101,8 @@ export default SignInScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    backgroundColor: 'rgba(0,0,0, 0.35)',
+    justifyContent: "center",
+    backgroundColor: "rgba(0,0,0, 0.35)",
     opacity: 0.85,
   },
   image: {
@@ -110,18 +110,18 @@ const styles = StyleSheet.create({
   },
   text: {
     marginBottom: 20,
-    alignItems: 'center',
+    alignItems: "center",
   },
   textInput: {
     marginHorizontal: 15,
   },
   footer: {
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0, 0.35)',
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0, 0.35)",
     opacity: 0.85,
   },
   name: {
-    color: Color.Blue400,
+    color: Color.Blue300,
     letterSpacing: 0.1,
   },
   version: {

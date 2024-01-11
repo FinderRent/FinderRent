@@ -127,7 +127,7 @@ function ResetPasswordScreen({ route }) {
       <Spacer>
         <Button
           style={{ marginHorizontal: 10, marginTop: 10 }}
-          buttonColor={Color.Blue800}
+          buttonColor={Color.Blue700}
           textColor={Color.defaultTheme}
           mode="contained"
           onPress={handleResetPassword}
@@ -161,21 +161,21 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: "OrbitronMedium",
-    color: Color.Blue800,
+    color: Color.Blue700,
   },
   otp: {
     width: "85%",
     height: 85,
   },
   underlineStyleBase: {
-    color: Color.Blue800,
+    color: Color.Blue700,
     width: 40,
     height: 45,
     borderWidth: 1,
     borderBottomWidth: 4,
   },
   underlineStyleHighLighted: {
-    borderColor: Color.Blue900,
+    borderColor: Color.Blue700,
   },
   textInput: {
     margin: 6,

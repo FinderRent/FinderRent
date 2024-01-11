@@ -1,15 +1,15 @@
-import { useContext, useEffect } from 'react';
-import { View, SafeAreaView, StyleSheet, ImageBackground } from 'react-native';
-import { Title, Text, TouchableRipple } from 'react-native-paper';
-import { useIsFocused } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Toast from 'react-native-toast-message';
+import { useContext, useEffect } from "react";
+import { View, SafeAreaView, StyleSheet, ImageBackground } from "react-native";
+import { Title, Text, TouchableRipple } from "react-native-paper";
+import { useIsFocused } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import Toast from "react-native-toast-message";
 
-import { Color } from '../constants/colors';
-import { useDarkMode } from '../context/DarkModeContext';
-import { UserContext, useUsers } from '../context/UserContext';
-import DarkModeSwitch from '../components/ui/DarkModeSwitch';
+import { Color } from "../constants/colors";
+import { useDarkMode } from "../context/DarkModeContext";
+import { UserContext, useUsers } from "../context/UserContext";
+import DarkModeSwitch from "../components/ui/DarkModeSwitch";
 
 const ProfileScreen = ({ navigation }) => {
   const auth = useContext(UserContext);
@@ -30,13 +30,13 @@ const ProfileScreen = ({ navigation }) => {
 
   async function logoutHandler(auth, navigation) {
     try {
-      await AsyncStorage.removeItem('token');
+      await AsyncStorage.removeItem("token");
       auth.logout();
       Toast.show({
-        type: 'success',
-        text1: 'Logged Out Successfully',
+        type: "success",
+        text1: "Logged Out Successfully",
       });
-      navigation.navigate('HomeScreen');
+      navigation.navigate("HomeScreen");
     } catch (err) {
       console.log(err);
     }
@@ -69,7 +69,7 @@ const ProfileScreen = ({ navigation }) => {
         <Text style={styles.infoTitle}>{userType} Profile</Text>
       </View>
 
-      {userData.userType === 'student' ? (
+      {userData.userType === "student" ? (
         <View style={styles.userInfoSection}>
           <View style={styles.row}>
             <Icon
@@ -100,7 +100,7 @@ const ProfileScreen = ({ navigation }) => {
           <View style={styles.row}>
             <Icon name="phone-outline" color={Color.icon} size={20} />
             <Text style={styles.text}>
-              {userData.phone ? userData.phone : 'Not available'}
+              {userData.phone ? userData.phone : "Not available"}
             </Text>
           </View>
 
@@ -121,7 +121,7 @@ const ProfileScreen = ({ navigation }) => {
             <Text style={styles.menuItemText}>Favorites</Text>
           </View>
         </TouchableRipple>
-        <TouchableRipple onPress={() => navigation.navigate('SecurityScreen')}>
+        <TouchableRipple onPress={() => navigation.navigate("SecurityScreen")}>
           <View style={styles.menuItem}>
             <Icon name="shield-lock-outline" color={Color.icon} size={25} />
             <Text style={styles.menuItemText}>Security</Text>
@@ -158,14 +158,14 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   avatar: {
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 20,
   },
   title: {
     marginTop: 5,
     marginBottom: 25,
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   info: {
     marginBottom: 20,
@@ -175,19 +175,19 @@ const styles = StyleSheet.create({
     borderColor: Color.Blue500,
   },
   infoTitle: {
-    fontWeight: '800',
+    fontWeight: "800",
     fontSize: 15,
-    color: Color.Blue900,
+    color: Color.Blue700,
     marginBottom: 5,
   },
   text: {
     color: Color.icon,
     marginLeft: 10,
-    fontFamily: 'varelaRound',
+    fontFamily: "varelaRound",
   },
 
   row: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginBottom: 10,
   },
 
@@ -195,8 +195,8 @@ const styles = StyleSheet.create({
     marginTop: -15,
   },
   menuItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingVertical: 10,
     paddingHorizontal: 30,
   },
@@ -204,6 +204,6 @@ const styles = StyleSheet.create({
     color: Color.icon,
     marginLeft: 10,
     fontSize: 16,
-    fontFamily: 'varelaRound',
+    fontFamily: "varelaRound",
   },
 });

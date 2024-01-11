@@ -70,7 +70,6 @@ function SignInModal({ showVisible }) {
 
   const handleForgotPassword = () => {
     setShowForgotPasswordModal(true);
-    showVisible(true);
   };
 
   const handleCancel = () => {
@@ -101,14 +100,13 @@ function SignInModal({ showVisible }) {
         >
           <View style={styles.centeredView}>
             <View
-              style={
-                isDarkMode
-                  ? {
-                      ...styles.modalView,
-                      backgroundColor: Color.buttomSheetDarkTheme,
-                    }
-                  : styles.modalView
-              }
+              style={{
+                ...styles.modalView,
+                height: showForgotPasswordModal ? 1 : undefined,
+                backgroundColor: isDarkMode
+                  ? Color.buttomSheetDarkTheme
+                  : styles.modalView.backgroundColor,
+              }}
             >
               <Text style={styles.modalText}>Login</Text>
 
@@ -131,13 +129,13 @@ function SignInModal({ showVisible }) {
                   label="Email"
                   keyboardType="email-address"
                   mode="outlined"
-                  color="#2196F3"
+                  color={Color.Blue700}
                   onValueChange={(selectedMail) => setEmail(selectedMail)}
                 />
                 <PasswordInput
                   mode="outlined"
                   label="Password"
-                  color="#2196F3"
+                  color={Color.Blue700}
                   onValueChange={(password) => setPassword(password)}
                 />
               </View>
@@ -203,17 +201,17 @@ const styles = StyleSheet.create({
     padding: 5,
     elevation: 2,
     marginVertical: 10,
-    backgroundColor: "#2196F3",
+    backgroundColor: Color.Blue700,
   },
   buttonOpen: {
     borderRadius: 20,
     padding: 5,
     elevation: 2,
     marginVertical: 10,
-    backgroundColor: "#2196F3",
+    backgroundColor: Color.Blue700,
   },
   buttonClose: {
-    backgroundColor: "#2196F3",
+    backgroundColor: Color.Blue700,
   },
   textStyle: {
     fontWeight: "bold",
@@ -224,14 +222,14 @@ const styles = StyleSheet.create({
     marginTop: 15,
     textAlign: "center",
     fontSize: 44,
-    color: "#2196F3",
+    color: Color.Blue700,
     fontWeight: "bold",
   },
   textInput: {
     fontSize: 15,
     margin: 5,
     justifyContent: "center",
-    color: "#2196F3",
+    color: Color.Blue700,
   },
   textRow: {
     flex: 1,

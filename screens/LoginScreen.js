@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Button, Text } from 'react-native-paper';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { useEffect, useState } from "react";
+import { StyleSheet, View } from "react-native";
+import { Button, Text } from "react-native-paper";
+import { FontAwesome5 } from "@expo/vector-icons";
 
-import { Color } from '../constants/colors';
-import { useUsers } from '../context/UserContext';
-import SignInModal from '../modals/SignInModal';
+import { Color } from "../constants/colors";
+import { useUsers } from "../context/UserContext";
+import SignInModal from "../modals/SignInModal";
 
 function LoginScreen({ navigation, route }) {
   const { userData } = useUsers();
@@ -15,11 +15,11 @@ function LoginScreen({ navigation, route }) {
   const headerTitle = route.name;
   let screenName = null;
 
-  if (headerTitle === 'ProfileScreen') {
-    screenName = 'profile';
+  if (headerTitle === "ProfileScreen") {
+    screenName = "profile";
   }
-  if (headerTitle === 'ChatListScreen') {
-    screenName = 'chats';
+  if (headerTitle === "ChatListScreen") {
+    screenName = "chats";
   }
 
   useEffect(() => {
@@ -35,7 +35,7 @@ function LoginScreen({ navigation, route }) {
       <FontAwesome5
         name="user-lock"
         size={100}
-        color={Color.Blue200}
+        color={Color.Blue500}
         style={styles.icon}
       />
       <Text style={styles.text}>Sign in to see the {screenName} screen.</Text>
@@ -64,16 +64,16 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     // alignItems: 'center',
   },
   icon: {
-    textAlign: 'center',
+    textAlign: "center",
   },
   text: {
-    textAlign: 'center',
+    textAlign: "center",
     color: Color.gray,
-    fontFamily: 'varelaRound',
+    fontFamily: "varelaRound",
     fontSize: 17,
     letterSpacing: 0.3,
   },

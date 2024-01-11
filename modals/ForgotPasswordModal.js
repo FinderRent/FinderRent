@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
     textAlign: "center",
     fontSize: 11,
-    color: Color.Blue800,
+    color: Color.Blue700,
     fontFamily: "OrbitronMedium",
   },
   textInput: {
@@ -145,6 +145,6 @@ const styles = StyleSheet.create({
   button: {
     elevation: 2,
     marginVertical: 5,
-    backgroundColor: Color.Blue800,
+    backgroundColor: Color.Blue700,
   },
 });
