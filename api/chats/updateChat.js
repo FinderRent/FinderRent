@@ -8,7 +8,7 @@ async function updateChat({ messageText: lastMessage, chatId }) {
 
   try {
     const response = await axios.patch(
-      `https://${ADDRESS}:3000/api/v1/chats/update/${chatId}`,
+      `http://${ADDRESS}:3000/api/v1/chats/update/${chatId}`,
       { lastMessage },
       {
         headers: {

@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
+  FlatList,
   ImageBackground,
   KeyboardAvoidingView,
   Platform,
@@ -10,19 +11,38 @@ import {
 } from "react-native";
 import { Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Ionicons } from "@expo/vector-icons";
+import { io } from "socket.io-client";
 import moment from "moment";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { useUsers } from "../context/UserContext";
+import PageContainer from "../components/PageContainer";
+import Bubble from "../components/chats/Bubble";
+import getMessages from "../api/chats/getMessages";
+import addMessages from "../api/chats/addMessages";
 
 function ChatScreen({ navigation, route }) {
   const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
   const { image, title, ouid } = route.params;
+  const socket = useRef();
 
+  const [messages, setMessages] = useState([]);
   const [messageText, setMessageText] = useState("");
+  const [chatId, setChatId] = useState(route?.params?.chatId);
+  const [onlineUsers, setOnilneUsers] = useState([]);
+  const [sendMessage, setSendMessage] = useState(null);
+  const [receiveMessage, setReceiveMessage] = useState(null);
+  const senderId = userData.id;
+
+  const message = {
+    senderId,
+    messageText,
+    chatId,
+  };
 
   useEffect(() => {
     const CustomHeader = () => (
@@ -73,8 +93,60 @@ function ChatScreen({ navigation, route }) {
     moment.locale("en");
   }, [isDarkMode]);
 
-  const sendMessage = useCallback(() => {
-    setMessageText("");
+  useEffect(() => {
+    socket.current = io("http://192.168.1.214:3000");
+    socket.current.emit("new-user-add", senderId);
+    socket.current.on("get-users", (users) => {
+      setOnilneUsers(users);
+    });
+    return () => {
+      socket.current.disconnect();
+      // console.log("user disconnect");
+    };
+  }, [senderId]);
+
+  useEffect(() => {
+    // sending message to socket server
+    if (sendMessage !== null) {
+      socket.current.emit("send-message", sendMessage);
+    }
+  }, [sendMessage]);
+
+  useEffect(() => {
+    // recieve message from socket server
+    socket.current.on("receive-message", (data) => {
+      setReceiveMessage(data);
+    });
+  }, [sendMessage]);
+
+  useEffect(() => {
+    const refetchData = async () => {
+      await refetch();
+    };
+    if (receiveMessage !== null && receiveMessage.chatId === chatId) {
+      setMessages([...messages, receiveMessage]);
+    }
+    refetchData();
+  }, [receiveMessage]);
+
+  const { data, refetch } = useQuery({
+    queryKey: ["messages", chatId],
+    queryFn: () => getMessages(chatId),
+  });
+
+  const { mutate } = useMutation({
+    mutationFn: (message) => addMessages(message),
+    onSuccess: async (data) => {
+      setSendMessage({ ...message, ouid });
+      await refetch();
+      setMessages([...messages, data]);
+      setMessageText("");
+    },
+    onError: (err) => console.log(err.message),
+  });
+
+  const handelSendMessage = useCallback(() => {
+    mutate(message);
   }, [messageText]);
 
   const getBackgroundImage = (isDarkMode) => {
@@ -93,7 +165,30 @@ function ChatScreen({ navigation, route }) {
         <ImageBackground
           source={getBackgroundImage(isDarkMode)}
           style={styles.backgroundImage}
-        ></ImageBackground>
+        >
+          <PageContainer style={{ backgroundColor: "transparent" }}>
+            {!chatId && (
+              <Bubble text="Send message to start conversation" type="system" />
+            )}
+            {chatId && (
+              <FlatList
+                data={data}
+                renderItem={(itemData) => {
+                  const message = itemData.item;
+                  const isOwnMessage = message.senderId === userData.id;
+                  const messageType = isOwnMessage
+                    ? "myMessage"
+                    : "theirMessage";
+
+                  return (
+                    <Bubble type={messageType} text={message.messageText} />
+                  );
+                }}
+              />
+            )}
+          </PageContainer>
+        </ImageBackground>
+
         <View style={styles.inputContainer}>
           <TouchableOpacity
             style={styles.mediaButton}
@@ -103,20 +198,22 @@ function ChatScreen({ navigation, route }) {
           </TouchableOpacity>
 
           <TextInput
+            autoCapitalize="none"
             style={
               isDarkMode
                 ? { ...styles.textbox, color: Color.white }
                 : { ...styles.textbox }
             }
             selectionColor={Color.Brown500}
-            placeholder="message"
+            placeholder="Message"
             placeholderTextColor={
               isDarkMode ? Color.defaultTheme : Color.darkTheme
             }
             value={messageText}
             onChangeText={(text) => setMessageText(text)}
-            onSubmitEditing={sendMessage}
+            onSubmitEditing={handelSendMessage}
           />
+
           {messageText === "" && (
             <TouchableOpacity
               style={styles.mediaButton}
@@ -125,8 +222,12 @@ function ChatScreen({ navigation, route }) {
               <Ionicons name="camera" size={24} color={Color.Blue500} />
             </TouchableOpacity>
           )}
+
           {messageText !== "" && (
-            <TouchableOpacity style={styles.mediaButton} onPress={sendMessage}>
+            <TouchableOpacity
+              style={styles.mediaButton}
+              onPress={handelSendMessage}
+            >
               <Ionicons name="send" size={24} color={Color.Blue500} />
             </TouchableOpacity>
           )}
@@ -141,14 +242,13 @@ export default ChatScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "column-reverse",
+    flexDirection: "column",
   },
   screen: {
     flex: 1,
   },
   backgroundImage: {
     flex: 1,
-    opacity: 0.7,
   },
   inputContainer: {
     flexDirection: "row",
@@ -160,12 +260,12 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     fontFamily: "varelaRound",
-    // textAlign: 'right',
+    // textAlign: "right",
     borderWidth: 1,
     borderRadius: 50,
-    borderColor: Color.Blue500,
     marginHorizontal: 5,
     paddingHorizontal: 15,
+    borderColor: Color.Blue500,
   },
   mediaButton: {
     alignItems: "center",

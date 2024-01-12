@@ -4,7 +4,7 @@ import { ADDRESS } from "@env";
 async function getMessages(chatId) {
   try {
     const response = await axios.get(
-      `https://${ADDRESS}:3000/api/v1/messages/${chatId}`
+      `http://${ADDRESS}:3000/api/v1/messages/${chatId}`
     );
 
     const responseData = response.data;

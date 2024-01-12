@@ -1,7 +1,7 @@
 import { ADDRESS } from "@env";
 
 async function addMessages(message) {
-  const { senderId, messageText, chatId, replyingTo, tempImageUri } = message;
+  const { senderId, messageText, chatId } = message;
   try {
     const formData = new FormData();
 
@@ -9,26 +9,7 @@ async function addMessages(message) {
     formData.append("senderId", senderId);
     formData.append("messageText", messageText);
 
-    if (replyingTo) {
-      const replyingToJson = JSON.stringify(replyingTo);
-      formData.append("replyingTo", replyingToJson);
-    }
-
-    if (tempImageUri !== "" || tempImageUri) {
-      const localUri = tempImageUri;
-      const filename = localUri.split("/").pop();
-
-      const match = /\.(\w+)$/.exec(filename);
-      const type = match ? `image/${match[1]}` : "image";
-
-      formData.append("image", {
-        uri: localUri,
-        name: filename,
-        type,
-      });
-    }
-
-    const response = await fetch(`https://${ADDRESS}:3000/api/v1/messages`, {
+    const response = await fetch(`http://${ADDRESS}:3000/api/v1/messages`, {
       method: "POST",
       body: formData,
     });

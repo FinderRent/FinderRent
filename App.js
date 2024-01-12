@@ -1,14 +1,15 @@
-import * as SplashScreen from 'expo-splash-screen';
-import * as Font from 'expo-font';
-import { useCallback, useEffect, useState } from 'react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { I18nManager } from 'react-native';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import Toast from 'react-native-toast-message';
+import * as SplashScreen from "expo-splash-screen";
+import * as Font from "expo-font";
+import { useCallback, useEffect, useState } from "react";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { I18nManager } from "react-native";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { MenuProvider } from "react-native-popup-menu";
+import Toast from "react-native-toast-message";
 
-import { UserContext, useUsers } from './context/UserContext';
-import { DarkModeProvider } from './context/DarkModeContext';
-import AuthStackScreens from './navigation/AuthStackScreens';
+import { UserContext, useUsers } from "./context/UserContext";
+import { DarkModeProvider } from "./context/DarkModeContext";
+import AuthStackScreens from "./navigation/AuthStackScreens";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -49,10 +50,10 @@ export default function App() {
     const prepare = async () => {
       try {
         await Font.loadAsync({
-          varelaRound: require('./assets/fonts/VarelaRound-Regular.ttf'),
-          DancingScript: require('./assets/fonts/DancingScript-Regular.ttf'),
-          OrbitronMedium: require('./assets/fonts/Orbitron-Medium.ttf'),
-          Merienda: require('./assets/fonts/Merienda-Regular.ttf'),
+          varelaRound: require("./assets/fonts/VarelaRound-Regular.ttf"),
+          DancingScript: require("./assets/fonts/DancingScript-Regular.ttf"),
+          OrbitronMedium: require("./assets/fonts/Orbitron-Medium.ttf"),
+          Merienda: require("./assets/fonts/Merienda-Regular.ttf"),
         });
       } catch (error) {
         console.log.error();
@@ -97,7 +98,9 @@ export default function App() {
               email,
             }}
           >
-            <AuthStackScreens />
+            <MenuProvider>
+              <AuthStackScreens />
+            </MenuProvider>
             <Toast />
           </UserContext.Provider>
         </QueryClientProvider>
