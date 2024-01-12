@@ -41,7 +41,6 @@ const styles = StyleSheet.create({
   },
   menuText: {
     flex: 1,
-    fontFamily: "regular",
     letterSpacing: 0.3,
     fontSize: 16,
   },

@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     borderLeftWidth: 5,
-    borderLeftColor: Color.Blue500,
+    borderLeftColor: Color.Blue700,
     marginHorizontal: 10,
     borderTopRightRadius: 10,
     borderTopLeftRadius: 10,
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontFamily: "varelaRound",
-    color: Color.Blue800,
+    color: Color.Blue500,
     letterSpacing: 0.3,
   },
 });

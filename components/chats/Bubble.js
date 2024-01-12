@@ -101,7 +101,7 @@ function Bubble({
               type="reply"
               text={replyingTo.messageText}
               imageUrl={replyingTo?.image?.url}
-              name={replyingTo.senderId === senderId ? "את/ה" : title}
+              name={replyingTo.senderId === senderId ? "You" : title}
             />
           )}
 
@@ -115,7 +115,6 @@ function Bubble({
             <MenuOptions
               customStyles={{
                 optionsContainer: {
-                  width: 130,
                   margin: 10,
                 },
               }}

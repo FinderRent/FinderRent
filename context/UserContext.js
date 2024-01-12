@@ -1,11 +1,11 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   createContext,
   useContext,
   useCallback,
   useState,
   useEffect,
-} from 'react';
+} from "react";
 
 // Create a UserContext with default login and logout functions
 const UserContext = createContext({
@@ -64,7 +64,7 @@ function useUsers() {
 
       try {
         // Save user data to AsyncStorage
-        await AsyncStorage.setItem('userData', JSON.stringify(data));
+        await AsyncStorage.setItem("userData", JSON.stringify(data));
       } catch (err) {
         console.log(err);
       }
@@ -78,7 +78,7 @@ function useUsers() {
     const removeData = async () => {
       try {
         // Remove user data from AsyncStorage
-        await AsyncStorage.removeItem('userData');
+        await AsyncStorage.removeItem("userData");
       } catch (err) {
         console.log(err);
       }
@@ -107,8 +107,8 @@ function useUsers() {
     const getStoredData = async () => {
       try {
         // Retrieve stored user data and token from AsyncStorage
-        const storedData = await AsyncStorage.getItem('userData');
-        const storedToken = await AsyncStorage.getItem('token');
+        const storedData = await AsyncStorage.getItem("userData");
+        const storedToken = await AsyncStorage.getItem("token");
 
         if (storedData !== null) {
           // Login user with stored data
@@ -125,7 +125,7 @@ function useUsers() {
   // Check if the hook is used outside of the UserProvider
   const userData = useContext(UserContext);
   if (userData === undefined) {
-    throw new Error('UserContext was used outside of the UserProvider');
+    throw new Error("UserContext was used outside of the UserProvider");
   }
 
   // Object containing login, logout functions, and user data

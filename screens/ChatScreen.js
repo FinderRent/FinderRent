@@ -14,6 +14,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Ionicons } from "@expo/vector-icons";
 import { io } from "socket.io-client";
+import AwesomeAlert from "react-native-awesome-alerts";
 import moment from "moment";
 
 import { Color } from "../constants/colors";
@@ -21,8 +22,10 @@ import { useDarkMode } from "../context/DarkModeContext";
 import { useUsers } from "../context/UserContext";
 import PageContainer from "../components/PageContainer";
 import Bubble from "../components/chats/Bubble";
+import ReplyTo from "../components/chats/ReplyTo";
 import getMessages from "../api/chats/getMessages";
 import addMessages from "../api/chats/addMessages";
+import updateChat from "../api/chats/updateChat";
 
 function ChatScreen({ navigation, route }) {
   const { userData } = useUsers();
@@ -30,13 +33,15 @@ function ChatScreen({ navigation, route }) {
   const { image, title, ouid } = route.params;
   const socket = useRef();
 
+  const senderId = userData.id;
   const [messages, setMessages] = useState([]);
   const [messageText, setMessageText] = useState("");
   const [chatId, setChatId] = useState(route?.params?.chatId);
   const [onlineUsers, setOnilneUsers] = useState([]);
   const [sendMessage, setSendMessage] = useState(null);
   const [receiveMessage, setReceiveMessage] = useState(null);
-  const senderId = userData.id;
+  const [replyingTo, setReplyingTo] = useState();
+  const [tempImageUri, setTempImageUri] = useState("");
 
   const message = {
     senderId,
@@ -176,17 +181,34 @@ function ChatScreen({ navigation, route }) {
                 renderItem={(itemData) => {
                   const message = itemData.item;
                   const isOwnMessage = message.senderId === userData.id;
+                  const time = moment(message.createdAt).fromNow();
                   const messageType = isOwnMessage
                     ? "myMessage"
                     : "theirMessage";
 
                   return (
-                    <Bubble type={messageType} text={message.messageText} />
+                    <Bubble
+                      type={messageType}
+                      text={message.messageText}
+                      time={time}
+                      setReply={() => setReplyingTo(message)}
+                      replyingTo={message.replyingTo}
+                    />
                   );
                 }}
               />
             )}
+            {/* {isError && (
+              <Bubble text="Error sending the message,try again" type="error" />
+            )} */}
           </PageContainer>
+          {replyingTo && (
+            <ReplyTo
+              name={replyingTo.senderId === senderId ? "You" : title}
+              text={replyingTo.messageText}
+              onCancel={() => setReplyingTo(null)}
+            />
+          )}
         </ImageBackground>
 
         <View style={styles.inputContainer}>
@@ -260,7 +282,6 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     fontFamily: "varelaRound",
-    // textAlign: "right",
     borderWidth: 1,
     borderRadius: 50,
     marginHorizontal: 5,
