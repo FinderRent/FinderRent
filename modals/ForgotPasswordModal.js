@@ -132,9 +132,9 @@ const styles = StyleSheet.create({
     marginBottom: 0,
     marginTop: 15,
     textAlign: "center",
-    fontSize: 11,
+    fontSize: 13,
     color: Color.Blue700,
-    fontFamily: "OrbitronMedium",
+    // fontFamily: "OrbitronMedium",
   },
   textInput: {
     fontSize: 15,

@@ -157,6 +157,7 @@ function SignInModal({ showVisible }) {
                 mode="contained"
                 onPress={handleLogin}
                 loading={isPending}
+                textColor={Color.defaultTheme}
               >
                 {!isPending && "Login   "}
               </Button>
