@@ -1,15 +1,15 @@
 import axios from "axios";
 import { ADDRESS } from "@env";
 
-async function fetchChats(ouid) {
+async function getMessages(chatId) {
   try {
     const response = await axios.get(
-      `http://${ADDRESS}:3000/api/v1/users/${ouid}`
+      `https://${ADDRESS}:3000/api/v1/messages/${chatId}`
     );
 
     const responseData = response.data;
 
-    if (response.status !== 200) {
+    if (!response.status === 200) {
       throw new Error(responseData.message);
     }
 
@@ -19,4 +19,4 @@ async function fetchChats(ouid) {
   }
 }
 
-export default fetchChats;
+export default getMessages;

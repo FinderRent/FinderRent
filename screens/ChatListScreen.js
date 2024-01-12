@@ -111,6 +111,6 @@ const styles = StyleSheet.create({
   line: {
     margin: 10,
     borderBottomWidth: 0.5,
-    borderBottomColor: Color.Blue500,
+    borderBottomColor: Color.Brown500,
   },
 });

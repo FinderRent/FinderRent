@@ -1,5 +1,5 @@
-import { ADDRESS } from '@env';
-import axios from 'axios';
+import axios from "axios";
+import { ADDRESS } from "@env";
 
 async function fetchChatsList(id) {
   try {

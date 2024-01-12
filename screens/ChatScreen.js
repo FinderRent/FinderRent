@@ -12,7 +12,6 @@ import { Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import moment from "moment";
-// import 'moment/locale/he';
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
