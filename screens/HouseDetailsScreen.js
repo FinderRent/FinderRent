@@ -3,26 +3,75 @@ import {
   Image,
   ScrollView,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from "react-native";
 import { SliderBox } from "react-native-image-slider-box";
 import HouseInfo from "../components/House/HouseInfo";
-import { Paragraph } from "react-native-paper";
-import { Color } from "../constants/colors";
-import Carousel from "react-native-reanimated-carousel";
+import { Paragraph, Text } from "react-native-paper";
 import Map from "../components/Map/Map";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import MapModal from "../modals/MapModal";
 import HouseRoommates from "../components/House/HouseRoommates";
+import Seperator from "../components/Seperator";
+import HouseAssets from "../components/House/HouseAssets";
+import HouseAssetsModal from "../modals/HouseAssetsModal";
+
 const DetailPage = ({ navigation, route }) => {
   const [mapPress, setMapPress] = useState(false);
+  const [showAll, setShowAll] = useState(false);
+
   const images = [
     "https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/home-improvement/wp-content/uploads/2022/07/download-23.jpg",
     "https://www.bhg.com/thmb/3Vf9GXp3T-adDlU6tKpTbb-AEyE=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/white-modern-house-curved-patio-archway-c0a4a3b3-aa51b24d14d0464ea15d36e05aa85ac9.jpg",
     "https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/home-improvement/wp-content/uploads/2022/07/download-23.jpg",
   ];
+
+  const Assets = [
+    {
+      name: "TV",
+    },
+    {
+      name: "Balcony",
+    },
+    {
+      name: "Beds",
+    },
+    {
+      name: "Wifi",
+    },
+    {
+      name: "Oven",
+    },
+    {
+      name: "Microwave",
+    },
+    {
+      name: "Couch",
+    },
+    {
+      name: "Coffee Table",
+    },
+    {
+      name: "Water Heater",
+    },
+    {
+      name: "Washer",
+    },
+    {
+      name: "Dryer",
+    },
+    {
+      name: "Iron",
+    },
+    {
+      name: "Refrigirator",
+    },
+    {
+      name: "freezer",
+    },
+  ];
+
   const ParagraphDeatails =
     "Discover the perfect three-bedroom rental nestled in a tranquil suburban setting. This charming house features an open-concept living area with ample natural light, a modern kitchen, and a master bedroom with an en-suite bathroom. Enjoy the peaceful backyard with a patio and fire pit. Conveniently located near parks and shopping, this home offers both comfort and convenience for your lifestyle.";
 
@@ -30,6 +79,9 @@ const DetailPage = ({ navigation, route }) => {
 
   const handleMapPress = () => {
     setMapPress(!mapPress);
+  };
+  const handleShowAllPress = () => {
+    setShowAll(!showAll);
   };
 
   return (
@@ -52,6 +104,15 @@ const DetailPage = ({ navigation, route }) => {
           scrollEnabled={false}
         />
         {mapPress && <MapModal handleMapPress={handleMapPress} />}
+        <Seperator />
+        <HouseAssets handleShowAllPress={handleShowAllPress} Assets={Assets} />
+        {showAll && (
+          <HouseAssetsModal
+            handleMapPress={handleShowAllPress}
+            Assets={Assets}
+          />
+        )}
+        <Seperator />
       </View>
     </ScrollView>
   );
