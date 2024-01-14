@@ -19,7 +19,7 @@ import HouseAssets from "../components/House/HouseAssets";
 import HouseAssetsModal from "../modals/HouseAssetsModal";
 import RoommatesInfo from "../components/House/RoommatesInfo";
 
-const DetailPage = ({ navigation, route }) => {
+const HouseDetailsScreen = ({ navigation, route }) => {
   const [mapPress, setMapPress] = useState(false);
   const [showAll, setShowAll] = useState(false);
 
@@ -154,7 +154,7 @@ const DetailPage = ({ navigation, route }) => {
   );
 };
 
-export default DetailPage;
+export default HouseDetailsScreen;
 
 const styles = StyleSheet.create({
   images: {
