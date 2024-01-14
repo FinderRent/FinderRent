@@ -100,7 +100,7 @@ const DetailPage = ({ navigation, route }) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <Animated.ScrollView style={{ marginBottom: 10 }}>
+      <Animated.ScrollView>
         <View style={styles.images}>
           <SliderBox images={images} sliderBoxHeight={"100%"} />
         </View>
