@@ -114,12 +114,12 @@ const DetailPage = ({ navigation, route }) => {
           <Text style={styles.about}>About</Text>
           <Paragraph>{ParagraphDeatails}</Paragraph>
           <HouseInfo />
-          <Map
+          {/* <Map
             handleMapPress={handleMapPress}
             zoomEnabled={false}
             scrollEnabled={false}
           />
-          {mapPress && <MapModal handleMapPress={handleMapPress} />}
+          {mapPress && <MapModal handleMapPress={handleMapPress} />} */}
           <Seperator />
           <HouseAssets
             handleShowAllPress={handleShowAllPress}

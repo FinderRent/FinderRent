@@ -3,13 +3,25 @@ import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Text } from "react-native-paper";
 import { ListItem, Avatar } from "react-native-elements";
 
+import { useDarkMode } from "../../context/DarkModeContext";
+import { Color } from "../../constants/colors";
+
 const RoommatesInfo = (props) => {
+  const { isDarkMode } = useDarkMode();
+
   return (
     <View style={styles.seperator}>
       <Text style={styles.Header}>You will live with</Text>
       <View>
         {props.Roommates.map((l, i) => (
-          <ListItem key={i}>
+          <ListItem
+            containerStyle={
+              isDarkMode
+                ? { backgroundColor: Color.darkTheme }
+                : { backgroundColor: Color.white }
+            }
+            key={i}
+          >
             <Avatar
               source={{
                 //fix it to be dynamic
@@ -17,8 +29,24 @@ const RoommatesInfo = (props) => {
               }}
             />
             <ListItem.Content>
-              <ListItem.Title>{l.name}</ListItem.Title>
-              <ListItem.Subtitle>{l.subtitle}</ListItem.Subtitle>
+              <ListItem.Title
+                style={
+                  isDarkMode
+                    ? { color: Color.white }
+                    : { color: Color.darkTheme }
+                }
+              >
+                {l.name}
+              </ListItem.Title>
+              <ListItem.Subtitle
+                style={
+                  isDarkMode
+                    ? { color: Color.white }
+                    : { color: Color.darkTheme }
+                }
+              >
+                {l.subtitle}
+              </ListItem.Subtitle>
             </ListItem.Content>
           </ListItem>
         ))}
