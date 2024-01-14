@@ -100,7 +100,11 @@ const DetailPage = ({ navigation, route }) => {
 
   return (
     <View style={{ flex: 1 }}>
+<<<<<<< HEAD
       <Animated.ScrollView style={{ marginBottom: 10 }}>
+=======
+      <Animated.ScrollView>
+>>>>>>> d16c1e2f889a7118bde582383bb51704d3d5b2cb
         <View style={styles.images}>
           <SliderBox images={images} sliderBoxHeight={"100%"} />
         </View>
@@ -127,7 +131,11 @@ const DetailPage = ({ navigation, route }) => {
           />
           {showAll && (
             <HouseAssetsModal
+<<<<<<< HEAD
               handleMapPress={handleShowAllPress}
+=======
+              handleShowAllPress={handleShowAllPress}
+>>>>>>> d16c1e2f889a7118bde582383bb51704d3d5b2cb
               Assets={Assets}
             />
           )}

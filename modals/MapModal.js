@@ -1,15 +1,5 @@
-import React, { useState, useRef } from "react";
-import {
-  View,
-  StyleSheet,
-  Dimensions,
-  TouchableOpacity,
-  Text,
-  Animated,
-  Modal,
-  Pressable,
-  Image,
-} from "react-native";
+import React from "react";
+import { View, StyleSheet, TouchableOpacity, Modal } from "react-native";
 import MapView from "react-native-maps";
 import { MaterialIcons } from "@expo/vector-icons";
 
@@ -17,6 +7,7 @@ function MapModal(props) {
   const handleMapPress = () => {
     props.handleMapPress();
   };
+
   return (
     <Modal visible={true} transparent={true} animationType="fade">
       <View style={styles.modalBackground}>

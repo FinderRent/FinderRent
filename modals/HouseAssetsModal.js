@@ -3,32 +3,63 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
-  Text,
   Modal,
   ScrollView,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { ListItem } from "react-native-elements";
 
+import { useDarkMode } from "../context/DarkModeContext";
+import { Color } from "../constants/colors";
+import { Text } from "react-native-paper";
+
 function HouseAssetsModal(props) {
-  const handleMapPress = () => {
-    props.handleMapPress();
+  const { isDarkMode } = useDarkMode();
+
+  const handleShowAllPress = () => {
+    props.handleShowAllPress();
   };
+
   return (
     <Modal visible={true} transparent={true} animationType="fade">
       <View style={styles.modalBackground}>
-        <View style={styles.modalContainer}>
+        <View
+          style={
+            isDarkMode
+              ? { ...styles.modalContainer, backgroundColor: Color.darkTheme }
+              : styles.modalContainer
+          }
+        >
           <Text style={styles.Header}>What this place offers</Text>
           <ScrollView>
             {props.Assets.map((l, i) => (
-              <ListItem key={i} bottomDivider>
+              <ListItem
+                containerStyle={
+                  isDarkMode
+                    ? { backgroundColor: Color.darkTheme }
+                    : { backgroundColor: Color.white }
+                }
+                key={i}
+                bottomDivider
+              >
                 <ListItem.Content>
-                  <ListItem.Title>{l.name}</ListItem.Title>
+                  <ListItem.Title
+                    style={
+                      isDarkMode
+                        ? { color: Color.white }
+                        : { color: Color.darkTheme }
+                    }
+                  >
+                    {l.name}
+                  </ListItem.Title>
                 </ListItem.Content>
               </ListItem>
             ))}
           </ScrollView>
-          <TouchableOpacity style={styles.closeButton} onPress={handleMapPress}>
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={handleShowAllPress}
+          >
             <MaterialIcons name="close" size={24} color="#fff" />
           </TouchableOpacity>
         </View>

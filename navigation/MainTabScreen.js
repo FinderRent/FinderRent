@@ -95,7 +95,7 @@ function MainTabScreen() {
                     />
                     <Text
                       style={{
-                        fontSize: 10,
+                        fontSize: focused ? 10 : 9,
                         color: isDarkMode ? Color.white : Color.black,
                       }}
                     >
@@ -129,7 +129,7 @@ function MainTabScreen() {
                     />
                     <Text
                       style={{
-                        fontSize: 10,
+                        fontSize: focused ? 10 : 9,
                         color: isDarkMode ? Color.white : Color.black,
                       }}
                     >
@@ -163,7 +163,7 @@ function MainTabScreen() {
                     />
                     <Text
                       style={{
-                        fontSize: 10,
+                        fontSize: focused ? 10 : 9,
                         color: isDarkMode ? Color.white : Color.black,
                       }}
                     >

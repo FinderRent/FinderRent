@@ -1,9 +1,14 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { SliderBox } from "react-native-image-slider-box";
 
+import { useDarkMode } from "../../context/DarkModeContext";
+import { Color } from "../../constants/colors";
+import { Text } from "react-native-paper";
+
 const HouseCard = ({ navigation }) => {
+  const { isDarkMode } = useDarkMode();
   const [isFavorite, setIsFavorite] = useState(false);
 
   const toggleFavorite = () => {
@@ -17,7 +22,13 @@ const HouseCard = ({ navigation }) => {
   ];
 
   return (
-    <View style={styles.card}>
+    <View
+      style={
+        isDarkMode
+          ? { ...styles.card, backgroundColor: Color.buttomSheetDarkTheme }
+          : styles.card
+      }
+    >
       <TouchableOpacity style={styles.favoriteButton} onPress={toggleFavorite}>
         <FontAwesome
           name={isFavorite ? "heart" : "heart"}

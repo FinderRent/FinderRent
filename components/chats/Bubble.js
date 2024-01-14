@@ -24,6 +24,7 @@ function Bubble({
   setReply,
   replyingTo,
   imageUrl,
+  setDeleteMessage,
 }) {
   const { isDarkMode } = useDarkMode();
 
@@ -132,6 +133,13 @@ function Bubble({
                 icon="arrow-left-circle"
                 onSelect={setReply}
               />
+              {type === "myMessage" && (
+                <MenuItem
+                  text="Delete"
+                  icon="trash"
+                  onSelect={setDeleteMessage}
+                />
+              )}
             </MenuOptions>
           </Menu>
         </View>
@@ -172,7 +180,6 @@ const styles = StyleSheet.create({
   },
   name: {
     color: Color.Brown700,
-    fontFamily: "medium",
     letterSpacing: 0.3,
   },
   image: {

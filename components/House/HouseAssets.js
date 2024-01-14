@@ -3,7 +3,12 @@ import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { ListItem } from "react-native-elements";
 
+import { Color } from "../../constants/colors";
+import { useDarkMode } from "../../context/DarkModeContext";
+
 const HouseAssets = (props) => {
+  const { isDarkMode } = useDarkMode();
+
   const handleShowAllPress = () => {
     props.handleShowAllPress();
   };
@@ -16,9 +21,24 @@ const HouseAssets = (props) => {
         {/* if bigger than 6 items */}
         {props.Assets.length > 6 &&
           slicedAssets.map((l, i) => (
-            <ListItem key={i}>
+            <ListItem
+              containerStyle={
+                isDarkMode
+                  ? { backgroundColor: Color.darkTheme }
+                  : { backgroundColor: Color.white }
+              }
+              key={i}
+            >
               <ListItem.Content>
-                <ListItem.Title>{l.name}</ListItem.Title>
+                <ListItem.Title
+                  style={
+                    isDarkMode
+                      ? { color: Color.white }
+                      : { color: Color.darkTheme }
+                  }
+                >
+                  {l.name}
+                </ListItem.Title>
               </ListItem.Content>
             </ListItem>
           ))}
@@ -30,9 +50,24 @@ const HouseAssets = (props) => {
         {/* if shorter than 6 items */}
         {props.Assets.length < 6 &&
           props.Assets.map((l, i) => (
-            <ListItem key={i}>
+            <ListItem
+              containerStyle={
+                isDarkMode
+                  ? { backgroundColor: Color.darkTheme }
+                  : { backgroundColor: Color.white }
+              }
+              key={i}
+            >
               <ListItem.Content>
-                <ListItem.Title>{l.name}</ListItem.Title>
+                <ListItem.Title
+                  style={
+                    isDarkMode
+                      ? { color: Color.white }
+                      : { color: Color.darkTheme }
+                  }
+                >
+                  {l.name}
+                </ListItem.Title>
               </ListItem.Content>
             </ListItem>
           ))}
@@ -53,7 +88,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 32,
     borderRadius: 12,
-    elevation: 3,
+    // elevation: 3,
     borderWidth: 2,
     borderColor: "#ccc",
     marginVertical: 7,
