@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
+  ActivityIndicator,
   FlatList,
+  Image,
   ImageBackground,
   KeyboardAvoidingView,
   Platform,
@@ -14,6 +16,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Ionicons } from "@expo/vector-icons";
 import { io } from "socket.io-client";
+import { launchCameraAsync } from "expo-image-picker";
+import * as ImagePickerFromGallery from "expo-image-picker";
 import AwesomeAlert from "react-native-awesome-alerts";
 import moment from "moment";
 
@@ -43,10 +47,37 @@ function ChatScreen({ navigation, route }) {
   const [replyingTo, setReplyingTo] = useState();
   const [tempImageUri, setTempImageUri] = useState("");
 
+  async function pickedImageHandler() {
+    const image = await ImagePickerFromGallery.launchImageLibraryAsync({
+      mediaTypes: ImagePickerFromGallery.MediaTypeOptions.Images,
+      aspect: [4, 3],
+      allowsEditing: true,
+      quality: 0.5,
+    });
+
+    if (!image.canceled) {
+      setTempImageUri(image.assets[0].uri);
+    }
+  }
+
+  async function takeImageHandler() {
+    const image = await launchCameraAsync({
+      aspect: [4, 3],
+      allowsEditing: true,
+      quality: 0.5,
+    });
+
+    if (!image.canceled) {
+      setTempImageUri(image.assets[0].uri);
+    }
+  }
+
   const message = {
     senderId,
     messageText,
     chatId,
+    replyingTo,
+    tempImageUri,
   };
 
   useEffect(() => {
@@ -139,21 +170,32 @@ function ChatScreen({ navigation, route }) {
     queryFn: () => getMessages(chatId),
   });
 
-  const { mutate } = useMutation({
+  const {
+    mutate: handleAddMessages,
+    isError,
+    isPending,
+  } = useMutation({
     mutationFn: (message) => addMessages(message),
     onSuccess: async (data) => {
       setSendMessage({ ...message, ouid });
-      await refetch();
-      setMessages([...messages, data]);
+      setReplyingTo(null);
       setMessageText("");
+      await refetch();
+      setTempImageUri("");
+      setMessages([...messages, data]);
     },
+    onError: (err) => console.log(err.message),
+  });
+  const { mutate: handleUpdateChat } = useMutation({
+    mutationFn: ({ messageText: lastMessage, chatId }) =>
+      updateChat({ messageText: lastMessage, chatId }),
     onError: (err) => console.log(err.message),
   });
 
   const handelSendMessage = useCallback(() => {
-    mutate(message);
-  }, [messageText]);
-
+    handleUpdateChat({ messageText, chatId });
+    handleAddMessages(message);
+  }, [messageText, tempImageUri]);
   const getBackgroundImage = (isDarkMode) => {
     return isDarkMode
       ? require("../assets/images/ChatDarkBackground.jpg")
@@ -177,31 +219,40 @@ function ChatScreen({ navigation, route }) {
             )}
             {chatId && (
               <FlatList
-                data={data}
+                inverted={data?.length > 10 ? true : false}
+                data={data?.length > 10 ? data && [...data].reverse() : data}
                 renderItem={(itemData) => {
                   const message = itemData.item;
                   const isOwnMessage = message.senderId === userData.id;
-                  const time = moment(message.createdAt).fromNow();
+                  let time = moment(message.createdAt).fromNow();
                   const messageType = isOwnMessage
                     ? "myMessage"
                     : "theirMessage";
 
+                  if (time.includes("in ")) {
+                    time = time.replace("in ", "");
+                  }
+
                   return (
                     <Bubble
+                      senderId={senderId}
+                      title={title}
                       type={messageType}
                       text={message.messageText}
                       time={time}
                       setReply={() => setReplyingTo(message)}
                       replyingTo={message.replyingTo}
+                      imageUrl={message?.image?.url}
                     />
                   );
                 }}
               />
             )}
-            {/* {isError && (
+            {isError && (
               <Bubble text="Error sending the message,try again" type="error" />
-            )} */}
+            )}
           </PageContainer>
+
           {replyingTo && (
             <ReplyTo
               name={replyingTo.senderId === senderId ? "You" : title}
@@ -214,7 +265,7 @@ function ChatScreen({ navigation, route }) {
         <View style={styles.inputContainer}>
           <TouchableOpacity
             style={styles.mediaButton}
-            onPress={() => console.log("Pressed!")}
+            onPress={pickedImageHandler}
           >
             <Ionicons name="add" size={24} color={Color.Blue500} />
           </TouchableOpacity>
@@ -226,7 +277,7 @@ function ChatScreen({ navigation, route }) {
                 ? { ...styles.textbox, color: Color.white }
                 : { ...styles.textbox }
             }
-            selectionColor={Color.Brown500}
+            selectionColor={Color.Blue500}
             placeholder="Message"
             placeholderTextColor={
               isDarkMode ? Color.defaultTheme : Color.darkTheme
@@ -239,7 +290,7 @@ function ChatScreen({ navigation, route }) {
           {messageText === "" && (
             <TouchableOpacity
               style={styles.mediaButton}
-              onPress={() => console.log("Pressed!")}
+              onPress={takeImageHandler}
             >
               <Ionicons name="camera" size={24} color={Color.Blue500} />
             </TouchableOpacity>
@@ -253,6 +304,46 @@ function ChatScreen({ navigation, route }) {
               <Ionicons name="send" size={24} color={Color.Blue500} />
             </TouchableOpacity>
           )}
+          <AwesomeAlert
+            show={tempImageUri !== ""}
+            contentContainerStyle={
+              isDarkMode
+                ? { backgroundColor: Color.darkTheme }
+                : { backgroundColor: Color.defaultTheme }
+            }
+            title="Send Image"
+            closeOnTouchOutside={true}
+            closeOnHardwareBackPress={false}
+            showCancelButton={true}
+            showConfirmButton={true}
+            confirmText="Send"
+            cancelText="Cancel"
+            confirmButtonColor={Color.Blue700}
+            cancelButtonColor={
+              isDarkMode ? Color.darkTheme : Color.defaultTheme
+            }
+            cancelButtonTextStyle={{ color: Color.Blue500 }}
+            titleStyle={styles.popupTitleStyle}
+            onCancelPressed={() => setTempImageUri("")}
+            onConfirmPressed={handelSendMessage}
+            onDismiss={() => setTempImageUri("")}
+            customView={
+              <View>
+                {tempImageUri !== "" && (
+                  <Image
+                    source={{ uri: tempImageUri }}
+                    style={{ width: 250, height: 200, borderRadius: 10 }}
+                  />
+                )}
+                {isPending && (
+                  <ActivityIndicator
+                    style={{ marginTop: 10 }}
+                    color={Color.Blue700}
+                  />
+                )}
+              </View>
+            }
+          />
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>

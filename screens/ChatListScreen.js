@@ -71,6 +71,10 @@ function ChatListScreen({ navigation }) {
           const updatedAt = chatData.updatedAt;
           let time = moment(updatedAt).fromNow();
 
+          if (time.includes("in ")) {
+            time = time.replace("in ", "");
+          }
+
           const otherUserId = chatData.members.find(
             (uid) => uid !== userData.id
           );
@@ -110,7 +114,7 @@ const styles = StyleSheet.create({
   },
   line: {
     margin: 10,
-    borderBottomWidth: 0.5,
-    borderBottomColor: Color.Brown500,
+    borderBottomWidth: 0.45,
+    borderBottomColor: Color.Brown200,
   },
 });

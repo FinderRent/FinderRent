@@ -172,7 +172,6 @@ const styles = StyleSheet.create({
   },
   name: {
     color: Color.Brown700,
-    fontFamily: "medium",
     letterSpacing: 0.3,
   },
   image: {
