@@ -30,6 +30,7 @@ import ReplyTo from "../components/chats/ReplyTo";
 import getMessages from "../api/chats/getMessages";
 import addMessages from "../api/chats/addMessages";
 import updateChat from "../api/chats/updateChat";
+import removeMessage from "../api/chats/removeMessage";
 
 function ChatScreen({ navigation, route }) {
   const { userData } = useUsers();
@@ -46,6 +47,10 @@ function ChatScreen({ navigation, route }) {
   const [receiveMessage, setReceiveMessage] = useState(null);
   const [replyingTo, setReplyingTo] = useState();
   const [tempImageUri, setTempImageUri] = useState("");
+  const [deleteMessage, setDeleteMessage] = useState({
+    show: false,
+    messageId: "",
+  });
 
   async function pickedImageHandler() {
     const image = await ImagePickerFromGallery.launchImageLibraryAsync({
@@ -172,8 +177,8 @@ function ChatScreen({ navigation, route }) {
 
   const {
     mutate: handleAddMessages,
-    isError,
-    isPending,
+    isError: isErrorAddMessages,
+    isPending: isPendingAddMessages,
   } = useMutation({
     mutationFn: (message) => addMessages(message),
     onSuccess: async (data) => {
@@ -186,16 +191,32 @@ function ChatScreen({ navigation, route }) {
     },
     onError: (err) => console.log(err.message),
   });
+
   const { mutate: handleUpdateChat } = useMutation({
     mutationFn: ({ messageText: lastMessage, chatId }) =>
       updateChat({ messageText: lastMessage, chatId }),
     onError: (err) => console.log(err.message),
   });
 
+  const { mutate: handleRemoveMessage, isPending: isPendingRemoveMessage } =
+    useMutation({
+      mutationFn: (messageId) => removeMessage(messageId),
+      onSuccess: async () => {
+        await refetch();
+        setDeleteMessage({ show: false, messageId: "" });
+      },
+    });
+
   const handelSendMessage = useCallback(() => {
     handleUpdateChat({ messageText, chatId });
     handleAddMessages(message);
   }, [messageText, tempImageUri]);
+
+  const handleDeleteMessage = useCallback(() => {
+    handleUpdateChat({ messageText: "message deleted", chatId });
+    handleRemoveMessage(deleteMessage.messageId);
+  }, [deleteMessage]);
+
   const getBackgroundImage = (isDarkMode) => {
     return isDarkMode
       ? require("../assets/images/ChatDarkBackground.jpg")
@@ -243,12 +264,15 @@ function ChatScreen({ navigation, route }) {
                       setReply={() => setReplyingTo(message)}
                       replyingTo={message.replyingTo}
                       imageUrl={message?.image?.url}
+                      setDeleteMessage={() =>
+                        setDeleteMessage({ show: true, messageId: message._id })
+                      }
                     />
                   );
                 }}
               />
             )}
-            {isError && (
+            {isErrorAddMessages && (
               <Bubble text="Error sending the message,try again" type="error" />
             )}
           </PageContainer>
@@ -304,6 +328,7 @@ function ChatScreen({ navigation, route }) {
               <Ionicons name="send" size={24} color={Color.Blue500} />
             </TouchableOpacity>
           )}
+
           <AwesomeAlert
             show={tempImageUri !== ""}
             contentContainerStyle={
@@ -335,7 +360,43 @@ function ChatScreen({ navigation, route }) {
                     style={{ width: 250, height: 200, borderRadius: 10 }}
                   />
                 )}
-                {isPending && (
+                {isPendingAddMessages && (
+                  <ActivityIndicator
+                    style={{ marginTop: 10 }}
+                    color={Color.Blue700}
+                  />
+                )}
+              </View>
+            }
+          />
+          <AwesomeAlert
+            show={deleteMessage.show !== false}
+            contentContainerStyle={
+              isDarkMode
+                ? { backgroundColor: Color.darkTheme }
+                : { backgroundColor: Color.defaultTheme }
+            }
+            title="Delete Message"
+            closeOnTouchOutside={true}
+            closeOnHardwareBackPress={false}
+            showCancelButton={true}
+            showConfirmButton={true}
+            confirmText="Yes"
+            cancelText="No"
+            confirmButtonColor={Color.Blue700}
+            cancelButtonColor={
+              isDarkMode ? Color.darkTheme : Color.defaultTheme
+            }
+            cancelButtonTextStyle={{ color: Color.Blue500 }}
+            titleStyle={styles.popupTitleStyle}
+            onCancelPressed={() =>
+              setDeleteMessage({ show: false, messageId: "" })
+            }
+            onConfirmPressed={handleDeleteMessage}
+            onDismiss={() => setDeleteMessage({ show: false, messageId: "" })}
+            customView={
+              <View>
+                {isPendingRemoveMessage && (
                   <ActivityIndicator
                     style={{ marginTop: 10 }}
                     color={Color.Blue700}
