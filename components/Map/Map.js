@@ -2,10 +2,6 @@ import React from "react";
 import { View, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
 import MapView from "react-native-maps";
 import { academicList } from "../../data/academic";
-/**
- *
- * TODO: when map expand, adjust the bottom view of the map.
- */
 
 const Map = (props) => {
   const handleMapPress = () => {

@@ -16,9 +16,10 @@ import { Text } from "react-native-paper";
 function HouseAssetsModal(props) {
   const { isDarkMode } = useDarkMode();
 
-  const handleMapPress = () => {
-    props.handleMapPress();
+  const handleShowAllPress = () => {
+    props.handleShowAllPress();
   };
+
   return (
     <Modal visible={true} transparent={true} animationType="fade">
       <View style={styles.modalBackground}>
@@ -55,7 +56,10 @@ function HouseAssetsModal(props) {
               </ListItem>
             ))}
           </ScrollView>
-          <TouchableOpacity style={styles.closeButton} onPress={handleMapPress}>
+          <TouchableOpacity
+            style={styles.closeButton}
+            onPress={handleShowAllPress}
+          >
             <MaterialIcons name="close" size={24} color="#fff" />
           </TouchableOpacity>
         </View>
