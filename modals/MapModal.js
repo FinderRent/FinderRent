@@ -1,7 +1,6 @@
-import React from "react";
 import { View, StyleSheet, TouchableOpacity, Modal } from "react-native";
-import MapView from "react-native-maps";
 import { MaterialIcons } from "@expo/vector-icons";
+import MapView from "react-native-maps";
 
 function MapModal(props) {
   const handleMapPress = () => {
@@ -12,7 +11,15 @@ function MapModal(props) {
     <Modal visible={true} transparent={true} animationType="fade">
       <View style={styles.modalBackground}>
         <View style={styles.modalContainer}>
-          <MapView style={styles.map} />
+          <MapView
+            initialRegion={{
+              latitude: 31.2516416588409,
+              longitude: 34.78916604217377,
+              latitudeDelta: 0.0043,
+              longitudeDelta: 0.0034,
+            }}
+            style={styles.map}
+          />
           <TouchableOpacity style={styles.closeButton} onPress={handleMapPress}>
             <MaterialIcons name="close" size={24} color="#fff" />
           </TouchableOpacity>
