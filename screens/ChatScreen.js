@@ -31,11 +31,12 @@ import getMessages from "../api/chats/getMessages";
 import addMessages from "../api/chats/addMessages";
 import updateChat from "../api/chats/updateChat";
 import removeMessage from "../api/chats/removeMessage";
+import sendPushNotification from "../api/sendPushNotifications";
 
 function ChatScreen({ navigation, route }) {
   const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
-  const { image, title, ouid } = route.params;
+  const { ouid, pushToken, image, title } = route.params;
   const socket = useRef();
 
   const senderId = userData.id;
@@ -210,6 +211,7 @@ function ChatScreen({ navigation, route }) {
   const handelSendMessage = useCallback(() => {
     handleUpdateChat({ messageText, chatId });
     handleAddMessages(message);
+    sendPushNotification(pushToken, message.messageText, title);
   }, [messageText, tempImageUri]);
 
   const handleDeleteMessage = useCallback(() => {

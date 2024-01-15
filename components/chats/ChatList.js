@@ -27,13 +27,13 @@ function ChatList({ ouid, chatId, lastMessage, time }) {
   if (error) {
     return <ErrorMessage errorMessage={error.message} />;
   }
-
   return (
     <TouchableNativeFeedback
       onPress={() =>
         navigation.navigate("ChatScreen", {
           chatId,
           ouid,
+          pushToken: data?.data?.pushToken,
           image: data?.data?.avatar?.url,
           title: `${data?.data?.firstName} ${data?.data?.lastName}`,
         })
