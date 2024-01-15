@@ -59,12 +59,12 @@ function EditProfileScreen({ navigation }) {
   }));
 
   const listYear = [
-    { label: "מכינה", value: "מכינה" },
-    { label: "שנה א'", value: "שנה א'" },
-    { label: "שנה ב'", value: "שנה ב'" },
-    { label: "שנה ג'", value: "שנה ג'" },
-    { label: "שנה ד'", value: "שנה ד'" },
-    { label: "תואר שני", value: "תואר שני" },
+    { label: "Preparing", value: "Preparing" },
+    { label: "Year 1", value: "Year 1" },
+    { label: "Year 2", value: "Year 2" },
+    { label: "Year 3", value: "Year 3" },
+    { label: "Year 4", value: "Year 4" },
+    { label: "Master's degree", value: "Master's degree" },
   ];
 
   useEffect(() => {
