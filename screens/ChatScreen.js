@@ -211,7 +211,7 @@ function ChatScreen({ navigation, route }) {
   const handelSendMessage = useCallback(() => {
     handleUpdateChat({ messageText, chatId });
     handleAddMessages(message);
-    sendPushNotification(pushToken, message.messageText, title);
+    sendPushNotification(pushToken, message.messageText, title, chatId);
   }, [messageText, tempImageUri]);
 
   const handleDeleteMessage = useCallback(() => {
