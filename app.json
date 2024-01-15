@@ -1,8 +1,8 @@
 {
   "expo": {
     "name": "FinderRent",
-    "slug": "FinderRent",
-    "version": "0.4.0",
+    "slug": "finderrent",
+    "version": "0.4.5",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -19,7 +19,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": ["android.permission.RECORD_AUDIO"]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -31,7 +32,20 @@
           "photosPermission": "Allow the app to access your photos.",
           "cameraPermission": "Allow the app to access your camera."
         }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#ffffff",
+          "sounds": []
+        }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "5feb1ace-9d86-4523-b963-d9f8e0a06e36"
+      }
+    }
   }
 }
