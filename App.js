@@ -67,7 +67,6 @@ export default function App() {
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
-  console.log(expoPushToken);
 
   useEffect(() => {
     registerForPushNotificationsAsync().then((token) =>
@@ -98,6 +97,7 @@ export default function App() {
     login,
     logout,
     token,
+    pushToken,
     userType,
     id,
     firstName,
@@ -150,6 +150,7 @@ export default function App() {
               login,
               logout,
               token,
+              pushToken,
               userType,
               id,
               firstName,

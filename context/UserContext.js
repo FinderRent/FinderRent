@@ -16,6 +16,7 @@ const UserContext = createContext({
 // Custom hook to manage user data and authentication
 function useUsers() {
   const [token, setToken] = useState(null);
+  const [pushToken, setPushToken] = useState(null);
   const [userType, setUserType] = useState(null);
   const [id, setId] = useState(null);
   const [firstName, setFirstName] = useState(null);
@@ -35,6 +36,7 @@ function useUsers() {
     const saveData = async () => {
       const {
         _id,
+        pushToken,
         userType,
         firstName,
         lastName,
@@ -49,6 +51,7 @@ function useUsers() {
       } = data;
 
       setToken(token);
+      setPushToken(pushToken);
       setUserType(userType);
       setId(_id);
       setFirstName(firstName);
@@ -85,6 +88,7 @@ function useUsers() {
 
       // Clear user state variables
       setToken(null);
+      setPushToken(null);
       setUserType(null);
       setId(null);
       setFirstName(null);
@@ -134,6 +138,7 @@ function useUsers() {
     login,
     logout,
     token,
+    pushToken,
     userType,
     id,
     firstName,

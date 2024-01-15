@@ -1,4 +1,7 @@
-import { useContext, useState } from "react";
+import * as Notifications from "expo-notifications";
+import * as Device from "expo-device";
+import Constants from "expo-constants";
+import { useContext, useEffect, useState } from "react";
 import {
   ImageBackground,
   SafeAreaView,
@@ -28,6 +31,7 @@ function SignUpScreen({ navigation }) {
   const auth = useContext(UserContext);
 
   // State variables for form inputs
+  const [pushToken, setPushToken] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [age, setAge] = useState("");
@@ -48,15 +52,16 @@ function SignUpScreen({ navigation }) {
 
   // List of year options for DropDown component
   const listYear = [
-    { label: "מכינה", value: "מכינה" },
-    { label: "שנה א'", value: "שנה א'" },
-    { label: "שנה ב'", value: "שנה ב'" },
-    { label: "שנה ג'", value: "שנה ג'" },
-    { label: "שנה ד'", value: "שנה ד'" },
-    { label: "תואר שני", value: "תואר שני" },
+    { label: "Preparing", value: "Preparing" },
+    { label: "Year 1", value: "Year 1" },
+    { label: "Year 2", value: "Year 2" },
+    { label: "Year 3", value: "Year 3" },
+    { label: "Year 4", value: "Year 4" },
+    { label: "Master's degree", value: "Master's degree" },
   ];
 
   const userData = {
+    pushToken,
     userType,
     firstName,
     lastName,
@@ -69,6 +74,20 @@ function SignUpScreen({ navigation }) {
     password,
     passwordConfirm,
   };
+
+  // store the expoPustToken in database to send notification
+  useEffect(() => {
+    async function storePushToken() {
+      if (!Device.isDevice) {
+        return;
+      }
+      const token = await Notifications.getExpoPushTokenAsync({
+        projectId: Constants.expoConfig.extra.eas.projectId,
+      });
+      setPushToken(token.data);
+    }
+    storePushToken();
+  }, []);
 
   const storeData = async (key, value) => {
     try {

@@ -1,3 +1,6 @@
+import * as Notifications from "expo-notifications";
+import * as Device from "expo-device";
+import Constants from "expo-constants";
 import { useContext, useEffect, useState } from "react";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import {
@@ -34,8 +37,23 @@ function SignInModal({ showVisible }) {
   const [signInModalVisible, setSignInModalVisible] = useState(true);
   const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
 
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [pushToken, setPushToken] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  // store the expoPustToken in database to send notification
+  useEffect(() => {
+    async function storePushToken() {
+      if (!Device.isDevice) {
+        return;
+      }
+      const token = await Notifications.getExpoPushTokenAsync({
+        projectId: Constants.expoConfig.extra.eas.projectId,
+      });
+      setPushToken(token.data);
+    }
+    storePushToken();
+  }, []);
 
   useEffect(() => {
     if (!isFocused) {
@@ -52,7 +70,8 @@ function SignInModal({ showVisible }) {
   };
 
   const { mutate, isPending, error, isError } = useMutation({
-    mutationFn: ({ email, password }) => login({ email, password }),
+    mutationFn: ({ email, password, pushToken }) =>
+      login({ email, password, pushToken }),
     onSuccess: (user) => {
       storeData("token", user.token);
       auth.login(user.data.user, user.token);
@@ -65,7 +84,7 @@ function SignInModal({ showVisible }) {
   });
 
   const handleLogin = () => {
-    mutate({ email, password });
+    mutate({ email, password, pushToken });
   };
 
   const handleForgotPassword = () => {

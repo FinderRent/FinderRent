@@ -1,11 +1,11 @@
 import axios from "axios";
 import { ADDRESS } from "@env";
 
-async function login({ email, password }) {
+async function login({ email, password, pushToken }) {
   try {
     const response = await axios.post(
       `http://${ADDRESS}:3000/api/v1/users/login`,
-      { email, password },
+      { email, password, pushToken },
       {
         headers: {
           "Content-Type": "application/json",
