@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Platform, Text, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -17,6 +17,7 @@ import { useUsers } from "../context/UserContext";
 import HomeStackScreen from "./HomeStackScreen ";
 import ProfileStackScreen from "./ProfileStackScreen";
 import ChatStackScreen from "./ChatStackScreen";
+import SettingsStackScreen from "./SettingsStackScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -168,6 +169,40 @@ function MainTabScreen() {
                       }}
                     >
                       Chats
+                    </Text>
+                  </View>
+                ),
+              }}
+            />
+            <Tab.Screen
+              name="SettingsStackScreen"
+              component={SettingsStackScreen}
+              initialParams={{ isAuthenticated }}
+              // listeners={({ navigation }) => ({
+              //   tabPress: (e) => {
+              //     e.preventDefault();
+              //     navigation.navigate("settingsStackScreen", {
+              //       isAuthenticated,
+              //     });
+              //   },
+              // })}
+              options={{
+                tabBarLabel: "",
+                tabBarIcon: ({ focused }) => (
+                  <View style={{ alignItems: "center" }}>
+                    <MaterialCommunityIcons
+                      name={focused ? "cog" : "cog-outline"}
+                      style={{ marginTop: -10 }}
+                      color={isDarkMode ? Color.white : Color.darkTheme}
+                      size={26}
+                    />
+                    <Text
+                      style={{
+                        fontSize: focused ? 10 : 9,
+                        color: isDarkMode ? Color.white : Color.black,
+                      }}
+                    >
+                      Settings
                     </Text>
                   </View>
                 ),

@@ -7,15 +7,12 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Toast from "react-native-toast-message";
 
 import { Color } from "../constants/colors";
-import { useDarkMode } from "../context/DarkModeContext";
 import { UserContext, useUsers } from "../context/UserContext";
-import DarkModeSwitch from "../components/ui/DarkModeSwitch";
 
 const ProfileScreen = ({ navigation }) => {
   const auth = useContext(UserContext);
 
   const { userData } = useUsers();
-  const { toggleDarkMode } = useDarkMode();
   const isFocused = useIsFocused();
 
   const userType =
@@ -133,15 +130,6 @@ const ProfileScreen = ({ navigation }) => {
             <Text style={styles.menuItemText}>LogOut</Text>
           </View>
         </TouchableRipple>
-
-        <View style={styles.menuItem}>
-          <Icon name="theme-light-dark" color={Color.icon} size={25} />
-          <DarkModeSwitch
-            value={true}
-            color={Color.Brown400}
-            onToggle={toggleDarkMode}
-          />
-        </View>
       </View>
     </SafeAreaView>
   );
