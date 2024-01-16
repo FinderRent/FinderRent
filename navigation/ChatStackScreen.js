@@ -1,12 +1,12 @@
-import { useLayoutEffect } from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import { useLayoutEffect } from "react";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 
-import { Color } from '../constants/colors';
-import { useDarkMode } from '../context/DarkModeContext';
-import ChatListScreen from '../screens/ChatListScreen';
-import ChatScreen from '../screens/ChatScreen';
-import LoginScreen from '../screens/LoginScreen';
+import { Color } from "../constants/colors";
+import { useDarkMode } from "../context/DarkModeContext";
+import ChatListScreen from "../screens/ChatListScreen";
+import ChatScreen from "../screens/ChatScreen";
+import LoginScreen from "../screens/LoginScreen";
 
 const ChatStack = createNativeStackNavigator();
 
@@ -23,18 +23,18 @@ function ChatStackScreen({ navigation, route }) {
   }
 
   useLayoutEffect(() => {
-    const tabHiddenRoutes = ['ChatScreen'];
+    const tabHiddenRoutes = ["ChatScreen"];
     if (tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))) {
-      navigation.setOptions({ tabBarStyle: { display: 'none' } });
+      navigation.setOptions({ tabBarStyle: { display: "none" } });
     } else {
       navigation.setOptions({
         tabBarStyle: {
           backgroundColor: isDarkMode ? Color.darkTheme : Color.white,
           borderTopColor: Color.Brown100,
           borderTopWidth: 1,
-          height: Platform.OS === 'ios' ? '9.5%' : '7%',
-          position: 'absolute',
-          padding: Platform.OS === 'ios' ? '6%' : '6%',
+          height: Platform.OS === "ios" ? "9.5%" : "7%",
+          position: "absolute",
+          padding: Platform.OS === "ios" ? "6%" : "6%",
         },
       });
     }
@@ -52,7 +52,7 @@ function ChatStackScreen({ navigation, route }) {
         drawerContentStyle: {
           backgroundColor: isDarkMode ? Color.darkTheme : Color.defaultTheme,
         },
-        headerTitle: '',
+        headerTitle: "",
         drawerActiveTintColor: isDarkMode
           ? Color.defaultTheme
           : Color.darkTheme,
@@ -70,24 +70,10 @@ function ChatStackScreen({ navigation, route }) {
         name="ChatListScreen"
         component={Screen}
         options={{
-          headerTitle: 'Chats',
-          headerTitleAlign: 'center',
+          headerTitle: "Chats",
+          headerTitleAlign: "center",
           headerTintColor: isDarkMode ? Color.white : Color.darkTheme,
-          headerTitleStyle: { fontFamily: 'varelaRound' },
-          // headerLeft: () => (
-          //   <View style={{ marginLeft: -10 }}>
-          //     <Ionicons.Button
-          //       name="ios-menu"
-          //       size={25}
-          //       color={isDarkMode ? Color.white : Color.darkTheme}
-          //       backgroundColor={
-          //         isDarkMode ? Color.buttomSheetDarkTheme : Color.defaultTheme
-          //       }
-          //       underlayColor="transparent"
-          //       onPress={() => navigation.openDrawer()}
-          //     />
-          //   </View>
-          // ),
+          headerTitleStyle: { fontFamily: "varelaRound" },
         }}
       />
       <ChatStack.Screen
@@ -95,8 +81,8 @@ function ChatStackScreen({ navigation, route }) {
         component={ChatScreen}
         options={{
           headerTintColor: Color.darkTheme,
-          headerTitle: '',
-          headerTitleStyle: { fontFamily: 'varelaRound' },
+          headerTitle: "",
+          headerTitleStyle: { fontFamily: "varelaRound" },
           headerBackVisible: false,
         }}
       />

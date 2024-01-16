@@ -1,14 +1,13 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { View } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { View } from "react-native";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { Color } from '../constants/colors';
-import { useDarkMode } from '../context/DarkModeContext';
-import ProfileScreen from '../screens/ProfileScreen';
-import EditProfileScreen from '../screens/EditProfileScreen';
-import LoginScreen from '../screens/LoginScreen';
-import SecurityScreen from '../screens/SecurityScreen';
+import { Color } from "../constants/colors";
+import { useDarkMode } from "../context/DarkModeContext";
+import ProfileScreen from "../screens/ProfileScreen";
+import EditProfileScreen from "../screens/EditProfileScreen";
+import LoginScreen from "../screens/LoginScreen";
+import SecurityScreen from "../screens/SecurityScreen";
 
 const ProfileStack = createNativeStackNavigator();
 
@@ -36,7 +35,7 @@ function ProfileStackScreen({ navigation, route }) {
         drawerContentStyle: {
           backgroundColor: isDarkMode ? Color.darkTheme : Color.defaultTheme,
         },
-        headerTitle: '',
+        headerTitle: "",
         drawerActiveTintColor: !isDarkMode
           ? Color.darkTheme
           : Color.defaultTheme,
@@ -54,21 +53,7 @@ function ProfileStackScreen({ navigation, route }) {
         name="ProfileScreen"
         component={Screen}
         options={{
-          title: '',
-          // headerLeft: () => (
-          //   <View style={{ marginLeft: -10 }}>
-          //     <Ionicons.Button
-          //       name="ios-menu"
-          //       size={25}
-          //       color={isDarkMode ? Color.white : Color.darkTheme}
-          //       backgroundColor={
-          //         isDarkMode ? Color.buttomSheetDarkTheme : Color.defaultTheme
-          //       }
-          //       onPress={() => navigation.openDrawer()}
-          //       // underlayColor="transparent"
-          //     />
-          //   </View>
-          // ),
+          title: "",
           headerRight: () => (
             <View style={{ marginRight: -10 }}>
               <MaterialCommunityIcons.Button
@@ -79,7 +64,7 @@ function ProfileStackScreen({ navigation, route }) {
                   isDarkMode ? Color.buttomSheetDarkTheme : Color.defaultTheme
                 }
                 underlayColor="transparent"
-                onPress={() => navigation.navigate('EditProfileScreen')}
+                onPress={() => navigation.navigate("EditProfileScreen")}
               />
             </View>
           ),
@@ -97,8 +82,8 @@ function ProfileStackScreen({ navigation, route }) {
         component={SecurityScreen}
         options={{
           headerTintColor: isDarkMode ? Color.white : Color.darkTheme,
-          presentation: 'modal',
-          animation: 'fade_from_bottom',
+          presentation: "modal",
+          animation: "fade_from_bottom",
         }}
       />
     </ProfileStack.Navigator>

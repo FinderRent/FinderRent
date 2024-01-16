@@ -1,8 +1,7 @@
 // import axios from "axios";
 
-async function sendPushNotification(pushToken, message, title, chatId) {
+async function sendPushNotification(pushToken, message, title, data) {
   const image = "image";
-
   if (message === "") {
     message = image;
   }
@@ -16,7 +15,7 @@ async function sendPushNotification(pushToken, message, title, chatId) {
       to: pushToken,
       title: title,
       body: message,
-      data: { chatId },
+      data: data,
     }),
   });
 }

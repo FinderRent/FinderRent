@@ -40,6 +40,7 @@ function ChatScreen({ navigation, route }) {
   const socket = useRef();
 
   const senderId = userData.id;
+  const fullName = `${userData.firstName} ${userData.lastName}`;
   const [messages, setMessages] = useState([]);
   const [messageText, setMessageText] = useState("");
   const [chatId, setChatId] = useState(route?.params?.chatId);
@@ -52,6 +53,22 @@ function ChatScreen({ navigation, route }) {
     show: false,
     messageId: "",
   });
+
+  const message = {
+    senderId,
+    messageText,
+    chatId,
+    replyingTo,
+    tempImageUri,
+  };
+
+  const pushData = {
+    chatId,
+    image: userData.avatar.url,
+    title: fullName,
+    pushToken: userData.pushToken,
+    ouid: senderId,
+  };
 
   async function pickedImageHandler() {
     const image = await ImagePickerFromGallery.launchImageLibraryAsync({
@@ -77,14 +94,6 @@ function ChatScreen({ navigation, route }) {
       setTempImageUri(image.assets[0].uri);
     }
   }
-
-  const message = {
-    senderId,
-    messageText,
-    chatId,
-    replyingTo,
-    tempImageUri,
-  };
 
   useEffect(() => {
     const CustomHeader = () => (
@@ -211,7 +220,7 @@ function ChatScreen({ navigation, route }) {
   const handelSendMessage = useCallback(() => {
     handleUpdateChat({ messageText, chatId });
     handleAddMessages(message);
-    sendPushNotification(pushToken, message.messageText, title, chatId);
+    sendPushNotification(pushToken, message.messageText, fullName, pushData);
   }, [messageText, tempImageUri]);
 
   const handleDeleteMessage = useCallback(() => {
