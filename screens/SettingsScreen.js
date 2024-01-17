@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   StyleSheet,
   SafeAreaView,
@@ -14,7 +14,7 @@ import { version as app_version } from "../package.json";
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import DarkModeSwitch from "../components/ui/DarkModeSwitch";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 
 const SECTIONS = [
   {
@@ -41,7 +41,7 @@ const SECTIONS = [
 
 function SettingsScreen() {
   const { isDarkMode, toggleDarkMode } = useDarkMode();
-  const [darkModeSwitch, setDarkModeSwitch] = useState(false);
+  const navigation = useNavigation();
 
   // const [language, setLanguage] = useState("English");
   // const [notifications, setNotifications] = useState(true);
@@ -50,21 +50,6 @@ function SettingsScreen() {
     language: "English",
     notifications: true,
   });
-
-  useEffect(() => {
-    const fetchDarkMode = async () => {
-      try {
-        const isDarkMode = await AsyncStorage.getItem("darkMode");
-        if (isDarkMode !== null) {
-          setDarkModeSwitch(JSON.parse(isDarkMode));
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    fetchDarkMode();
-  }, []);
 
   const handlePress = (id) => {
     // switch statement to handle different ids

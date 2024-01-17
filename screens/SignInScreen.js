@@ -5,9 +5,9 @@ import { Button, Text } from "react-native-paper";
 import { version as app_version } from "../package.json";
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
-import Input from "../components/Input";
-import PasswordInput from "../components/PasswordInput";
-import NavLink from "../components/NavLink";
+import Input from "../components/inputs/Input";
+import PasswordInput from "../components/inputs/PasswordInput";
+import NavLink from "../components/ui/NavLink";
 
 function SignInScreen({ navigation }) {
   const { isDarkMode } = useDarkMode();

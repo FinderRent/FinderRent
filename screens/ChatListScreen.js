@@ -37,7 +37,7 @@ function ChatListScreen({ navigation }) {
   );
 
   if (isLoading) {
-    return <Loader color={Color.Brown400} size={30} />;
+    return <Loader color={Color.Blue500} size={30} />;
   }
 
   if (error) {
