@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   StyleSheet,
   SafeAreaView,
   ScrollView,
   View,
   TouchableOpacity,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { Switch, Text } from "react-native-paper";
 import FeatherIcon from "react-native-vector-icons/Feather";
@@ -13,6 +14,7 @@ import { version as app_version } from "../package.json";
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import DarkModeSwitch from "../components/ui/DarkModeSwitch";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SECTIONS = [
   {
@@ -39,6 +41,7 @@ const SECTIONS = [
 
 function SettingsScreen() {
   const { isDarkMode, toggleDarkMode } = useDarkMode();
+  const [darkModeSwitch, setDarkModeSwitch] = useState(false);
 
   // const [language, setLanguage] = useState("English");
   // const [notifications, setNotifications] = useState(true);
@@ -47,6 +50,38 @@ function SettingsScreen() {
     language: "English",
     notifications: true,
   });
+
+  useEffect(() => {
+    const fetchDarkMode = async () => {
+      try {
+        const isDarkMode = await AsyncStorage.getItem("darkMode");
+        if (isDarkMode !== null) {
+          setDarkModeSwitch(JSON.parse(isDarkMode));
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchDarkMode();
+  }, []);
+
+  const handlePress = (id) => {
+    // switch statement to handle different ids
+    switch (id) {
+      case "language":
+        console.log("Language pressed");
+        break;
+      case "about":
+        console.log("About pressed");
+        break;
+      case "contact":
+        console.log("Contact Us pressed");
+        break;
+      default:
+        break;
+    }
+  };
 
   return (
     <SafeAreaView
@@ -80,28 +115,24 @@ function SettingsScreen() {
                         : styles.rowWrapper
                     }
                   >
-                    <TouchableOpacity onPress={() => {}}>
-                      <View style={styles.row}>
-                        <FeatherIcon
-                          color={Color.extraGray}
-                          name={icon}
-                          style={styles.rowIcon}
-                          size={22}
-                        />
-
-                        <Text style={styles.rowLabel}>{label}</Text>
-                        <View style={styles.rowSpacer} />
-                        {type === "select" && (
-                          <Text style={styles.rowValue}>{form[id]}</Text>
-                        )}
-                        {type === "toggle" && id === "darkMode" ? (
-                          <DarkModeSwitch
-                            value={true}
-                            color={Color.Blue100}
-                            onToggle={toggleDarkMode}
+                    {type === "toggle" ? (
+                      <TouchableWithoutFeedback>
+                        <View style={styles.row}>
+                          <FeatherIcon
+                            color={Color.extraGray}
+                            name={icon}
+                            style={styles.rowIcon}
+                            size={22}
                           />
-                        ) : (
-                          type === "toggle" && (
+
+                          <Text style={styles.rowLabel}>{label}</Text>
+                          <View style={styles.rowSpacer} />
+                          {id === "darkMode" ? (
+                            <DarkModeSwitch
+                              color={Color.Blue100}
+                              onToggle={toggleDarkMode}
+                            />
+                          ) : (
                             <Switch
                               color={Color.Blue100}
                               onChange={() =>
@@ -112,18 +143,33 @@ function SettingsScreen() {
                               }
                               value={form.notifications}
                             />
-                          )
-                        )}
-
-                        {(type === "select" || type === "link") && (
+                          )}
+                        </View>
+                      </TouchableWithoutFeedback>
+                    ) : (
+                      <TouchableOpacity onPress={() => handlePress(id)}>
+                        <View style={styles.row}>
                           <FeatherIcon
                             color={Color.extraGray}
-                            name="chevron-right"
+                            name={icon}
+                            style={styles.rowIcon}
                             size={22}
                           />
-                        )}
-                      </View>
-                    </TouchableOpacity>
+                          <Text style={styles.rowLabel}>{label}</Text>
+                          <View style={styles.rowSpacer} />
+                          {type === "select" && (
+                            <Text style={styles.rowValue}>{form[id]}</Text>
+                          )}
+                          {(type === "select" || type === "link") && (
+                            <FeatherIcon
+                              color={Color.extraGray}
+                              name="chevron-right"
+                              size={22}
+                            />
+                          )}
+                        </View>
+                      </TouchableOpacity>
+                    )}
                   </View>
                 );
               })}
@@ -170,6 +216,9 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   title: {
+    // fontFamily: "OrbitronMedium",
+    // color: Color.Blue500,
+    // textAlign: "center",
     fontSize: 34,
     fontWeight: "700",
     marginBottom: 6,
