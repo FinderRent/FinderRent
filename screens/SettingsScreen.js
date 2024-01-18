@@ -8,13 +8,13 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { Switch, Text } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 import FeatherIcon from "react-native-vector-icons/Feather";
 
 import { version as app_version } from "../package.json";
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import DarkModeSwitch from "../components/ui/DarkModeSwitch";
-import { useNavigation } from "@react-navigation/native";
 
 const SECTIONS = [
   {
@@ -61,7 +61,7 @@ function SettingsScreen() {
         console.log("About pressed");
         break;
       case "contact":
-        console.log("Contact Us pressed");
+        navigation.navigate("ContactUsScreen");
         break;
       default:
         break;

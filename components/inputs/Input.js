@@ -13,11 +13,12 @@ function Input({
   maxLength,
   onValueChange,
   style,
-  error,
   right,
   left,
   value,
   color,
+  multiline,
+  numberOfLines,
 }) {
   const { isDarkMode } = useDarkMode();
   const [changeValue, setChangeValue] = useState();
@@ -41,12 +42,14 @@ function Input({
         }
         // selectionColor={Color.Blue700}
         // outlineColor={Color.Blue700}
+        activeUnderlineColor={color ? color : Color.Blue700}
         activeOutlineColor={color ? color : Color.Blue700}
         mode={mode}
         value={value}
-        error={error}
         right={right}
         left={left}
+        multiline={multiline}
+        numberOfLines={numberOfLines}
         onChangeText={(value) => handleValueChange(value)}
         keyboardType={keyboardType ? keyboardType : null}
       />
