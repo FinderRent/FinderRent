@@ -33,7 +33,7 @@ function ContactUsScreen({ navigation }) {
         <ScrollView
           style={
             isDarkMode
-              ? { backgroundColor: "rgba(0,0,0, 0.60)" }
+              ? { backgroundColor: "rgba(0,0,0, 0.50)" }
               : { backgroundColor: "rgba(0,0,0, 0.10)" }
           }
         >
@@ -85,19 +85,16 @@ function ContactUsScreen({ navigation }) {
             />
             <Spacer>
               <Button
-                style={{ marginHorizontal: 10 }}
+                style={{ marginLeft: "50%", margin: 10 }}
                 buttonColor={Color.Blue700}
                 textColor={Color.defaultTheme}
-                mode="contained"
-                // onPress={handleResetPassword}
+                mode="contained-tonal"
+                onPress={() => console.log("Preesed")}
                 // loading={isResetPasswordPending}
               >
-                Send
+                Send Message
               </Button>
             </Spacer>
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Text style={{ textAlign: "center" }}>Back</Text>
-            </TouchableOpacity>
           </View>
         </ScrollView>
       </ImageBackground>
