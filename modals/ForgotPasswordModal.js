@@ -16,7 +16,7 @@ import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import Input from "../components/inputs/Input";
 import ErrorMessage from "../components/ui/ErrorMessage";
-import sendEmail from "../api/sendEmail";
+import forgotPasswordEmail from "../api/emails/forgotPasswordEmail";
 
 function ForgotPasswordModal({ showVisible }) {
   const { isDarkMode } = useDarkMode();
@@ -26,7 +26,7 @@ function ForgotPasswordModal({ showVisible }) {
   const [email, setEmail] = useState();
 
   const { mutate, isPending, error, isError } = useMutation({
-    mutationFn: ({ email }) => sendEmail({ email }),
+    mutationFn: ({ email }) => forgotPasswordEmail({ email }),
     onSuccess: () => {
       Toast.show({
         type: "success",
@@ -36,7 +36,7 @@ function ForgotPasswordModal({ showVisible }) {
     },
   });
 
-  const handleSendEmail = () => {
+  const handleForgotPasswordEmail = () => {
     mutate({ email });
   };
 
@@ -94,7 +94,7 @@ function ForgotPasswordModal({ showVisible }) {
                 style={styles.button}
                 mode="contained"
                 textColor={Color.defaultTheme}
-                onPress={handleSendEmail}
+                onPress={handleForgotPasswordEmail}
                 loading={isPending}
               >
                 {!isPending && "Send     "}

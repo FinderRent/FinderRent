@@ -11,7 +11,7 @@ import Spacer from "../components/ui/Spacer";
 import PasswordInput from "../components/inputs/PasswordInput";
 import SignInModal from "../modals/SignInModal";
 import resetPassword from "../api/authentication/resetPassword";
-import sendEmail from "../api/sendEmail";
+import forgotPasswordEmail from "../api/emails/forgotPasswordEmail";
 import ErrorMessage from "../components/ui/ErrorMessage";
 
 function ResetPasswordScreen({ route }) {
@@ -39,28 +39,30 @@ function ResetPasswordScreen({ route }) {
     },
   });
 
-  const { mutate: mutateSendEmail, isPending: isSendEmailPanding } =
-    useMutation({
-      mutationFn: ({ email }) => sendEmail({ email }),
-      onSuccess: () => {
-        Toast.show({
-          type: "success",
-          text1: "Password reset code sent to email",
-        });
-      },
-      onError: () => {
-        Toast.show({
-          type: "error",
-          text1: "Error while sending the email",
-        });
-      },
-    });
+  const {
+    mutate: mutateForgotPasswordEmail,
+    isPending: isForgotPasswordEmailPanding,
+  } = useMutation({
+    mutationFn: ({ email }) => forgotPasswordEmail({ email }),
+    onSuccess: () => {
+      Toast.show({
+        type: "success",
+        text1: "Password reset code sent to email",
+      });
+    },
+    onError: () => {
+      Toast.show({
+        type: "error",
+        text1: "Error while sending the email",
+      });
+    },
+  });
 
   const handleResetPassword = () => {
     mutateResetPassword({ otp, password, passwordConfirm });
   };
-  const handleSendEmail = () => {
-    mutateSendEmail({ email });
+  const handleForgotPasswordEmail = () => {
+    mutateForgotPasswordEmail({ email });
   };
 
   return (
@@ -83,10 +85,10 @@ function ResetPasswordScreen({ route }) {
           mode="text"
           style={{ marginTop: -15 }}
           textColor={Color.Brown800}
-          onPress={handleSendEmail}
-          loading={isSendEmailPanding}
+          onPress={handleForgotPasswordEmail}
+          loading={isForgotPasswordEmailPanding}
         >
-          {!isSendEmailPanding && "Resend Email"}
+          {!isForgotPasswordEmailPanding && "Resend Email"}
         </Button>
 
         <Text style={styles.text} variant="headlineSmall">

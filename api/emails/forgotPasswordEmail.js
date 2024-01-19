@@ -1,8 +1,7 @@
 import axios from "axios";
 import { ADDRESS } from "@env";
 
-async function sendEmail({ email }) {
-  console.log(ADDRESS);
+async function forgotPasswordEmail({ email }) {
   try {
     const response = await axios.post(
       `http://${ADDRESS}:3000/api/v1/users/forgotPassword`,
@@ -26,4 +25,4 @@ async function sendEmail({ email }) {
   }
 }
 
-export default sendEmail;
+export default forgotPasswordEmail;

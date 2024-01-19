@@ -4,17 +4,20 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { Button, Text } from "react-native-paper";
+import { useMutation } from "@tanstack/react-query";
+import Toast from "react-native-toast-message";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import Input from "../components/inputs/Input";
 import Spacer from "../components/ui/Spacer";
+import contactUsEmail from "../api/emails/contactUsEmail";
+import ErrorMessage from "../components/ui/ErrorMessage";
 
-function ContactUsScreen({ navigation }) {
+function ContactUsScreen() {
   const { isDarkMode } = useDarkMode();
 
   const [firstName, setFirstName] = useState("");
@@ -22,6 +25,27 @@ function ContactUsScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
+
+  const { mutate, isPending, error, isError } = useMutation({
+    mutationFn: ({ firstName, lastName, email, subject, message }) =>
+      contactUsEmail({ firstName, lastName, email, subject, message }),
+    onSuccess: () => {
+      Toast.show({
+        type: "success",
+        text1: "Your message has been sent successfully",
+      });
+
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setSubject("");
+      setMessage("");
+    },
+  });
+
+  const handleContactUsEmail = () => {
+    mutate({ firstName, lastName, email, subject, message });
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -49,12 +73,14 @@ function ContactUsScreen({ navigation }) {
             <View style={styles.inputsRow}>
               <Input
                 style={{ flex: 1, marginRight: 10 }}
+                value={firstName}
                 label="First Name"
                 mode="outlined"
                 onValueChange={(firstName) => setFirstName(firstName)}
               />
               <Input
                 style={{ flex: 1, marginLeft: 10 }}
+                value={lastName}
                 label="Last Name"
                 mode="outlined"
                 onValueChange={(lastName) => setLastName(lastName)}
@@ -62,6 +88,7 @@ function ContactUsScreen({ navigation }) {
             </View>
             <Input
               style={styles.textInput}
+              value={email}
               label="Email"
               keyboardType="email-address"
               mode="outlined"
@@ -69,6 +96,7 @@ function ContactUsScreen({ navigation }) {
             />
             <Input
               style={styles.textInput}
+              value={subject}
               label="Subject"
               keyboardType="email-address"
               mode="outlined"
@@ -76,6 +104,7 @@ function ContactUsScreen({ navigation }) {
             />
             <Input
               style={styles.textInput}
+              value={message}
               label="Message"
               multiline
               numberOfLines={7}
@@ -83,16 +112,20 @@ function ContactUsScreen({ navigation }) {
               mode="outlined"
               onValueChange={(message) => setMessage(message)}
             />
+            <View style={{ marginHorizontal: 10 }}>
+              {isError && <ErrorMessage errorMessage={error.message} />}
+            </View>
+
             <Spacer>
               <Button
                 style={{ marginLeft: "50%", margin: 10 }}
                 buttonColor={Color.Blue700}
                 textColor={Color.defaultTheme}
                 mode="contained-tonal"
-                onPress={() => console.log("Preesed")}
-                // loading={isResetPasswordPending}
+                onPress={handleContactUsEmail}
+                loading={isPending}
               >
-                Send Message
+                {!isPending && "Send Message"}
               </Button>
             </Spacer>
           </View>
