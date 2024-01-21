@@ -127,7 +127,7 @@ const ProfileScreen = ({ navigation }) => {
         <TouchableRipple onPress={() => logoutHandler(auth, navigation)}>
           <View style={styles.menuItem}>
             <Icon name="logout-variant" color={Color.icon} size={25} />
-            <Text style={styles.menuItemText}>LogOut</Text>
+            <Text style={styles.menuItemText}>Logout</Text>
           </View>
         </TouchableRipple>
       </View>

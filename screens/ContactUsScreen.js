@@ -64,7 +64,13 @@ function ContactUsScreen() {
           <View style={styles.container}>
             <View style={{ marginBottom: "10%" }}>
               <View style={styles.line} />
-              <Text style={styles.subTitle}>
+              <Text
+                style={
+                  isDarkMode
+                    ? { ...styles.subTitle, color: Color.Blue100 }
+                    : styles.subTitle
+                }
+              >
                 Reach Us Out for Support Inquiries or Feedback
               </Text>
               <View style={styles.line} />

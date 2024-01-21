@@ -14,6 +14,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
+import { useUsers } from "../context/UserContext";
 import HouseCard from "../components/House/HouseCard";
 import ProfileLocation from "../components/ProfileLocation";
 import MapModal from "../modals/MapModal";
@@ -63,9 +64,11 @@ async function registerForPushNotificationsAsync() {
 }
 
 function HomeScreen({ navigation }) {
+  const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
   const tabBarHeight = useBottomTabBarHeight();
 
+  const token = userData.token;
   const [mapPress, setMapPress] = useState(false);
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
@@ -74,8 +77,8 @@ function HomeScreen({ navigation }) {
   const responseListener = useRef();
 
   useEffect(() => {
-    registerForPushNotificationsAsync().then((token) =>
-      setExpoPushToken(token)
+    registerForPushNotificationsAsync().then((pushToken) =>
+      setExpoPushToken(pushToken)
     );
 
     notificationListener.current =
@@ -89,7 +92,7 @@ function HomeScreen({ navigation }) {
         const { data } = response.notification.request.content;
         const { chatId, ouid, pushToken, image, title } = data;
 
-        if (data.chatId) {
+        if (data.chatId && token) {
           navigation.navigate("MainTabScreen", {
             screen: "ChatStackScreen",
             params: {
@@ -104,7 +107,7 @@ function HomeScreen({ navigation }) {
             },
           });
         } else {
-          console.log("No chatId sent with notification");
+          navigation.navigate("ChatStackScreen");
         }
       });
 
@@ -114,7 +117,7 @@ function HomeScreen({ navigation }) {
       );
       Notifications.removeNotificationSubscription(responseListener.current);
     };
-  }, [notificationListener]);
+  }, [notificationListener, token]);
 
   const handleMapPress = () => {
     setMapPress(!mapPress);
