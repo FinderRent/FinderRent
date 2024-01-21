@@ -11,10 +11,17 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import Animated, {
+  useAnimatedRef,
+  useAnimatedStyle,
+  useScrollViewOffset,
+  withSpring,
+} from "react-native-reanimated";
 import { Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Ionicons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { io } from "socket.io-client";
 import { launchCameraAsync } from "expo-image-picker";
 import * as ImagePickerFromGallery from "expo-image-picker";
@@ -38,6 +45,7 @@ function ChatScreen({ navigation, route }) {
   const { isDarkMode } = useDarkMode();
   const { ouid, pushToken, image, title } = route.params;
   const socket = useRef();
+  const scrollRef = useAnimatedRef();
 
   const senderId = userData.id;
   const fullName = `${userData.firstName} ${userData.lastName}`;
@@ -234,6 +242,16 @@ function ChatScreen({ navigation, route }) {
       : require("../assets/images/ChatWhiteBackground.jpg");
   };
 
+  const scrollOffset = useScrollViewOffset(scrollRef);
+  const downButton = useAnimatedStyle(() => {
+    return {
+      opacity: scrollOffset.value > 100 ? withSpring(0.9) : withSpring(0),
+    };
+  });
+  const scrollDown = () => {
+    scrollRef.current?.scrollToOffset({ animated: true, offset: 0 });
+  };
+
   return (
     <SafeAreaView edges={["right", "left", "bottom"]} style={styles.container}>
       <KeyboardAvoidingView
@@ -251,8 +269,9 @@ function ChatScreen({ navigation, route }) {
             )}
             {chatId && (
               <FlatList
-                inverted={data?.length > 10 ? true : false}
-                data={data?.length > 10 ? data && [...data].reverse() : data}
+                ref={scrollRef}
+                inverted={data?.length > 9 ? true : false}
+                data={data?.length > 9 ? data && [...data].reverse() : data}
                 renderItem={(itemData) => {
                   const message = itemData.item;
                   const isOwnMessage = message.senderId === userData.id;
@@ -417,6 +436,31 @@ function ChatScreen({ navigation, route }) {
             }
           />
         </View>
+
+        <Animated.View
+          style={[
+            { position: "absolute", bottom: "10%", right: 20 },
+            downButton,
+          ]}
+        >
+          <TouchableOpacity
+            style={
+              isDarkMode
+                ? {
+                    ...styles.downButton,
+                    backgroundColor: Color.buttomSheetDarkTheme,
+                  }
+                : styles.downButton
+            }
+            onPress={scrollDown}
+          >
+            <Feather
+              name="chevrons-down"
+              size={24}
+              color={isDarkMode ? "white" : "black"}
+            />
+          </TouchableOpacity>
+        </Animated.View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -455,5 +499,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     width: 35,
+  },
+  downButton: {
+    padding: 6,
+    backgroundColor: Color.Brown50,
+    borderRadius: 50,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
