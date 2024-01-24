@@ -14,7 +14,6 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { version as app_version } from "../package.json";
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
-import DarkModeSwitch from "../components/ui/DarkModeSwitch";
 import ThemeModal from "../modals/ThemeModal";
 
 const SECTIONS = [
@@ -128,26 +127,18 @@ function SettingsScreen() {
                             style={styles.rowIcon}
                             size={22}
                           />
-
                           <Text style={styles.rowLabel}>{label}</Text>
                           <View style={styles.rowSpacer} />
-                          {id === "darkMode" ? (
-                            <DarkModeSwitch
-                              color={Color.Blue100}
-                              onToggle={toggleDarkMode}
-                            />
-                          ) : (
-                            <Switch
-                              color={Color.Blue100}
-                              onChange={() =>
-                                setForm((prevForm) => ({
-                                  ...prevForm,
-                                  notifications: !prevForm.notifications,
-                                }))
-                              }
-                              value={form.notifications}
-                            />
-                          )}
+                          <Switch
+                            color={Color.Blue100}
+                            onChange={() =>
+                              setForm((prevForm) => ({
+                                ...prevForm,
+                                notifications: !prevForm.notifications,
+                              }))
+                            }
+                            value={form.notifications}
+                          />
                         </View>
                       </TouchableWithoutFeedback>
                     ) : (
