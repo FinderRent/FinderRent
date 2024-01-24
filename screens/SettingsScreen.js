@@ -9,22 +9,28 @@ import {
 } from "react-native";
 import { Switch, Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import FeatherIcon from "react-native-vector-icons/Feather";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { version as app_version } from "../package.json";
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import DarkModeSwitch from "../components/ui/DarkModeSwitch";
+import ThemeModal from "../modals/ThemeModal";
 
 const SECTIONS = [
   {
     header: "Preferences",
     items: [
-      { id: "language", icon: "globe", label: "Language", type: "select" },
-      { id: "darkMode", icon: "moon", label: "Dark Mode", type: "toggle" },
+      { id: "language", icon: "earth", label: "Language", type: "select" },
+      {
+        id: "theme",
+        icon: "theme-light-dark",
+        label: "Theme",
+        type: "link",
+      },
       {
         id: "notifications",
-        icon: "bell",
+        icon: "bell-outline",
         label: "Allow Notifications",
         type: "toggle",
       },
@@ -33,16 +39,27 @@ const SECTIONS = [
   {
     header: "Help",
     items: [
-      { id: "about", icon: "info", label: "About", type: "link" },
-      { id: "contact", icon: "mail", label: "Contact Us", type: "link" },
+      {
+        id: "about",
+        icon: "information-outline",
+        label: "About",
+        type: "link",
+      },
+      {
+        id: "contact",
+        icon: "email-outline",
+        label: "Contact Us",
+        type: "link",
+      },
     ],
   },
 ];
 
 function SettingsScreen() {
-  const { isDarkMode, toggleDarkMode } = useDarkMode();
+  const { isDarkMode, toggleDarkMode, handleTheme, theme } = useDarkMode();
   const navigation = useNavigation();
 
+  const [showThemeModal, setShowThemeModal] = useState(false);
   // const [language, setLanguage] = useState("English");
   // const [notifications, setNotifications] = useState(true);
 
@@ -63,6 +80,8 @@ function SettingsScreen() {
       case "contact":
         navigation.navigate("ContactUsScreen");
         break;
+      case "theme":
+        setShowThemeModal(true);
       default:
         break;
     }
@@ -103,7 +122,7 @@ function SettingsScreen() {
                     {type === "toggle" ? (
                       <TouchableWithoutFeedback>
                         <View style={styles.row}>
-                          <FeatherIcon
+                          <MaterialCommunityIcons
                             color={Color.extraGray}
                             name={icon}
                             style={styles.rowIcon}
@@ -134,7 +153,7 @@ function SettingsScreen() {
                     ) : (
                       <TouchableOpacity onPress={() => handlePress(id)}>
                         <View style={styles.row}>
-                          <FeatherIcon
+                          <MaterialCommunityIcons
                             color={Color.extraGray}
                             name={icon}
                             style={styles.rowIcon}
@@ -146,7 +165,7 @@ function SettingsScreen() {
                             <Text style={styles.rowValue}>{form[id]}</Text>
                           )}
                           {(type === "select" || type === "link") && (
-                            <FeatherIcon
+                            <MaterialCommunityIcons
                               color={Color.extraGray}
                               name="chevron-right"
                               size={22}
@@ -161,6 +180,13 @@ function SettingsScreen() {
             </View>
           </View>
         ))}
+        {showThemeModal && (
+          <ThemeModal
+            showVisible={(showVisible) => setShowThemeModal(showVisible)}
+            handleTheme={handleTheme}
+            appTheme={theme}
+          />
+        )}
       </ScrollView>
       <View style={styles.footer}>
         <Text style={styles.name}>FinderRent</Text>
