@@ -1,6 +1,7 @@
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
+import { useEffect, useRef, useState } from "react";
 import {
   StyleSheet,
   SafeAreaView,
@@ -8,9 +9,8 @@ import {
   Platform,
   TouchableOpacity,
 } from "react-native";
-import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { StatusBar } from "expo-status-bar";
-import { useEffect, useRef, useState } from "react";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
@@ -19,6 +19,7 @@ import HouseCard from "../components/House/HouseCard";
 import ProfileLocation from "../components/ProfileLocation";
 import MapModal from "../modals/MapModal";
 import Map from "../components/Map/Map";
+import SignInHeader from "../components/SignInHeader";
 
 /**
  * TODO:
@@ -132,8 +133,9 @@ function HomeScreen({ navigation }) {
       }}
     >
       <StatusBar style={isDarkMode ? "light" : "dark"} />
-      <ProfileLocation />
-      <ScrollView style={{ flex: 1, marginBottom: tabBarHeight - 50 }}>
+      {token ? <ProfileLocation /> : <SignInHeader />}
+
+      <ScrollView style={{ flex: 1, marginBottom: tabBarHeight }}>
         {/* <Map handleMapPress={handleMapPress} />
         {mapPress && <MapModal handleMapPress={handleMapPress} />} */}
 
@@ -157,6 +159,6 @@ function HomeScreen({ navigation }) {
   );
 }
 
-const styles = StyleSheet.create({});
-
 export default HomeScreen;
+
+const styles = StyleSheet.create({});

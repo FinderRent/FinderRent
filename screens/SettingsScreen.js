@@ -55,7 +55,7 @@ const SECTIONS = [
 ];
 
 function SettingsScreen() {
-  const { isDarkMode, toggleDarkMode, handleTheme, theme } = useDarkMode();
+  const { isDarkMode, handleTheme, theme } = useDarkMode();
   const navigation = useNavigation();
 
   const [showThemeModal, setShowThemeModal] = useState(false);

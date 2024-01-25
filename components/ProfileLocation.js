@@ -1,23 +1,34 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
+import { View, StyleSheet, Image, ImageBackground } from "react-native";
+import { Text } from "react-native-paper";
+
+import { Color } from "../constants/colors";
+import { useUsers } from "../context/UserContext";
 
 const ProfileLocation = () => {
+  const { userData } = useUsers();
+
   return (
-    <View style={styles.ProfileLocationView}>
+    <View style={styles.profileLocationView}>
       <View style={styles.midContainer}>
         <Image
-          source={require('../assets/images/placeholder.png')}
-          style={styles.LocationImage}
+          source={require("../assets/images/placeholder.png")}
+          style={styles.locationImage}
         />
         <View>
-          <Text style={styles.Location}>Location</Text>
-          <Text style={styles.LocationName}>SCE College</Text>
+          <Text style={styles.location}>Location</Text>
+          <Text style={styles.locationName}>
+            {userData.academic !== "undefined" ? userData.academic : ""}
+          </Text>
         </View>
       </View>
+
       <View style={styles.midContainer}>
-        <Image
-          source={require('../assets/images/profile-cartoon.png')}
-          style={styles.profileImage}
+        <ImageBackground
+          style={{ height: 60, width: 60 }}
+          imageStyle={styles.profileImage}
+          source={{
+            uri: userData.avatar?.url,
+          }}
         />
       </View>
     </View>
@@ -25,34 +36,33 @@ const ProfileLocation = () => {
 };
 
 const styles = StyleSheet.create({
-  ProfileLocationView: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  profileLocationView: {
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
-  Location: {
+  location: {
     fontSize: 18,
-    color: '#3887BE',
+    color: Color.Blue500,
   },
-  LocationName: {
+  locationName: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
-  LocationImage: {
+  locationImage: {
     height: 42,
     width: 42,
-    marginRight: 10,
-    marginTop: 3,
+    justifyContent: "flex-start",
   },
   profileImage: {
-    height: 70,
-    width: 70,
+    borderRadius: 50,
+    borderWidth: 0.5,
+    borderColor: Color.gray,
   },
   midContainer: {
     padding: 10,
-    flexDirection: 'row',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-end',
+    marginRight: 5,
+    flexDirection: "row",
+    alignItems: "center",
   },
 });
 export default ProfileLocation;
