@@ -17,7 +17,6 @@ import Animated, {
   useScrollViewOffset,
   withSpring,
 } from "react-native-reanimated";
-import { Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Ionicons } from "@expo/vector-icons";
@@ -31,6 +30,7 @@ import moment from "moment";
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { useUsers } from "../context/UserContext";
+import ChatScreenHeader from "../components/chats/ChatScreenHeader";
 import PageContainer from "../components/PageContainer";
 import Bubble from "../components/chats/Bubble";
 import ReplyTo from "../components/chats/ReplyTo";
@@ -104,53 +104,11 @@ function ChatScreen({ navigation, route }) {
   }
 
   useEffect(() => {
-    const CustomHeader = () => (
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-        }}
-      >
-        <View>
-          <TouchableOpacity
-            style={{
-              paddingRight: 5,
-            }}
-            onPress={() => navigation.navigate("ChatListScreen")}
-          >
-            <Ionicons
-              name="arrow-back"
-              size={24}
-              color={isDarkMode ? Color.white : Color.darkTheme}
-            />
-          </TouchableOpacity>
-        </View>
-        <ImageBackground
-          style={{ height: 40, width: 40 }}
-          imageStyle={{
-            borderRadius: 50,
-            borderWidth: 0.5,
-            borderColor: Color.gray,
-          }}
-          source={{
-            uri: image,
-          }}
-        />
-        <Text
-          style={{
-            marginHorizontal: 5,
-            fontSize: 18,
-          }}
-        >
-          {title}
-        </Text>
-      </View>
-    );
     navigation.setOptions({
-      headerLeft: () => <CustomHeader />,
+      headerLeft: () => <ChatScreenHeader image={image} title={title} />,
     });
     moment.locale("en");
-  }, [isDarkMode]);
+  }, []);
 
   useEffect(() => {
     socket.current = io("http://192.168.1.214:3000");

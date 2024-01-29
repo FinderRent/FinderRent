@@ -17,12 +17,16 @@ function DarkModeProvider({ children }) {
     const fetchDarkMode = async () => {
       try {
         const appTheme = await AsyncStorage.getItem("appTheme");
+        if (appTheme !== null) {
+          if (appTheme === "SystemDefault") {
+            return;
+          } else {
+            handleTheme(JSON.parse(appTheme));
+          }
+        }
         const isDarkMode = await AsyncStorage.getItem("darkMode");
         if (isDarkMode !== null && theme !== "SystemDefault") {
           setIsDarkMode(JSON.parse(isDarkMode));
-        }
-        if (appTheme !== null) {
-          handleTheme(JSON.parse(appTheme));
         }
       } catch (err) {
         console.log(err);

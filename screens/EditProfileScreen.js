@@ -288,8 +288,12 @@ function EditProfileScreen({ navigation }) {
           <Spacer>
             <Button
               style={{ marginTop: 10 }}
-              textColor={Color.defaultTheme}
-              buttonColor={Color.Blue700}
+              textColor={
+                isDarkMode ? Color.buttomSheetDarkTheme : Color.defaultTheme
+              }
+              buttonColor={
+                isDarkMode ? Color.defaultTheme : Color.buttomSheetDarkTheme
+              }
               mode="contained"
               onPress={handleUpdateUser}
               loading={isPending}
