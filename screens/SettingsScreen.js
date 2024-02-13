@@ -180,7 +180,7 @@ function SettingsScreen() {
         )}
       </ScrollView>
       <View style={styles.footer}>
-        <Text style={styles.name}>FinderRent</Text>
+        <Text style={styles.name}>FindeRent</Text>
         <Text style={styles.version}>version: {app_version}</Text>
       </View>
     </SafeAreaView>

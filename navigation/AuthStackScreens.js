@@ -84,7 +84,7 @@ function AuthStackScreens() {
                   ? Color.buttomSheetDarkTheme
                   : Color.defaultTheme,
               },
-              title: "FinderRent",
+              title: "FindeRent",
               headerTitleStyle: {
                 fontFamily: "DancingScript",
                 fontSize: 32,

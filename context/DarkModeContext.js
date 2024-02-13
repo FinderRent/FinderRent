@@ -22,11 +22,11 @@ function DarkModeProvider({ children }) {
             return;
           } else {
             handleTheme(JSON.parse(appTheme));
+            // const isDarkMode = await AsyncStorage.getItem("darkMode");
+            // if (isDarkMode !== null && theme !== "SystemDefault") {
+            //   setIsDarkMode(JSON.parse(isDarkMode));
+            // }
           }
-        }
-        const isDarkMode = await AsyncStorage.getItem("darkMode");
-        if (isDarkMode !== null && theme !== "SystemDefault") {
-          setIsDarkMode(JSON.parse(isDarkMode));
         }
       } catch (err) {
         console.log(err);
