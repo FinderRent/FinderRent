@@ -20,6 +20,7 @@ import ProfileLocation from "../components/ProfileLocation";
 import MapModal from "../modals/MapModal";
 import Map from "../components/Map/Map";
 import SignInHeader from "../components/SignInHeader";
+import ExploreHeader from "../components/ExploreHeader";
 
 /**
  * TODO:
@@ -71,6 +72,7 @@ function HomeScreen({ navigation }) {
 
   const token = userData.token;
   const [mapPress, setMapPress] = useState(false);
+  const [category, setCategory] = useState("All");
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
 
@@ -124,6 +126,10 @@ function HomeScreen({ navigation }) {
     setMapPress(!mapPress);
   };
 
+  const onDataChanged = (category) => {
+    setCategory(category);
+  };
+
   return (
     <SafeAreaView
       style={{
@@ -134,6 +140,8 @@ function HomeScreen({ navigation }) {
     >
       <StatusBar style={isDarkMode ? "light" : "dark"} />
       {token ? <ProfileLocation /> : <SignInHeader />}
+
+      <ExploreHeader onCategoryChanged={onDataChanged} />
 
       <ScrollView style={{ flex: 1, marginBottom: tabBarHeight }}>
         {/* <Map handleMapPress={handleMapPress} />
