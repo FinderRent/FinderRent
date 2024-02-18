@@ -1,25 +1,41 @@
-import React, { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import {
-  Image,
-  ScrollView,
+  Dimensions,
   StyleSheet,
   TouchableOpacity,
   View,
+  Image,
 } from "react-native";
-import Animated, { SlideInDown } from "react-native-reanimated";
-import { SliderBox } from "react-native-image-slider-box";
-import HouseInfo from "../components/House/HouseInfo";
-import { Paragraph, Text } from "react-native-paper";
-import Map from "../components/Map/Map";
+import Animated, {
+  SlideInDown,
+  interpolate,
+  useAnimatedRef,
+  useAnimatedStyle,
+  useScrollViewOffset,
+} from "react-native-reanimated";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import { SliderBox } from "react-native-image-slider-box";
+import { Paragraph, Text } from "react-native-paper";
+import { Ionicons } from "@expo/vector-icons";
+
+import { Color } from "../constants/colors";
+import { useDarkMode } from "../context/DarkModeContext";
+import HouseAssetsModal from "../modals/HouseAssetsModal";
 import MapModal from "../modals/MapModal";
+import Map from "../components/Map/Map";
+import HouseInfo from "../components/House/HouseInfo";
 import HouseRoommates from "../components/House/HouseRoommates";
 import Seperator from "../components/Seperator";
 import HouseAssets from "../components/House/HouseAssets";
-import HouseAssetsModal from "../modals/HouseAssetsModal";
 import RoommatesInfo from "../components/House/RoommatesInfo";
 
-const HouseDetailsScreen = ({ navigation, route }) => {
+const IMG_HEIGHT = 300;
+const { width } = Dimensions.get("window");
+
+const HouseDetailsScreen = ({ navigation }) => {
+  const { isDarkMode } = useDarkMode();
+  const scrollRef = useAnimatedRef();
+
   const [mapPress, setMapPress] = useState(false);
   const [showAll, setShowAll] = useState(false);
 
@@ -98,12 +114,92 @@ const HouseDetailsScreen = ({ navigation, route }) => {
     setShowAll(!showAll);
   };
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: "",
+      headerTransparent: true,
+
+      headerBackground: () => (
+        <Animated.View
+          style={[
+            headerAnimatedStyle,
+            isDarkMode
+              ? { ...styles.header, backgroundColor: Color.darkTheme }
+              : styles.header,
+          ]}
+        ></Animated.View>
+      ),
+      headerRight: () => (
+        <View style={styles.bar}>
+          <TouchableOpacity
+            style={
+              isDarkMode
+                ? {
+                    ...styles.roundButton,
+                    backgroundColor: Color.darkTheme,
+                  }
+                : styles.roundButton
+            }
+          >
+            <Ionicons
+              name="heart-outline"
+              size={22}
+              color={isDarkMode ? "#fff" : "#000"}
+            />
+          </TouchableOpacity>
+        </View>
+      ),
+      headerLeft: () => (
+        <TouchableOpacity
+          style={
+            isDarkMode
+              ? {
+                  ...styles.roundButton,
+                  backgroundColor: Color.darkTheme,
+                }
+              : styles.roundButton
+          }
+          onPress={() => navigation.goBack()}
+        >
+          <Ionicons
+            name="chevron-back"
+            size={24}
+            color={isDarkMode ? "#fff" : "#000"}
+          />
+        </TouchableOpacity>
+      ),
+    });
+  }, [isDarkMode]);
+
+  const scrollOffset = useScrollViewOffset(scrollRef);
+
+  const headerAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      opacity: interpolate(scrollOffset.value, [0, IMG_HEIGHT / 1.5], [0, 1]),
+    };
+  }, []);
+
+  const imageAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          scaleX: interpolate(
+            scrollOffset.value,
+            [-IMG_HEIGHT, 0, IMG_HEIGHT],
+            [2, 1, 1.1]
+          ),
+        },
+      ],
+    };
+  });
+
   return (
     <View style={{ flex: 1 }}>
-      <Animated.ScrollView>
-        <View style={styles.images}>
+      <Animated.ScrollView ref={scrollRef} scrollEventThrottle={16}>
+        <Animated.View style={[styles.images, imageAnimatedStyle]}>
           <SliderBox images={images} sliderBoxHeight={"100%"} />
-        </View>
+        </Animated.View>
+
         <View style={styles.houseInfo}>
           <Text style={styles.city}>Beer Sheva</Text>
           <Text style={styles.street}>Avigdor hameiri 21/3</Text>
@@ -158,11 +254,12 @@ export default HouseDetailsScreen;
 
 const styles = StyleSheet.create({
   images: {
-    height: 300,
-    marginBottom: 10,
+    height: IMG_HEIGHT,
+    width: width,
+    // marginBottom: 10,
   },
   houseInfo: {
-    flex: 1,
+    // flex: 1,
     flexDirection: "col",
     marginHorizontal: "4%",
   },
@@ -227,5 +324,32 @@ const styles = StyleSheet.create({
   BtnText: {
     color: "white",
     fontWeight: "bold",
+  },
+
+  roundButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 50,
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+    // color: Color.darkTheme,
+  },
+  bar: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 10,
+  },
+  header: {
+    backgroundColor: "#fff",
+    height: 100,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderColor: Color.gray,
+  },
+
+  description: {
+    fontSize: 16,
+    marginTop: 10,
   },
 });

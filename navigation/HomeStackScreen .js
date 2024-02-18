@@ -16,12 +16,6 @@ function HomeStackScreen({ navigation }) {
     <HomeStack.Navigator
       screenOptions={{
         headerShown: false,
-        headerStyle: {
-          backgroundColor: isDarkMode ? Color.Brown700 : Color.Brown100,
-        },
-        drawerContentStyle: {
-          backgroundColor: isDarkMode ? Color.darkTheme : Color.defaultTheme,
-        },
         headerTitle: "",
       }}
     >
@@ -46,6 +40,7 @@ function HomeStackScreen({ navigation }) {
         name="HouseDetailsScreen"
         component={HouseDetailsScreen}
         options={{
+          headerShown: true,
           headerRight: () => (
             <View style={{ marginLeft: -10 }}>
               <Ionicons.Button
