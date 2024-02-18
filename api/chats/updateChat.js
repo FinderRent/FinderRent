@@ -1,5 +1,4 @@
 import axios from "axios";
-import { ADDRESS } from "@env";
 
 async function updateChat({ messageText: lastMessage, chatId }) {
   if (!lastMessage) {
@@ -8,7 +7,7 @@ async function updateChat({ messageText: lastMessage, chatId }) {
 
   try {
     const response = await axios.patch(
-      `http://${ADDRESS}:3000/api/v1/chats/update/${chatId}`,
+      `https://finder-rent-backend.vercel.app/api/v1/chats/update/${chatId}`,
       { lastMessage },
       {
         headers: {

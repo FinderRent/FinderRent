@@ -28,10 +28,13 @@ async function addMessages(message) {
       });
     }
 
-    const response = await fetch(`http://${ADDRESS}:3000/api/v1/messages`, {
-      method: "POST",
-      body: formData,
-    });
+    const response = await fetch(
+      `https://finder-rent-backend.vercel.app/api/v1/messages`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
 
     const responseData = await response.json();
 

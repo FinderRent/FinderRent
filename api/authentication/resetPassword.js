@@ -1,10 +1,9 @@
 import axios from "axios";
-import { ADDRESS } from "@env";
 
 async function resetPassword({ otp, password, passwordConfirm }) {
   try {
     const response = await axios.patch(
-      `http://${ADDRESS}:3000/api/v1/users/resetPassword`,
+      `https://finder-rent-backend.vercel.app/api/v1/users/resetPassword`,
       { otp, password, passwordConfirm },
       {
         headers: {

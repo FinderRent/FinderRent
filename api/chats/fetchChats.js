@@ -1,10 +1,9 @@
 import axios from "axios";
-import { ADDRESS } from "@env";
 
 async function fetchChats(ouid) {
   try {
     const response = await axios.get(
-      `http://${ADDRESS}:3000/api/v1/users/${ouid}`
+      `https://finder-rent-backend.vercel.app/api/v1/users/${ouid}`
     );
 
     const responseData = response.data;

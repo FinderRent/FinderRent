@@ -1,10 +1,9 @@
 import axios from "axios";
-import { ADDRESS } from "@env";
 
 async function login({ email, password, pushToken }) {
   try {
     const response = await axios.post(
-      `http://${ADDRESS}:3000/api/v1/users/login`,
+      `https://finder-rent-backend.vercel.app/api/v1/users/login`,
       { email, password, pushToken },
       {
         headers: {

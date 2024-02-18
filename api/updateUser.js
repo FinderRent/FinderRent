@@ -1,5 +1,4 @@
 import axios from "axios";
-import { ADDRESS } from "@env";
 
 async function updateUser({
   userType,
@@ -42,7 +41,7 @@ async function updateUser({
     }
 
     const response = await axios.patch(
-      `http://${ADDRESS}:3000/api/v1/users/updateMe`,
+      `https://finder-rent-backend.vercel.app/api/v1/users/updateMe`,
       formData,
       {
         headers: {

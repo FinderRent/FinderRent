@@ -1,5 +1,4 @@
 import axios from "axios";
-import { ADDRESS } from "@env";
 
 async function changePassword({
   token,
@@ -9,7 +8,7 @@ async function changePassword({
 }) {
   try {
     const response = await axios.patch(
-      `http://${ADDRESS}:3000/api/v1/users/updateMyPassword`,
+      `https://finder-rent-backend.vercel.app/api/v1/users/updateMyPassword`,
       {
         passwordCurrent,
         password,
