@@ -8,6 +8,7 @@ import {
   ScrollView,
   Platform,
   TouchableOpacity,
+  FlatList,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
@@ -21,7 +22,9 @@ import MapModal from "../modals/MapModal";
 import Map from "../components/Map/Map";
 import SignInHeader from "../components/SignInHeader";
 import ExploreHeader from "../components/ExploreHeader";
-
+import { fetchAllApartments } from "./../utils/http";
+import Loader from "../components/ui/Loader";
+import { useQuery } from "@tanstack/react-query";
 /**
  * TODO:
  * when press on the profile photo, go to profile page.
@@ -78,7 +81,24 @@ function HomeScreen({ navigation }) {
 
   const notificationListener = useRef();
   const responseListener = useRef();
+  //----------------------------------------------------------------------
 
+  const { data, isLoading, isError, status } = useQuery({
+    queryKey: ["apartments"],
+    queryFn: () => fetchAllApartments(),
+  });
+
+  const renderApartmentCard = ({ item: apartment }) => {
+    return (
+      <TouchableOpacity
+        onPress={() => navigation.navigate("HouseDetailsScreen")}
+      >
+        <HouseCard navigation={navigation} apartment={apartment} />
+      </TouchableOpacity>
+    );
+  };
+
+  //----------------------------------------------------------------------
   useEffect(() => {
     registerForPushNotificationsAsync().then((pushToken) =>
       setExpoPushToken(pushToken)
@@ -130,6 +150,10 @@ function HomeScreen({ navigation }) {
     setCategory(category);
   };
 
+  if (isLoading) {
+    return <Loader />;
+  }
+
   return (
     <SafeAreaView
       style={{
@@ -143,26 +167,11 @@ function HomeScreen({ navigation }) {
 
       <ExploreHeader onCategoryChanged={onDataChanged} />
 
-      <ScrollView style={{ flex: 1, marginBottom: tabBarHeight }}>
-        {/* <Map handleMapPress={handleMapPress} />
-        {mapPress && <MapModal handleMapPress={handleMapPress} />} */}
-
-        <TouchableOpacity
-          onPress={() => navigation.navigate("HouseDetailsScreen")}
-        >
-          <HouseCard navigation={navigation} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("HouseDetailsScreen")}
-        >
-          <HouseCard navigation={navigation} />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("HouseDetailsScreen")}
-        >
-          <HouseCard navigation={navigation} />
-        </TouchableOpacity>
-      </ScrollView>
+      <FlatList
+        data={data.apartments}
+        keyExtractor={(item) => item._id}
+        renderItem={renderApartmentCard}
+      />
     </SafeAreaView>
   );
 }
