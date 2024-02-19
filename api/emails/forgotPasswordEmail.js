@@ -1,10 +1,9 @@
 import axios from "axios";
-import { ADDRESS } from "@env";
 
 async function forgotPasswordEmail({ email }) {
   try {
     const response = await axios.post(
-      `http://${ADDRESS}:3000/api/v1/users/forgotPassword`,
+      `https://finder-rent-backend.vercel.app/api/v1/users/forgotPassword`,
       { email },
       {
         headers: {

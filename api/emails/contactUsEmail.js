@@ -1,5 +1,4 @@
 import axios from "axios";
-import { ADDRESS } from "@env";
 
 async function contactUsEmail({
   firstName,
@@ -10,7 +9,7 @@ async function contactUsEmail({
 }) {
   try {
     const response = await axios.post(
-      `http://${ADDRESS}:3000/api/v1/users/contactUs`,
+      `https://finder-rent-backend.vercel.app/api/v1/users/contactUs`,
       { firstName, lastName, email, subject, message },
       {
         headers: {

@@ -5,26 +5,27 @@ import { useEffect, useRef, useState } from "react";
 import {
   StyleSheet,
   SafeAreaView,
-  ScrollView,
   Platform,
   TouchableOpacity,
   FlatList,
+  View,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import { useQuery } from "@tanstack/react-query";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { useUsers } from "../context/UserContext";
+import { fetchAllApartments } from "./../utils/http";
 import HouseCard from "../components/House/HouseCard";
 import ProfileLocation from "../components/ProfileLocation";
 import MapModal from "../modals/MapModal";
 import Map from "../components/Map/Map";
 import SignInHeader from "../components/SignInHeader";
 import ExploreHeader from "../components/ExploreHeader";
-import { fetchAllApartments } from "./../utils/http";
 import Loader from "../components/ui/Loader";
-import { useQuery } from "@tanstack/react-query";
+
 /**
  * TODO:
  * when press on the profile photo, go to profile page.
@@ -150,15 +151,16 @@ function HomeScreen({ navigation }) {
     setCategory(category);
   };
 
-  if (isLoading) {
-    return <Loader />;
-  }
+  // if (isLoading) {
+  //   return <Loader />;
+  // }
 
   return (
     <SafeAreaView
       style={{
         flex: 1,
         paddingTop: Platform.OS === "ios" ? 0 : 35,
+        marginBottom: Platform.OS === "ios" ? 0 : tabBarHeight,
         backgroundColor: isDarkMode ? Color.darkTheme : Color.white,
       }}
     >
@@ -167,6 +169,11 @@ function HomeScreen({ navigation }) {
 
       <ExploreHeader onCategoryChanged={onDataChanged} />
 
+      {isLoading && (
+        <View style={{ paddingTop: "80%" }}>
+          <Loader color={isDarkMode ? Color.white : Color.darkTheme} />
+        </View>
+      )}
       <FlatList
         data={data?.apartments}
         keyExtractor={(item) => item._id}
