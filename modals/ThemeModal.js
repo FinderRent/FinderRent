@@ -30,7 +30,14 @@ function ThemeModal({ showVisible, appTheme }) {
 
   return (
     <View>
-      <Modal animationType="fade" transparent={true} visible={themeVisible}>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={themeVisible}
+        onRequestClose={() => {
+          showVisible(!themeVisible);
+        }}
+      >
         <View style={styles.centeredView}>
           <View
             style={

@@ -109,8 +109,7 @@ function SignInModal({ showVisible }) {
         transparent={true}
         visible={signInModalVisible}
         onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-          setSignInModalVisible(!signInModalVisible);
+          showVisible(!signInModalVisible);
         }}
       >
         <KeyboardAvoidingView

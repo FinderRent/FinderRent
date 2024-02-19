@@ -51,6 +51,9 @@ function ForgotPasswordModal({ showVisible }) {
         animationType="slide"
         transparent={true}
         visible={forgotPasswordVisible}
+        onRequestClose={() => {
+          showVisible(!forgotPasswordVisible);
+        }}
       >
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
