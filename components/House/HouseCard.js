@@ -7,7 +7,7 @@ import { useDarkMode } from "../../context/DarkModeContext";
 import { Color } from "../../constants/colors";
 import { Text } from "react-native-paper";
 
-const HouseCard = ({ navigation }) => {
+const HouseCard = ({ navigation, apartment }) => {
   const { isDarkMode } = useDarkMode();
   const [isFavorite, setIsFavorite] = useState(false);
 
@@ -41,7 +41,7 @@ const HouseCard = ({ navigation }) => {
           <SliderBox
             images={images}
             onCurrentImagePressed={() =>
-              navigation.navigate("HouseDetailsScreen")
+              navigation.navigate("HouseDetailsScreen", { apartment })
             }
           />
         </View>
@@ -49,11 +49,14 @@ const HouseCard = ({ navigation }) => {
 
       <View style={styles.detailsContainer}>
         <View style={styles.addressContainer}>
-          <Text style={styles.city}>Beer Sheva</Text>
-          <Text style={styles.street}>Avigdor hameiri 21/3</Text>
-          <Text style={styles.distance}>2 kilometers away</Text>
+          <Text style={styles.city}>{apartment.address.city}</Text>
+          <Text style={styles.street}>
+            {apartment.address.street} {apartment.address.buildingNumber}/
+            {apartment.address.apartmentNumber}
+          </Text>
+          <Text style={styles.distance}>{apartment.distanceFromAcademy}</Text>
         </View>
-        <Text style={styles.price}>1000$</Text>
+        <Text style={styles.price}>{apartment.price}$</Text>
       </View>
     </View>
   );

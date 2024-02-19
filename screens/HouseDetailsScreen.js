@@ -32,13 +32,14 @@ import RoommatesInfo from "../components/House/RoommatesInfo";
 const IMG_HEIGHT = 300;
 const { width } = Dimensions.get("window");
 
-const HouseDetailsScreen = ({ navigation }) => {
+const HouseDetailsScreen = ({ navigation, route }) => {
+  const { apartment } = route.params;
   const { isDarkMode } = useDarkMode();
   const scrollRef = useAnimatedRef();
 
   const [mapPress, setMapPress] = useState(false);
   const [showAll, setShowAll] = useState(false);
-
+  const [apartmentContent, setApartmentContent] = useState([]);
   const images = [
     "https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/home-improvement/wp-content/uploads/2022/07/download-23.jpg",
     "https://www.bhg.com/thmb/3Vf9GXp3T-adDlU6tKpTbb-AEyE=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/white-modern-house-curved-patio-archway-c0a4a3b3-aa51b24d14d0464ea15d36e05aa85ac9.jpg",
@@ -110,7 +111,8 @@ const HouseDetailsScreen = ({ navigation }) => {
   const handleMapPress = () => {
     setMapPress(!mapPress);
   };
-  const handleShowAllPress = () => {
+  const handleShowAllPress = (apartmentContent) => {
+    setApartmentContent(apartmentContent);
     setShowAll(!showAll);
   };
 
@@ -201,15 +203,25 @@ const HouseDetailsScreen = ({ navigation }) => {
         </Animated.View>
 
         <View style={styles.houseInfo}>
-          <Text style={styles.city}>Beer Sheva</Text>
-          <Text style={styles.street}>Avigdor hameiri 21/3</Text>
-          <Text style={styles.distance}>
-            2 kilometers away from SCE College
+          <Text style={styles.city}>{apartment.address.city}</Text>
+          <Text style={styles.street}>
+            {apartment.address.street} {apartment.address.buildingNumber}/
+            {apartment.address.apartmentNumber}
           </Text>
-          <HouseRoommates />
+          <Text style={styles.distance}>
+            {apartment.distanceFromAcademy} kilometers away from SCE College
+          </Text>
+          <HouseRoommates
+            totalCapacity={apartment.totalCapacity}
+            realTimeCapacity={apartment.realTimeCapacity}
+          />
           <Text style={styles.about}>About</Text>
-          <Paragraph>{ParagraphDeatails}</Paragraph>
-          <HouseInfo />
+          <Paragraph>{apartment.about}</Paragraph>
+          <HouseInfo
+            numberOfRooms={apartment.numberOfRooms}
+            floor={apartment.floor}
+            totalCapacity={apartment.totalCapacity}
+          />
           <Map
             handleMapPress={handleMapPress}
             zoomEnabled={false}
@@ -219,12 +231,13 @@ const HouseDetailsScreen = ({ navigation }) => {
           <Seperator />
           <HouseAssets
             handleShowAllPress={handleShowAllPress}
-            Assets={Assets}
+            // Assets={Assets}
+            apartmentContent={apartment.apartmentContent}
           />
           {showAll && (
             <HouseAssetsModal
               handleShowAllPress={handleShowAllPress}
-              Assets={Assets}
+              apartmentContent={apartmentContent}
             />
           )}
           <Seperator />
@@ -238,7 +251,7 @@ const HouseDetailsScreen = ({ navigation }) => {
       >
         <View style={styles.BottomTabView}>
           <View style={styles.PriceView}>
-            <Text style={styles.price}>1000$</Text>
+            <Text style={styles.price}>{apartment.price}$</Text>
             <Text style={styles.monthPerson}>Month / Person</Text>
           </View>
           <TouchableOpacity style={styles.ReserveBtn}>

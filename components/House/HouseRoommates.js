@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Text } from "react-native-paper";
 
-const HouseRoommates = () => {
+const HouseRoommates = (props) => {
   return (
     <View style={styles.container}>
       <View style={styles.viewContainer}>
@@ -11,13 +11,17 @@ const HouseRoommates = () => {
           source={require("../../assets/images/roommate.png")}
         /> */}
         <Text style={styles.Text}>Best For</Text>
-        <Text style={[styles.Text, styles.numberInfo]}>4</Text>
+        <Text style={[styles.Text, styles.numberInfo]}>
+          {props.totalCapacity}
+        </Text>
         <Text style={styles.Text}>Roommates</Text>
       </View>
       <View style={styles.line}></View>
       <View style={styles.viewContainer}>
         <Text style={styles.Text}>There are</Text>
-        <Text style={[styles.Text, styles.numberInfo]}>2</Text>
+        <Text style={[styles.Text, styles.numberInfo]}>
+          {props.totalCapacity - props.realTimeCapacity}
+        </Text>
         <Text style={styles.Text}>available Rooms</Text>
       </View>
     </View>

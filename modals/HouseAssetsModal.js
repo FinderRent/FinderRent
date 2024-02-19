@@ -15,7 +15,7 @@ import { Text } from "react-native-paper";
 
 function HouseAssetsModal(props) {
   const { isDarkMode } = useDarkMode();
-
+  console.log(props.apartmentContent);
   const handleShowAllPress = () => {
     props.handleShowAllPress();
   };
@@ -32,7 +32,7 @@ function HouseAssetsModal(props) {
         >
           <Text style={styles.Header}>What this place offers</Text>
           <ScrollView>
-            {props.Assets.map((l, i) => (
+            {props.apartmentContent.map((l, i) => (
               <ListItem
                 containerStyle={
                   isDarkMode
@@ -50,7 +50,7 @@ function HouseAssetsModal(props) {
                         : { color: Color.darkTheme }
                     }
                   >
-                    {l.name}
+                    {l}
                   </ListItem.Title>
                 </ListItem.Content>
               </ListItem>

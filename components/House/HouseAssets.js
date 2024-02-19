@@ -10,17 +10,23 @@ const HouseAssets = (props) => {
   const { isDarkMode } = useDarkMode();
 
   const handleShowAllPress = () => {
-    props.handleShowAllPress();
+    props.handleShowAllPress(apartmentContent);
   };
-  const slicedAssets = props.Assets.slice(0, 6);
+
+  //extract the first six objects that are true
+  const trueKeys = Object.keys(props.apartmentContent).filter(
+    (key) => props.apartmentContent[key]
+  );
+  const apartmentContent = trueKeys.slice(0, 6).filter((key) => key !== "_id");
+  console.log(apartmentContent);
 
   return (
     <View style={styles.seperator}>
       <Text style={styles.Header}>What this place offers</Text>
       <View>
         {/* if bigger than 6 items */}
-        {props.Assets.length > 6 &&
-          slicedAssets.map((l, i) => (
+        {apartmentContent.length >= 6 &&
+          apartmentContent.map((l, i) => (
             <ListItem
               containerStyle={
                 isDarkMode
@@ -37,19 +43,19 @@ const HouseAssets = (props) => {
                       : { color: Color.darkTheme }
                   }
                 >
-                  {l.name}
+                  {l}
                 </ListItem.Title>
               </ListItem.Content>
             </ListItem>
           ))}
-        {props.Assets.length > 6 && (
+        {apartmentContent.length >= 6 && (
           <TouchableOpacity style={styles.Button} onPress={handleShowAllPress}>
             <Text style={styles.text}>Show all</Text>
           </TouchableOpacity>
         )}
         {/* if shorter than 6 items */}
-        {props.Assets.length < 6 &&
-          props.Assets.map((l, i) => (
+        {apartmentContent.length < 6 &&
+          apartmentContent.map((l, i) => (
             <ListItem
               containerStyle={
                 isDarkMode
@@ -66,7 +72,7 @@ const HouseAssets = (props) => {
                       : { color: Color.darkTheme }
                   }
                 >
-                  {l.name}
+                  {l}
                 </ListItem.Title>
               </ListItem.Content>
             </ListItem>

@@ -168,7 +168,7 @@ function HomeScreen({ navigation }) {
       <ExploreHeader onCategoryChanged={onDataChanged} />
 
       <FlatList
-        data={data.apartments}
+        data={data?.apartments}
         keyExtractor={(item) => item._id}
         renderItem={renderApartmentCard}
       />

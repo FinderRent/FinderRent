@@ -2,21 +2,21 @@ import React from "react";
 import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Text } from "react-native-paper";
 
-const HouseInfo = () => {
+const HouseInfo = (props) => {
   return (
     <View style={styles.container}>
       <View style={styles.innerInfo}>
-        <Text style={styles.numberInfo}>3</Text>
+        <Text style={styles.numberInfo}>{props.numberOfRooms}</Text>
         <Text style={styles.headerInfo}>Rooms</Text>
       </View>
       <View style={styles.line}></View>
       <View style={styles.innerInfo}>
-        <Text style={styles.numberInfo}>2</Text>
+        <Text style={styles.numberInfo}>{props.floor}</Text>
         <Text style={styles.headerInfo}>Floor</Text>
       </View>
       <View style={styles.line}></View>
       <View style={styles.innerInfo}>
-        <Text style={styles.numberInfo}>4</Text>
+        <Text style={styles.numberInfo}>{props.totalCapacity}</Text>
         <Text style={styles.headerInfo}>Roommates</Text>
       </View>
     </View>
