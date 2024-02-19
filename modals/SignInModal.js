@@ -214,20 +214,6 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     backgroundColor: Color.Blue700,
   },
-  buttonOpen: {
-    borderRadius: 20,
-    padding: 5,
-    elevation: 2,
-    marginVertical: 10,
-    backgroundColor: Color.Blue700,
-  },
-  buttonClose: {
-    backgroundColor: Color.Blue700,
-  },
-  textStyle: {
-    fontWeight: "bold",
-    textAlign: "center",
-  },
   modalText: {
     marginBottom: 0,
     marginTop: 15,
