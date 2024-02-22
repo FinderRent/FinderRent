@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ImageBackground,
   SafeAreaView,
@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { useMutation } from "@tanstack/react-query";
+import { useIsFocused } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
 
 import { Color } from "../constants/colors";
@@ -17,14 +18,21 @@ import Spacer from "../components/ui/Spacer";
 import contactUsEmail from "../api/emails/contactUsEmail";
 import ErrorMessage from "../components/ui/ErrorMessage";
 
-function ContactUsScreen() {
+function ContactUsScreen({ navigation }) {
   const { isDarkMode } = useDarkMode();
+  const isFocused = useIsFocused();
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    if (!isFocused) {
+      navigation.goBack();
+    }
+  }, [isFocused]);
 
   const { mutate, isPending, error, isError } = useMutation({
     mutationFn: ({ firstName, lastName, email, subject, message }) =>
@@ -104,7 +112,6 @@ function ContactUsScreen() {
               style={styles.textInput}
               value={subject}
               label="Subject"
-              keyboardType="email-address"
               mode="outlined"
               onValueChange={(subject) => setSubject(subject)}
             />

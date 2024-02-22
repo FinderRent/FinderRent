@@ -27,7 +27,7 @@ function ReplyTo({ text, name, onCancel }) {
         onPress={onCancel}
         hitSlop={{ top: 20, bottom: 20, left: 50, right: 50 }}
       >
-        <AntDesign name="closecircleo" size={22} color={Color.Blue500} />
+        <AntDesign name="closecircleo" size={25} color={Color.Blue500} />
       </TouchableOpacity>
     </View>
   );
@@ -35,7 +35,7 @@ function ReplyTo({ text, name, onCancel }) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 8,
+    padding: 5,
     flexDirection: "row",
     alignItems: "center",
     borderLeftWidth: 5,
