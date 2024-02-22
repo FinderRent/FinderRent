@@ -1,6 +1,6 @@
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { Text } from "react-native-paper";
+import { Button, Text } from "react-native-paper";
 
 import { Color } from "../../constants/colors";
 import { useDarkMode } from "../../context/DarkModeContext";
@@ -23,8 +23,11 @@ function ReplyTo({ text, name, onCancel }) {
         <Text numberOfLines={1}>{text}</Text>
       </View>
 
-      <TouchableOpacity onPress={onCancel}>
-        <AntDesign name="closecircleo" size={20} color={Color.Blue500} />
+      <TouchableOpacity
+        onPress={onCancel}
+        hitSlop={{ top: 20, bottom: 20, left: 50, right: 50 }}
+      >
+        <AntDesign name="closecircleo" size={22} color={Color.Blue500} />
       </TouchableOpacity>
     </View>
   );

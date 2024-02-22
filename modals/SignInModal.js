@@ -191,13 +191,12 @@ const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
     justifyContent: "center",
-    marginTop: 30,
   },
   modalView: {
-    margin: 10,
+    margin: 20,
     backgroundColor: "white",
     borderRadius: 20,
-    padding: 35,
+    padding: 15,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,

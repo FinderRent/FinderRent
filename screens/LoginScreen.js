@@ -4,10 +4,12 @@ import { Button, Text } from "react-native-paper";
 import { FontAwesome5 } from "@expo/vector-icons";
 
 import { Color } from "../constants/colors";
+import { useDarkMode } from "../context/DarkModeContext";
 import { useUsers } from "../context/UserContext";
 import SignInModal from "../modals/SignInModal";
 
 function LoginScreen({ navigation, route }) {
+  const { isDarkMode } = useDarkMode();
   const { userData } = useUsers();
 
   const [showSignInModal, setShowSignInModal] = useState(false);
@@ -35,15 +37,17 @@ function LoginScreen({ navigation, route }) {
       <FontAwesome5
         name="user-lock"
         size={100}
-        color={Color.Blue500}
+        color={isDarkMode ? Color.defaultTheme : Color.buttomSheetDarkTheme}
         style={styles.icon}
       />
       <Text style={styles.text}>Sign in to see the {screenName} screen.</Text>
 
       <Button
-        style={{ margin: 20 }}
-        buttonColor={Color.Blue700}
-        textColor={Color.white}
+        style={styles.button}
+        buttonColor={
+          isDarkMode ? Color.defaultTheme : Color.buttomSheetDarkTheme
+        }
+        textColor={isDarkMode ? Color.buttomSheetDarkTheme : Color.defaultTheme}
         mode="elevated"
         onPress={() => setShowSignInModal(true)}
       >
@@ -65,7 +69,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    // alignItems: 'center',
   },
   icon: {
     textAlign: "center",
@@ -76,5 +79,9 @@ const styles = StyleSheet.create({
     fontFamily: "varelaRound",
     fontSize: 17,
     letterSpacing: 0.3,
+  },
+  button: {
+    margin: 10,
+    marginHorizontal: 20,
   },
 });
