@@ -92,7 +92,7 @@ function HomeScreen({ navigation }) {
   const renderApartmentCard = ({ item: apartment }) => {
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate("HouseDetailsScreen")}
+        onPress={() => navigation.navigate("HouseDetailsScreen", { apartment })}
       >
         <HouseCard navigation={navigation} apartment={apartment} />
       </TouchableOpacity>
@@ -150,10 +150,6 @@ function HomeScreen({ navigation }) {
   const onDataChanged = (category) => {
     setCategory(category);
   };
-
-  // if (isLoading) {
-  //   return <Loader />;
-  // }
 
   return (
     <SafeAreaView
