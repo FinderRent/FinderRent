@@ -26,7 +26,7 @@ function HomeStackScreen({ navigation }) {
           headerRight: () => (
             <View style={{ marginLeft: -10 }}>
               <Ionicons.Button
-                name="ios-menu"
+                name="menu"
                 size={25}
                 color={Color.darkTheme}
                 backgroundColor={isDarkMode ? Color.Brown700 : Color.Brown100}
@@ -44,7 +44,7 @@ function HomeStackScreen({ navigation }) {
           headerRight: () => (
             <View style={{ marginLeft: -10 }}>
               <Ionicons.Button
-                name="ios-menu"
+                name="menu"
                 size={25}
                 color={Color.darkTheme}
                 backgroundColor={isDarkMode ? Color.Brown700 : Color.Brown100}
