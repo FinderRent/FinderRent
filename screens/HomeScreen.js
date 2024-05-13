@@ -1,7 +1,7 @@
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   StyleSheet,
   SafeAreaView,
@@ -20,11 +20,11 @@ import { useUsers } from "../context/UserContext";
 import { fetchAllApartments } from "./../utils/http";
 import HouseCard from "../components/House/HouseCard";
 import ProfileLocation from "../components/ProfileLocation";
-import MapModal from "../modals/MapModal";
-import Map from "../components/Map/Map";
 import SignInHeader from "../components/SignInHeader";
 import ExploreHeader from "../components/ExploreHeader";
 import Loader from "../components/ui/Loader";
+import ListingsMap from "../components/Map/ListingsMap";
+import listingsDataGeo from "../data/apartments-listings.geo.json";
 
 /**
  * TODO:
@@ -143,6 +143,8 @@ function HomeScreen({ navigation }) {
     };
   }, [notificationListener, token]);
 
+  const getoItems = useMemo(() => listingsDataGeo, []);
+
   const handleMapPress = () => {
     setMapPress(!mapPress);
   };
@@ -165,11 +167,14 @@ function HomeScreen({ navigation }) {
 
       <ExploreHeader onCategoryChanged={onDataChanged} />
 
+      {/* <ListingsMap listings={getoItems} /> */}
+
       {isLoading && (
         <View style={{ paddingTop: "80%" }}>
           <Loader color={isDarkMode ? Color.white : Color.darkTheme} />
         </View>
       )}
+
       <FlatList
         data={data?.apartments}
         keyExtractor={(item) => item._id}
