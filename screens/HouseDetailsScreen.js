@@ -13,8 +13,9 @@ import Animated, {
   useAnimatedStyle,
   useScrollViewOffset,
 } from "react-native-reanimated";
+import Carousel from "react-native-reanimated-carousel";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
-import { SliderBox } from "react-native-image-slider-box";
+// import { SliderBox } from "react-native-image-slider-box";
 import { Paragraph, Text } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -41,9 +42,8 @@ const HouseDetailsScreen = ({ navigation, route }) => {
   const [showAll, setShowAll] = useState(false);
   const [apartmentContent, setApartmentContent] = useState([]);
   const images = [
-    "https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/home-improvement/wp-content/uploads/2022/07/download-23.jpg",
+    "https://149347005.v2.pressablecdn.com/wp-content/uploads/modern-home-twilight-1.jpg",
     "https://www.bhg.com/thmb/3Vf9GXp3T-adDlU6tKpTbb-AEyE=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/white-modern-house-curved-patio-archway-c0a4a3b3-aa51b24d14d0464ea15d36e05aa85ac9.jpg",
-    "https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/home-improvement/wp-content/uploads/2022/07/download-23.jpg",
   ];
 
   const Assets = [
@@ -199,7 +199,21 @@ const HouseDetailsScreen = ({ navigation, route }) => {
     <View style={{ flex: 1 }}>
       <Animated.ScrollView ref={scrollRef} scrollEventThrottle={16}>
         <Animated.View style={[styles.images, imageAnimatedStyle]}>
-          <SliderBox images={images} sliderBoxHeight={"100%"} />
+          <View>
+            <Carousel
+              // mode="parallax"
+              width={width}
+              height={width}
+              autoPlay={false}
+              data={images}
+              scrollAnimationDuration={1000}
+              renderItem={({ item }) => (
+                <View style={styles.container}>
+                  <Image source={{ uri: item }} style={styles.images} />
+                </View>
+              )}
+            />
+          </View>
         </Animated.View>
 
         <View style={styles.houseInfo}>
