@@ -7,6 +7,7 @@ import { useDarkMode } from "../context/DarkModeContext";
 import ChatListScreen from "../screens/ChatListScreen";
 import ChatScreen from "../screens/ChatScreen";
 import LoginScreen from "../screens/LoginScreen";
+import { Platform } from "react-native";
 
 const ChatStack = createNativeStackNavigator();
 
