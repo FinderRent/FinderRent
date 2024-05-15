@@ -45,6 +45,7 @@ export default function App() {
     department,
     yearbook,
     email,
+    favouriteApartments,
   } = useUsers();
 
   useEffect(() => {
@@ -98,6 +99,7 @@ export default function App() {
               department,
               yearbook,
               email,
+              favouriteApartments,
             }}
           >
             <MenuProvider>

@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useDarkMode } from "../../context/DarkModeContext";
 import { Color } from "../../constants/colors";
 import { Text } from "react-native-paper";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   addFavourite,
   removeFavourite,
@@ -13,39 +14,55 @@ import {
 } from "../../utils/http";
 import Loader from "../../components/ui/Loader";
 
-const HouseCard = ({ navigation, apartment, userData }) => {
+const HouseCard = ({ navigation, apartment, userData, isFavourite }) => {
   const { isDarkMode } = useDarkMode();
 
   //component initialization ----------------------------------
 
-  const handleFirstQuery = {
-    queryKey: ["isFavourite"],
-    queryFn: () => checkIfFavourite(apartment._id, userData.id),
-  };
+  // const handleFirstQuery = {
+  //   queryKey: ["isFavourite"],
+  //   queryFn: () => checkIfFavourite(apartment._id, userData.id),
+  // };
 
-  const {
-    data: favourite,
-    isLoading: isLoadingFavourite,
-    isError: isError1,
-    status: status1,
-  } = useQuery(handleFirstQuery);
+  // const {
+  //   data: favourite,
+  //   isLoading: isLoadingFavourite,
+  //   isError: isError1,
+  //   status: status1,
+  // } = useQuery(handleFirstQuery);
+  // console.log(favourite);
 
-  const [isFavorite, setIsFavorite] = useState();
-
-  if (isLoadingFavourite) {
-    console.log("waiting for data");
-  } else {
-    console.log("success - Favourite: " + isFavorite);
-  }
+  const [isFavorite, setIsFavorite] = useState(isFavourite);
+  console.log("isFavourite - " + isFavorite);
+  // console.log("favourite - ", favourite);
+  // console.log("isFavorite - ", isFavorite);
 
   // if (isLoadingFavourite) {
-  //   return <Loader />;
+  //   console.log("waiting for data");
+  // } else {
+  //   console.log("success - Favourite: " + isFavorite);
   // }
-  //----------------------------------------------------
 
+  const getStoredData = async () => {
+    try {
+      // Retrieve stored user data and token from AsyncStorage
+      const storedData = await AsyncStorage.getItem("userData");
+      const storedToken = await AsyncStorage.getItem("token");
+      if (storedData !== null) {
+        console.log(AsyncStorage);
+        // Login user with stored data
+        login(JSON.parse(storedData), storedToken);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  getStoredData();
+  console.log(AsyncStorage);
   //component updating ----------------------------------
   const toggleFavorite = () => {
     setIsFavorite(!isFavorite);
+    console.log("After change - " + isFavorite);
   };
 
   const handleFavoriteQuery = isFavorite
