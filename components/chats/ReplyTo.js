@@ -1,6 +1,7 @@
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { Text } from "react-native-paper";
+import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
 
 import { Color } from "../../constants/colors";
 import { useDarkMode } from "../../context/DarkModeContext";
@@ -9,7 +10,9 @@ function ReplyTo({ text, name, onCancel }) {
   const { isDarkMode } = useDarkMode();
 
   return (
-    <View
+    <Animated.View
+      entering={FadeInDown}
+      exiting={FadeOutDown}
       style={
         isDarkMode
           ? { ...styles.container, backgroundColor: Color.darkTheme }
@@ -23,16 +26,19 @@ function ReplyTo({ text, name, onCancel }) {
         <Text numberOfLines={1}>{text}</Text>
       </View>
 
-      <TouchableOpacity onPress={onCancel}>
-        <AntDesign name="closecircleo" size={20} color={Color.Blue500} />
+      <TouchableOpacity
+        onPress={onCancel}
+        hitSlop={{ top: 20, bottom: 20, left: 50, right: 100 }}
+      >
+        <AntDesign name="closecircleo" size={26} color={Color.Blue500} />
       </TouchableOpacity>
-    </View>
+    </Animated.View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    padding: 8,
+    padding: 5,
     flexDirection: "row",
     alignItems: "center",
     borderLeftWidth: 5,

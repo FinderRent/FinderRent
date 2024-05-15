@@ -55,7 +55,7 @@ function ChatScreen({ navigation, route }) {
   const [onlineUsers, setOnilneUsers] = useState([]);
   const [sendMessage, setSendMessage] = useState(null);
   const [receiveMessage, setReceiveMessage] = useState(null);
-  const [replyingTo, setReplyingTo] = useState();
+  const [replyingTo, setReplyingTo] = useState(null);
   const [tempImageUri, setTempImageUri] = useState("");
   const [deleteMessage, setDeleteMessage] = useState({
     show: false,
@@ -151,6 +151,11 @@ function ChatScreen({ navigation, route }) {
     queryFn: () => getMessages(chatId),
   });
 
+  // check for the number of image Message to inverse the data at FlatList
+  const imageMessage = data?.filter(
+    (message) => message.messageText === "image"
+  ).length;
+
   const {
     mutate: handleAddMessages,
     isError: isErrorAddMessages,
@@ -228,8 +233,12 @@ function ChatScreen({ navigation, route }) {
             {chatId && (
               <FlatList
                 ref={scrollRef}
-                inverted={data?.length > 9 ? true : false}
-                data={data?.length > 9 ? data && [...data].reverse() : data}
+                inverted={data?.length > 10 - imageMessage * 2.5 ? true : false}
+                data={
+                  data?.length > 10 - imageMessage * 2.5
+                    ? data && [...data].reverse()
+                    : data
+                }
                 renderItem={(itemData) => {
                   const message = itemData.item;
                   const isOwnMessage = message.senderId === userData.id;
