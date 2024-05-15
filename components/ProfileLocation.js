@@ -6,7 +6,6 @@ import { useUsers } from "../context/UserContext";
 
 const ProfileLocation = () => {
   const { userData } = useUsers();
-
   return (
     <View style={styles.profileLocationView}>
       <View style={styles.midContainer}>
