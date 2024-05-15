@@ -18,6 +18,7 @@ import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { useUsers } from "../context/UserContext";
 import { fetchAllApartments } from "./../utils/http";
+import { fetchUser } from "./../utils/http";
 import HouseCard from "../components/House/HouseCard";
 import ProfileLocation from "../components/ProfileLocation";
 import MapModal from "../modals/MapModal";
@@ -84,17 +85,39 @@ function HomeScreen({ navigation }) {
   const responseListener = useRef();
   //----------------------------------------------------------------------
 
-  const { data, isLoading, isError, status } = useQuery({
+  //getting all apartments data
+  const {
+    data: apartments,
+    isLoading: isLoadingApartments,
+    isError: isErrorApartments,
+    status: statusApartments,
+  } = useQuery({
     queryKey: ["apartments"],
     queryFn: () => fetchAllApartments(),
   });
+
+  //getting curreny user data
+  const {
+    data: user,
+    isLoading: isLoadingUser,
+    isError: isErrorUser,
+    status: statusUser,
+  } = useQuery({
+    queryKey: ["User", userData.id],
+    queryFn: () => fetchUser(userData.id),
+  });
+  //render the apartment card
 
   const renderApartmentCard = ({ item: apartment }) => {
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate("HouseDetailsScreen", { apartment })}
       >
-        <HouseCard navigation={navigation} apartment={apartment} />
+        <HouseCard
+          navigation={navigation}
+          apartment={apartment}
+          userData={userData}
+        />
       </TouchableOpacity>
     );
   };
@@ -165,13 +188,13 @@ function HomeScreen({ navigation }) {
 
       <ExploreHeader onCategoryChanged={onDataChanged} />
 
-      {isLoading && (
+      {isLoadingApartments && (
         <View style={{ paddingTop: "80%" }}>
           <Loader color={isDarkMode ? Color.white : Color.darkTheme} />
         </View>
       )}
       <FlatList
-        data={data?.apartments}
+        data={apartments?.apartments}
         keyExtractor={(item) => item._id}
         renderItem={renderApartmentCard}
       />
