@@ -1,24 +1,70 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useSyncExternalStore } from "react";
 import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { SliderBox } from "react-native-image-slider-box";
-
+import { useQuery } from "@tanstack/react-query";
 import { useDarkMode } from "../../context/DarkModeContext";
 import { Color } from "../../constants/colors";
 import { Text } from "react-native-paper";
+import {
+  addFavourite,
+  removeFavourite,
+  checkIfFavourite,
+} from "../../utils/http";
+import Loader from "../../components/ui/Loader";
 
-const HouseCard = ({ navigation, apartment }) => {
+const HouseCard = ({ navigation, apartment, userData }) => {
   const { isDarkMode } = useDarkMode();
-  const [isFavorite, setIsFavorite] = useState(false);
 
+  //component initialization ----------------------------------
+
+  const handleFirstQuery = {
+    queryKey: ["isFavourite"],
+    queryFn: () => checkIfFavourite(apartment._id, userData.id),
+  };
+
+  const {
+    data: favourite,
+    isLoading: isLoadingFavourite,
+    isError: isError1,
+    status: status1,
+  } = useQuery(handleFirstQuery);
+
+  const [isFavorite, setIsFavorite] = useState();
+
+  if (isLoadingFavourite) {
+    console.log("waiting for data");
+  } else {
+    console.log("success - Favourite: " + isFavorite);
+  }
+
+  // if (isLoadingFavourite) {
+  //   return <Loader />;
+  // }
+  //----------------------------------------------------
+
+  //component updating ----------------------------------
   const toggleFavorite = () => {
     setIsFavorite(!isFavorite);
   };
 
+  const handleFavoriteQuery = isFavorite
+    ? {
+        queryKey: ["addFavourite"],
+        queryFn: () => addFavourite(apartment._id, userData.id),
+      }
+    : {
+        queryKey: ["removeFavourite"],
+        queryFn: () => removeFavourite(apartment._id, userData.id),
+      };
+
+  const { data, isLoading, isError, status } = useQuery(handleFavoriteQuery);
+  //-----------------------------------------------------
+
   const images = [
-    "https://149347005.v2.pressablecdn.com/wp-content/uploads/modern-home-twilight-1.jpg",
+    "https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/home-improvement/wp-content/uploads/2022/07/download-23.jpg",
     "https://www.bhg.com/thmb/3Vf9GXp3T-adDlU6tKpTbb-AEyE=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/white-modern-house-curved-patio-archway-c0a4a3b3-aa51b24d14d0464ea15d36e05aa85ac9.jpg",
-    "https://149347005.v2.pressablecdn.com/wp-content/uploads/modern-home-twilight-1.jpg",
+    "https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/home-improvement/wp-content/uploads/2022/07/download-23.jpg",
   ];
 
   return (

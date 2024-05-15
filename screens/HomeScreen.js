@@ -18,6 +18,7 @@ import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { useUsers } from "../context/UserContext";
 import { fetchAllApartments } from "./../utils/http";
+import { fetchUser } from "./../utils/http";
 import HouseCard from "../components/House/HouseCard";
 import ProfileLocation from "../components/ProfileLocation";
 import SignInHeader from "../components/SignInHeader";
@@ -84,6 +85,29 @@ function HomeScreen({ navigation }) {
   const responseListener = useRef();
   //----------------------------------------------------------------------
 
+  //getting all apartments data
+  const {
+    data: apartments,
+    isLoading: isLoadingApartments,
+    isError: isErrorApartments,
+    status: statusApartments,
+  } = useQuery({
+    queryKey: ["apartments"],
+    queryFn: () => fetchAllApartments(),
+  });
+
+  //getting curreny user data
+  const {
+    data: user,
+    isLoading: isLoadingUser,
+    isError: isErrorUser,
+    status: statusUser,
+  } = useQuery({
+    queryKey: ["User", userData.id],
+    queryFn: () => fetchUser(userData.id),
+  });
+  //render the apartment card
+
   const { data, isLoading, isError, status } = useQuery({
     queryKey: ["apartments"],
     queryFn: () => fetchAllApartments(),
@@ -94,6 +118,11 @@ function HomeScreen({ navigation }) {
       <TouchableOpacity
         onPress={() => navigation.navigate("HouseDetailsScreen", { apartment })}
       >
+        <HouseCard
+          navigation={navigation}
+          apartment={apartment}
+          userData={userData}
+        />
         <HouseCard navigation={navigation} apartment={apartment} />
       </TouchableOpacity>
     );
@@ -169,14 +198,14 @@ function HomeScreen({ navigation }) {
 
       {/* <ListingsMap listings={getoItems} /> */}
 
-      {isLoading && (
+      {isLoadingApartments && (
         <View style={{ paddingTop: "80%" }}>
           <Loader color={isDarkMode ? Color.white : Color.darkTheme} />
         </View>
       )}
 
       <FlatList
-        data={data?.apartments}
+        data={apartments?.apartments}
         keyExtractor={(item) => item._id}
         renderItem={renderApartmentCard}
       />
