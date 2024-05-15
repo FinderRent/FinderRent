@@ -33,7 +33,7 @@ const HouseCard = ({ navigation, apartment, userData, isFavourite }) => {
   // console.log(favourite);
 
   const [isFavorite, setIsFavorite] = useState(isFavourite);
-  console.log("isFavourite - " + isFavorite);
+  // console.log("isFavourite - " + isFavorite);
   // console.log("favourite - ", favourite);
   // console.log("isFavorite - ", isFavorite);
 
@@ -43,26 +43,10 @@ const HouseCard = ({ navigation, apartment, userData, isFavourite }) => {
   //   console.log("success - Favourite: " + isFavorite);
   // }
 
-  const getStoredData = async () => {
-    try {
-      // Retrieve stored user data and token from AsyncStorage
-      const storedData = await AsyncStorage.getItem("userData");
-      const storedToken = await AsyncStorage.getItem("token");
-      if (storedData !== null) {
-        console.log(AsyncStorage);
-        // Login user with stored data
-        login(JSON.parse(storedData), storedToken);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  getStoredData();
-  console.log(AsyncStorage);
   //component updating ----------------------------------
   const toggleFavorite = () => {
     setIsFavorite(!isFavorite);
-    console.log("After change - " + isFavorite);
+    // console.log("After change - " + isFavorite);
   };
 
   const handleFavoriteQuery = isFavorite

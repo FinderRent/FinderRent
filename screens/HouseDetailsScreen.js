@@ -42,7 +42,7 @@ const HouseDetailsScreen = ({ navigation, route }) => {
   const [showAll, setShowAll] = useState(false);
   const [apartmentContent, setApartmentContent] = useState([]);
   const images = [
-    "https://149347005.v2.pressablecdn.com/wp-content/uploads/modern-home-twilight-1.jpg",
+    "https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/home-improvement/wp-content/uploads/2022/07/download-23.jpg",
     "https://www.bhg.com/thmb/3Vf9GXp3T-adDlU6tKpTbb-AEyE=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/white-modern-house-curved-patio-archway-c0a4a3b3-aa51b24d14d0464ea15d36e05aa85ac9.jpg",
   ];
 

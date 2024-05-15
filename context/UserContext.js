@@ -79,7 +79,6 @@ function useUsers() {
     saveData();
   }, []);
 
-  console.log();
   // Function to logout the user and remove data from AsyncStorage
   const logout = useCallback(() => {
     const removeData = async () => {

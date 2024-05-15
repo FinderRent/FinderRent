@@ -13,6 +13,7 @@ import {
 import { StatusBar } from "expo-status-bar";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { useQuery } from "@tanstack/react-query";
+import BottomSheet from "@gorhom/bottom-sheet";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
@@ -83,7 +84,10 @@ function HomeScreen({ navigation }) {
 
   const notificationListener = useRef();
   const responseListener = useRef();
+
   //----------------------------------------------------------------------
+  const bottomSheetRef = useRef(null);
+  const snapPoints = useMemo(() => ["4%", "75%"], []);
 
   const {
     data: apartments,
@@ -196,19 +200,21 @@ function HomeScreen({ navigation }) {
 
       <ExploreHeader onCategoryChanged={onDataChanged} />
 
-      {/* <ListingsMap listings={getoItems} /> */}
-
       {isLoadingApartments && (
         <View style={{ paddingTop: "80%" }}>
           <Loader color={isDarkMode ? Color.white : Color.darkTheme} />
         </View>
       )}
 
+      {/* <BottomSheet ref={bottomSheetRef} snapPoints={snapPoints}> */}
       <FlatList
         data={apartments?.apartments}
         keyExtractor={(item) => item._id}
         renderItem={renderApartmentCard}
       />
+      {/* </BottomSheet> */}
+
+      <ListingsMap listings={getoItems} />
     </SafeAreaView>
   );
 }
