@@ -7,13 +7,14 @@ import {
   SafeAreaView,
   Platform,
   TouchableOpacity,
-  FlatList,
   View,
 } from "react-native";
+import { Text } from "react-native-paper";
 import { StatusBar } from "expo-status-bar";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { useQuery } from "@tanstack/react-query";
-import BottomSheet from "@gorhom/bottom-sheet";
+import { Ionicons } from "@expo/vector-icons";
+import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
@@ -77,8 +78,10 @@ function HomeScreen({ navigation }) {
   const tabBarHeight = useBottomTabBarHeight();
 
   const token = userData.token;
-  const [mapPress, setMapPress] = useState(false);
+  const [showMap, setShowMap] = useState(false);
+  const [isMapOpen, setMapOpen] = useState(false);
   const [category, setCategory] = useState("All");
+
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
 
@@ -86,9 +89,6 @@ function HomeScreen({ navigation }) {
   const responseListener = useRef();
 
   //----------------------------------------------------------------------
-  const bottomSheetRef = useRef(null);
-  const snapPoints = useMemo(() => ["4%", "75%"], []);
-
   const {
     data: apartments,
     isLoading: isLoadingApartments,
@@ -178,13 +178,24 @@ function HomeScreen({ navigation }) {
 
   const getoItems = useMemo(() => listingsDataGeo, []);
 
-  const handleMapPress = () => {
-    setMapPress(!mapPress);
+  const onShowMap = () => {
+    bottomSheetRef.current?.collapse();
+  };
+
+  const handleBottomSheetChange = (index) => {
+    const isOpen = index === 1;
+    setMapOpen(true);
+    if (!isOpen) {
+      setMapOpen(false);
+    }
   };
 
   const onDataChanged = (category) => {
     setCategory(category);
   };
+
+  const bottomSheetRef = useRef(null);
+  const snapPoints = useMemo(() => ["3%", "78%"], []);
 
   return (
     <SafeAreaView
@@ -206,19 +217,74 @@ function HomeScreen({ navigation }) {
         </View>
       )}
 
-      {/* <BottomSheet ref={bottomSheetRef} snapPoints={snapPoints}> */}
-      <FlatList
-        data={apartments?.apartments}
-        keyExtractor={(item) => item._id}
-        renderItem={renderApartmentCard}
+      <ListingsMap
+        listings={getoItems}
+        showMap={showMap}
+        onChange={handleBottomSheetChange}
       />
-      {/* </BottomSheet> */}
 
-      <ListingsMap listings={getoItems} />
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={1}
+        snapPoints={snapPoints}
+        backgroundStyle={{
+          backgroundColor: isDarkMode ? Color.darkTheme : Color.white,
+        }}
+        handleIndicatorStyle={
+          isDarkMode
+            ? { backgroundColor: Color.gray }
+            : { backgroundColor: Color.darkTheme }
+        }
+        style={styles.sheetContainer}
+      >
+        <BottomSheetFlatList
+          data={apartments?.apartments}
+          keyExtractor={(item) => item._id}
+          renderItem={renderApartmentCard}
+        />
+        <View style={styles.absoluteView}>
+          <TouchableOpacity onPress={onShowMap} style={styles.mapBtn}>
+            <Text style={{ color: "#fff" }}>Map</Text>
+            <Ionicons
+              name="map"
+              size={20}
+              style={{ marginLeft: 10 }}
+              color={"#fff"}
+            />
+          </TouchableOpacity>
+        </View>
+      </BottomSheet>
     </SafeAreaView>
   );
 }
 
 export default HomeScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  absoluteView: {
+    position: "absolute",
+    bottom: 10,
+    width: "100%",
+    alignItems: "center",
+  },
+  mapBtn: {
+    // opacity: 0.7,
+    backgroundColor: Color.darkTheme,
+    padding: 10,
+    height: 40,
+    borderRadius: 10,
+    flexDirection: "row",
+    marginHorizontal: "auto",
+    alignItems: "center",
+  },
+  sheetContainer: {
+    elevation: 4,
+    shadowColor: "#000",
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+  },
+});

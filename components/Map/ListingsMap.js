@@ -1,17 +1,17 @@
 import * as Location from "expo-location";
-import React, { memo, useEffect, useMemo, useRef } from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { memo, useEffect, useRef } from "react";
+import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { Marker } from "react-native-maps";
-import MapView from "react-native-map-clustering";
 import { FontAwesome5 } from "@expo/vector-icons";
-import BottomSheet from "@gorhom/bottom-sheet";
+import MapView from "react-native-map-clustering";
 
 import { Color } from "../../constants/colors";
+import { useDarkMode } from "../../context/DarkModeContext";
 
-const ListingsMap = memo(({ listings }) => {
+const ListingsMap = memo(({ listings, showMap }) => {
+  const { isDarkMode } = useDarkMode();
+
   const mapRef = useRef();
-  const bottomSheetRef = useRef(null);
-  const snapPoints = useMemo(() => ["3%", "85%"], []);
 
   // When the component mounts, locate the user
   useEffect(() => {
@@ -24,6 +24,7 @@ const ListingsMap = memo(({ listings }) => {
     latitudeDelta: 9,
     longitudeDelta: 9,
   };
+
   // When a marker is selected, navigate to the listing page
   const onMarkerSelected = (event) => {
     console.log(event);
@@ -80,44 +81,53 @@ const ListingsMap = memo(({ listings }) => {
   };
 
   return (
-    <BottomSheet ref={bottomSheetRef} snapPoints={snapPoints}>
-      <View>
-        <MapView
-          ref={mapRef}
-          animationEnabled={false}
-          style={styles.map}
-          initialRegion={INITIAL_REGION}
-          clusterColor="#fff"
-          clusterTextColor="#000"
-          renderCluster={renderCluster}
-        >
-          {/* Render all our marker as usual */}
-          {listings.features.map((item) => (
-            <Marker
-              coordinate={{
-                latitude: +item.properties.latitude,
-                longitude: +item.properties.longitude,
-              }}
-              key={item.properties.id}
-              onPress={() => onMarkerSelected(item)}
-            >
-              <View style={styles.marker}>
-                <Text style={styles.markerText}>$ {item.properties.price}</Text>
-              </View>
-            </Marker>
-          ))}
-        </MapView>
-        <TouchableOpacity style={styles.locateBtn} onPress={onLocateMe}>
-          <FontAwesome5 name="crosshairs" size={24} color="black" />
-        </TouchableOpacity>
-      </View>
-    </BottomSheet>
+    <View style={styles.container}>
+      <MapView
+        ref={mapRef}
+        animationEnabled={false}
+        style={styles.map}
+        initialRegion={INITIAL_REGION}
+        clusterColor="#fff"
+        clusterTextColor="#000"
+        renderCluster={renderCluster}
+      >
+        {listings.features.map((item) => (
+          <Marker
+            coordinate={{
+              latitude: +item.properties.latitude,
+              longitude: +item.properties.longitude,
+            }}
+            key={item.properties.id}
+            onPress={() => onMarkerSelected(item)}
+          >
+            <View style={styles.marker}>
+              <Text style={styles.markerText}>$ {item.properties.price}</Text>
+            </View>
+          </Marker>
+        ))}
+      </MapView>
+      <TouchableOpacity
+        style={
+          isDarkMode
+            ? { ...styles.locateBtn, backgroundColor: Color.darkTheme }
+            : styles.locateBtn
+        }
+        onPress={onLocateMe}
+      >
+        <FontAwesome5
+          name="crosshairs"
+          size={24}
+          color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+        />
+      </TouchableOpacity>
+    </View>
   );
 });
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 4,
   },
   map: {
     width: "100%",
@@ -143,7 +153,7 @@ const styles = StyleSheet.create({
   },
   locateBtn: {
     position: "absolute",
-    top: 500,
+    top: 480,
     right: 20,
     backgroundColor: "#fff",
     padding: 10,
