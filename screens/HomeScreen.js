@@ -78,8 +78,6 @@ function HomeScreen({ navigation }) {
   const tabBarHeight = useBottomTabBarHeight();
 
   const token = userData.token;
-  const [showMap, setShowMap] = useState(false);
-  const [isMapOpen, setMapOpen] = useState(false);
   const [category, setCategory] = useState("All");
 
   const [expoPushToken, setExpoPushToken] = useState("");
@@ -180,14 +178,6 @@ function HomeScreen({ navigation }) {
 
   const onShowMap = () => {
     bottomSheetRef.current?.collapse();
-  };
-
-  const handleBottomSheetChange = (index) => {
-    const isOpen = index === 1;
-    setMapOpen(true);
-    if (!isOpen) {
-      setMapOpen(false);
-    }
   };
 
   const onDataChanged = (category) => {

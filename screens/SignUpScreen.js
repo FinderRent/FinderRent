@@ -47,9 +47,10 @@ function SignUpScreen({ navigation }) {
   // Mapping academic list for DropDown component
   const listAcademic = academicList.map((item) => ({
     label: item.name,
-    value: item.id,
+    value: [item.id, item.coordinates],
   }));
 
+  console.log(academic);
   // List of year options for DropDown component
   const listYear = [
     { label: "Preparing", value: "Preparing" },
