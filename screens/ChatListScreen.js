@@ -53,7 +53,11 @@ function ChatListScreen({ navigation }) {
   if (data.results === 0) {
     return (
       <View style={styles.container}>
-        <FontAwesome5 name="users" size={100} color={Color.Blue500} />
+        <FontAwesome5
+          name="users"
+          size={100}
+          color={Color.buttomSheetDarkTheme}
+        />
         <Text style={styles.noResultsText}>There's No Chats Yet.</Text>
       </View>
     );
