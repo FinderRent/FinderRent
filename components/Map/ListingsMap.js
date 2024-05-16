@@ -1,4 +1,3 @@
-import * as Location from "expo-location";
 import { memo, useEffect, useRef } from "react";
 import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { Marker } from "react-native-maps";
@@ -7,50 +6,48 @@ import MapView from "react-native-map-clustering";
 
 import { Color } from "../../constants/colors";
 import { useDarkMode } from "../../context/DarkModeContext";
+import { useUsers } from "../../context/UserContext";
 
-const ListingsMap = memo(({ listings }) => {
+const ListingsMap = memo(({ listings, coordinates }) => {
   const { isDarkMode } = useDarkMode();
+  const { userData } = useUsers();
 
   const mapRef = useRef();
 
-  // When the component mounts, locate the user
-  // useEffect(() => {
-  //   onLocateMe();
-  // }, []);
-
-  const INITIAL_REGION = {
-    latitude: 31.2516416588409,
-    longitude: 34.78916604217377,
-    latitudeDelta: 0.009,
-    longitudeDelta: 0.009,
+  let INITIAL_REGION = {
+    latitude: 31.265058,
+    longitude: 34.7839961,
+    latitudeDelta: 7,
+    longitudeDelta: 7,
   };
 
-  // When a marker is selected, navigate to the listing page
+  if (userData.token !== null) {
+    INITIAL_REGION = {
+      latitude: coordinates?.lat,
+      longitude: coordinates?.lng,
+      latitudeDelta: 0.02,
+      longitudeDelta: 0.02,
+    };
+  }
+
+  useEffect(() => {
+    onLocateMe();
+  }, []);
+
   const onMarkerSelected = (event) => {
     console.log(event);
   };
 
   // Focus the map on the user's location
-  // const onLocateMe = async () => {
-  //   let { status } = await Location.requestForegroundPermissionsAsync();
-  //   if (status !== "granted") {
-  //     return;
-  //   }
-
-  //   let location = await Location.getCurrentPositionAsync({});
-  //   // console.log("Location:", location);
-
-  //   const region = {
-  //     latitude: location.coords.latitude,
-  //     longitude: location.coords.longitude,
-  //     latitudeDelta: 7,
-  //     longitudeDelta: 7,
-  //   };
-
-  //   // console.log(region);
-
-  //   mapRef.current?.animateToRegion(region);
-  // };
+  const onLocateMe = async () => {
+    const region = {
+      latitude: coordinates?.lat,
+      longitude: coordinates?.lng,
+      latitudeDelta: 0.02,
+      longitudeDelta: 0.02,
+    };
+    mapRef.current?.animateToRegion(region);
+  };
 
   // Overwrite the renderCluster function to customize the cluster markers
   const renderCluster = (cluster) => {
@@ -106,20 +103,22 @@ const ListingsMap = memo(({ listings }) => {
           </Marker>
         ))}
       </MapView>
-      <TouchableOpacity
-        style={
-          isDarkMode
-            ? { ...styles.locateBtn, backgroundColor: Color.darkTheme }
-            : styles.locateBtn
-        }
-        // onPress={onLocateMe}
-      >
-        <FontAwesome5
-          name="crosshairs"
-          size={24}
-          color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
-        />
-      </TouchableOpacity>
+      {userData.token && (
+        <TouchableOpacity
+          style={
+            isDarkMode
+              ? { ...styles.locateBtn, backgroundColor: Color.darkTheme }
+              : styles.locateBtn
+          }
+          onPress={onLocateMe}
+        >
+          <FontAwesome5
+            name="crosshairs"
+            size={24}
+            color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+          />
+        </TouchableOpacity>
+      )}
     </View>
   );
 });

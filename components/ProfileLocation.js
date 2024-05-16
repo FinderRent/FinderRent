@@ -9,9 +9,9 @@ const ProfileLocation = () => {
   return (
     <View style={styles.profileLocationView}>
       <View style={styles.midContainer}>
-        <Image
+        <ImageBackground
+          style={{ height: 10, width: 10 }}
           source={require("../assets/images/placeholder.png")}
-          style={styles.locationImage}
         />
         <View>
           <Text style={styles.location}>Location</Text>

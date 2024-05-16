@@ -29,13 +29,6 @@ import Loader from "../components/ui/Loader";
 import ListingsMap from "../components/Map/ListingsMap";
 import listingsDataGeo from "../data/apartments-listings.geo.json";
 
-/**
- * TODO:
- * when press on the profile photo, go to profile page.
- * when press on the location, open a search new location option
- * make the cards dynamic data from the DB
- */
-
 // function to get Permissions for PushNotifications
 async function registerForPushNotificationsAsync() {
   let token;
@@ -78,6 +71,7 @@ function HomeScreen({ navigation }) {
   const tabBarHeight = useBottomTabBarHeight();
 
   const token = userData.token;
+  const coordinates = JSON.parse(userData?.coordinates);
   const [category, setCategory] = useState("All");
 
   const [expoPushToken, setExpoPushToken] = useState("");
@@ -87,6 +81,9 @@ function HomeScreen({ navigation }) {
   const responseListener = useRef();
 
   //----------------------------------------------------------------------
+  const bottomSheetRef = useRef(null);
+  const snapPoints = useMemo(() => ["3%", "78%"], []);
+
   const {
     data: apartments,
     isLoading: isLoadingApartments,
@@ -107,8 +104,8 @@ function HomeScreen({ navigation }) {
     queryKey: ["User", userData.id],
     queryFn: () => fetchUser(userData.id),
   });
-  //render the apartment card
 
+  //render the apartment card
   const renderApartmentCard = ({ item: apartment }) => {
     let isFavourite = false;
     userData.favouriteApartments.forEach((element) => {
@@ -184,9 +181,6 @@ function HomeScreen({ navigation }) {
     setCategory(category);
   };
 
-  const bottomSheetRef = useRef(null);
-  const snapPoints = useMemo(() => ["3%", "78%"], []);
-
   return (
     <SafeAreaView
       style={{
@@ -201,13 +195,7 @@ function HomeScreen({ navigation }) {
 
       <ExploreHeader onCategoryChanged={onDataChanged} />
 
-      {isLoadingApartments && (
-        <View style={{ paddingTop: "80%" }}>
-          <Loader color={isDarkMode ? Color.white : Color.darkTheme} />
-        </View>
-      )}
-
-      <ListingsMap listings={getoItems} />
+      <ListingsMap listings={getoItems} coordinates={coordinates} />
 
       <BottomSheet
         ref={bottomSheetRef}
@@ -223,6 +211,11 @@ function HomeScreen({ navigation }) {
         }
         style={styles.sheetContainer}
       >
+        {isLoadingApartments && (
+          <View style={{ paddingTop: "80%" }}>
+            <Loader color={isDarkMode ? Color.white : Color.darkTheme} />
+          </View>
+        )}
         <BottomSheetFlatList
           data={apartments?.apartments}
           keyExtractor={(item) => item._id}
@@ -254,7 +247,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   mapBtn: {
-    // opacity: 0.7,
     backgroundColor: Color.darkTheme,
     padding: 10,
     height: 40,

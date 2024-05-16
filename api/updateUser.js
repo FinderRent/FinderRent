@@ -15,7 +15,6 @@ async function updateUser({
   token,
 }) {
   try {
-    console.log("c", coordinates);
     const formData = new FormData();
     formData.append("userType", userType);
     formData.append("firstName", firstName);
