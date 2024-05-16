@@ -8,20 +8,22 @@ async function updateUser({
   age,
   phone,
   academic,
+  coordinates,
   department,
   yearbook,
   email,
   token,
 }) {
   try {
+    console.log("c", coordinates);
     const formData = new FormData();
-
     formData.append("userType", userType);
     formData.append("firstName", firstName);
     formData.append("lastName", lastName);
     formData.append("age", age);
     formData.append("phone", phone);
     formData.append("academic", academic);
+    formData.append("coordinates", JSON.stringify(coordinates));
     formData.append("department", department);
     formData.append("yearbook", yearbook);
     formData.append("email", email);

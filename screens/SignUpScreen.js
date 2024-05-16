@@ -36,6 +36,7 @@ function SignUpScreen({ navigation }) {
   const [lastName, setLastName] = useState("");
   const [age, setAge] = useState("");
   const [academic, setAcademic] = useState("");
+  const [coordinates, setCoordinates] = useState("");
   const [department, setDepartment] = useState("");
   const [yearbook, setYearbook] = useState("");
   const [gender, setGender] = useState("");
@@ -47,10 +48,10 @@ function SignUpScreen({ navigation }) {
   // Mapping academic list for DropDown component
   const listAcademic = academicList.map((item) => ({
     label: item.name,
-    value: [item.id, item.coordinates],
+    value: item.id,
+    coordinates: item.coordinates,
   }));
 
-  console.log(academic);
   // List of year options for DropDown component
   const listYear = [
     { label: "Preparing", value: "Preparing" },
@@ -68,6 +69,7 @@ function SignUpScreen({ navigation }) {
     lastName,
     age,
     academic,
+    coordinates,
     department,
     yearbook,
     gender,
@@ -97,6 +99,14 @@ function SignUpScreen({ navigation }) {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    const index = listAcademic.findIndex((item) => item.value === academic);
+    if (index !== -1) {
+      // console.log("index: ", listAcademic[index].coordinates);
+      setCoordinates(listAcademic[index].coordinates);
+    }
+  }, [academic]);
 
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: (userData) => signUp(userData),

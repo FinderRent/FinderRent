@@ -14,15 +14,15 @@ const ListingsMap = memo(({ listings }) => {
   const mapRef = useRef();
 
   // When the component mounts, locate the user
-  useEffect(() => {
-    onLocateMe();
-  }, []);
+  // useEffect(() => {
+  //   onLocateMe();
+  // }, []);
 
   const INITIAL_REGION = {
-    latitude: 31.2650275,
-    longitude: 34.7839723,
-    latitudeDelta: 9,
-    longitudeDelta: 9,
+    latitude: 31.2516416588409,
+    longitude: 34.78916604217377,
+    latitudeDelta: 0.009,
+    longitudeDelta: 0.009,
   };
 
   // When a marker is selected, navigate to the listing page
@@ -31,26 +31,26 @@ const ListingsMap = memo(({ listings }) => {
   };
 
   // Focus the map on the user's location
-  const onLocateMe = async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== "granted") {
-      return;
-    }
+  // const onLocateMe = async () => {
+  //   let { status } = await Location.requestForegroundPermissionsAsync();
+  //   if (status !== "granted") {
+  //     return;
+  //   }
 
-    let location = await Location.getCurrentPositionAsync({});
-    // console.log("Location:", location);
+  //   let location = await Location.getCurrentPositionAsync({});
+  //   // console.log("Location:", location);
 
-    const region = {
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude,
-      latitudeDelta: 7,
-      longitudeDelta: 7,
-    };
+  //   const region = {
+  //     latitude: location.coords.latitude,
+  //     longitude: location.coords.longitude,
+  //     latitudeDelta: 7,
+  //     longitudeDelta: 7,
+  //   };
 
-    // console.log(region);
+  //   // console.log(region);
 
-    mapRef.current?.animateToRegion(region);
-  };
+  //   mapRef.current?.animateToRegion(region);
+  // };
 
   // Overwrite the renderCluster function to customize the cluster markers
   const renderCluster = (cluster) => {
@@ -112,7 +112,7 @@ const ListingsMap = memo(({ listings }) => {
             ? { ...styles.locateBtn, backgroundColor: Color.darkTheme }
             : styles.locateBtn
         }
-        onPress={onLocateMe}
+        // onPress={onLocateMe}
       >
         <FontAwesome5
           name="crosshairs"
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
   },
   locateBtn: {
     position: "absolute",
-    top: 480,
+    top: "85%",
     right: 20,
     backgroundColor: "#fff",
     padding: 10,
