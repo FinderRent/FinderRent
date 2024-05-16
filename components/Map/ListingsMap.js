@@ -8,7 +8,7 @@ import MapView from "react-native-map-clustering";
 import { Color } from "../../constants/colors";
 import { useDarkMode } from "../../context/DarkModeContext";
 
-const ListingsMap = memo(({ listings, showMap }) => {
+const ListingsMap = memo(({ listings }) => {
   const { isDarkMode } = useDarkMode();
 
   const mapRef = useRef();

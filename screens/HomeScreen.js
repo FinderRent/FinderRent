@@ -217,11 +217,7 @@ function HomeScreen({ navigation }) {
         </View>
       )}
 
-      <ListingsMap
-        listings={getoItems}
-        showMap={showMap}
-        onChange={handleBottomSheetChange}
-      />
+      <ListingsMap listings={getoItems} />
 
       <BottomSheet
         ref={bottomSheetRef}
