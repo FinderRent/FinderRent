@@ -22,6 +22,7 @@ export async function fetchUser(userID) {
 }
 
 export async function addFavourite(apartmentID, userID) {
+  console.log(apartmentID + "add - enter");
   const dataForApartment = {
     userID: userID,
     action: "add",
@@ -41,6 +42,7 @@ export async function addFavourite(apartmentID, userID) {
     BACKEND_URL + `/users/${userID}`,
     dataForUser
   );
+  console.log(apartmentID + "from back - add");
 
   return true;
 }
@@ -64,6 +66,10 @@ export async function removeFavourite(apartmentID, userID) {
     BACKEND_URL + `/users/${userID}`,
     dataForUser
   );
+  console.log(apartmentID + "from back - remove");
+  // console.log(apartmentID + "added to " + userID);
+  // console.log(userID + "added to " + apartmentID);
+
   return true;
 }
 

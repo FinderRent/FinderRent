@@ -26,7 +26,7 @@ import ExploreHeader from "../components/ExploreHeader";
 import Loader from "../components/ui/Loader";
 import ListingsMap from "../components/Map/ListingsMap";
 import listingsDataGeo from "../data/apartments-listings.geo.json";
-
+import { checkIfFavourite } from "../utils/http";
 /**
  * TODO:
  * when press on the profile photo, go to profile page.
@@ -37,7 +37,6 @@ import listingsDataGeo from "../data/apartments-listings.geo.json";
 // function to get Permissions for PushNotifications
 async function registerForPushNotificationsAsync() {
   let token;
-
   if (Platform.OS === "android") {
     Notifications.setNotificationChannelAsync("default", {
       name: "default",
@@ -71,6 +70,7 @@ async function registerForPushNotificationsAsync() {
 }
 
 function HomeScreen({ navigation }) {
+  console.log("Home page rendered");
   const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
   const tabBarHeight = useBottomTabBarHeight();
@@ -85,6 +85,7 @@ function HomeScreen({ navigation }) {
   const responseListener = useRef();
   //----------------------------------------------------------------------
 
+  //getting all apartments data
   const {
     data: apartments,
     isLoading: isLoadingApartments,
@@ -105,15 +106,37 @@ function HomeScreen({ navigation }) {
     queryKey: ["User", userData.id],
     queryFn: () => fetchUser(userData.id),
   });
-  //render the apartment card
 
+  //check favourite apaerments--------------------------------------
+  // const handleFirstQuery = {
+  //   queryKey: ["isFavourite"],
+  //   queryFn: () => checkIfFavourite(apartment._id, userData.id),
+  // };
+
+  // const {
+  //   data: favourite,
+  //   isLoading: isLoadingFavourite,
+  //   isError: isError1,
+  //   status: status1,
+  // } = useQuery(handleFirstQuery);
+
+  // if (isLoadingFavourite) {
+  //   console.log("waiting for data");
+  // } else {
+  //   console.log("success - Favourite: " + isFavorite);
+  // }
+  //----------------------------------------------------------------
+
+  //render the apartment card
   const renderApartmentCard = ({ item: apartment }) => {
     let isFavourite = false;
-    userData.favouriteApartments.forEach((element) => {
+    user?.favouriteApartments.forEach((element) => {
       if (apartment._id == element) {
         isFavourite = true;
       }
     });
+    console.log("Card " + apartment._id + " rendered");
+
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate("HouseDetailsScreen", { apartment })}
