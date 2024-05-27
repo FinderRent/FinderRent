@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from "react";
+import { useContext, useLayoutEffect, useState } from "react";
 import {
   Dimensions,
   StyleSheet,
@@ -21,6 +21,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
+import { FavoritesContext } from "../context/FavoritesContext";
 import HouseAssetsModal from "../modals/HouseAssetsModal";
 import MapModal from "../modals/MapModal";
 import Map from "../components/Map/Map";
@@ -29,14 +30,81 @@ import HouseRoommates from "../components/House/HouseRoommates";
 import Seperator from "../components/Seperator";
 import HouseAssets from "../components/House/HouseAssets";
 import RoommatesInfo from "../components/House/RoommatesInfo";
+import { useUsers } from "../context/UserContext";
 
 const IMG_HEIGHT = 300;
 const { width } = Dimensions.get("window");
 
+const Assets = [
+  {
+    name: "TV",
+  },
+  {
+    name: "Balcony",
+  },
+  {
+    name: "Beds",
+  },
+  {
+    name: "Wifi",
+  },
+  {
+    name: "Oven",
+  },
+  {
+    name: "Microwave",
+  },
+  {
+    name: "Couch",
+  },
+  {
+    name: "Coffee Table",
+  },
+  {
+    name: "Water Heater",
+  },
+  {
+    name: "Washer",
+  },
+  {
+    name: "Dryer",
+  },
+  {
+    name: "Iron",
+  },
+  {
+    name: "Refrigirator",
+  },
+  {
+    name: "freezer",
+  },
+];
+
+const Roommates = [
+  {
+    name: "Maor Saadia",
+    avatar_url: "../assets/images/profile-cartoon.png",
+    subtitle: "President",
+  },
+  {
+    name: "Amir Fukman",
+    avatar_url: "../assets/images/profile-cartoon.png",
+    subtitle: "Vice President",
+  },
+];
+
+const ParagraphDeatails =
+  "Discover the perfect three-bedroom rental nestled in a tranquil suburban setting. This charming house features an open-concept living area with ample natural light, a modern kitchen, and a master bedroom with an en-suite bathroom. Enjoy the peaceful backyard with a patio and fire pit. Conveniently located near parks and shopping, this home offers both comfort and convenience for your lifestyle.";
+
 const HouseDetailsScreen = ({ navigation, route }) => {
-  const { apartment } = route.params;
+  const favoriteApartmentsCtx = useContext(FavoritesContext);
+
   const { isDarkMode } = useDarkMode();
+  const { userData } = useUsers();
+
+  const { apartment } = route.params;
   const scrollRef = useAnimatedRef();
+  const tabBarHeight = useBottomTabBarHeight();
 
   const [mapPress, setMapPress] = useState(false);
   const [showAll, setShowAll] = useState(false);
@@ -45,68 +113,15 @@ const HouseDetailsScreen = ({ navigation, route }) => {
     "https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/home-improvement/wp-content/uploads/2022/07/download-23.jpg",
     "https://www.bhg.com/thmb/3Vf9GXp3T-adDlU6tKpTbb-AEyE=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/white-modern-house-curved-patio-archway-c0a4a3b3-aa51b24d14d0464ea15d36e05aa85ac9.jpg",
   ];
+  const apartmentIsFavorite = favoriteApartmentsCtx.ids.includes(apartment._id);
 
-  const Assets = [
-    {
-      name: "TV",
-    },
-    {
-      name: "Balcony",
-    },
-    {
-      name: "Beds",
-    },
-    {
-      name: "Wifi",
-    },
-    {
-      name: "Oven",
-    },
-    {
-      name: "Microwave",
-    },
-    {
-      name: "Couch",
-    },
-    {
-      name: "Coffee Table",
-    },
-    {
-      name: "Water Heater",
-    },
-    {
-      name: "Washer",
-    },
-    {
-      name: "Dryer",
-    },
-    {
-      name: "Iron",
-    },
-    {
-      name: "Refrigirator",
-    },
-    {
-      name: "freezer",
-    },
-  ];
-
-  const Roommates = [
-    {
-      name: "Maor Saadia",
-      avatar_url: "../assets/images/profile-cartoon.png",
-      subtitle: "President",
-    },
-    {
-      name: "Amir Fukman",
-      avatar_url: "../assets/images/profile-cartoon.png",
-      subtitle: "Vice President",
-    },
-  ];
-  const ParagraphDeatails =
-    "Discover the perfect three-bedroom rental nestled in a tranquil suburban setting. This charming house features an open-concept living area with ample natural light, a modern kitchen, and a master bedroom with an en-suite bathroom. Enjoy the peaceful backyard with a patio and fire pit. Conveniently located near parks and shopping, this home offers both comfort and convenience for your lifestyle.";
-
-  const tabBarHeight = useBottomTabBarHeight();
+  function changeFavoriteStatusHandler() {
+    if (apartmentIsFavorite) {
+      favoriteApartmentsCtx.removeFavorite(apartment._id);
+    } else {
+      favoriteApartmentsCtx.addFavorite(apartment._id);
+    }
+  }
 
   const handleMapPress = () => {
     setMapPress(!mapPress);
@@ -131,24 +146,28 @@ const HouseDetailsScreen = ({ navigation, route }) => {
           ]}
         ></Animated.View>
       ),
+
       headerRight: () => (
         <View style={styles.bar}>
-          <TouchableOpacity
-            style={
-              isDarkMode
-                ? {
-                    ...styles.roundButton,
-                    backgroundColor: Color.darkTheme,
-                  }
-                : styles.roundButton
-            }
-          >
-            <Ionicons
-              name="heart-outline"
-              size={22}
-              color={isDarkMode ? "#fff" : "#000"}
-            />
-          </TouchableOpacity>
+          {userData?.token && (
+            <TouchableOpacity
+              style={
+                isDarkMode
+                  ? {
+                      ...styles.roundButton,
+                      backgroundColor: Color.darkTheme,
+                    }
+                  : styles.roundButton
+              }
+            >
+              <Ionicons
+                name={apartmentIsFavorite ? "heart" : "heart-outline"}
+                size={22}
+                color={isDarkMode ? "#fff" : "#000"}
+                onPress={changeFavoriteStatusHandler}
+              />
+            </TouchableOpacity>
+          )}
         </View>
       ),
       headerLeft: () => (
@@ -171,7 +190,7 @@ const HouseDetailsScreen = ({ navigation, route }) => {
         </TouchableOpacity>
       ),
     });
-  }, [isDarkMode]);
+  }, [navigation, isDarkMode, changeFavoriteStatusHandler]);
 
   const scrollOffset = useScrollViewOffset(scrollRef);
 

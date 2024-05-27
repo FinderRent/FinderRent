@@ -10,6 +10,7 @@ import Toast from "react-native-toast-message";
 import { UserContext, useUsers } from "./context/UserContext";
 import { DarkModeProvider } from "./context/DarkModeContext";
 import AuthStackScreens from "./navigation/AuthStackScreens";
+import FavoritesContextProvider from "./context/FavoritesContext";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -104,10 +105,12 @@ export default function App() {
               favouriteApartments,
             }}
           >
-            <MenuProvider>
-              <AuthStackScreens />
-            </MenuProvider>
-            <Toast />
+            <FavoritesContextProvider userId={id}>
+              <MenuProvider>
+                <AuthStackScreens />
+              </MenuProvider>
+              <Toast />
+            </FavoritesContextProvider>
           </UserContext.Provider>
         </QueryClientProvider>
       </DarkModeProvider>

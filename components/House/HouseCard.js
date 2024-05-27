@@ -1,4 +1,9 @@
-import React, { useEffect, useState, useSyncExternalStore } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { SliderBox } from "react-native-image-slider-box";
@@ -7,16 +12,28 @@ import { useDarkMode } from "../../context/DarkModeContext";
 import { Color } from "../../constants/colors";
 import { Text } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import {
   addFavourite,
   removeFavourite,
   checkIfFavourite,
 } from "../../utils/http";
-import Loader from "../../components/ui/Loader";
+import { FavoritesContext } from "../../context/FavoritesContext";
 
 const HouseCard = ({ navigation, apartment, userData, isFavourite }) => {
   const { isDarkMode } = useDarkMode();
+  const favoriteApartmentsCtx = useContext(FavoritesContext);
 
+  const apartmentIsFavorite = favoriteApartmentsCtx.ids.includes(apartment._id);
+  // console.log(favoriteApartmentsCtx);
+
+  function changeFavoriteStatusHandler() {
+    if (apartmentIsFavorite) {
+      favoriteApartmentsCtx.removeFavorite(apartment._id);
+    } else {
+      favoriteApartmentsCtx.addFavorite(apartment._id);
+    }
+  }
   //component initialization ----------------------------------
 
   // const handleFirstQuery = {
@@ -77,11 +94,14 @@ const HouseCard = ({ navigation, apartment, userData, isFavourite }) => {
       }
     >
       <TouchableOpacity style={styles.favoriteButton} onPress={toggleFavorite}>
-        <FontAwesome
-          name={isFavorite ? "heart" : "heart"}
-          size={34}
-          color={isFavorite ? "red" : "#E5E1DA"}
-        />
+        {userData?.token && (
+          <FontAwesome
+            name={"heart"}
+            size={34}
+            color={apartmentIsFavorite ? "red" : "#E5E1DA"}
+            onPress={changeFavoriteStatusHandler}
+          />
+        )}
       </TouchableOpacity>
       <TouchableOpacity>
         <View style={styles.images}>
