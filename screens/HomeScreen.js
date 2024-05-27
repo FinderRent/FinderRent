@@ -71,7 +71,8 @@ function HomeScreen({ navigation }) {
   const tabBarHeight = useBottomTabBarHeight();
 
   const token = userData.token;
-  const coordinates = JSON.parse(userData?.coordinates);
+  // const coordinates = JSON.parse(userData?.coordinates);
+
   const [category, setCategory] = useState("All");
 
   const [expoPushToken, setExpoPushToken] = useState("");
@@ -195,7 +196,10 @@ function HomeScreen({ navigation }) {
 
       <ExploreHeader onCategoryChanged={onDataChanged} />
 
-      <ListingsMap listings={getoItems} coordinates={coordinates} />
+      <ListingsMap
+        listings={getoItems}
+        // coordinates={coordinates}
+      />
 
       <BottomSheet
         ref={bottomSheetRef}

@@ -4,6 +4,7 @@ async function forgotPasswordEmail({ email }) {
   try {
     const response = await axios.post(
       `https://finder-rent-backend.vercel.app/api/v1/users/forgotPassword`,
+      // `http://192.168.1.214:3000/api/v1/users/forgotPassword`,
       { email },
       {
         headers: {
