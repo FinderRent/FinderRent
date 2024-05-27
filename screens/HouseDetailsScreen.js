@@ -15,13 +15,13 @@ import Animated, {
 } from "react-native-reanimated";
 import Carousel from "react-native-reanimated-carousel";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
-// import { SliderBox } from "react-native-image-slider-box";
 import { Paragraph, Text } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { FavoritesContext } from "../context/FavoritesContext";
+import { useUsers } from "../context/UserContext";
 import HouseAssetsModal from "../modals/HouseAssetsModal";
 import MapModal from "../modals/MapModal";
 import Map from "../components/Map/Map";
@@ -30,7 +30,6 @@ import HouseRoommates from "../components/House/HouseRoommates";
 import Seperator from "../components/Seperator";
 import HouseAssets from "../components/House/HouseAssets";
 import RoommatesInfo from "../components/House/RoommatesInfo";
-import { useUsers } from "../context/UserContext";
 
 const IMG_HEIGHT = 300;
 const { width } = Dimensions.get("window");

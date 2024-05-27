@@ -8,9 +8,12 @@ import Toast from "react-native-toast-message";
 
 import { Color } from "../constants/colors";
 import { UserContext, useUsers } from "../context/UserContext";
+import { FavoritesContext } from "../context/FavoritesContext";
 
 const ProfileScreen = ({ navigation }) => {
   const auth = useContext(UserContext);
+  const { ids } = useContext(FavoritesContext);
+  // console.log(ids);
 
   const { userData } = useUsers();
   const isFocused = useIsFocused();
@@ -112,7 +115,9 @@ const ProfileScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.menuWrapper}>
-        <TouchableRipple onPress={() => {}}>
+        <TouchableRipple
+          onPress={() => navigation.navigate("FavoritesScreen", { ids: ids })}
+        >
           <View style={styles.menuItem}>
             <Icon name="heart-outline" color={Color.icon} size={25} />
             <Text style={styles.menuItemText}>Favorites</Text>

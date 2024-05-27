@@ -110,7 +110,7 @@ function HomeScreen({ navigation }) {
   const renderApartmentCard = ({ item: apartment }) => {
     let isFavourite = false;
     userData.favouriteApartments.forEach((element) => {
-      if (apartment._id == element) {
+      if (apartment._id === element) {
         isFavourite = true;
       }
     });
