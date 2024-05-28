@@ -15,6 +15,7 @@ import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { useUsers } from "../context/UserContext";
 import HomeStackScreen from "./HomeStackScreen ";
+import LandlordHomeScreen from "../screens/LandlordHomeScreen";
 import ProfileStackScreen from "./ProfileStackScreen";
 import ChatStackScreen from "./ChatStackScreen";
 import SettingsStackScreen from "./SettingsStackScreen";
@@ -81,31 +82,60 @@ function MainTabScreen() {
               },
             }}
           >
-            <Tab.Screen
-              name="HomeStackScreen"
-              component={HomeStackScreen}
-              options={{
-                tabBarLabel: "",
-                tabBarIcon: ({ focused }) => (
-                  <View style={{ alignItems: "center" }}>
-                    <MaterialCommunityIcons
-                      name={focused ? "home" : "home-outline"}
-                      style={{ marginTop: -10 }}
-                      color={isDarkMode ? Color.white : Color.darkTheme}
-                      size={26}
-                    />
-                    <Text
-                      style={{
-                        fontSize: focused ? 10 : 9,
-                        color: isDarkMode ? Color.white : Color.black,
-                      }}
-                    >
-                      Home
-                    </Text>
-                  </View>
-                ),
-              }}
-            />
+            {userData.userType == "student" && ( //////////////////////
+              <Tab.Screen
+                name="HomeStackScreen"
+                component={HomeStackScreen}
+                options={{
+                  tabBarLabel: "",
+                  tabBarIcon: ({ focused }) => (
+                    <View style={{ alignItems: "center" }}>
+                      <MaterialCommunityIcons
+                        name={focused ? "home" : "home-outline"}
+                        style={{ marginTop: -10 }}
+                        color={isDarkMode ? Color.white : Color.darkTheme}
+                        size={26}
+                      />
+                      <Text
+                        style={{
+                          fontSize: focused ? 10 : 9,
+                          color: isDarkMode ? Color.white : Color.black,
+                        }}
+                      >
+                        Home
+                      </Text>
+                    </View>
+                  ),
+                }}
+              />
+            )}
+            {userData.userType == "landlord" && ( //////////////////////
+              <Tab.Screen
+                name="LandlordHomeStackScreen"
+                component={LandlordHomeScreen}
+                options={{
+                  tabBarLabel: "",
+                  tabBarIcon: ({ focused }) => (
+                    <View style={{ alignItems: "center" }}>
+                      <MaterialCommunityIcons
+                        name={focused ? "home" : "home-outline"}
+                        style={{ marginTop: -10 }}
+                        color={isDarkMode ? Color.white : Color.darkTheme}
+                        size={26}
+                      />
+                      <Text
+                        style={{
+                          fontSize: focused ? 10 : 9,
+                          color: isDarkMode ? Color.white : Color.black,
+                        }}
+                      >
+                        Home
+                      </Text>
+                    </View>
+                  ),
+                }}
+              />
+            )}
             <Tab.Screen
               name="ProfileStackScreen"
               component={ProfileStackScreen}
