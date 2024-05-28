@@ -97,9 +97,11 @@ const ParagraphDeatails =
 
 const HouseDetailsScreen = ({ navigation, route }) => {
   const favoriteApartmentsCtx = useContext(FavoritesContext);
-
   const { isDarkMode } = useDarkMode();
   const { userData } = useUsers();
+
+  const routes = navigation.getState()?.routes;
+  const prevRoute = routes[routes.length - 1];
 
   const { apartment } = route.params;
   const scrollRef = useAnimatedRef();
@@ -128,6 +130,15 @@ const HouseDetailsScreen = ({ navigation, route }) => {
   const handleShowAllPress = (apartmentContent) => {
     setApartmentContent(apartmentContent);
     setShowAll(!showAll);
+  };
+
+  const handleNavigation = () => {
+    if (prevRoute.params.favorite) {
+      navigation.pop();
+      navigation.navigate("FavoritesScreen");
+    } else {
+      navigation.goBack();
+    }
   };
 
   useLayoutEffect(() => {
@@ -179,7 +190,7 @@ const HouseDetailsScreen = ({ navigation, route }) => {
                 }
               : styles.roundButton
           }
-          onPress={() => navigation.goBack()}
+          onPress={handleNavigation}
         >
           <Ionicons
             name="chevron-back"

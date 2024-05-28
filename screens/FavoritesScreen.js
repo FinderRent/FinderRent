@@ -19,7 +19,7 @@ const FavoritesScreen = ({ navigation }) => {
   const favoriteApartmentsCtx = useContext(FavoritesContext);
 
   const favoriteApartment = favoriteApartmentsCtx?.ids;
-  console.log(favoriteApartment);
+
   if (favoriteApartment.length === 0) {
     return (
       <View style={styles.container}>
@@ -100,7 +100,10 @@ const FavoritesScreen = ({ navigation }) => {
             <TouchableOpacity
               style={styles.arrow}
               onPress={() =>
-                navigation.navigate("HouseDetailsScreen", { apartment })
+                navigation.navigate("HouseDetailsScreen", {
+                  apartment,
+                  favorite: true,
+                })
               }
             >
               <FontAwesome6
