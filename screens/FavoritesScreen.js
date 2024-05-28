@@ -14,12 +14,11 @@ import fetchApartment from "../api/apartments/fetchApartment";
 import Loader from "../components/ui/Loader";
 import ErrorMessage from "../components/ui/ErrorMessage";
 
-const FavoritesScreen = ({ navigation, route }) => {
+const FavoritesScreen = ({ navigation }) => {
   const { isDarkMode } = useDarkMode();
   const favoriteApartmentsCtx = useContext(FavoritesContext);
 
   const favoriteApartment = favoriteApartmentsCtx?.ids;
-  // const favoriteApartment = route.params?.ids;
   console.log(favoriteApartment);
   if (favoriteApartment.length === 0) {
     return (
@@ -57,16 +56,7 @@ const FavoritesScreen = ({ navigation, route }) => {
     return <ErrorMessage errorMessage={error.message} />;
   }
 
-  // useEffect(() => {
-  //   const refetchData = async () => {
-  //     await refetch();
-  //   };
-
-  //   refetchData()
-  // }, [changeFavoriteStatusHandler]);
-
   function changeFavoriteStatusHandler(id) {
-    console.log(id);
     favoriteApartmentsCtx.removeFavorite(id);
   }
 
@@ -101,7 +91,7 @@ const FavoritesScreen = ({ navigation, route }) => {
                 Capacity: {apartment?.realTimeCapacity}/
                 {apartment?.totalCapacity}
               </Text>
-              <Text style={{ fontWeight: "bold" }}>
+              <Text style={{ fontWeight: "bold" }} variant="bodyMedium">
                 Price: ${apartment?.price}
               </Text>
             </Card.Content>
