@@ -1,16 +1,26 @@
+import { useContext } from "react";
 import { useQueries } from "@tanstack/react-query";
 import { StyleSheet, View } from "react-native";
-import { Text } from "react-native-paper";
+import { TouchableOpacity } from "@gorhom/bottom-sheet";
+import { ScrollView } from "react-native-gesture-handler";
+import { Card, Text } from "react-native-paper";
 import { Fontisto } from "@expo/vector-icons";
+import { FontAwesome6 } from "@expo/vector-icons";
 
 import { Color } from "../constants/colors";
+import { useDarkMode } from "../context/DarkModeContext";
+import { FavoritesContext } from "../context/FavoritesContext";
 import fetchApartment from "../api/apartments/fetchApartment";
 import Loader from "../components/ui/Loader";
 import ErrorMessage from "../components/ui/ErrorMessage";
 
-const FavoritesScreen = ({ route }) => {
-  const favoriteApartment = route.params?.ids;
+const FavoritesScreen = ({ navigation, route }) => {
+  const { isDarkMode } = useDarkMode();
+  const favoriteApartmentsCtx = useContext(FavoritesContext);
 
+  const favoriteApartment = favoriteApartmentsCtx?.ids;
+  // const favoriteApartment = route.params?.ids;
+  console.log(favoriteApartment);
   if (favoriteApartment.length === 0) {
     return (
       <View style={styles.container}>
@@ -38,7 +48,7 @@ const FavoritesScreen = ({ route }) => {
   const data = favoriteApartmentsQueries.map(
     (query) => query.data?.data?.apartment
   );
-
+  // console.log(data);
   if (isLoading) {
     return <Loader color={Color.Blue500} size={30} />;
   }
@@ -47,20 +57,82 @@ const FavoritesScreen = ({ route }) => {
     return <ErrorMessage errorMessage={error.message} />;
   }
 
+  // useEffect(() => {
+  //   const refetchData = async () => {
+  //     await refetch();
+  //   };
+
+  //   refetchData()
+  // }, [changeFavoriteStatusHandler]);
+
+  function changeFavoriteStatusHandler(id) {
+    console.log(id);
+    favoriteApartmentsCtx.removeFavorite(id);
+  }
+
   return (
-    <View>
-      {data?.map((apartment, index) => (
-        <View key={index} style={styles.apartmentContainer}>
-          <Text style={styles.apartmentName}>{apartment?.apartmentType}</Text>
-          <Text>Price: ${apartment?.price}</Text>
-          <Text>Rooms: {apartment?.numberOfRooms}</Text>
-          <Text>Rating: {apartment?.rating}</Text>
-          <Text>
-            Capacity: {apartment?.realTimeCapacity}/{apartment?.totalCapacity}
-          </Text>
-        </View>
+    <ScrollView contentContainerStyle={styles.cardContainer}>
+      {data.map((apartment, index) => (
+        <Card
+          key={index}
+          style={[
+            styles.card,
+            isDarkMode
+              ? { backgroundColor: Color.buttomSheetDarkTheme }
+              : { backgroundColor: Color.defaultTheme },
+          ]}
+        >
+          <View style={{ flexDirection: "row" }}>
+            <Card.Cover
+              style={styles.cardCover}
+              source={{
+                uri:
+                  apartment?.images?.[0] ||
+                  "https://www.bhg.com/thmb/3Vf9GXp3T-adDlU6tKpTbb-AEyE=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/white-modern-house-curved-patio-archway-c0a4a3b3-aa51b24d14d0464ea15d36e05aa85ac9.jpg",
+              }}
+            />
+            <Card.Content style={styles.cardContent}>
+              <Text style={{ fontWeight: "bold" }} variant="bodyLarge">
+                {apartment?.apartmentType}
+              </Text>
+              <Text>Address: {apartment?.address?.street}</Text>
+              <Text>Rooms: {apartment?.numberOfRooms}</Text>
+              <Text>
+                Capacity: {apartment?.realTimeCapacity}/
+                {apartment?.totalCapacity}
+              </Text>
+              <Text style={{ fontWeight: "bold" }}>
+                Price: ${apartment?.price}
+              </Text>
+            </Card.Content>
+          </View>
+          <View style={styles.iconContainer}>
+            <TouchableOpacity
+              style={styles.arrow}
+              onPress={() =>
+                navigation.navigate("HouseDetailsScreen", { apartment })
+              }
+            >
+              <FontAwesome6
+                name="building-circle-arrow-right"
+                size={20}
+                color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.trash}
+              onPress={() => changeFavoriteStatusHandler(apartment._id)}
+            >
+              <FontAwesome6
+                name="trash-can"
+                size={20}
+                color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+              />
+            </TouchableOpacity>
+          </View>
+        </Card>
       ))}
-    </View>
+    </ScrollView>
   );
 };
 
@@ -89,5 +161,34 @@ const styles = StyleSheet.create({
   apartmentName: {
     fontSize: 18,
     fontWeight: "bold",
+  },
+  cardContainer: {
+    padding: 10,
+  },
+  cardCover: {
+    width: 100,
+    height: 100,
+    margin: 10,
+  },
+  card: {
+    marginVertical: 10,
+    paddingRight: 10,
+  },
+  cardContent: {
+    marginLeft: -10,
+    margin: 5,
+  },
+  iconContainer: {
+    position: "absolute",
+    right: 0,
+    top: 0,
+    bottom: 0,
+    justifyContent: "space-between",
+  },
+  arrow: {
+    marginTop: 10,
+  },
+  trash: {
+    marginBottom: 10,
   },
 });
