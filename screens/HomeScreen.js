@@ -70,7 +70,15 @@ function HomeScreen({ navigation }) {
   const tabBarHeight = useBottomTabBarHeight();
 
   const token = userData.token;
-  const coordinates = JSON.parse(userData?.coordinates);
+
+  let coordinates = null;
+  try {
+    coordinates = userData?.coordinates
+      ? JSON.parse(userData.coordinates)
+      : null;
+  } catch (error) {
+    console.error("Failed to parse coordinates:", error);
+  }
 
   const [category, setCategory] = useState("All");
 
@@ -195,8 +203,7 @@ function HomeScreen({ navigation }) {
 
       <ExploreHeader onCategoryChanged={onDataChanged} />
 
-      <ListingsMap listings={getoItems} coordinates={coordinates} />
-
+      <ListingsMap listings={getoItems} {...(token ? { coordinates } : {})} />
       <BottomSheet
         ref={bottomSheetRef}
         index={1}

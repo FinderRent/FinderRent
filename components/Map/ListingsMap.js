@@ -14,39 +14,46 @@ const ListingsMap = memo(({ listings, coordinates }) => {
 
   const mapRef = useRef();
 
-  let INITIAL_REGION = {
+  // Default INITIAL_REGION
+  const DEFAULT_REGION = {
     latitude: 31.265058,
     longitude: 34.7839961,
     latitudeDelta: 7,
     longitudeDelta: 7,
   };
 
-  if (userData.token !== null) {
-    INITIAL_REGION = {
-      latitude: coordinates?.lat,
-      longitude: coordinates?.lng,
-      latitudeDelta: 0.02,
-      longitudeDelta: 0.02,
-    };
-  }
+  // Conditional INITIAL_REGION based on the presence of token and coordinates
+  const INITIAL_REGION =
+    userData.token && coordinates
+      ? {
+          latitude: coordinates.lat,
+          longitude: coordinates.lng,
+          latitudeDelta: 0.02,
+          longitudeDelta: 0.02,
+        }
+      : DEFAULT_REGION;
 
   useEffect(() => {
-    onLocateMe();
-  }, []);
+    if (userData.token && coordinates) {
+      onLocateMe();
+    }
+  }, [userData.token, coordinates]);
 
   const onMarkerSelected = (event) => {
     console.log(event);
   };
 
   // Focus the map on the user's location
-  const onLocateMe = async () => {
-    const region = {
-      latitude: coordinates?.lat,
-      longitude: coordinates?.lng,
-      latitudeDelta: 0.02,
-      longitudeDelta: 0.02,
-    };
-    mapRef.current?.animateToRegion(region);
+  const onLocateMe = () => {
+    if (mapRef.current && coordinates) {
+      const region = {
+        latitude: coordinates.lat,
+        longitude: coordinates.lng,
+        latitudeDelta: 0.02,
+        longitudeDelta: 0.02,
+      };
+      mapRef.current.animateToRegion(region);
+    }
   };
 
   // Overwrite the renderCluster function to customize the cluster markers
@@ -64,14 +71,7 @@ const ListingsMap = memo(({ listings, coordinates }) => {
         onPress={onPress}
       >
         <View style={styles.marker}>
-          <Text
-            style={{
-              color: "#000",
-              textAlign: "center",
-            }}
-          >
-            {points}
-          </Text>
+          <Text style={{ color: "#000", textAlign: "center" }}>{points}</Text>
         </View>
       </Marker>
     );

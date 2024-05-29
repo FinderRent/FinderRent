@@ -19,23 +19,7 @@ function HomeStackScreen({ navigation }) {
         headerTitle: "",
       }}
     >
-      <HomeStack.Screen
-        name="HomeScreen"
-        component={HomeScreen}
-        options={{
-          headerRight: () => (
-            <View style={{ marginLeft: -10 }}>
-              <Ionicons.Button
-                name="menu"
-                size={25}
-                color={Color.darkTheme}
-                backgroundColor={isDarkMode ? Color.Brown700 : Color.Brown100}
-                onPress={() => navigation.openDrawer()}
-              />
-            </View>
-          ),
-        }}
-      />
+      <HomeStack.Screen name="HomeScreen" component={HomeScreen} />
       <HomeStack.Screen
         name="HouseDetailsScreen"
         component={HouseDetailsScreen}

@@ -76,8 +76,6 @@ function SignInModal({ showVisible }) {
     onSuccess: (user) => {
       storeData("token", user.token);
       auth.login(user.data.user, user.token);
-      console.log(user);
-      console.log(user.data.user.userType);
       Toast.show({
         type: "success",
         text1: "Logged In Successfully",

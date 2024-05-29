@@ -6,6 +6,7 @@ import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import HouseDetailsScreen from "../screens/HouseDetailsScreen";
 import LandlordHomeScreen from "../screens/LandlordHomeScreen";
+import HomeScreen from "../screens/HomeScreen";
 
 const LandlordHomeStack = createNativeStackNavigator();
 
@@ -36,6 +37,7 @@ function LandlordHomeStackScreen({ navigation }) {
           ),
         }}
       />
+      <LandlordHomeStack.Screen name="HomeScreen" component={HomeScreen} />
       {/* <LandlordHomeStack.Screen
         name="HouseDetailsScreen"
         component={HouseDetailsScreen}

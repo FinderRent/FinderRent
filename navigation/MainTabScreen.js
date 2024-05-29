@@ -15,6 +15,7 @@ import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { useUsers } from "../context/UserContext";
 import HomeStackScreen from "./HomeStackScreen ";
+import LandlordHomeStackScreen from "./LandlordHomeStackScreen";
 import LandlordHomeScreen from "../screens/LandlordHomeScreen";
 import ProfileStackScreen from "./ProfileStackScreen";
 import ChatStackScreen from "./ChatStackScreen";
@@ -82,7 +83,33 @@ function MainTabScreen() {
               },
             }}
           >
-            {userData.userType === "student" && (
+            {userData.userType === "landlord" ? (
+              <Tab.Screen
+                name="LandlordHomeStackScreen"
+                component={LandlordHomeStackScreen}
+                options={{
+                  tabBarLabel: "",
+                  tabBarIcon: ({ focused }) => (
+                    <View style={{ alignItems: "center" }}>
+                      <MaterialCommunityIcons
+                        name={focused ? "home" : "home-outline"}
+                        style={{ marginTop: -10 }}
+                        color={isDarkMode ? Color.white : Color.darkTheme}
+                        size={26}
+                      />
+                      <Text
+                        style={{
+                          fontSize: focused ? 10 : 9,
+                          color: isDarkMode ? Color.white : Color.black,
+                        }}
+                      >
+                        Home
+                      </Text>
+                    </View>
+                  ),
+                }}
+              />
+            ) : (
               <Tab.Screen
                 name="HomeStackScreen"
                 component={HomeStackScreen}
@@ -109,7 +136,7 @@ function MainTabScreen() {
                 }}
               />
             )}
-            {userData.userType === "landlord" && (
+            {/* {userData.userType === "landlord" && (
               <Tab.Screen
                 name="LandlordHomeStackScreen"
                 component={LandlordHomeScreen}
@@ -135,8 +162,7 @@ function MainTabScreen() {
                   ),
                 }}
               />
-            )}
-
+            )} */}
             <Tab.Screen
               name="ProfileStackScreen"
               component={ProfileStackScreen}
