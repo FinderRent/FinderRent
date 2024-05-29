@@ -23,6 +23,7 @@ import LandlordHouseCard from "../components/House/LandlordHouseCard";
 import SignInHeader from "../components/SignInHeader";
 import Loader from "../components/ui/Loader";
 import { fetchAllApartments } from "./../utils/http";
+import AddApartmentButton from "../components/ui/AddApartmentButton";
 
 // function to get Permissions for PushNotifications
 async function registerForPushNotificationsAsync() {
@@ -84,7 +85,7 @@ function LandlordHomeScreen({ navigation }) {
     status: statusApartments,
   } = useQuery({
     queryKey: ["apartments"],
-    queryFn: () => fetchAllApartments(),
+    queryFn: () => fetchAllApartments({ owner: userData.id }),
   });
 
   //getting curreny user data
@@ -181,6 +182,7 @@ function LandlordHomeScreen({ navigation }) {
         keyExtractor={(item) => item._id}
         renderItem={renderApartmentCard}
       />
+      <AddApartmentButton style={styles.addApartmentButton} />
     </SafeAreaView>
   );
 }
@@ -208,5 +210,9 @@ const styles = StyleSheet.create({
       width: 1,
       height: 1,
     },
+  },
+  addApartmentButton: {
+    bottom: "22%",
+    right: "15%",
   },
 });
