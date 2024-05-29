@@ -96,24 +96,18 @@ function HomeScreen({ navigation }) {
   });
 
   //getting curreny user data
-  const {
-    data: user,
-    isLoading: isLoadingUser,
-    isError: isErrorUser,
-    status: statusUser,
-  } = useQuery({
-    queryKey: ["User", userData.id],
-    queryFn: () => fetchUser(userData.id),
-  });
+  // const {
+  //   data: user,
+  //   isLoading: isLoadingUser,
+  //   isError: isErrorUser,
+  //   status: statusUser,
+  // } = useQuery({
+  //   queryKey: ["User", userData.id],
+  //   queryFn: () => fetchUser(userData.id),
+  // });
 
   //render the apartment card
   const renderApartmentCard = ({ item: apartment }) => {
-    let isFavourite = false;
-    userData.favouriteApartments.forEach((element) => {
-      if (apartment._id === element) {
-        isFavourite = true;
-      }
-    });
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate("HouseDetailsScreen", { apartment })}
@@ -122,7 +116,6 @@ function HomeScreen({ navigation }) {
           navigation={navigation}
           apartment={apartment}
           userData={userData}
-          isFavourite={isFavourite}
         />
       </TouchableOpacity>
     );

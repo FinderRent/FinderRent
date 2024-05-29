@@ -1,31 +1,18 @@
-import React, {
-  useContext,
-  useEffect,
-  useState,
-  useSyncExternalStore,
-} from "react";
-import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { useContext } from "react";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { SliderBox } from "react-native-image-slider-box";
-import { useQuery } from "@tanstack/react-query";
-import { useDarkMode } from "../../context/DarkModeContext";
-import { Color } from "../../constants/colors";
 import { Text } from "react-native-paper";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import {
-  addFavourite,
-  removeFavourite,
-  checkIfFavourite,
-} from "../../utils/http";
+import { Color } from "../../constants/colors";
+import { useDarkMode } from "../../context/DarkModeContext";
 import { FavoritesContext } from "../../context/FavoritesContext";
 
-const HouseCard = ({ navigation, apartment, userData, isFavourite }) => {
+const HouseCard = ({ navigation, apartment, userData }) => {
   const { isDarkMode } = useDarkMode();
   const favoriteApartmentsCtx = useContext(FavoritesContext);
 
   const apartmentIsFavorite = favoriteApartmentsCtx.ids.includes(apartment._id);
-  // console.log(favoriteApartmentsCtx);
 
   function changeFavoriteStatusHandler() {
     if (apartmentIsFavorite) {
@@ -34,50 +21,6 @@ const HouseCard = ({ navigation, apartment, userData, isFavourite }) => {
       favoriteApartmentsCtx.addFavorite(apartment._id);
     }
   }
-  //component initialization ----------------------------------
-
-  // const handleFirstQuery = {
-  //   queryKey: ["isFavourite"],
-  //   queryFn: () => checkIfFavourite(apartment._id, userData.id),
-  // };
-
-  // const {
-  //   data: favourite,
-  //   isLoading: isLoadingFavourite,
-  //   isError: isError1,
-  //   status: status1,
-  // } = useQuery(handleFirstQuery);
-  // console.log(favourite);
-
-  const [isFavorite, setIsFavorite] = useState(isFavourite);
-  // console.log("isFavourite - " + isFavorite);
-  // console.log("favourite - ", favourite);
-  // console.log("isFavorite - ", isFavorite);
-
-  // if (isLoadingFavourite) {
-  //   console.log("waiting for data");
-  // } else {
-  //   console.log("success - Favourite: " + isFavorite);
-  // }
-
-  //component updating ----------------------------------
-  const toggleFavorite = () => {
-    setIsFavorite(!isFavorite);
-    // console.log("After change - " + isFavorite);
-  };
-
-  const handleFavoriteQuery = isFavorite
-    ? {
-        queryKey: ["addFavourite"],
-        queryFn: () => addFavourite(apartment._id, userData.id),
-      }
-    : {
-        queryKey: ["removeFavourite"],
-        queryFn: () => removeFavourite(apartment._id, userData.id),
-      };
-
-  const { data, isLoading, isError, status } = useQuery(handleFavoriteQuery);
-  //-----------------------------------------------------
 
   const images = [
     "https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/home-improvement/wp-content/uploads/2022/07/download-23.jpg",
@@ -93,7 +36,7 @@ const HouseCard = ({ navigation, apartment, userData, isFavourite }) => {
           : styles.card
       }
     >
-      <TouchableOpacity style={styles.favoriteButton} onPress={toggleFavorite}>
+      <TouchableOpacity style={styles.favoriteButton}>
         {userData?.token && (
           <FontAwesome
             name={"heart"}
