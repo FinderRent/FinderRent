@@ -113,13 +113,15 @@ function SignUpScreen({ navigation }) {
     onSuccess: (user) => {
       storeData("token", user.token);
       auth.login(user.data.user, user.token);
-      Toast.show(
-        {
-          type: "success",
-          text1: "Account Successfully Created",
-        },
-        navigation.navigate("HomeStackScreen")
-      );
+      Toast.show({
+        type: "success",
+        text1: "Account Successfully Created",
+      });
+      if (user.data.user.userType === "student") {
+        navigation.navigate("HomeScreen");
+      } else {
+        navigation.navigate("LandlordHomeStackScreen");
+      }
     },
     onError: (err) => {
       console.log(err.message);
