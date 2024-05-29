@@ -2,33 +2,19 @@ import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
 import { useEffect, useMemo, useRef, useState } from "react";
-import {
-  StyleSheet,
-  SafeAreaView,
-  Platform,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { Text } from "react-native-paper";
+import { StyleSheet, SafeAreaView, Platform } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
-import { useQuery } from "@tanstack/react-query";
-import { Ionicons } from "@expo/vector-icons";
-import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
-import { MaterialIcons } from "@expo/vector-icons";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { useUsers } from "../context/UserContext";
-import { fetchAllApartments } from "./../utils/http";
-import HouseCard from "../components/House/HouseCard";
 import ProfileLocation from "../components/ProfileLocation";
 import SignInHeader from "../components/SignInHeader";
 import ExploreHeader from "../components/ExploreHeader";
-import Loader from "../components/ui/Loader";
 import ListingsMap from "../components/Map/ListingsMap";
+import HouseList from "../components/House/HouseList";
 import listingsDataGeo from "../data/apartments-listings.geo.json";
-import ErrorMessage from "../components/ui/ErrorMessage";
 
 // function to get Permissions for PushNotifications
 async function registerForPushNotificationsAsync() {
@@ -72,7 +58,6 @@ function HomeScreen({ navigation }) {
   const tabBarHeight = useBottomTabBarHeight();
 
   const token = userData.token;
-
   let coordinates = null;
   try {
     coordinates = userData?.coordinates
@@ -83,52 +68,14 @@ function HomeScreen({ navigation }) {
   }
 
   const [category, setCategory] = useState(null);
-
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
 
   const notificationListener = useRef();
   const responseListener = useRef();
 
-  //----------------------------------------------------------------------
-  const bottomSheetRef = useRef(null);
+  const getoItems = useMemo(() => listingsDataGeo, []);
 
-  const snapPoints = useMemo(
-    () => (Platform.OS === "ios" ? ["14%", "77.5%"] : ["3%", "76%"]),
-    []
-  );
-
-  const {
-    data: apartments,
-    isLoading: isLoadingApartments,
-    isError: isErrorApartments,
-    error: errorApartments,
-    refetch,
-  } = useQuery({
-    queryKey: ["apartments"],
-    queryFn: () => fetchAllApartments(category),
-  });
-
-  useEffect(() => {
-    refetch();
-  }, [category, refetch]);
-
-  //render the apartment card
-  const renderApartmentCard = ({ item: apartment }) => {
-    return (
-      <TouchableOpacity
-        onPress={() => navigation.navigate("HouseDetailsScreen", { apartment })}
-      >
-        <HouseCard
-          navigation={navigation}
-          apartment={apartment}
-          userData={userData}
-        />
-      </TouchableOpacity>
-    );
-  };
-
-  //----------------------------------------------------------------------
   useEffect(() => {
     registerForPushNotificationsAsync().then((pushToken) =>
       setExpoPushToken(pushToken)
@@ -172,12 +119,6 @@ function HomeScreen({ navigation }) {
     };
   }, [notificationListener, token]);
 
-  const getoItems = useMemo(() => listingsDataGeo, []);
-
-  const onShowMap = () => {
-    bottomSheetRef.current?.collapse();
-  };
-
   const onDataChanged = (category) => {
     setCategory(category);
   };
@@ -198,54 +139,7 @@ function HomeScreen({ navigation }) {
 
       <ListingsMap listings={getoItems} {...(token ? { coordinates } : {})} />
 
-      <BottomSheet
-        ref={bottomSheetRef}
-        index={1}
-        snapPoints={snapPoints}
-        backgroundStyle={{
-          backgroundColor: isDarkMode ? Color.darkTheme : Color.white,
-        }}
-        handleIndicatorStyle={
-          isDarkMode
-            ? { backgroundColor: Color.gray }
-            : { backgroundColor: Color.darkTheme }
-        }
-        style={styles.sheetContainer}
-      >
-        {isErrorApartments && <ErrorMessage errorMessage={errorApartments} />}
-
-        {isLoadingApartments ? (
-          <View style={{ paddingTop: "80%" }}>
-            <Loader color={isDarkMode ? Color.white : Color.darkTheme} />
-          </View>
-        ) : apartments?.apartments.length === 0 ? (
-          <View style={styles.noResultsContainer}>
-            <MaterialIcons
-              name="apartment"
-              size={120}
-              color={Color.buttomSheetDarkTheme}
-            />
-            <Text style={styles.noResultsText}>There's No Apartments.</Text>
-          </View>
-        ) : (
-          <BottomSheetFlatList
-            data={apartments?.apartments}
-            keyExtractor={(item) => item._id}
-            renderItem={renderApartmentCard}
-          />
-        )}
-        <View style={styles.absoluteView}>
-          <TouchableOpacity onPress={onShowMap} style={styles.mapBtn}>
-            <Text style={{ color: "#fff" }}>Map</Text>
-            <Ionicons
-              name="map"
-              size={20}
-              style={{ marginLeft: 10 }}
-              color={"#fff"}
-            />
-          </TouchableOpacity>
-        </View>
-      </BottomSheet>
+      <HouseList category={category} navigation={navigation} />
     </SafeAreaView>
   );
 }
