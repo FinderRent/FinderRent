@@ -146,42 +146,4 @@ function HomeScreen({ navigation }) {
 
 export default HomeScreen;
 
-const styles = StyleSheet.create({
-  absoluteView: {
-    position: "absolute",
-    bottom: 10,
-    width: "100%",
-    alignItems: "center",
-  },
-  mapBtn: {
-    backgroundColor: Color.darkTheme,
-    padding: 10,
-    height: 40,
-    borderRadius: 10,
-    flexDirection: "row",
-    marginHorizontal: "auto",
-    alignItems: "center",
-  },
-  sheetContainer: {
-    elevation: 4,
-    shadowColor: "#000",
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
-  },
-  noResultsContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  noResultsText: {
-    textAlign: "center",
-    color: Color.gray,
-    fontFamily: "varelaRound",
-    fontSize: 17,
-    letterSpacing: 0.3,
-  },
-});
+const styles = StyleSheet.create({});
