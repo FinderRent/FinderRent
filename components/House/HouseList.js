@@ -86,7 +86,9 @@ function HouseList({ navigation, category }) {
             size={120}
             color={Color.buttomSheetDarkTheme}
           />
-          <Text style={styles.noResultsText}>There's No Apartments.</Text>
+          <Text style={styles.noResultsText}>
+            There's No {category} Apartments.
+          </Text>
         </View>
       ) : (
         <BottomSheetFlatList
