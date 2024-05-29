@@ -53,7 +53,11 @@ const ExploreHeader = ({ onCategoryChanged }) => {
       scrollRef.current?.scrollTo({ x: pageX - 16, y: 0, animated: true });
     });
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    onCategoryChanged(categories[index].name);
+    if (categories[index].name === "All Categories") {
+      onCategoryChanged(null);
+    } else {
+      onCategoryChanged(categories[index].name);
+    }
   };
 
   return (

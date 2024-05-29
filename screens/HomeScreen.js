@@ -15,6 +15,7 @@ import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { useQuery } from "@tanstack/react-query";
 import { Ionicons } from "@expo/vector-icons";
 import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
+import { MaterialIcons } from "@expo/vector-icons";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
@@ -27,6 +28,7 @@ import ExploreHeader from "../components/ExploreHeader";
 import Loader from "../components/ui/Loader";
 import ListingsMap from "../components/Map/ListingsMap";
 import listingsDataGeo from "../data/apartments-listings.geo.json";
+import ErrorMessage from "../components/ui/ErrorMessage";
 
 // function to get Permissions for PushNotifications
 async function registerForPushNotificationsAsync() {
@@ -80,7 +82,7 @@ function HomeScreen({ navigation }) {
     console.error("Failed to parse coordinates:", error);
   }
 
-  const [category, setCategory] = useState("All");
+  const [category, setCategory] = useState(null);
 
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
@@ -91,34 +93,25 @@ function HomeScreen({ navigation }) {
   //----------------------------------------------------------------------
   const bottomSheetRef = useRef(null);
 
-  let snapPoints;
-
-  if (Platform.OS === "ios") {
-    snapPoints = useMemo(() => ["14%", "77.5%"], []);
-  } else {
-    snapPoints = useMemo(() => ["3%", "78%"], []);
-  }
+  const snapPoints = useMemo(
+    () => (Platform.OS === "ios" ? ["14%", "77.5%"] : ["3%", "76%"]),
+    []
+  );
 
   const {
     data: apartments,
     isLoading: isLoadingApartments,
     isError: isErrorApartments,
-    status: statusApartments,
+    error: errorApartments,
+    refetch,
   } = useQuery({
     queryKey: ["apartments"],
-    queryFn: () => fetchAllApartments(),
+    queryFn: () => fetchAllApartments(category),
   });
 
-  //getting curreny user data
-  // const {
-  //   data: user,
-  //   isLoading: isLoadingUser,
-  //   isError: isErrorUser,
-  //   status: statusUser,
-  // } = useQuery({
-  //   queryKey: ["User", userData.id],
-  //   queryFn: () => fetchUser(userData.id),
-  // });
+  useEffect(() => {
+    refetch();
+  }, [category, refetch]);
 
   //render the apartment card
   const renderApartmentCard = ({ item: apartment }) => {
@@ -204,6 +197,7 @@ function HomeScreen({ navigation }) {
       <ExploreHeader onCategoryChanged={onDataChanged} />
 
       <ListingsMap listings={getoItems} {...(token ? { coordinates } : {})} />
+
       <BottomSheet
         ref={bottomSheetRef}
         index={1}
@@ -218,16 +212,28 @@ function HomeScreen({ navigation }) {
         }
         style={styles.sheetContainer}
       >
-        {isLoadingApartments && (
+        {isErrorApartments && <ErrorMessage errorMessage={errorApartments} />}
+
+        {isLoadingApartments ? (
           <View style={{ paddingTop: "80%" }}>
             <Loader color={isDarkMode ? Color.white : Color.darkTheme} />
           </View>
+        ) : apartments?.apartments.length === 0 ? (
+          <View style={styles.noResultsContainer}>
+            <MaterialIcons
+              name="apartment"
+              size={120}
+              color={Color.buttomSheetDarkTheme}
+            />
+            <Text style={styles.noResultsText}>There's No Apartments.</Text>
+          </View>
+        ) : (
+          <BottomSheetFlatList
+            data={apartments?.apartments}
+            keyExtractor={(item) => item._id}
+            renderItem={renderApartmentCard}
+          />
         )}
-        <BottomSheetFlatList
-          data={apartments?.apartments}
-          keyExtractor={(item) => item._id}
-          renderItem={renderApartmentCard}
-        />
         <View style={styles.absoluteView}>
           <TouchableOpacity onPress={onShowMap} style={styles.mapBtn}>
             <Text style={{ color: "#fff" }}>Map</Text>
@@ -271,5 +277,17 @@ const styles = StyleSheet.create({
       width: 1,
       height: 1,
     },
+  },
+  noResultsContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  noResultsText: {
+    textAlign: "center",
+    color: Color.gray,
+    fontFamily: "varelaRound",
+    fontSize: 17,
+    letterSpacing: 0.3,
   },
 });
