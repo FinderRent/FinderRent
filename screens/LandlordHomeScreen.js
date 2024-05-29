@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import {
   StyleSheet,
   SafeAreaView,
+  FlatList,
   Platform,
   TouchableOpacity,
   View,
@@ -14,19 +15,14 @@ import { StatusBar } from "expo-status-bar";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { useQuery } from "@tanstack/react-query";
 import { Ionicons } from "@expo/vector-icons";
-import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
-
+import LandlordHeader from "../components/LandlordHeader";
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { useUsers } from "../context/UserContext";
-import { fetchAllApartments } from "./../utils/http";
-import HouseCard from "../components/House/HouseCard";
-import ProfileLocation from "../components/ProfileLocation";
+import LandlordHouseCard from "../components/House/LandlordHouseCard";
 import SignInHeader from "../components/SignInHeader";
-import ExploreHeader from "../components/ExploreHeader";
 import Loader from "../components/ui/Loader";
-import ListingsMap from "../components/Map/ListingsMap";
-import listingsDataGeo from "../data/apartments-listings.geo.json";
+import { fetchAllApartments } from "./../utils/http";
 
 // function to get Permissions for PushNotifications
 async function registerForPushNotificationsAsync() {
@@ -64,13 +60,13 @@ async function registerForPushNotificationsAsync() {
   }
 }
 
-function HomeScreen({ navigation }) {
+function LandlordHomeScreen({ navigation }) {
   const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
   const tabBarHeight = useBottomTabBarHeight();
 
   const token = userData.token;
-  const coordinates = JSON.parse(userData?.coordinates);
+  // const coordinates = JSON.parse(userData?.coordinates);
 
   const [category, setCategory] = useState("All");
 
@@ -81,16 +77,6 @@ function HomeScreen({ navigation }) {
   const responseListener = useRef();
 
   //----------------------------------------------------------------------
-  const bottomSheetRef = useRef(null);
-
-  let snapPoints;
-
-  if (Platform.OS === "ios") {
-    snapPoints = useMemo(() => ["14%", "77.5%"], []);
-  } else {
-    snapPoints = useMemo(() => ["3%", "78%"], []);
-  }
-
   const {
     data: apartments,
     isLoading: isLoadingApartments,
@@ -102,26 +88,33 @@ function HomeScreen({ navigation }) {
   });
 
   //getting curreny user data
-  // const {
-  //   data: user,
-  //   isLoading: isLoadingUser,
-  //   isError: isErrorUser,
-  //   status: statusUser,
-  // } = useQuery({
-  //   queryKey: ["User", userData.id],
-  //   queryFn: () => fetchUser(userData.id),
-  // });
+  const {
+    data: user,
+    isLoading: isLoadingUser,
+    isError: isErrorUser,
+    status: statusUser,
+  } = useQuery({
+    queryKey: ["User", userData.id],
+    queryFn: () => fetchUser(userData.id),
+  });
 
   //render the apartment card
   const renderApartmentCard = ({ item: apartment }) => {
+    let isFavourite = false;
+    userData.favouriteApartments.forEach((element) => {
+      if (apartment._id == element) {
+        isFavourite = true;
+      }
+    });
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate("HouseDetailsScreen", { apartment })}
       >
-        <HouseCard
+        <LandlordHouseCard
           navigation={navigation}
           apartment={apartment}
           userData={userData}
+          isFavourite={isFavourite}
         />
       </TouchableOpacity>
     );
@@ -171,16 +164,6 @@ function HomeScreen({ navigation }) {
     };
   }, [notificationListener, token]);
 
-  const getoItems = useMemo(() => listingsDataGeo, []);
-
-  const onShowMap = () => {
-    bottomSheetRef.current?.collapse();
-  };
-
-  const onDataChanged = (category) => {
-    setCategory(category);
-  };
-
   return (
     <SafeAreaView
       style={{
@@ -191,53 +174,18 @@ function HomeScreen({ navigation }) {
       }}
     >
       <StatusBar style={isDarkMode ? "light" : "dark"} />
-      {token ? <ProfileLocation /> : <SignInHeader />}
-
-      <ExploreHeader onCategoryChanged={onDataChanged} />
-
-      <ListingsMap listings={getoItems} coordinates={coordinates} />
-
-      <BottomSheet
-        ref={bottomSheetRef}
-        index={1}
-        snapPoints={snapPoints}
-        backgroundStyle={{
-          backgroundColor: isDarkMode ? Color.darkTheme : Color.white,
-        }}
-        handleIndicatorStyle={
-          isDarkMode
-            ? { backgroundColor: Color.gray }
-            : { backgroundColor: Color.darkTheme }
-        }
-        style={styles.sheetContainer}
-      >
-        {isLoadingApartments && (
-          <View style={{ paddingTop: "80%" }}>
-            <Loader color={isDarkMode ? Color.white : Color.darkTheme} />
-          </View>
-        )}
-        <BottomSheetFlatList
-          data={apartments?.apartments}
-          keyExtractor={(item) => item._id}
-          renderItem={renderApartmentCard}
-        />
-        <View style={styles.absoluteView}>
-          <TouchableOpacity onPress={onShowMap} style={styles.mapBtn}>
-            <Text style={{ color: "#fff" }}>Map</Text>
-            <Ionicons
-              name="map"
-              size={20}
-              style={{ marginLeft: 10 }}
-              color={"#fff"}
-            />
-          </TouchableOpacity>
-        </View>
-      </BottomSheet>
+      {token ? <LandlordHeader /> : <SignInHeader />}
+      <Text style={styles.PropertiesHeader}>Your properties</Text>
+      <FlatList
+        data={apartments?.apartments}
+        keyExtractor={(item) => item._id}
+        renderItem={renderApartmentCard}
+      />
     </SafeAreaView>
   );
 }
 
-export default HomeScreen;
+export default LandlordHomeScreen;
 
 const styles = StyleSheet.create({
   absoluteView: {
@@ -246,14 +194,10 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
   },
-  mapBtn: {
-    backgroundColor: Color.darkTheme,
-    padding: 10,
-    height: 40,
-    borderRadius: 10,
-    flexDirection: "row",
-    marginHorizontal: "auto",
-    alignItems: "center",
+  PropertiesHeader: {
+    fontSize: 30,
+    fontWeight: "bold",
+    marginLeft: "6%",
   },
   sheetContainer: {
     elevation: 4,
