@@ -32,7 +32,7 @@ function HouseList({ navigation, category }) {
     refetch,
   } = useQuery({
     queryKey: ["apartments"],
-    queryFn: () => fetchAllApartments(category),
+    queryFn: () => fetchAllApartments({ apartmentType: category }),
   });
 
   useEffect(() => {
