@@ -4,17 +4,18 @@ import Constants from "expo-constants";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { StyleSheet, SafeAreaView, Platform } from "react-native";
 import { StatusBar } from "expo-status-bar";
+import { useQuery } from "@tanstack/react-query";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { useUsers } from "../context/UserContext";
+import { fetchAllApartments } from "../utils/http";
 import ProfileLocation from "../components/ProfileLocation";
 import SignInHeader from "../components/SignInHeader";
 import ExploreHeader from "../components/ExploreHeader";
 import ListingsMap from "../components/Map/ListingsMap";
 import HouseList from "../components/House/HouseList";
-import listingsDataGeo from "../data/apartments-listings.geo.json";
 
 // function to get Permissions for PushNotifications
 async function registerForPushNotificationsAsync() {
@@ -74,7 +75,10 @@ function HomeScreen({ navigation }) {
   const notificationListener = useRef();
   const responseListener = useRef();
 
-  const getoItems = useMemo(() => listingsDataGeo, []);
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["apartments"],
+    queryFn: () => fetchAllApartments(),
+  });
 
   useEffect(() => {
     registerForPushNotificationsAsync().then((pushToken) =>
@@ -137,7 +141,11 @@ function HomeScreen({ navigation }) {
 
       <ExploreHeader onCategoryChanged={onDataChanged} />
 
-      <ListingsMap listings={getoItems} {...(token ? { coordinates } : {})} />
+      <ListingsMap
+        navigation={navigation}
+        listings={data?.apartments}
+        {...(token ? { coordinates } : {})}
+      />
 
       <HouseList category={category} navigation={navigation} />
     </SafeAreaView>
