@@ -47,7 +47,9 @@ function ChatScreen({ navigation, route }) {
   const socket = useRef();
   const scrollRef = useAnimatedRef();
 
+  let scrollOffset = null;
   const senderId = userData.id;
+  // const receiverId = ouid[0];
   const fullName = `${userData.firstName} ${userData.lastName}`;
   const [messages, setMessages] = useState([]);
   const [messageText, setMessageText] = useState("");
@@ -156,6 +158,14 @@ function ChatScreen({ navigation, route }) {
     (message) => message.messageText === "image"
   ).length;
 
+  // const { mutate: handleCreateChat } = useMutation({
+  //   mutationFn: ({ senderId, receiverId }) => newChat({ senderId, receiverId }),
+  //   onSuccess: (data) => {
+  //     console.log(data._id);
+  //   },
+  //   onError: (err) => console.log(err.message),
+  // });
+
   const {
     mutate: handleAddMessages,
     isError: isErrorAddMessages,
@@ -188,6 +198,10 @@ function ChatScreen({ navigation, route }) {
       },
     });
 
+  // const handelNewChat = () => {
+  //   handleCreateChat({ senderId, receiverId });
+  // };
+
   const handelSendMessage = useCallback(() => {
     handleUpdateChat({ messageText, chatId });
     handleAddMessages(message);
@@ -205,14 +219,20 @@ function ChatScreen({ navigation, route }) {
       : require("../assets/images/ChatWhiteBackground.jpg");
   };
 
-  const scrollOffset = useScrollViewOffset(scrollRef);
+  if (chatId) {
+    scrollOffset = useScrollViewOffset(scrollRef);
+  }
+
   const downButton = useAnimatedStyle(() => {
     return {
-      opacity: scrollOffset.value > 100 ? withSpring(0.9) : withSpring(0),
+      opacity:
+        scrollOffset && scrollOffset.value > 100
+          ? withSpring(0.9)
+          : withSpring(0),
     };
   });
   const scrollDown = () => {
-    scrollRef.current?.scrollToOffset({ animated: true, offset: 0 });
+    scrollRef?.current?.scrollToOffset({ animated: true, offset: 0 });
   };
 
   return (
@@ -223,8 +243,19 @@ function ChatScreen({ navigation, route }) {
         keyboardVerticalOffset={100}
       >
         <ImageBackground
-          source={getBackgroundImage(isDarkMode)}
-          style={styles.backgroundImage}
+          // source={getBackgroundImage(isDarkMode)}
+          // style={styles.backgroundImage}
+          style={
+            isDarkMode
+              ? {
+                  ...styles.backgroundImage,
+                  backgroundColor: Color.buttomSheetDarkTheme,
+                }
+              : {
+                  ...styles.backgroundImage,
+                  backgroundColor: Color.defaultTheme,
+                }
+          }
         >
           <PageContainer style={{ backgroundColor: "transparent" }}>
             {!chatId && (
