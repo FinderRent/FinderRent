@@ -1,4 +1,4 @@
-import { useContext, useLayoutEffect, useState } from "react";
+import { useContext, useEffect, useLayoutEffect, useState } from "react";
 import {
   Dimensions,
   StyleSheet,
@@ -16,7 +16,7 @@ import Animated, {
 import Carousel from "react-native-reanimated-carousel";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { Paragraph, Text } from "react-native-paper";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Ionicons } from "@expo/vector-icons";
 
 import { Color } from "../constants/colors";
@@ -31,8 +31,9 @@ import HouseRoommates from "../components/House/HouseRoommates";
 import Seperator from "../components/Seperator";
 import HouseAssets from "../components/House/HouseAssets";
 import RoommatesInfo from "../components/House/RoommatesInfo";
+import Loader from "../components/ui/Loader";
 import fetchChats from "../api/chats/fetchChats";
-import newChat from "../api/chats/newChat";
+import fetchChatsList from "../api/chats/fetchChatsList";
 
 const IMG_HEIGHT = 300;
 const { width } = Dimensions.get("window");
@@ -65,9 +66,8 @@ const HouseDetailsScreen = ({ navigation, route }) => {
   const scrollRef = useAnimatedRef();
   const tabBarHeight = useBottomTabBarHeight();
 
-  const ouid = apartment?.owner;
-  const senderId = userData.id;
-  const receiverId = ouid[0];
+  let chatId = null;
+  const ouid = apartment?.owner[0];
   const [mapPress, setMapPress] = useState(false);
   const [showAll, setShowAll] = useState(false);
   const [apartmentContent, setApartmentContent] = useState([]);
@@ -138,33 +138,46 @@ const HouseDetailsScreen = ({ navigation, route }) => {
     });
   }, [navigation, isDarkMode, changeFavoriteStatusHandler]);
 
-  const { data: ownerData } = useQuery({
+  const { data: ownerData, isLoading } = useQuery({
     queryKey: ["chats", ouid],
     queryFn: () => fetchChats(ouid),
   });
 
-  const { mutate: handleCreateChat } = useMutation({
-    mutationFn: ({ senderId, receiverId }) => newChat({ senderId, receiverId }),
-    onSuccess: (data) => {
-      console.log(data._id);
-    },
-    onError: (err) => console.log(err.message),
+  const { data: userChatsList } = useQuery({
+    queryKey: ["chatList", userData.id],
+    queryFn: () => fetchChatsList(userData.id),
   });
 
-  // const handelNewChat = () => {};
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  useEffect(() => {
+    if (userChatsList && userChatsList.chat && userChatsList.chat.length > 0) {
+      const chat = userChatsList.chat.find(
+        (chat) =>
+          chat.members.includes(userData.id) && chat.members.includes(ouid)
+      );
+
+      if (chat) {
+        chatId = chat._id;
+      } else {
+        chatId = null;
+      }
+    }
+  }, []);
 
   function interestedHandler() {
-    handleCreateChat({ senderId, receiverId });
-
-    // navigation.navigate("ChatStackScreen", {
-    //   screen: "ChatScreen",
-    //   params: {
-    //     ouid,
-    //     pushToken: ownerData?.data?.pushToken,
-    //     image: ownerData?.data?.avatar?.url,
-    //     title: `${ownerData?.data?.firstName} ${ownerData?.data?.lastName}`,
-    //   },
-    // });
+    navigation.navigate("ChatStackScreen", {
+      screen: "ChatScreen",
+      params: {
+        chatId,
+        ouid,
+        pushToken: ownerData?.data?.pushToken,
+        image: ownerData?.data?.avatar?.url,
+        title: `${ownerData?.data?.firstName} ${ownerData?.data?.lastName}`,
+      },
+    });
   }
 
   function changeFavoriteStatusHandler() {
