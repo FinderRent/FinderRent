@@ -152,33 +152,33 @@ const HouseDetailsScreen = ({ navigation, route }) => {
     return <Loader />;
   }
 
-  useEffect(() => {
-    if (userChatsList && userChatsList.chat && userChatsList.chat.length > 0) {
-      const chat = userChatsList.chat.find(
-        (chat) =>
-          chat.members.includes(userData.id) && chat.members.includes(ouid)
-      );
+  // useEffect(() => {
+  //   if (userChatsList && userChatsList.chat && userChatsList.chat.length > 0) {
+  //     const chat = userChatsList.chat.find(
+  //       (chat) =>
+  //         chat.members.includes(userData.id) && chat.members.includes(ouid)
+  //     );
 
-      if (chat) {
-        chatId = chat._id;
-      } else {
-        chatId = null;
-      }
-    }
-  }, []);
+  //     if (chat) {
+  //       chatId = chat._id;
+  //     } else {
+  //       chatId = null;
+  //     }
+  //   }
+  // }, []);
 
-  function interestedHandler() {
-    navigation.navigate("ChatStackScreen", {
-      screen: "ChatScreen",
-      params: {
-        chatId,
-        ouid,
-        pushToken: ownerData?.data?.pushToken,
-        image: ownerData?.data?.avatar?.url,
-        title: `${ownerData?.data?.firstName} ${ownerData?.data?.lastName}`,
-      },
-    });
-  }
+  // function interestedHandler() {
+  //   navigation.navigate("ChatStackScreen", {
+  //     screen: "ChatScreen",
+  //     params: {
+  //       chatId,
+  //       ouid,
+  //       pushToken: ownerData?.data?.pushToken,
+  //       image: ownerData?.data?.avatar?.url,
+  //       title: `${ownerData?.data?.firstName} ${ownerData?.data?.lastName}`,
+  //     },
+  //   });
+  // }
 
   function changeFavoriteStatusHandler() {
     if (apartmentIsFavorite) {
@@ -301,7 +301,7 @@ const HouseDetailsScreen = ({ navigation, route }) => {
           {userData?.token && (
             <TouchableOpacity
               style={styles.ReserveBtn}
-              onPress={interestedHandler}
+              // onPress={interestedHandler}
             >
               <Text style={styles.BtnText}>Interested</Text>
             </TouchableOpacity>
