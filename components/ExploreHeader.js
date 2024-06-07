@@ -1,7 +1,9 @@
 import { useRef, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 import { View, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import { Text } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 
 import { Color } from "../constants/colors";
@@ -40,6 +42,7 @@ const categories = [
 ];
 
 const ExploreHeader = ({ onCategoryChanged }) => {
+  const navigation = useNavigation();
   const { isDarkMode } = useDarkMode();
   const scrollRef = useRef(null);
   const itemsRef = useRef([]);
@@ -78,6 +81,16 @@ const ExploreHeader = ({ onCategoryChanged }) => {
           paddingHorizontal: 16,
         }}
       >
+        <TouchableOpacity
+          style={styles.filterBtn}
+          onPress={() => navigation.navigate("FilterScreen")}
+        >
+          <Ionicons
+            name="options-outline"
+            size={22}
+            color={isDarkMode ? "#fff" : "#000"}
+          />
+        </TouchableOpacity>
         {categories.map((item, index) => (
           <TouchableOpacity
             ref={(el) => (itemsRef.current[index] = el)}
@@ -137,7 +150,7 @@ const styles = StyleSheet.create({
     color: Color.gray,
   },
   categoryTextActive: {
-    fontSize: 14,
+    fontSize: 15,
     // fontFamily: "Merienda",
   },
   categoriesBtn: {
@@ -153,6 +166,14 @@ const styles = StyleSheet.create({
     borderBottomColor: "#000",
     borderBottomWidth: 2,
     paddingBottom: 8,
+  },
+  filterBtn: {
+    marginLeft: -5,
+    // marginBottom: 10,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: Color.gray,
+    borderRadius: 24,
   },
 });
 

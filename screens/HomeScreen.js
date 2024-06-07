@@ -1,7 +1,7 @@
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { StyleSheet, SafeAreaView, Platform } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useQuery } from "@tanstack/react-query";

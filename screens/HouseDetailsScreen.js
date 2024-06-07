@@ -1,4 +1,4 @@
-import { useContext, useEffect, useLayoutEffect, useState } from "react";
+import { useContext, useLayoutEffect, useState } from "react";
 import {
   Dimensions,
   StyleSheet,
@@ -138,19 +138,15 @@ const HouseDetailsScreen = ({ navigation, route }) => {
     });
   }, [navigation, isDarkMode, changeFavoriteStatusHandler]);
 
-  const { data: ownerData, isLoading } = useQuery({
-    queryKey: ["chats", ouid],
-    queryFn: () => fetchChats(ouid),
-  });
+  // const { data: ownerData, isLoading } = useQuery({
+  //   queryKey: ["chats", ouid],
+  //   queryFn: () => fetchChats(ouid),
+  // });
 
-  const { data: userChatsList } = useQuery({
-    queryKey: ["chatList", userData.id],
-    queryFn: () => fetchChatsList(userData.id),
-  });
-
-  if (isLoading) {
-    return <Loader />;
-  }
+  // const { data: userChatsList } = useQuery({
+  //   queryKey: ["chatList", userData.id],
+  //   queryFn: () => fetchChatsList(userData.id),
+  // });
 
   // useEffect(() => {
   //   if (userChatsList && userChatsList.chat && userChatsList.chat.length > 0) {
