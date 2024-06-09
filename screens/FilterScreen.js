@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { Text } from "react-native-paper";
 import Animated, {
   FadeIn,
@@ -7,11 +7,13 @@ import Animated, {
   SlideInDown,
 } from "react-native-reanimated";
 import { TouchableOpacity } from "@gorhom/bottom-sheet";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
+import DropDown from "../components/inputs/DropDown";
 
 const AnimatedTouchableOpacity =
   Animated.createAnimatedComponent(TouchableOpacity);
@@ -34,11 +36,43 @@ const moreFilters = [
   },
 ];
 
+const categories = [
+  {
+    name: "All Categories",
+    icon: "check-all",
+  },
+  {
+    name: "Land House",
+    icon: "home",
+  },
+  {
+    name: "Houseing Unit",
+    icon: "home-city",
+  },
+  {
+    name: "Tower",
+    icon: "city",
+  },
+  {
+    name: "Penthouse",
+    icon: "city-variant",
+  },
+];
+
 const FilterScreen = () => {
   const { isDarkMode } = useDarkMode();
   const [openCard, setOpenCard] = useState(0);
 
+  const [sort, setSort] = useState("");
+  const [selectedType, setSelectedType] = useState(0);
   const [filters, setFilters] = useState(moreFilters);
+
+  const sortBy = [
+    { label: "Low to High", value: "lowToHigh" },
+    { label: "High to Low", value: "HighToLow" },
+    { label: "New to Old", value: "NewToOld" },
+    { label: "Old to New ", value: "OldToNew" },
+  ];
 
   const onClearAll = () => {
     const resetFilters = filters.map((filter) => ({
@@ -46,6 +80,7 @@ const FilterScreen = () => {
       count: 0,
     }));
     setFilters(resetFilters);
+    setSelectedType(0);
     setOpenCard(0);
   };
 
@@ -73,8 +108,8 @@ const FilterScreen = () => {
             entering={FadeIn.duration(200)}
             exiting={FadeOut.duration(200)}
           >
-            <Text style={styles.previewText}>Sort</Text>
-            <Text style={styles.previewdData}>select</Text>
+            <Text style={styles.previewText}>Sort By</Text>
+            <Text style={styles.previewdData}>{sort}</Text>
           </AnimatedTouchableOpacity>
         )}
 
@@ -83,11 +118,19 @@ const FilterScreen = () => {
           <Animated.View
             entering={FadeIn}
             exiting={FadeOut}
-            style={styles.cardBody}
-          ></Animated.View>
+            style={[styles.sortCardBody]}
+          >
+            <DropDown
+              list={sortBy}
+              label="SortBy"
+              placeholder={sort}
+              searchable={false}
+              listMode="SCROLLVIEW"
+              onValueChange={(sortBy) => setSort(sortBy)}
+            />
+          </Animated.View>
         )}
       </View>
-
       <View
         style={
           isDarkMode
@@ -102,13 +145,85 @@ const FilterScreen = () => {
             entering={FadeIn.duration(200)}
             exiting={FadeOut.duration(200)}
           >
+            <Text style={styles.previewText}>Apartment Type</Text>
+            <Text style={styles.previewdData}>
+              {categories[selectedType].name}
+            </Text>
+          </AnimatedTouchableOpacity>
+        )}
+
+        {openCard === 1 && (
+          <Text style={styles.cardHeader}>Apartment Type</Text>
+        )}
+        {openCard === 1 && (
+          <Animated.View
+            entering={FadeIn}
+            exiting={FadeOut}
+            style={styles.cardBody}
+          >
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.placesContainer}
+            >
+              {categories.map((item, index) => (
+                <TouchableOpacity
+                  onPress={() => setSelectedType(index)}
+                  key={index}
+                >
+                  <MaterialCommunityIcons
+                    style={
+                      selectedType === index
+                        ? styles.placeSelected
+                        : styles.place
+                    }
+                    name={item.icon}
+                    size={80}
+                    color={
+                      selectedType === index && isDarkMode
+                        ? "#fff"
+                        : selectedType === index && !isDarkMode
+                        ? "#000"
+                        : Color.gray
+                    }
+                  />
+                  <Text
+                    style={
+                      selectedType === index
+                        ? styles.categoryTextActive
+                        : styles.categoryText
+                    }
+                  >
+                    {item.name}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </Animated.View>
+        )}
+      </View>
+
+      <View
+        style={
+          isDarkMode
+            ? { ...styles.card, backgroundColor: Color.buttomSheetDarkTheme }
+            : styles.card
+        }
+      >
+        {openCard !== 2 && (
+          <AnimatedTouchableOpacity
+            onPress={() => setOpenCard(2)}
+            style={styles.cardPreview}
+            entering={FadeIn.duration(200)}
+            exiting={FadeOut.duration(200)}
+          >
             <Text style={styles.previewText}>Fillters</Text>
             <Text style={styles.previewdData}>Select numbers</Text>
           </AnimatedTouchableOpacity>
         )}
 
-        {openCard === 1 && <Text style={styles.cardHeader}>Filters</Text>}
-        {openCard === 1 && (
+        {openCard === 2 && <Text style={styles.cardHeader}>Filters</Text>}
+        {openCard === 2 && (
           <Animated.View style={styles.cardBody}>
             {filters.map((item, index) => (
               <View
@@ -218,6 +333,24 @@ const FilterScreen = () => {
               Clear all
             </Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            style={
+              isDarkMode
+                ? { ...styles.btn, backgroundColor: Color.defaultTheme }
+                : styles.btn
+            }
+            onPress={() => console.log("pressed")}
+          >
+            <Text
+              style={
+                isDarkMode
+                  ? { ...styles.btnText, color: Color.darkTheme }
+                  : styles.btnText
+              }
+            >
+              Apply
+            </Text>
+          </TouchableOpacity>
         </View>
       </Animated.View>
     </BlurView>
@@ -241,12 +374,15 @@ const styles = StyleSheet.create({
       width: 2,
       height: 2,
     },
-    // gap: 20,
   },
   cardHeader: {
     fontWeight: "bold",
     fontSize: 24,
     padding: 20,
+  },
+  sortCardBody: {
+    paddingHorizontal: 20,
+    paddingBottom: 220,
   },
   cardBody: {
     paddingHorizontal: 20,
@@ -276,17 +412,54 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: Color.gray,
   },
+  btn: {
+    backgroundColor: Color.darkTheme,
+    height: 35,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   btnText: {
-    // color: "#fff",
-    fontSize: 16,
+    color: Color.defaultTheme,
+    fontSize: 18,
   },
   btnIcon: {
     position: "absolute",
     left: 16,
   },
+  placesContainer: {
+    flexDirection: "row",
+    gap: 25,
+  },
+  place: {
+    padding: 10,
+    width: 100,
+    height: 100,
+    borderRadius: 10,
+  },
+  placeSelected: {
+    padding: 10,
+    borderColor: Color.extraGray,
+    borderWidth: 2,
+    borderRadius: 10,
+    width: 100,
+    height: 100,
+  },
+  categoryText: {
+    fontSize: 14,
+    textAlign: "center",
+    paddingTop: 6,
+    color: Color.gray,
+  },
+  categoryTextActive: {
+    textAlign: "center",
+    paddingTop: 6,
+    fontSize: 15,
+  },
   footer: {
     position: "absolute",
-    height: "7%",
+    height: "8%",
     bottom: "8%",
     left: 0,
     right: 0,
