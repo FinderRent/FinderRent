@@ -1,7 +1,8 @@
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import { StyleSheet, SafeAreaView, Platform } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useQuery } from "@tanstack/react-query";
@@ -53,7 +54,9 @@ async function registerForPushNotificationsAsync() {
   }
 }
 
-function HomeScreen({ navigation }) {
+function HomeScreen({ navigation, route }) {
+  console.log(route?.params);
+
   const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
   const tabBarHeight = useBottomTabBarHeight();
@@ -68,14 +71,17 @@ function HomeScreen({ navigation }) {
     console.error("Failed to parse coordinates:", error);
   }
 
-  const [category, setCategory] = useState(null);
+  const [categoryIndex, setCategoryIndex] = useState(
+    route?.params?.category[0] ?? 0
+  );
+  const [category, setCategory] = useState(route?.params?.category[1]);
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
 
   const notificationListener = useRef();
   const responseListener = useRef();
 
-  const { data, isLoading, isError, error } = useQuery({
+  const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ["apartments"],
     queryFn: () => fetchAllApartments(),
   });
@@ -123,6 +129,18 @@ function HomeScreen({ navigation }) {
     };
   }, [notificationListener, token]);
 
+  useFocusEffect(
+    useCallback(() => {
+      const fetched = async () => {
+        await refetch();
+      };
+      fetched();
+    }, [])
+  );
+  useEffect(() => {
+    setCategoryIndex(route?.params?.category[0]);
+    setCategory(route?.params?.category[1]);
+  }, [route?.params]);
   const onDataChanged = (category) => {
     setCategory(category);
   };
@@ -139,7 +157,10 @@ function HomeScreen({ navigation }) {
       <StatusBar style={isDarkMode ? "light" : "dark"} />
       {token ? <ProfileLocation /> : <SignInHeader />}
 
-      <ExploreHeader onCategoryChanged={onDataChanged} />
+      <ExploreHeader
+        onCategoryChanged={onDataChanged}
+        categoryIndex={categoryIndex}
+      />
 
       <ListingsMap
         navigation={navigation}

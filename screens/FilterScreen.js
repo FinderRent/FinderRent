@@ -59,7 +59,7 @@ const categories = [
   },
 ];
 
-const FilterScreen = () => {
+const FilterScreen = ({ navigation }) => {
   const { isDarkMode } = useDarkMode();
   const [openCard, setOpenCard] = useState(0);
 
@@ -91,6 +91,26 @@ const FilterScreen = () => {
     }));
     setFilters(resetFilters);
   }, []);
+
+  const handleAplly = () => {
+    let category;
+    if (categories[selectedType].name === "All Categories") {
+      category = [selectedType, ""];
+    } else {
+      category = [selectedType, categories[selectedType].name];
+    }
+
+    const apartmentFilters = filters?.map((filter) => [
+      filter.name,
+      filter.count,
+    ]);
+
+    navigation.navigate("HomeScreen", {
+      sort,
+      category,
+      apartmentFilters,
+    });
+  };
 
   return (
     <BlurView intensity={100} style={styles.container} tint="dark">
@@ -222,7 +242,9 @@ const FilterScreen = () => {
           </AnimatedTouchableOpacity>
         )}
 
-        {openCard === 2 && <Text style={styles.cardHeader}>Filters</Text>}
+        {openCard === 2 && (
+          <Text style={styles.cardHeader}>Apartment Filters</Text>
+        )}
         {openCard === 2 && (
           <Animated.View style={styles.cardBody}>
             {filters.map((item, index) => (
@@ -339,7 +361,8 @@ const FilterScreen = () => {
                 ? { ...styles.btn, backgroundColor: Color.defaultTheme }
                 : styles.btn
             }
-            onPress={() => console.log("pressed")}
+            // disabled={sort === ""}
+            onPress={handleAplly}
           >
             <Text
               style={

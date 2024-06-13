@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { View, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import { Text } from "react-native-paper";
@@ -30,24 +30,19 @@ const categories = [
     name: "Penthouse",
     icon: "city-variant",
   },
-
-  // {
-  //   name: "Price Down",
-  //   icon: "arrow-down-bold-circle",
-  // },
-  // {
-  //   name: "Price Up",
-  //   icon: "arrow-up-bold-circle",
-  // },
 ];
 
-const ExploreHeader = ({ onCategoryChanged }) => {
+const ExploreHeader = ({ onCategoryChanged, categoryIndex }) => {
   const navigation = useNavigation();
   const { isDarkMode } = useDarkMode();
   const scrollRef = useRef(null);
   const itemsRef = useRef([]);
 
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(categoryIndex);
+
+  useEffect(() => {
+    setActiveIndex(categoryIndex ?? 0);
+  }, [categoryIndex]);
 
   const selectCategory = (index) => {
     const selected = itemsRef.current[index];
