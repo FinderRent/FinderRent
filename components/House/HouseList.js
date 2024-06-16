@@ -14,11 +14,10 @@ import HouseCard from "./HouseCard";
 import Loader from "../../components/ui/Loader";
 import ErrorMessage from "../../components/ui/ErrorMessage";
 
-function HouseList({ navigation, category }) {
+function HouseList({ navigation, category, sort }) {
   const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
   const bottomSheetRef = useRef(null);
-
   const snapPoints = useMemo(
     () => (Platform.OS === "ios" ? ["14%", "77.5%"] : ["3%", "76%"]),
     []
@@ -32,12 +31,12 @@ function HouseList({ navigation, category }) {
     refetch,
   } = useQuery({
     queryKey: ["apartments"],
-    queryFn: () => fetchAllApartments({ apartmentType: category }),
+    queryFn: () => fetchAllApartments({ apartmentType: category, sort }),
   });
 
   useEffect(() => {
     refetch();
-  }, [category, refetch]);
+  }, [category, sort, refetch]);
 
   const onShowMap = () => {
     bottomSheetRef.current?.collapse();

@@ -9,6 +9,8 @@ import axios from "axios";
 const BACKEND_URL = "https://finder-rent-backend.vercel.app/api/v1";
 
 export async function fetchAllApartments(filter) {
+  // console.log("req", filter);
+
   try {
     const params = {};
     if (filter) {
@@ -17,6 +19,9 @@ export async function fetchAllApartments(filter) {
       }
       if (filter.owner) {
         params.owner = filter.owner;
+      }
+      if (filter.sort) {
+        params.sort = filter.sort;
       }
     }
 

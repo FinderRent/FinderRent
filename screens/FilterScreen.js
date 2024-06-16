@@ -63,7 +63,7 @@ const FilterScreen = ({ navigation }) => {
   const { isDarkMode } = useDarkMode();
   const [openCard, setOpenCard] = useState(0);
 
-  const [sort, setSort] = useState("");
+  const [sortApartments, setSort] = useState("");
   const [selectedType, setSelectedType] = useState(0);
   const [filters, setFilters] = useState(moreFilters);
 
@@ -93,7 +93,7 @@ const FilterScreen = ({ navigation }) => {
   }, []);
 
   const handleAplly = () => {
-    let category;
+    let category, sort;
     if (categories[selectedType].name === "All Categories") {
       category = [selectedType, ""];
     } else {
@@ -104,6 +104,23 @@ const FilterScreen = ({ navigation }) => {
       filter.name,
       filter.count,
     ]);
+    switch (sortApartments) {
+      case "lowToHigh":
+        sort = "price";
+        break;
+      case "HighToLow":
+        sort = "-price";
+        break;
+      case "NewToOld":
+        sort = "createdAt";
+        break;
+      case "OldToNew":
+        sort = "-createdAt";
+        break;
+      // default:
+      //   sort = "";
+      //   break;
+    }
 
     navigation.navigate("HomeScreen", {
       sort,
@@ -129,7 +146,7 @@ const FilterScreen = ({ navigation }) => {
             exiting={FadeOut.duration(200)}
           >
             <Text style={styles.previewText}>Sort By</Text>
-            <Text style={styles.previewdData}>{sort}</Text>
+            <Text style={styles.previewdData}>{sortApartments}</Text>
           </AnimatedTouchableOpacity>
         )}
 
@@ -143,7 +160,7 @@ const FilterScreen = ({ navigation }) => {
             <DropDown
               list={sortBy}
               label="SortBy"
-              placeholder={sort}
+              placeholder={sortApartments}
               searchable={false}
               listMode="SCROLLVIEW"
               onValueChange={(sortBy) => setSort(sortBy)}

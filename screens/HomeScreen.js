@@ -55,7 +55,7 @@ async function registerForPushNotificationsAsync() {
 }
 
 function HomeScreen({ navigation, route }) {
-  console.log(route?.params);
+  // console.log(route?.params);
 
   const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
@@ -75,15 +75,15 @@ function HomeScreen({ navigation, route }) {
     route?.params?.category[0] ?? 0
   );
   const [category, setCategory] = useState(route?.params?.category[1]);
+  const [sort, setSort] = useState(route?.params?.sort);
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
-
   const notificationListener = useRef();
   const responseListener = useRef();
 
-  const { data, isLoading, isError, error, refetch } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ["apartments"],
-    queryFn: () => fetchAllApartments(),
+    queryFn: () => fetchAllApartments({ category, sort }),
   });
 
   useEffect(() => {
@@ -140,7 +140,9 @@ function HomeScreen({ navigation, route }) {
   useEffect(() => {
     setCategoryIndex(route?.params?.category[0]);
     setCategory(route?.params?.category[1]);
+    setSort(route?.params?.sort);
   }, [route?.params]);
+
   const onDataChanged = (category) => {
     setCategory(category);
   };
@@ -168,7 +170,7 @@ function HomeScreen({ navigation, route }) {
         {...(token ? { coordinates } : {})}
       />
 
-      <HouseList category={category} navigation={navigation} />
+      <HouseList category={category} sort={sort} navigation={navigation} />
     </SafeAreaView>
   );
 }
