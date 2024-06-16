@@ -14,7 +14,14 @@ import HouseCard from "./HouseCard";
 import Loader from "../../components/ui/Loader";
 import ErrorMessage from "../../components/ui/ErrorMessage";
 
-function HouseList({ navigation, category, sort }) {
+function HouseList({
+  navigation,
+  sort,
+  category,
+  numberOfRooms,
+  floor,
+  totalCapacity,
+}) {
   const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
   const bottomSheetRef = useRef(null);
@@ -25,13 +32,20 @@ function HouseList({ navigation, category, sort }) {
 
   const {
     data: apartments,
-    isLoading: isLoadingApartments,
     isError: isErrorApartments,
+    isFetching: isFetchingApartments,
     error: errorApartments,
     refetch,
   } = useQuery({
     queryKey: ["apartments"],
-    queryFn: () => fetchAllApartments({ apartmentType: category, sort }),
+    queryFn: () =>
+      fetchAllApartments({
+        apartmentType: category,
+        sort,
+        numberOfRooms,
+        floor,
+        totalCapacity,
+      }),
   });
 
   useEffect(() => {
@@ -74,7 +88,7 @@ function HouseList({ navigation, category, sort }) {
     >
       {isErrorApartments && <ErrorMessage errorMessage={errorApartments} />}
 
-      {isLoadingApartments ? (
+      {isFetchingApartments ? (
         <View style={{ paddingTop: "80%" }}>
           <Loader color={isDarkMode ? Color.white : Color.darkTheme} />
         </View>

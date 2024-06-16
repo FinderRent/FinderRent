@@ -23,6 +23,15 @@ export async function fetchAllApartments(filter) {
       if (filter.sort) {
         params.sort = filter.sort;
       }
+      if (filter.floor) {
+        params.floor = filter.floor;
+      }
+      if (filter.numberOfRooms) {
+        params.numberOfRooms = filter.numberOfRooms;
+      }
+      if (filter.totalCapacity) {
+        params.totalCapacity = filter.totalCapacity;
+      }
     }
 
     const response = await axios.get(BACKEND_URL + "/apartments", { params });
