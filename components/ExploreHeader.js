@@ -32,7 +32,7 @@ const categories = [
   },
 ];
 
-const ExploreHeader = ({ onCategoryChanged, categoryIndex }) => {
+const ExploreHeader = ({ onCategoryChanged, categoryIndex, filtersValues }) => {
   const navigation = useNavigation();
   const { isDarkMode } = useDarkMode();
   const scrollRef = useRef(null);
@@ -78,7 +78,7 @@ const ExploreHeader = ({ onCategoryChanged, categoryIndex }) => {
       >
         <TouchableOpacity
           style={styles.filterBtn}
-          onPress={() => navigation.navigate("FilterScreen")}
+          onPress={() => navigation.navigate("FilterScreen", filtersValues)}
         >
           <Ionicons
             name="options-outline"

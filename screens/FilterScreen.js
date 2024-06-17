@@ -18,24 +18,6 @@ import DropDown from "../components/inputs/DropDown";
 const AnimatedTouchableOpacity =
   Animated.createAnimatedComponent(TouchableOpacity);
 
-const moreFilters = [
-  {
-    name: "Rooms",
-    text: "select number of bedrooms",
-    count: 0,
-  },
-  {
-    name: "Floor",
-    text: "select floor number",
-    count: 0,
-  },
-  {
-    name: "Roomates",
-    text: "select how many roomates",
-    count: 0,
-  },
-];
-
 const categories = [
   {
     name: "All Categories",
@@ -59,7 +41,27 @@ const categories = [
   },
 ];
 
-const FilterScreen = ({ navigation }) => {
+const FilterScreen = ({ navigation, route }) => {
+  const filtersValues = route?.params;
+
+  const moreFilters = [
+    {
+      name: "Rooms",
+      text: "select number of bedrooms",
+      count: filtersValues?.numberOfRooms ?? 0,
+    },
+    {
+      name: "Floor",
+      text: "select floor number",
+      count: filtersValues?.floor ?? 0,
+    },
+    {
+      name: "Roomates",
+      text: "select how many roomates",
+      count: filtersValues?.totalCapacity ?? 0,
+    },
+  ];
+
   const { isDarkMode } = useDarkMode();
   const [openCard, setOpenCard] = useState(0);
 
@@ -79,18 +81,50 @@ const FilterScreen = ({ navigation }) => {
       ...filter,
       count: 0,
     }));
+    setSort("");
     setFilters(resetFilters);
     setSelectedType(0);
     setOpenCard(0);
   };
 
   useEffect(() => {
-    const resetFilters = moreFilters.map((filter) => ({
-      ...filter,
-      count: 0,
-    }));
-    setFilters(resetFilters);
-  }, []);
+    if (filtersValues) {
+      switch (filtersValues?.sort) {
+        case "price":
+          setSort("lowToHigh");
+          break;
+        case "-price":
+          setSort("lowToHigh");
+          break;
+        case "createdAt":
+          setSort("NewToOld");
+          break;
+        case "-createdAt":
+          setSort("OldToNew");
+          break;
+      }
+      switch (filtersValues?.category) {
+        case "Land House":
+          setSelectedType(1);
+          break;
+        case "Houseing Unit":
+          setSelectedType(2);
+          break;
+        case "Tower":
+          setSelectedType(3);
+          break;
+        case "Penthouse":
+          setSelectedType(4);
+          break;
+      }
+    }
+
+    // const resetFilters = moreFilters.map((filter) => ({
+    //   ...filter,
+    //   count: filtersValues?.numberOfRooms,
+    // }));
+    // setFilters(resetFilters);
+  }, [route?.params]);
 
   const handleAplly = () => {
     let category, sort;
@@ -117,9 +151,6 @@ const FilterScreen = ({ navigation }) => {
       case "OldToNew":
         sort = "-createdAt";
         break;
-      // default:
-      //   sort = "";
-      //   break;
     }
 
     navigation.navigate("HomeScreen", {

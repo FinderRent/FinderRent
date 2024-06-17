@@ -3,7 +3,7 @@ import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
-import { StyleSheet, SafeAreaView, Platform } from "react-native";
+import { SafeAreaView, Platform } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useQuery } from "@tanstack/react-query";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
@@ -180,6 +180,13 @@ function HomeScreen({ navigation, route }) {
       <ExploreHeader
         onCategoryChanged={onDataChanged}
         categoryIndex={categoryIndex}
+        filtersValues={{
+          sort,
+          category,
+          numberOfRooms,
+          floor,
+          totalCapacity,
+        }}
       />
 
       <ListingsMap
@@ -201,5 +208,3 @@ function HomeScreen({ navigation, route }) {
 }
 
 export default HomeScreen;
-
-const styles = StyleSheet.create({});
