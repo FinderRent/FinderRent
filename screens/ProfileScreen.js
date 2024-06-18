@@ -112,7 +112,7 @@ const ProfileScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.menuWrapper}>
-        <TouchableRipple onPress={() => {}}>
+        <TouchableRipple onPress={() => navigation.navigate("FavoritesScreen")}>
           <View style={styles.menuItem}>
             <Icon name="heart-outline" color={Color.icon} size={25} />
             <Text style={styles.menuItemText}>Favorites</Text>

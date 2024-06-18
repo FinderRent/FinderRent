@@ -24,6 +24,7 @@ function useUsers() {
   const [age, setAge] = useState(null);
   const [phone, setPhone] = useState(null);
   const [academic, setAcademic] = useState(null);
+  const [coordinates, setCoordinates] = useState(null);
   const [department, setDepartment] = useState(null);
   const [yearbook, setYearbook] = useState(null);
   const [gender, setGender] = useState(null);
@@ -43,6 +44,7 @@ function useUsers() {
         lastName,
         age,
         academic,
+        coordinates,
         department,
         yearbook,
         phone,
@@ -61,6 +63,7 @@ function useUsers() {
       setAge(age);
       setPhone(phone);
       setAcademic(academic);
+      setCoordinates(coordinates);
       setDepartment(department);
       setYearbook(yearbook);
       setGender(gender);
@@ -79,7 +82,6 @@ function useUsers() {
     saveData();
   }, []);
 
-  console.log();
   // Function to logout the user and remove data from AsyncStorage
   const logout = useCallback(() => {
     const removeData = async () => {
@@ -100,6 +102,7 @@ function useUsers() {
       setAge(null);
       setPhone(null);
       setAcademic(null);
+      setCoordinates(null);
       setDepartment(null);
       setYearbook(null);
       setGender(null);
@@ -152,6 +155,7 @@ function useUsers() {
     phone,
     gender,
     academic,
+    coordinates,
     department,
     yearbook,
     email,

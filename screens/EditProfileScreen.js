@@ -45,6 +45,7 @@ function EditProfileScreen({ navigation }) {
   const [age, setAge] = useState(userData.age);
   const [phone, setPhone] = useState(userData.phone);
   const [academic, setAcademic] = useState(userData.academic);
+  const [coordinates, setCoordinates] = useState(userData.coordinates);
   const [department, setDepartment] = useState(userData.department);
   const [yearbook, setYearbook] = useState(userData.yearbook);
   const [email, setEmail] = useState(userData.email);
@@ -56,6 +57,7 @@ function EditProfileScreen({ navigation }) {
   const listAcademic = academicList.map((item) => ({
     label: item.name,
     value: item.id,
+    coordinates: item.coordinates,
   }));
 
   const listYear = [
@@ -71,7 +73,12 @@ function EditProfileScreen({ navigation }) {
     if (avatar !== userData.avatar?.url) {
       handlePresentModalClose();
     }
-  }, [avatar]);
+
+    const index = listAcademic.findIndex((item) => item.value === academic);
+    if (index !== -1) {
+      setCoordinates(listAcademic[index].coordinates);
+    }
+  }, [avatar, academic, coordinates]);
 
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: ({
@@ -82,6 +89,7 @@ function EditProfileScreen({ navigation }) {
       age,
       phone,
       academic,
+      coordinates,
       department,
       yearbook,
       email,
@@ -95,6 +103,7 @@ function EditProfileScreen({ navigation }) {
         age,
         phone,
         academic,
+        coordinates,
         department,
         yearbook,
         email,
@@ -119,6 +128,7 @@ function EditProfileScreen({ navigation }) {
       age,
       phone,
       academic,
+      coordinates,
       department,
       yearbook,
       email,

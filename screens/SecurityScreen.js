@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {
   KeyboardAvoidingView,
+  Platform,
   SafeAreaView,
   ScrollView,
   StyleSheet,

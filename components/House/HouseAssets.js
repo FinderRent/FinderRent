@@ -18,7 +18,7 @@ const HouseAssets = (props) => {
     (key) => props.apartmentContent[key]
   );
   const apartmentContent = trueKeys.slice(0, 6).filter((key) => key !== "_id");
-  console.log(apartmentContent);
+  // console.log(apartmentContent);
 
   return (
     <View style={styles.seperator}>

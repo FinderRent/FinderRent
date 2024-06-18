@@ -1,38 +1,22 @@
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
-import { useEffect, useMemo, useRef, useState } from "react";
-import {
-  StyleSheet,
-  SafeAreaView,
-  Platform,
-  TouchableOpacity,
-  FlatList,
-  View,
-} from "react-native";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import { SafeAreaView, Platform } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { useQuery } from "@tanstack/react-query";
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { useUsers } from "../context/UserContext";
-import { fetchAllApartments } from "./../utils/http";
-import { fetchUser } from "./../utils/http";
-import HouseCard from "../components/House/HouseCard";
+import { fetchAllApartments } from "../utils/http";
 import ProfileLocation from "../components/ProfileLocation";
 import SignInHeader from "../components/SignInHeader";
 import ExploreHeader from "../components/ExploreHeader";
-import Loader from "../components/ui/Loader";
 import ListingsMap from "../components/Map/ListingsMap";
-import listingsDataGeo from "../data/apartments-listings.geo.json";
-
-/**
- * TODO:
- * when press on the profile photo, go to profile page.
- * when press on the location, open a search new location option
- * make the cards dynamic data from the DB
- */
+import HouseList from "../components/House/HouseList";
 
 // function to get Permissions for PushNotifications
 async function registerForPushNotificationsAsync() {
@@ -70,65 +54,53 @@ async function registerForPushNotificationsAsync() {
   }
 }
 
-function HomeScreen({ navigation }) {
+function HomeScreen({ navigation, route }) {
+  // console.log(route?.params);
+
   const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
   const tabBarHeight = useBottomTabBarHeight();
 
   const token = userData.token;
-  const [mapPress, setMapPress] = useState(false);
-  const [category, setCategory] = useState("All");
+  let coordinates = null;
+  try {
+    coordinates = userData?.coordinates
+      ? JSON.parse(userData.coordinates)
+      : null;
+  } catch (error) {
+    console.error("Failed to parse coordinates:", error);
+  }
+
+  const [categoryIndex, setCategoryIndex] = useState(
+    route?.params?.category[0] ?? 0
+  );
+  const [category, setCategory] = useState(route?.params?.category[1]);
+  const [sort, setSort] = useState(route?.params?.sort);
+  const [numberOfRooms, setNumberOfRooms] = useState(
+    route?.params?.apartmentFilters[0][1]
+  );
+  const [floor, setFloor] = useState(route?.params?.apartmentFilters[1][1]);
+  const [totalCapacity, setTotalCapacity] = useState(
+    route?.params?.apartmentFilters[2][1]
+  );
+
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
-
   const notificationListener = useRef();
   const responseListener = useRef();
-  //----------------------------------------------------------------------
 
-  const {
-    data: apartments,
-    isLoading: isLoadingApartments,
-    isError: isErrorApartments,
-    status: statusApartments,
-  } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ["apartments"],
-    queryFn: () => fetchAllApartments(),
+    queryFn: () =>
+      fetchAllApartments({
+        sort,
+        category,
+        numberOfRooms,
+        floor,
+        totalCapacity,
+      }),
   });
 
-  //getting curreny user data
-  const {
-    data: user,
-    isLoading: isLoadingUser,
-    isError: isErrorUser,
-    status: statusUser,
-  } = useQuery({
-    queryKey: ["User", userData.id],
-    queryFn: () => fetchUser(userData.id),
-  });
-  //render the apartment card
-
-  const renderApartmentCard = ({ item: apartment }) => {
-    let isFavourite = false;
-    userData.favouriteApartments.forEach((element) => {
-      if (apartment._id == element) {
-        isFavourite = true;
-      }
-    });
-    return (
-      <TouchableOpacity
-        onPress={() => navigation.navigate("HouseDetailsScreen", { apartment })}
-      >
-        <HouseCard
-          navigation={navigation}
-          apartment={apartment}
-          userData={userData}
-          isFavourite={isFavourite}
-        />
-      </TouchableOpacity>
-    );
-  };
-
-  //----------------------------------------------------------------------
   useEffect(() => {
     registerForPushNotificationsAsync().then((pushToken) =>
       setExpoPushToken(pushToken)
@@ -172,11 +144,22 @@ function HomeScreen({ navigation }) {
     };
   }, [notificationListener, token]);
 
-  const getoItems = useMemo(() => listingsDataGeo, []);
-
-  const handleMapPress = () => {
-    setMapPress(!mapPress);
-  };
+  useFocusEffect(
+    useCallback(() => {
+      const fetched = async () => {
+        await refetch();
+      };
+      fetched();
+    }, [])
+  );
+  useEffect(() => {
+    setCategoryIndex(route?.params?.category[0]);
+    setCategory(route?.params?.category[1]);
+    setSort(route?.params?.sort);
+    setNumberOfRooms(route?.params?.apartmentFilters[0][1]);
+    setFloor(route?.params?.apartmentFilters[1][1]);
+    setTotalCapacity(route?.params?.apartmentFilters[2][1]);
+  }, [route?.params]);
 
   const onDataChanged = (category) => {
     setCategory(category);
@@ -194,25 +177,34 @@ function HomeScreen({ navigation }) {
       <StatusBar style={isDarkMode ? "light" : "dark"} />
       {token ? <ProfileLocation /> : <SignInHeader />}
 
-      <ExploreHeader onCategoryChanged={onDataChanged} />
+      <ExploreHeader
+        onCategoryChanged={onDataChanged}
+        categoryIndex={categoryIndex}
+        filtersValues={{
+          sort,
+          category,
+          numberOfRooms,
+          floor,
+          totalCapacity,
+        }}
+      />
 
-      {/* <ListingsMap listings={getoItems} /> */}
+      <ListingsMap
+        navigation={navigation}
+        listings={data?.apartments}
+        {...(token ? { coordinates } : {})}
+      />
 
-      {isLoadingApartments && (
-        <View style={{ paddingTop: "80%" }}>
-          <Loader color={isDarkMode ? Color.white : Color.darkTheme} />
-        </View>
-      )}
-
-      <FlatList
-        data={apartments?.apartments}
-        keyExtractor={(item) => item._id}
-        renderItem={renderApartmentCard}
+      <HouseList
+        navigation={navigation}
+        sort={sort}
+        category={category}
+        numberOfRooms={numberOfRooms}
+        floor={floor}
+        totalCapacity={totalCapacity}
       />
     </SafeAreaView>
   );
 }
 
 export default HomeScreen;
-
-const styles = StyleSheet.create({});

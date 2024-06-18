@@ -1,11 +1,12 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import HomeScreen from "../screens/HomeScreen";
 import HouseDetailsScreen from "../screens/HouseDetailsScreen";
+import FilterScreen from "../screens/FilterScreen";
 
 const HomeStack = createNativeStackNavigator();
 
@@ -15,7 +16,7 @@ function HomeStackScreen({ navigation }) {
   return (
     <HomeStack.Navigator
       screenOptions={{
-        headerShown: false,
+        // headerShown: false,
         headerTitle: "",
       }}
     >
@@ -23,17 +24,7 @@ function HomeStackScreen({ navigation }) {
         name="HomeScreen"
         component={HomeScreen}
         options={{
-          headerRight: () => (
-            <View style={{ marginLeft: -10 }}>
-              <Ionicons.Button
-                name="menu"
-                size={25}
-                color={Color.darkTheme}
-                backgroundColor={isDarkMode ? Color.Brown700 : Color.Brown100}
-                onPress={() => navigation.openDrawer()}
-              />
-            </View>
-          ),
+          headerShown: false,
         }}
       />
       <HomeStack.Screen
@@ -51,6 +42,35 @@ function HomeStackScreen({ navigation }) {
                 onPress={() => navigation.openDrawer()}
               />
             </View>
+          ),
+        }}
+      />
+      <HomeStack.Screen
+        name="FilterScreen"
+        component={FilterScreen}
+        options={{
+          presentation: "transparentModal",
+          animation: "fade",
+          headerTransparent: true,
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{
+                backgroundColor: isDarkMode
+                  ? Color.buttomSheetDarkTheme
+                  : Color.defaultTheme,
+                borderColor: Color.gray,
+                borderRadius: 20,
+                borderWidth: 1,
+                padding: 4,
+              }}
+            >
+              <Ionicons
+                name="close-outline"
+                size={22}
+                color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+              />
+            </TouchableOpacity>
           ),
         }}
       />

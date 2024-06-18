@@ -36,6 +36,7 @@ function SignUpScreen({ navigation }) {
   const [lastName, setLastName] = useState("");
   const [age, setAge] = useState("");
   const [academic, setAcademic] = useState("");
+  const [coordinates, setCoordinates] = useState("");
   const [department, setDepartment] = useState("");
   const [yearbook, setYearbook] = useState("");
   const [gender, setGender] = useState("");
@@ -48,6 +49,7 @@ function SignUpScreen({ navigation }) {
   const listAcademic = academicList.map((item) => ({
     label: item.name,
     value: item.id,
+    coordinates: item.coordinates,
   }));
 
   // List of year options for DropDown component
@@ -67,6 +69,7 @@ function SignUpScreen({ navigation }) {
     lastName,
     age,
     academic,
+    coordinates,
     department,
     yearbook,
     gender,
@@ -97,18 +100,28 @@ function SignUpScreen({ navigation }) {
     }
   };
 
+  useEffect(() => {
+    const index = listAcademic.findIndex((item) => item.value === academic);
+    if (index !== -1) {
+      // console.log("index: ", listAcademic[index].coordinates);
+      setCoordinates(listAcademic[index].coordinates);
+    }
+  }, [academic]);
+
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: (userData) => signUp(userData),
     onSuccess: (user) => {
       storeData("token", user.token);
       auth.login(user.data.user, user.token);
-      Toast.show(
-        {
-          type: "success",
-          text1: "Account Successfully Created",
-        },
-        navigation.navigate("HomeStackScreen")
-      );
+      Toast.show({
+        type: "success",
+        text1: "Account Successfully Created",
+      });
+      if (user.data.user.userType === "student") {
+        navigation.navigate("HomeScreen");
+      } else {
+        navigation.navigate("LandlordHomeStackScreen");
+      }
     },
     onError: (err) => {
       console.log(err.message);

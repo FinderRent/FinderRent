@@ -80,7 +80,11 @@ function SignInModal({ showVisible }) {
         type: "success",
         text1: "Logged In Successfully",
       });
-      navigation.navigate("HomeScreen");
+      if (user.data.user.userType === "student") {
+        navigation.navigate("HomeScreen");
+      } else {
+        navigation.navigate("LandlordHomeStackScreen");
+      }
     },
   });
 

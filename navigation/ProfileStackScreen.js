@@ -8,6 +8,7 @@ import ProfileScreen from "../screens/ProfileScreen";
 import EditProfileScreen from "../screens/EditProfileScreen";
 import LoginScreen from "../screens/LoginScreen";
 import SecurityScreen from "../screens/SecurityScreen";
+import FavoritesScreen from "../screens/FavoritesScreen";
 
 const ProfileStack = createNativeStackNavigator();
 
@@ -82,6 +83,19 @@ function ProfileStackScreen({ navigation, route }) {
         component={SecurityScreen}
         options={{
           headerTintColor: isDarkMode ? Color.white : Color.darkTheme,
+          presentation: "modal",
+          animation: "fade_from_bottom",
+        }}
+      />
+      <ProfileStack.Screen
+        name="FavoritesScreen"
+        component={FavoritesScreen}
+        options={{
+          headerTintColor: isDarkMode ? Color.white : Color.darkTheme,
+          headerTitle: "My Favorites",
+          headerTitleAlign: "center",
+          headerTintColor: isDarkMode ? Color.white : Color.darkTheme,
+          headerTitleStyle: { fontFamily: "varelaRound" },
           presentation: "modal",
           animation: "fade_from_bottom",
         }}

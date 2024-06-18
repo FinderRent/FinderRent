@@ -1,49 +1,77 @@
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
-import React, { memo, useEffect, useRef } from "react";
+import { memo, useEffect, useRef } from "react";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { Text } from "react-native-paper";
 import { Marker } from "react-native-maps";
-import MapView from "react-native-map-clustering";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { PROVIDER_GOOGLE } from "react-native-maps";
+import MapView from "react-native-map-clustering";
+
 import { Color } from "../../constants/colors";
-import * as Location from "expo-location";
+import { useDarkMode } from "../../context/DarkModeContext";
+import { useUsers } from "../../context/UserContext";
 
-const ListingsMap = memo(({ listings }) => {
+const type = [
+  {
+    name: "Land House",
+    icon: "home",
+  },
+  {
+    name: "Houseing Unit",
+    icon: "home-city",
+  },
+  {
+    name: "Tower",
+    icon: "city",
+  },
+  {
+    name: "Penthouse",
+    icon: "city-variant",
+  },
+];
+
+const ListingsMap = memo(({ navigation, listings, coordinates }) => {
+  // console.log(listings[1]?.address.coordinates);
+
+  const { isDarkMode } = useDarkMode();
+  const { userData } = useUsers();
+
   const mapRef = useRef();
-  // When the component mounts, locate the user
-  useEffect(() => {
-    onLocateMe();
-  }, []);
+  const DEFAULT_REGION = {
+    latitude: 31.265058,
+    longitude: 34.7839961,
+    latitudeDelta: 7,
+    longitudeDelta: 7,
+  };
 
-  const INITIAL_REGION = {
-    latitude: 31.2650275,
-    longitude: 34.7839723,
-    latitudeDelta: 9,
-    longitudeDelta: 9,
-  };
-  // When a marker is selected, navigate to the listing page
-  const onMarkerSelected = (event) => {
-    console.log(event);
-  };
+  // Conditional INITIAL_REGION based on the presence of token and coordinates
+  const INITIAL_REGION =
+    userData.token && coordinates
+      ? {
+          latitude: coordinates.lat,
+          longitude: coordinates.lng,
+          latitudeDelta: 0.02,
+          longitudeDelta: 0.02,
+        }
+      : DEFAULT_REGION;
+
+  useEffect(() => {
+    if (userData.token && coordinates) {
+      onLocateMe();
+    }
+  }, [userData.token, coordinates]);
 
   // Focus the map on the user's location
-  const onLocateMe = async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== "granted") {
-      return;
+  const onLocateMe = () => {
+    if (mapRef.current && coordinates) {
+      const region = {
+        latitude: coordinates.lat,
+        longitude: coordinates.lng,
+        latitudeDelta: 0.02,
+        longitudeDelta: 0.02,
+      };
+      mapRef.current.animateToRegion(region);
     }
-
-    let location = await Location.getCurrentPositionAsync({});
-    console.log("Location:", location); // Add this line to check the retrieved location
-
-    const region = {
-      latitude: location.coords.latitude,
-      longitude: location.coords.longitude,
-      latitudeDelta: 7,
-      longitudeDelta: 7,
-    };
-
-    console.log(region);
-
-    mapRef.current?.animateToRegion(region);
   };
 
   // Overwrite the renderCluster function to customize the cluster markers
@@ -55,55 +83,96 @@ const ListingsMap = memo(({ listings }) => {
       <Marker
         key={`cluster-${id}`}
         coordinate={{
-          longitude: geometry.coordinates[0],
-          latitude: geometry.coordinates[1],
+          longitude: geometry?.coordinates[0],
+          latitude: geometry?.coordinates[1],
         }}
         onPress={onPress}
       >
-        <View style={styles.marker}>
-          <Text
-            style={{
-              color: "#000",
-              textAlign: "center",
-            }}
-          >
-            {points}
-          </Text>
+        <View
+          style={
+            isDarkMode
+              ? {
+                  ...styles.marker,
+                  backgroundColor: Color.buttomSheetDarkTheme,
+                }
+              : {
+                  ...styles.marker,
+                }
+          }
+        >
+          <Text style={{ textAlign: "center" }}>{points}</Text>
         </View>
       </Marker>
     );
   };
 
+  // Function to get the icon name based on apartment type
+  const getIconName = (apartmentType) => {
+    const typeObject = type.find((t) => t.name === apartmentType);
+    return typeObject ? typeObject.icon : "home";
+  };
+
   return (
-    <View>
+    <View style={styles.container}>
       <MapView
+        provider={PROVIDER_GOOGLE}
         ref={mapRef}
         animationEnabled={false}
         style={styles.map}
         initialRegion={INITIAL_REGION}
-        clusterColor="#fff"
-        clusterTextColor="#000"
+        clusterColor={isDarkMode ? Color.buttomSheetDarkTheme : Color.white}
+        clusterTextColor={isDarkMode ? Color.defaultTheme : Color.darkTheme}
         renderCluster={renderCluster}
       >
-        {/* Render all our marker as usual */}
-        {listings.features.map((item) => (
+        {listings?.map((apartment) => (
           <Marker
             coordinate={{
-              latitude: +item.properties.latitude,
-              longitude: +item.properties.longitude,
+              latitude: +apartment.address?.coordinates?.latitude,
+              longitude: +apartment.address?.coordinates?.longitude,
             }}
-            key={item.properties.id}
-            onPress={() => onMarkerSelected(item)}
+            key={apartment._id}
+            onPress={() =>
+              navigation.navigate("HouseDetailsScreen", { apartment })
+            }
           >
-            <View style={styles.marker}>
-              <Text style={styles.markerText}>$ {item.properties.price}</Text>
+            <View
+              style={
+                isDarkMode
+                  ? {
+                      ...styles.marker,
+                      backgroundColor: Color.buttomSheetDarkTheme,
+                    }
+                  : {
+                      ...styles.marker,
+                    }
+              }
+            >
+              <MaterialCommunityIcons
+                name={getIconName(apartment?.apartmentType)}
+                size={24}
+                color={Color.gray}
+              />
+              <Text style={styles.markerText}>₪ {apartment.price}</Text>
             </View>
           </Marker>
         ))}
       </MapView>
-      <TouchableOpacity style={styles.locateBtn} onPress={onLocateMe}>
-        <FontAwesome5 name="crosshairs" size={24} color="black" />
-      </TouchableOpacity>
+      {userData.token && (
+        <TouchableOpacity
+          style={
+            isDarkMode
+              ? { ...styles.locateBtn, backgroundColor: Color.darkTheme }
+              : styles.locateBtn
+          }
+          onPress={onLocateMe}
+        >
+          <FontAwesome5
+            name="crosshairs"
+            size={24}
+            color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+          />
+        </TouchableOpacity>
+      )}
     </View>
   );
 });
@@ -111,13 +180,14 @@ const ListingsMap = memo(({ listings }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 4,
   },
   map: {
     width: "100%",
     height: "100%",
   },
   marker: {
-    padding: 8,
+    padding: 4,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#fff",
@@ -132,11 +202,11 @@ const styles = StyleSheet.create({
     },
   },
   markerText: {
-    fontSize: 14,
+    fontSize: 12,
   },
   locateBtn: {
     position: "absolute",
-    top: 500,
+    top: "85%",
     right: 20,
     backgroundColor: "#fff",
     padding: 10,

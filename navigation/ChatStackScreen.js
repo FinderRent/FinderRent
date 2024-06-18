@@ -50,21 +50,6 @@ function ChatStackScreen({ navigation, route }) {
             ? Color.buttomSheetDarkTheme
             : Color.defaultTheme,
         },
-        drawerContentStyle: {
-          backgroundColor: isDarkMode ? Color.darkTheme : Color.defaultTheme,
-        },
-        headerTitle: "",
-        drawerActiveTintColor: isDarkMode
-          ? Color.defaultTheme
-          : Color.darkTheme,
-        drawerInactiveTintColor: isDarkMode
-          ? Color.defaultTheme
-          : Color.darkTheme,
-        drawerActiveBackgroundColor: Color.Brown400,
-        drawerLabelStyle: {
-          marginLeft: -20,
-          fontSize: 15,
-        },
       }}
     >
       <ChatStack.Screen
@@ -75,6 +60,7 @@ function ChatStackScreen({ navigation, route }) {
           headerTitleAlign: "center",
           headerTintColor: isDarkMode ? Color.white : Color.darkTheme,
           headerTitleStyle: { fontFamily: "varelaRound" },
+          headerBackVisible: false,
         }}
       />
       <ChatStack.Screen

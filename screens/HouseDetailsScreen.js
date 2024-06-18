@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from "react";
+import { useContext, useLayoutEffect, useState } from "react";
 import {
   Dimensions,
   StyleSheet,
@@ -15,12 +15,14 @@ import Animated, {
 } from "react-native-reanimated";
 import Carousel from "react-native-reanimated-carousel";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
-// import { SliderBox } from "react-native-image-slider-box";
 import { Paragraph, Text } from "react-native-paper";
+import { useQuery } from "@tanstack/react-query";
 import { Ionicons } from "@expo/vector-icons";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
+import { FavoritesContext } from "../context/FavoritesContext";
+import { useUsers } from "../context/UserContext";
 import HouseAssetsModal from "../modals/HouseAssetsModal";
 import MapModal from "../modals/MapModal";
 import Map from "../components/Map/Map";
@@ -29,92 +31,51 @@ import HouseRoommates from "../components/House/HouseRoommates";
 import Seperator from "../components/Seperator";
 import HouseAssets from "../components/House/HouseAssets";
 import RoommatesInfo from "../components/House/RoommatesInfo";
+import Loader from "../components/ui/Loader";
+import fetchChats from "../api/chats/fetchChats";
+import fetchChatsList from "../api/chats/fetchChatsList";
 
 const IMG_HEIGHT = 300;
 const { width } = Dimensions.get("window");
 
-const HouseDetailsScreen = ({ navigation, route }) => {
-  const { apartment } = route.params;
-  const { isDarkMode } = useDarkMode();
-  const scrollRef = useAnimatedRef();
+const Roommates = [
+  {
+    name: "Maor Saadia",
+    avatar_url: "../assets/images/profile-cartoon.png",
+    subtitle: "President",
+  },
+  {
+    name: "Amir Fukman",
+    avatar_url: "../assets/images/profile-cartoon.png",
+    subtitle: "Vice President",
+  },
+];
 
+const ParagraphDeatails =
+  "Discover the perfect three-bedroom rental nestled in a tranquil suburban setting. This charming house features an open-concept living area with ample natural light, a modern kitchen, and a master bedroom with an en-suite bathroom. Enjoy the peaceful backyard with a patio and fire pit. Conveniently located near parks and shopping, this home offers both comfort and convenience for your lifestyle.";
+
+const HouseDetailsScreen = ({ navigation, route }) => {
+  const favoriteApartmentsCtx = useContext(FavoritesContext);
+  const { isDarkMode } = useDarkMode();
+  const { userData } = useUsers();
+
+  const routes = navigation.getState()?.routes;
+  const { apartment } = route.params;
+  const prevRoute = routes[routes.length - 1];
+
+  const scrollRef = useAnimatedRef();
+  const tabBarHeight = useBottomTabBarHeight();
+
+  let chatId = null;
+  const ouid = apartment?.owner[0];
   const [mapPress, setMapPress] = useState(false);
   const [showAll, setShowAll] = useState(false);
   const [apartmentContent, setApartmentContent] = useState([]);
   const images = [
-    "https://149347005.v2.pressablecdn.com/wp-content/uploads/modern-home-twilight-1.jpg",
+    "https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/home-improvement/wp-content/uploads/2022/07/download-23.jpg",
     "https://www.bhg.com/thmb/3Vf9GXp3T-adDlU6tKpTbb-AEyE=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/white-modern-house-curved-patio-archway-c0a4a3b3-aa51b24d14d0464ea15d36e05aa85ac9.jpg",
   ];
-
-  const Assets = [
-    {
-      name: "TV",
-    },
-    {
-      name: "Balcony",
-    },
-    {
-      name: "Beds",
-    },
-    {
-      name: "Wifi",
-    },
-    {
-      name: "Oven",
-    },
-    {
-      name: "Microwave",
-    },
-    {
-      name: "Couch",
-    },
-    {
-      name: "Coffee Table",
-    },
-    {
-      name: "Water Heater",
-    },
-    {
-      name: "Washer",
-    },
-    {
-      name: "Dryer",
-    },
-    {
-      name: "Iron",
-    },
-    {
-      name: "Refrigirator",
-    },
-    {
-      name: "freezer",
-    },
-  ];
-
-  const Roommates = [
-    {
-      name: "Maor Saadia",
-      avatar_url: "../assets/images/profile-cartoon.png",
-      subtitle: "President",
-    },
-    {
-      name: "Amir Fukman",
-      avatar_url: "../assets/images/profile-cartoon.png",
-      subtitle: "Vice President",
-    },
-  ];
-  const ParagraphDeatails =
-    "Discover the perfect three-bedroom rental nestled in a tranquil suburban setting. This charming house features an open-concept living area with ample natural light, a modern kitchen, and a master bedroom with an en-suite bathroom. Enjoy the peaceful backyard with a patio and fire pit. Conveniently located near parks and shopping, this home offers both comfort and convenience for your lifestyle.";
-
-  const tabBarHeight = useBottomTabBarHeight();
-
-  const handleMapPress = () => {
-    setMapPress(!mapPress);
-  };
-  const handleShowAllPress = (apartmentContent) => {
-    setApartmentContent(apartmentContent);
-    setShowAll(!showAll);
-  };
+  const apartmentIsFavorite = favoriteApartmentsCtx.ids.includes(apartment._id);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -131,24 +92,28 @@ const HouseDetailsScreen = ({ navigation, route }) => {
           ]}
         ></Animated.View>
       ),
+
       headerRight: () => (
         <View style={styles.bar}>
-          <TouchableOpacity
-            style={
-              isDarkMode
-                ? {
-                    ...styles.roundButton,
-                    backgroundColor: Color.darkTheme,
-                  }
-                : styles.roundButton
-            }
-          >
-            <Ionicons
-              name="heart-outline"
-              size={22}
-              color={isDarkMode ? "#fff" : "#000"}
-            />
-          </TouchableOpacity>
+          {userData?.token && (
+            <TouchableOpacity
+              style={
+                isDarkMode
+                  ? {
+                      ...styles.roundButton,
+                      backgroundColor: Color.darkTheme,
+                    }
+                  : styles.roundButton
+              }
+            >
+              <Ionicons
+                name={apartmentIsFavorite ? "heart" : "heart-outline"}
+                size={22}
+                color={isDarkMode ? "#fff" : "#000"}
+                onPress={changeFavoriteStatusHandler}
+              />
+            </TouchableOpacity>
+          )}
         </View>
       ),
       headerLeft: () => (
@@ -161,7 +126,7 @@ const HouseDetailsScreen = ({ navigation, route }) => {
                 }
               : styles.roundButton
           }
-          onPress={() => navigation.goBack()}
+          onPress={handleNavigation}
         >
           <Ionicons
             name="chevron-back"
@@ -171,10 +136,72 @@ const HouseDetailsScreen = ({ navigation, route }) => {
         </TouchableOpacity>
       ),
     });
-  }, [isDarkMode]);
+  }, [navigation, isDarkMode, changeFavoriteStatusHandler]);
+
+  // const { data: ownerData, isLoading } = useQuery({
+  //   queryKey: ["chats", ouid],
+  //   queryFn: () => fetchChats(ouid),
+  // });
+
+  // const { data: userChatsList } = useQuery({
+  //   queryKey: ["chatList", userData.id],
+  //   queryFn: () => fetchChatsList(userData.id),
+  // });
+
+  // useEffect(() => {
+  //   if (userChatsList && userChatsList.chat && userChatsList.chat.length > 0) {
+  //     const chat = userChatsList.chat.find(
+  //       (chat) =>
+  //         chat.members.includes(userData.id) && chat.members.includes(ouid)
+  //     );
+
+  //     if (chat) {
+  //       chatId = chat._id;
+  //     } else {
+  //       chatId = null;
+  //     }
+  //   }
+  // }, []);
+
+  // function interestedHandler() {
+  //   navigation.navigate("ChatStackScreen", {
+  //     screen: "ChatScreen",
+  //     params: {
+  //       chatId,
+  //       ouid,
+  //       pushToken: ownerData?.data?.pushToken,
+  //       image: ownerData?.data?.avatar?.url,
+  //       title: `${ownerData?.data?.firstName} ${ownerData?.data?.lastName}`,
+  //     },
+  //   });
+  // }
+
+  function changeFavoriteStatusHandler() {
+    if (apartmentIsFavorite) {
+      favoriteApartmentsCtx.removeFavorite(apartment._id);
+    } else {
+      favoriteApartmentsCtx.addFavorite(apartment._id);
+    }
+  }
+
+  const handleMapPress = () => {
+    setMapPress(!mapPress);
+  };
+  const handleShowAllPress = (apartmentContent) => {
+    setApartmentContent(apartmentContent);
+    setShowAll(!showAll);
+  };
+
+  const handleNavigation = () => {
+    if (prevRoute.params.favorite) {
+      navigation.pop();
+      navigation.navigate("FavoritesScreen");
+    } else {
+      navigation.goBack();
+    }
+  };
 
   const scrollOffset = useScrollViewOffset(scrollRef);
-
   const headerAnimatedStyle = useAnimatedStyle(() => {
     return {
       opacity: interpolate(scrollOffset.value, [0, IMG_HEIGHT / 1.5], [0, 1]),
@@ -245,7 +272,6 @@ const HouseDetailsScreen = ({ navigation, route }) => {
           <Seperator />
           <HouseAssets
             handleShowAllPress={handleShowAllPress}
-            // Assets={Assets}
             apartmentContent={apartment.apartmentContent}
           />
           {showAll && (
@@ -268,9 +294,14 @@ const HouseDetailsScreen = ({ navigation, route }) => {
             <Text style={styles.price}>{apartment.price}$</Text>
             <Text style={styles.monthPerson}>Month / Person</Text>
           </View>
-          <TouchableOpacity style={styles.ReserveBtn}>
-            <Text style={styles.BtnText}>Reserve</Text>
-          </TouchableOpacity>
+          {userData?.token && (
+            <TouchableOpacity
+              style={styles.ReserveBtn}
+              // onPress={interestedHandler}
+            >
+              <Text style={styles.BtnText}>Interested</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </Animated.View>
     </View>
@@ -283,10 +314,8 @@ const styles = StyleSheet.create({
   images: {
     height: IMG_HEIGHT,
     width: width,
-    // marginBottom: 10,
   },
   houseInfo: {
-    // flex: 1,
     flexDirection: "col",
     marginHorizontal: "4%",
   },
@@ -343,8 +372,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   ReserveBtn: {
-    paddingHorizontal: 20,
-    paddingVertical: 15,
+    paddingHorizontal: 15,
+    paddingVertical: 12,
     backgroundColor: "#9ADE7B",
     borderRadius: 10,
   },
