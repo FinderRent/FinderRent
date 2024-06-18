@@ -16,6 +16,7 @@ import Animated, {
 import Carousel from "react-native-reanimated-carousel";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { Paragraph, Text } from "react-native-paper";
+import { useQuery } from "@tanstack/react-query";
 import { Ionicons } from "@expo/vector-icons";
 
 import { Color } from "../constants/colors";
@@ -30,54 +31,12 @@ import HouseRoommates from "../components/House/HouseRoommates";
 import Seperator from "../components/Seperator";
 import HouseAssets from "../components/House/HouseAssets";
 import RoommatesInfo from "../components/House/RoommatesInfo";
+import Loader from "../components/ui/Loader";
+import fetchChats from "../api/chats/fetchChats";
+import fetchChatsList from "../api/chats/fetchChatsList";
 
 const IMG_HEIGHT = 300;
 const { width } = Dimensions.get("window");
-
-const Assets = [
-  {
-    name: "TV",
-  },
-  {
-    name: "Balcony",
-  },
-  {
-    name: "Beds",
-  },
-  {
-    name: "Wifi",
-  },
-  {
-    name: "Oven",
-  },
-  {
-    name: "Microwave",
-  },
-  {
-    name: "Couch",
-  },
-  {
-    name: "Coffee Table",
-  },
-  {
-    name: "Water Heater",
-  },
-  {
-    name: "Washer",
-  },
-  {
-    name: "Dryer",
-  },
-  {
-    name: "Iron",
-  },
-  {
-    name: "Refrigirator",
-  },
-  {
-    name: "freezer",
-  },
-];
 
 const Roommates = [
   {
@@ -101,12 +60,14 @@ const HouseDetailsScreen = ({ navigation, route }) => {
   const { userData } = useUsers();
 
   const routes = navigation.getState()?.routes;
+  const { apartment } = route.params;
   const prevRoute = routes[routes.length - 1];
 
-  const { apartment } = route.params;
   const scrollRef = useAnimatedRef();
   const tabBarHeight = useBottomTabBarHeight();
 
+  let chatId = null;
+  const ouid = apartment?.owner[0];
   const [mapPress, setMapPress] = useState(false);
   const [showAll, setShowAll] = useState(false);
   const [apartmentContent, setApartmentContent] = useState([]);
@@ -115,31 +76,6 @@ const HouseDetailsScreen = ({ navigation, route }) => {
     "https://www.bhg.com/thmb/3Vf9GXp3T-adDlU6tKpTbb-AEyE=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/white-modern-house-curved-patio-archway-c0a4a3b3-aa51b24d14d0464ea15d36e05aa85ac9.jpg",
   ];
   const apartmentIsFavorite = favoriteApartmentsCtx.ids.includes(apartment._id);
-
-  function changeFavoriteStatusHandler() {
-    if (apartmentIsFavorite) {
-      favoriteApartmentsCtx.removeFavorite(apartment._id);
-    } else {
-      favoriteApartmentsCtx.addFavorite(apartment._id);
-    }
-  }
-
-  const handleMapPress = () => {
-    setMapPress(!mapPress);
-  };
-  const handleShowAllPress = (apartmentContent) => {
-    setApartmentContent(apartmentContent);
-    setShowAll(!showAll);
-  };
-
-  const handleNavigation = () => {
-    if (prevRoute.params.favorite) {
-      navigation.pop();
-      navigation.navigate("FavoritesScreen");
-    } else {
-      navigation.goBack();
-    }
-  };
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -202,8 +138,70 @@ const HouseDetailsScreen = ({ navigation, route }) => {
     });
   }, [navigation, isDarkMode, changeFavoriteStatusHandler]);
 
-  const scrollOffset = useScrollViewOffset(scrollRef);
+  // const { data: ownerData, isLoading } = useQuery({
+  //   queryKey: ["chats", ouid],
+  //   queryFn: () => fetchChats(ouid),
+  // });
 
+  // const { data: userChatsList } = useQuery({
+  //   queryKey: ["chatList", userData.id],
+  //   queryFn: () => fetchChatsList(userData.id),
+  // });
+
+  // useEffect(() => {
+  //   if (userChatsList && userChatsList.chat && userChatsList.chat.length > 0) {
+  //     const chat = userChatsList.chat.find(
+  //       (chat) =>
+  //         chat.members.includes(userData.id) && chat.members.includes(ouid)
+  //     );
+
+  //     if (chat) {
+  //       chatId = chat._id;
+  //     } else {
+  //       chatId = null;
+  //     }
+  //   }
+  // }, []);
+
+  // function interestedHandler() {
+  //   navigation.navigate("ChatStackScreen", {
+  //     screen: "ChatScreen",
+  //     params: {
+  //       chatId,
+  //       ouid,
+  //       pushToken: ownerData?.data?.pushToken,
+  //       image: ownerData?.data?.avatar?.url,
+  //       title: `${ownerData?.data?.firstName} ${ownerData?.data?.lastName}`,
+  //     },
+  //   });
+  // }
+
+  function changeFavoriteStatusHandler() {
+    if (apartmentIsFavorite) {
+      favoriteApartmentsCtx.removeFavorite(apartment._id);
+    } else {
+      favoriteApartmentsCtx.addFavorite(apartment._id);
+    }
+  }
+
+  const handleMapPress = () => {
+    setMapPress(!mapPress);
+  };
+  const handleShowAllPress = (apartmentContent) => {
+    setApartmentContent(apartmentContent);
+    setShowAll(!showAll);
+  };
+
+  const handleNavigation = () => {
+    if (prevRoute.params.favorite) {
+      navigation.pop();
+      navigation.navigate("FavoritesScreen");
+    } else {
+      navigation.goBack();
+    }
+  };
+
+  const scrollOffset = useScrollViewOffset(scrollRef);
   const headerAnimatedStyle = useAnimatedStyle(() => {
     return {
       opacity: interpolate(scrollOffset.value, [0, IMG_HEIGHT / 1.5], [0, 1]),
@@ -274,7 +272,6 @@ const HouseDetailsScreen = ({ navigation, route }) => {
           <Seperator />
           <HouseAssets
             handleShowAllPress={handleShowAllPress}
-            // Assets={Assets}
             apartmentContent={apartment.apartmentContent}
           />
           {showAll && (
@@ -297,9 +294,14 @@ const HouseDetailsScreen = ({ navigation, route }) => {
             <Text style={styles.price}>{apartment.price}$</Text>
             <Text style={styles.monthPerson}>Month / Person</Text>
           </View>
-          <TouchableOpacity style={styles.ReserveBtn}>
-            <Text style={styles.BtnText}>Reserve</Text>
-          </TouchableOpacity>
+          {userData?.token && (
+            <TouchableOpacity
+              style={styles.ReserveBtn}
+              // onPress={interestedHandler}
+            >
+              <Text style={styles.BtnText}>Interested</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </Animated.View>
     </View>
@@ -312,10 +314,8 @@ const styles = StyleSheet.create({
   images: {
     height: IMG_HEIGHT,
     width: width,
-    // marginBottom: 10,
   },
   houseInfo: {
-    // flex: 1,
     flexDirection: "col",
     marginHorizontal: "4%",
   },
@@ -372,8 +372,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   ReserveBtn: {
-    paddingHorizontal: 20,
-    paddingVertical: 15,
+    paddingHorizontal: 15,
+    paddingVertical: 12,
     backgroundColor: "#9ADE7B",
     borderRadius: 10,
   },

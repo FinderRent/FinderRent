@@ -39,14 +39,17 @@ import addMessages from "../api/chats/addMessages";
 import updateChat from "../api/chats/updateChat";
 import removeMessage from "../api/chats/removeMessage";
 import sendPushNotification from "../api/sendPushNotifications";
+import newChat from "../api/chats/newChat";
 
 function ChatScreen({ navigation, route }) {
   const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
-  const { ouid, pushToken, image, title } = route.params;
+  const { ouid, pushToken, image, title } = route?.params;
+
   const socket = useRef();
   const scrollRef = useAnimatedRef();
 
+  let scrollOffset = null;
   const senderId = userData.id;
   const fullName = `${userData.firstName} ${userData.lastName}`;
   const [messages, setMessages] = useState([]);
@@ -61,7 +64,6 @@ function ChatScreen({ navigation, route }) {
     show: false,
     messageId: "",
   });
-
   const message = {
     senderId,
     messageText,
@@ -108,7 +110,7 @@ function ChatScreen({ navigation, route }) {
       headerLeft: () => <ChatScreenHeader image={image} title={title} />,
     });
     moment.locale("en");
-  }, []);
+  }, [route.params]);
 
   useEffect(() => {
     socket.current = io("http://192.168.1.214:3000");
@@ -120,7 +122,7 @@ function ChatScreen({ navigation, route }) {
       socket.current.disconnect();
       // console.log("user disconnect");
     };
-  }, [senderId]);
+  }, [senderId, chatId]);
 
   useEffect(() => {
     // sending message to socket server
@@ -156,6 +158,15 @@ function ChatScreen({ navigation, route }) {
     (message) => message.messageText === "image"
   ).length;
 
+  const { mutate: handleCreateChat } = useMutation({
+    mutationFn: ({ senderId, receiverId }) => newChat({ senderId, receiverId }),
+    onSuccess: async (newChat) => {
+      handleUpdateChat({ messageText, chatId: newChat._id });
+      handleAddMessages({ ...message, chatId: newChat._id });
+    },
+    onError: (err) => console.log(err.message),
+  });
+
   const {
     mutate: handleAddMessages,
     isError: isErrorAddMessages,
@@ -189,10 +200,14 @@ function ChatScreen({ navigation, route }) {
     });
 
   const handelSendMessage = useCallback(() => {
-    handleUpdateChat({ messageText, chatId });
-    handleAddMessages(message);
+    if (chatId) {
+      handleUpdateChat({ messageText, chatId });
+      handleAddMessages(message);
+    } else {
+      handleCreateChat({ senderId, receiverId: ouid });
+    }
     sendPushNotification(pushToken, message.messageText, fullName, pushData);
-  }, [messageText, tempImageUri]);
+  }, [messageText, tempImageUri, chatId]);
 
   const handleDeleteMessage = useCallback(() => {
     handleUpdateChat({ messageText: "message deleted", chatId });
@@ -205,14 +220,20 @@ function ChatScreen({ navigation, route }) {
       : require("../assets/images/ChatWhiteBackground.jpg");
   };
 
-  const scrollOffset = useScrollViewOffset(scrollRef);
+  if (chatId) {
+    scrollOffset = useScrollViewOffset(scrollRef);
+  }
+
   const downButton = useAnimatedStyle(() => {
     return {
-      opacity: scrollOffset.value > 100 ? withSpring(0.9) : withSpring(0),
+      opacity:
+        scrollOffset && scrollOffset.value > 100
+          ? withSpring(0.9)
+          : withSpring(0),
     };
   });
   const scrollDown = () => {
-    scrollRef.current?.scrollToOffset({ animated: true, offset: 0 });
+    scrollRef?.current?.scrollToOffset({ animated: true, offset: 0 });
   };
 
   return (
@@ -223,8 +244,19 @@ function ChatScreen({ navigation, route }) {
         keyboardVerticalOffset={100}
       >
         <ImageBackground
-          source={getBackgroundImage(isDarkMode)}
-          style={styles.backgroundImage}
+          // source={getBackgroundImage(isDarkMode)}
+          // style={styles.backgroundImage}
+          style={
+            isDarkMode
+              ? {
+                  ...styles.backgroundImage,
+                  backgroundColor: Color.buttomSheetDarkTheme,
+                }
+              : {
+                  ...styles.backgroundImage,
+                  backgroundColor: Color.defaultTheme,
+                }
+          }
         >
           <PageContainer style={{ backgroundColor: "transparent" }}>
             {!chatId && (

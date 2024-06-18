@@ -14,11 +14,17 @@ import HouseCard from "./HouseCard";
 import Loader from "../../components/ui/Loader";
 import ErrorMessage from "../../components/ui/ErrorMessage";
 
-function HouseList({ navigation, category }) {
+function HouseList({
+  navigation,
+  sort,
+  category,
+  numberOfRooms,
+  floor,
+  totalCapacity,
+}) {
   const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
   const bottomSheetRef = useRef(null);
-
   const snapPoints = useMemo(
     () => (Platform.OS === "ios" ? ["14%", "77.5%"] : ["3%", "76%"]),
     []
@@ -26,18 +32,25 @@ function HouseList({ navigation, category }) {
 
   const {
     data: apartments,
-    isLoading: isLoadingApartments,
     isError: isErrorApartments,
+    isFetching: isFetchingApartments,
     error: errorApartments,
     refetch,
   } = useQuery({
     queryKey: ["apartments"],
-    queryFn: () => fetchAllApartments(category),
+    queryFn: () =>
+      fetchAllApartments({
+        apartmentType: category,
+        sort,
+        numberOfRooms,
+        floor,
+        totalCapacity,
+      }),
   });
 
   useEffect(() => {
     refetch();
-  }, [category, refetch]);
+  }, [category, sort, refetch]);
 
   const onShowMap = () => {
     bottomSheetRef.current?.collapse();
@@ -75,7 +88,7 @@ function HouseList({ navigation, category }) {
     >
       {isErrorApartments && <ErrorMessage errorMessage={errorApartments} />}
 
-      {isLoadingApartments ? (
+      {isFetchingApartments ? (
         <View style={{ paddingTop: "80%" }}>
           <Loader color={isDarkMode ? Color.white : Color.darkTheme} />
         </View>
