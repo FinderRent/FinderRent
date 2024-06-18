@@ -130,7 +130,7 @@ export default HouseList;
 const styles = StyleSheet.create({
   absoluteView: {
     position: "absolute",
-    bottom: 10,
+    bottom: Platform.android ? 10 : 100,
     width: "100%",
     alignItems: "center",
   },

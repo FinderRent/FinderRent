@@ -138,15 +138,15 @@ const HouseDetailsScreen = ({ navigation, route }) => {
     });
   }, [navigation, isDarkMode, changeFavoriteStatusHandler]);
 
-  // const { data: ownerData, isLoading } = useQuery({
-  //   queryKey: ["chats", ouid],
-  //   queryFn: () => fetchChats(ouid),
-  // });
+  const { data: ownerData, isLoading } = useQuery({
+    queryKey: ["chats", ouid],
+    queryFn: () => fetchChats(ouid),
+  });
 
-  // const { data: userChatsList } = useQuery({
-  //   queryKey: ["chatList", userData.id],
-  //   queryFn: () => fetchChatsList(userData.id),
-  // });
+  const { data: userChatsList } = useQuery({
+    queryKey: ["chatList", userData.id],
+    queryFn: () => fetchChatsList(userData.id),
+  });
 
   // useEffect(() => {
   //   if (userChatsList && userChatsList.chat && userChatsList.chat.length > 0) {
@@ -163,18 +163,19 @@ const HouseDetailsScreen = ({ navigation, route }) => {
   //   }
   // }, []);
 
-  // function interestedHandler() {
-  //   navigation.navigate("ChatStackScreen", {
-  //     screen: "ChatScreen",
-  //     params: {
-  //       chatId,
-  //       ouid,
-  //       pushToken: ownerData?.data?.pushToken,
-  //       image: ownerData?.data?.avatar?.url,
-  //       title: `${ownerData?.data?.firstName} ${ownerData?.data?.lastName}`,
-  //     },
-  //   });
-  // }
+  function interestedHandler() {
+    //להוסיף בדיקה
+    navigation.navigate("ChatStackScreen", {
+      screen: "ChatScreen",
+      params: {
+        chatId,
+        ouid,
+        pushToken: ownerData?.data?.pushToken,
+        image: ownerData?.data?.avatar?.url,
+        title: `${ownerData?.data?.firstName} ${ownerData?.data?.lastName}`,
+      },
+    });
+  }
 
   function changeFavoriteStatusHandler() {
     if (apartmentIsFavorite) {
@@ -297,7 +298,7 @@ const HouseDetailsScreen = ({ navigation, route }) => {
           {userData?.token && (
             <TouchableOpacity
               style={styles.ReserveBtn}
-              // onPress={interestedHandler}
+              onPress={interestedHandler}
             >
               <Text style={styles.BtnText}>Interested</Text>
             </TouchableOpacity>

@@ -259,48 +259,46 @@ function ChatScreen({ navigation, route }) {
           }
         >
           <PageContainer style={{ backgroundColor: "transparent" }}>
-            {!chatId && (
+            {/* {!chatId && (
               <Bubble text="Send message to start conversation" type="system" />
             )}
-            {chatId && (
-              <FlatList
-                ref={scrollRef}
-                inverted={data?.length > 10 - imageMessage * 2.5 ? true : false}
-                data={
-                  data?.length > 10 - imageMessage * 2.5
-                    ? data && [...data].reverse()
-                    : data
+            {chatId && ( */}
+            <FlatList
+              ref={scrollRef}
+              inverted={data?.length > 10 - imageMessage * 2.5 ? true : false}
+              data={
+                data?.length > 10 - imageMessage * 2.5
+                  ? data && [...data].reverse()
+                  : data
+              }
+              renderItem={(itemData) => {
+                const message = itemData.item;
+                const isOwnMessage = message.senderId === userData.id;
+                let time = moment(message.createdAt).fromNow();
+                const messageType = isOwnMessage ? "myMessage" : "theirMessage";
+
+                if (time.includes("in ")) {
+                  time = time.replace("in ", "");
                 }
-                renderItem={(itemData) => {
-                  const message = itemData.item;
-                  const isOwnMessage = message.senderId === userData.id;
-                  let time = moment(message.createdAt).fromNow();
-                  const messageType = isOwnMessage
-                    ? "myMessage"
-                    : "theirMessage";
 
-                  if (time.includes("in ")) {
-                    time = time.replace("in ", "");
-                  }
-
-                  return (
-                    <Bubble
-                      senderId={senderId}
-                      title={title}
-                      type={messageType}
-                      text={message.messageText}
-                      time={time}
-                      setReply={() => setReplyingTo(message)}
-                      replyingTo={message.replyingTo}
-                      imageUrl={message?.image?.url}
-                      setDeleteMessage={() =>
-                        setDeleteMessage({ show: true, messageId: message._id })
-                      }
-                    />
-                  );
-                }}
-              />
-            )}
+                return (
+                  <Bubble
+                    senderId={senderId}
+                    title={title}
+                    type={messageType}
+                    text={message.messageText}
+                    time={time}
+                    setReply={() => setReplyingTo(message)}
+                    replyingTo={message.replyingTo}
+                    imageUrl={message?.image?.url}
+                    setDeleteMessage={() =>
+                      setDeleteMessage({ show: true, messageId: message._id })
+                    }
+                  />
+                );
+              }}
+            />
+            {/* )} */}
             {isErrorAddMessages && (
               <Bubble text="Error sending the message,try again" type="error" />
             )}

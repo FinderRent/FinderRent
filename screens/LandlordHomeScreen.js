@@ -1,7 +1,7 @@
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   StyleSheet,
   SafeAreaView,
@@ -27,6 +27,7 @@ import { fetchAllApartments } from "./../utils/http";
 import AddApartmentButton from "../components/ui/AddApartmentButton";
 import AddApartmentScreen from "./AddApartmentScreen";
 import BottomSheet from "@gorhom/bottom-sheet";
+import { useFocusEffect } from "@react-navigation/native";
 
 async function registerForPushNotificationsAsync() {
   let token;
@@ -79,6 +80,7 @@ function LandlordHomeScreen({ navigation }) {
     isLoading: isLoadingApartments,
     isError: isErrorApartments,
     status: statusApartments,
+    refetch: refetchApartments,
   } = useQuery({
     queryKey: ["apartments"],
     queryFn: () => fetchAllApartments({ owner: userData.id }),
@@ -93,7 +95,31 @@ function LandlordHomeScreen({ navigation }) {
     queryKey: ["User", userData.id],
     queryFn: () => fetchUser(userData.id),
   });
+  //---------------------------------------
+  // useEffect(() => {
+  //   refetch();
+  // }, [refetch]);
 
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     const fetched = async () => {
+  //       await refetch();
+  //     };
+  //     fetched();
+  //   }, [refetch])
+  // );
+
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     refetchApartments();
+  //   }, [refetchApartments])
+  // );
+
+  // if (isLoadingApartments) {
+  //   return <Loader color={Color.Blue500} size={30} />;
+  // }
+
+  //---------------------------------------
   const renderApartmentCard = ({ item: apartment }) => {
     let isFavourite = false;
     userData.favouriteApartments.forEach((element) => {
