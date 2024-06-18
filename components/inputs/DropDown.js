@@ -12,6 +12,7 @@ function DropDown({
   onValueChange,
   searchPlaceholder,
   placeholder,
+  dropDownDirection,
 }) {
   const { isDarkMode } = useDarkMode();
   const [open, setOpen] = useState(false);
@@ -38,6 +39,7 @@ function DropDown({
           placeholder={label}
           listMode={listMode}
           searchPlaceholder={searchPlaceholder}
+          dropDownDirection={dropDownDirection}
         />
       </View>
     </View>

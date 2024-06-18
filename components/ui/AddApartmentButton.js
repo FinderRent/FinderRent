@@ -1,26 +1,32 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import {
   StyleSheet,
   View,
-  Image,
   Text,
   Animated,
   TouchableWithoutFeedback,
 } from "react-native";
-import { AntDesign, Entypo } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 
 const AddApartmentButton = (props) => {
-  const animation = new Animated.Value(0);
+  const animation = useRef(new Animated.Value(0)).current;
+  const [open, setOpen] = useState(false);
 
-  togglePage = () => {
-    const toValue = this.open ? 0 : 1;
+  const handleAddButtonPress = () => {
+    props.handleAddButtonPress();
+    togglePage();
+  };
+
+  const togglePage = () => {
+    const toValue = open ? 0 : 1;
     Animated.spring(animation, {
       toValue,
       friction: 5,
-      useNativeDriver: true, // Add this line to fix the warning
+      useNativeDriver: true,
     }).start();
-    this.open = !this.open;
+    setOpen(!open);
   };
+
   const rotation = {
     transform: [
       {
@@ -34,7 +40,7 @@ const AddApartmentButton = (props) => {
 
   return (
     <View style={[styles.container, props.style]}>
-      <TouchableWithoutFeedback onPress={togglePage}>
+      <TouchableWithoutFeedback onPress={handleAddButtonPress}>
         <Animated.View style={[styles.button, styles.menu, rotation]}>
           <AntDesign name="plus" size={24} color="#FFF" />
         </Animated.View>

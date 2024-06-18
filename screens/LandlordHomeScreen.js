@@ -9,6 +9,7 @@ import {
   Platform,
   TouchableOpacity,
   View,
+  Keyboard,
 } from "react-native";
 import { Text } from "react-native-paper";
 import { StatusBar } from "expo-status-bar";
@@ -24,11 +25,11 @@ import SignInHeader from "../components/SignInHeader";
 import Loader from "../components/ui/Loader";
 import { fetchAllApartments } from "./../utils/http";
 import AddApartmentButton from "../components/ui/AddApartmentButton";
+import AddApartmentScreen from "./AddApartmentScreen";
+import BottomSheet from "@gorhom/bottom-sheet";
 
-// function to get Permissions for PushNotifications
 async function registerForPushNotificationsAsync() {
   let token;
-
   if (Platform.OS === "android") {
     Notifications.setNotificationChannelAsync("default", {
       name: "default",
@@ -37,7 +38,6 @@ async function registerForPushNotificationsAsync() {
       lightColor: "#FF231F7C",
     });
   }
-
   if (Device.isDevice) {
     const { status: existingStatus } =
       await Notifications.getPermissionsAsync();
@@ -53,31 +53,27 @@ async function registerForPushNotificationsAsync() {
     token = await Notifications.getExpoPushTokenAsync({
       projectId: Constants.expoConfig.extra.eas.projectId,
     });
-
     return token.data;
   } else {
     console.log("Must use physical device for Push Notifications");
     return;
   }
 }
-
 function LandlordHomeScreen({ navigation }) {
   const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
   const tabBarHeight = useBottomTabBarHeight();
-
   const token = userData.token;
-  // const coordinates = JSON.parse(userData?.coordinates);
-
-  const [category, setCategory] = useState("All");
 
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
+  const [addButtonPress, setAddButtonPress] = useState(false);
+  const [sheetIndex, setSheetIndex] = useState(-1); // -1 means closed
+  const bottomSheetRef = useRef(null);
 
   const notificationListener = useRef();
   const responseListener = useRef();
 
-  //----------------------------------------------------------------------
   const {
     data: apartments,
     isLoading: isLoadingApartments,
@@ -88,7 +84,6 @@ function LandlordHomeScreen({ navigation }) {
     queryFn: () => fetchAllApartments({ owner: userData.id }),
   });
 
-  //getting curreny user data
   const {
     data: user,
     isLoading: isLoadingUser,
@@ -99,7 +94,6 @@ function LandlordHomeScreen({ navigation }) {
     queryFn: () => fetchUser(userData.id),
   });
 
-  //render the apartment card
   const renderApartmentCard = ({ item: apartment }) => {
     let isFavourite = false;
     userData.favouriteApartments.forEach((element) => {
@@ -121,7 +115,6 @@ function LandlordHomeScreen({ navigation }) {
     );
   };
 
-  //----------------------------------------------------------------------
   useEffect(() => {
     registerForPushNotificationsAsync().then((pushToken) =>
       setExpoPushToken(pushToken)
@@ -132,7 +125,6 @@ function LandlordHomeScreen({ navigation }) {
         setNotification(notification);
       });
 
-    // handle pressing the notifications
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
         const { data } = response.notification.request.content;
@@ -165,6 +157,19 @@ function LandlordHomeScreen({ navigation }) {
     };
   }, [notificationListener, token]);
 
+  const handleAddButtonPress = () => {
+    setAddButtonPress((prevState) => !prevState);
+  };
+
+  const snapPoints = useMemo(
+    () => (Platform.OS === "ios" ? ["14%", "90%"] : ["3%", "76%"]),
+    []
+  );
+
+  const handleSheetChanges = (index) => {
+    setSheetIndex(index);
+  };
+
   return (
     <SafeAreaView
       style={{
@@ -182,7 +187,18 @@ function LandlordHomeScreen({ navigation }) {
         keyExtractor={(item) => item._id}
         renderItem={renderApartmentCard}
       />
-      <AddApartmentButton style={styles.addApartmentButton} />
+      <BottomSheet
+        ref={bottomSheetRef}
+        snapPoints={snapPoints}
+        onChange={handleSheetChanges}
+        index={addButtonPress ? 1 : 0}
+      >
+        <AddApartmentScreen handleAddButtonPress={handleAddButtonPress} />
+      </BottomSheet>
+      <AddApartmentButton
+        style={styles.addApartmentButton}
+        handleAddButtonPress={handleAddButtonPress}
+      />
     </SafeAreaView>
   );
 }
@@ -199,7 +215,7 @@ const styles = StyleSheet.create({
   PropertiesHeader: {
     fontSize: 30,
     fontWeight: "bold",
-    marginLeft: "6%",
+    marginHorizontal: "5%",
   },
   sheetContainer: {
     elevation: 4,

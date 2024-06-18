@@ -91,3 +91,13 @@ export async function checkIfFavourite(apartmentID, userID) {
   );
   return response.data.data;
 }
+
+export async function addApartment(apartment) {
+  try {
+    const response = await axios.post(BACKEND_URL + `/apartments`, apartment);
+    return response.data.data;
+  } catch (error) {
+    console.error("Error adding apartment:", error);
+    throw error;
+  }
+}

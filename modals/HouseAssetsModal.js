@@ -15,7 +15,6 @@ import { Text } from "react-native-paper";
 
 function HouseAssetsModal(props) {
   const { isDarkMode } = useDarkMode();
-  console.log(props.apartmentContent);
   const handleShowAllPress = () => {
     props.handleShowAllPress();
   };
