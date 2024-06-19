@@ -163,6 +163,7 @@ function ChatScreen({ navigation, route }) {
     onSuccess: async (newChat) => {
       handleUpdateChat({ messageText, chatId: newChat._id });
       handleAddMessages({ ...message, chatId: newChat._id });
+      setChatId(newChat._id);
     },
     onError: (err) => console.log(err.message),
   });
@@ -200,11 +201,11 @@ function ChatScreen({ navigation, route }) {
     });
 
   const handelSendMessage = useCallback(() => {
-    if (chatId) {
+    if (!chatId) {
+      handleCreateChat({ senderId, receiverId: ouid });
+    } else {
       handleUpdateChat({ messageText, chatId });
       handleAddMessages(message);
-    } else {
-      handleCreateChat({ senderId, receiverId: ouid });
     }
     sendPushNotification(pushToken, message.messageText, fullName, pushData);
   }, [messageText, tempImageUri, chatId]);
@@ -221,7 +222,7 @@ function ChatScreen({ navigation, route }) {
   };
 
   if (chatId) {
-    scrollOffset = useScrollViewOffset(scrollRef);
+    // scrollOffset = useScrollViewOffset(scrollRef);
   }
 
   const downButton = useAnimatedStyle(() => {
@@ -233,7 +234,7 @@ function ChatScreen({ navigation, route }) {
     };
   });
   const scrollDown = () => {
-    scrollRef?.current?.scrollToOffset({ animated: true, offset: 0 });
+    // scrollRef?.current?.scrollToOffset({ animated: true, offset: 0 });
   };
 
   return (
@@ -264,7 +265,7 @@ function ChatScreen({ navigation, route }) {
             )}
             {chatId && (
               <FlatList
-                ref={scrollRef}
+                // ref={scrollRef}
                 inverted={data?.length > 10 - imageMessage * 2.5 ? true : false}
                 data={
                   data?.length > 10 - imageMessage * 2.5

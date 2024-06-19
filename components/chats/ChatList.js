@@ -19,8 +19,6 @@ function ChatList({ ouid, chatId, lastMessage, time }) {
     queryFn: () => fetchChats(ouid),
   });
 
-  console.log("chat: ", chatId);
-
   if (isLoading) {
     return null;
   }

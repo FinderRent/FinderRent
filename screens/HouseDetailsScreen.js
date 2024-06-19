@@ -1,4 +1,10 @@
-import { useContext, useLayoutEffect, useState } from "react";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
 import {
   Dimensions,
   StyleSheet,
@@ -33,6 +39,7 @@ import HouseAssets from "../components/House/HouseAssets";
 import RoommatesInfo from "../components/House/RoommatesInfo";
 import fetchChats from "../api/chats/fetchChats";
 import getUser from "../api/users/getUser";
+import { useFocusEffect } from "@react-navigation/native";
 
 const IMG_HEIGHT = 300;
 const { width } = Dimensions.get("window");
@@ -65,8 +72,9 @@ const HouseDetailsScreen = ({ navigation, route }) => {
   const scrollRef = useAnimatedRef();
   const tabBarHeight = useBottomTabBarHeight();
 
-  let chatId = null;
+  // let chatId = null;
   const ouid = apartment?.owner[0];
+  const [chatId, setChatId] = useState();
   const [mapPress, setMapPress] = useState(false);
   const [showAll, setShowAll] = useState(false);
   const [apartmentContent, setApartmentContent] = useState([]);
@@ -147,15 +155,19 @@ const HouseDetailsScreen = ({ navigation, route }) => {
     queryFn: () => getUser(userData.id),
   });
 
-  const userChats = studentData?.data?.chats;
+  useFocusEffect(
+    useCallback(() => {
+      const userChats = studentData?.data?.chats;
+      const foundObject = userChats?.find((chat) => chat.userID === ouid);
+      if (foundObject) {
+        setChatId(foundObject.chatID);
+      }
+    }, [])
+  );
 
-  const foundObject = userChats?.find((chat) => chat.userID === ouid);
-
-  if (foundObject) {
-    chatId = foundObject.chatID;
-  }
-
+  // console.log(chatId);
   function interestedHandler() {
+    navigation.goBack();
     navigation.navigate("ChatStackScreen", {
       screen: "ChatScreen",
       params: {
