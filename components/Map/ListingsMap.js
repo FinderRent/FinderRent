@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
   },
   locateBtn: {
     position: "absolute",
-    top: Platform.android ? "85%" : "75%",
+    top: Platform.OS === "android" ? "85%" : "75%",
     right: 20,
     backgroundColor: "#fff",
     padding: 10,

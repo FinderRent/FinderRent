@@ -48,7 +48,6 @@ function ChatScreen({ navigation, route }) {
 
   const socket = useRef();
   const scrollRef = useAnimatedRef();
-
   let scrollOffset = null;
   const senderId = userData.id;
   const fullName = `${userData.firstName} ${userData.lastName}`;
@@ -64,6 +63,7 @@ function ChatScreen({ navigation, route }) {
     show: false,
     messageId: "",
   });
+
   const message = {
     senderId,
     messageText,
@@ -259,46 +259,48 @@ function ChatScreen({ navigation, route }) {
           }
         >
           <PageContainer style={{ backgroundColor: "transparent" }}>
-            {/* {!chatId && (
+            {!chatId && (
               <Bubble text="Send message to start conversation" type="system" />
             )}
-            {chatId && ( */}
-            <FlatList
-              ref={scrollRef}
-              inverted={data?.length > 10 - imageMessage * 2.5 ? true : false}
-              data={
-                data?.length > 10 - imageMessage * 2.5
-                  ? data && [...data].reverse()
-                  : data
-              }
-              renderItem={(itemData) => {
-                const message = itemData.item;
-                const isOwnMessage = message.senderId === userData.id;
-                let time = moment(message.createdAt).fromNow();
-                const messageType = isOwnMessage ? "myMessage" : "theirMessage";
-
-                if (time.includes("in ")) {
-                  time = time.replace("in ", "");
+            {chatId && (
+              <FlatList
+                ref={scrollRef}
+                inverted={data?.length > 10 - imageMessage * 2.5 ? true : false}
+                data={
+                  data?.length > 10 - imageMessage * 2.5
+                    ? data && [...data].reverse()
+                    : data
                 }
+                renderItem={(itemData) => {
+                  const message = itemData.item;
+                  const isOwnMessage = message.senderId === userData.id;
+                  let time = moment(message.createdAt).fromNow();
+                  const messageType = isOwnMessage
+                    ? "myMessage"
+                    : "theirMessage";
 
-                return (
-                  <Bubble
-                    senderId={senderId}
-                    title={title}
-                    type={messageType}
-                    text={message.messageText}
-                    time={time}
-                    setReply={() => setReplyingTo(message)}
-                    replyingTo={message.replyingTo}
-                    imageUrl={message?.image?.url}
-                    setDeleteMessage={() =>
-                      setDeleteMessage({ show: true, messageId: message._id })
-                    }
-                  />
-                );
-              }}
-            />
-            {/* )} */}
+                  if (time.includes("in ")) {
+                    time = time.replace("in ", "");
+                  }
+
+                  return (
+                    <Bubble
+                      senderId={senderId}
+                      title={title}
+                      type={messageType}
+                      text={message.messageText}
+                      time={time}
+                      setReply={() => setReplyingTo(message)}
+                      replyingTo={message.replyingTo}
+                      imageUrl={message?.image?.url}
+                      setDeleteMessage={() =>
+                        setDeleteMessage({ show: true, messageId: message._id })
+                      }
+                    />
+                  );
+                }}
+              />
+            )}
             {isErrorAddMessages && (
               <Bubble text="Error sending the message,try again" type="error" />
             )}

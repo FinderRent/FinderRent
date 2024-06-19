@@ -14,11 +14,12 @@ import fetchChats from "../../api/chats/fetchChats";
 
 function ChatList({ ouid, chatId, lastMessage, time }) {
   const navigation = useNavigation();
-
   const { data, error, isLoading } = useQuery({
     queryKey: ["chats", ouid],
     queryFn: () => fetchChats(ouid),
   });
+
+  console.log("chat: ", chatId);
 
   if (isLoading) {
     return null;
@@ -30,7 +31,7 @@ function ChatList({ ouid, chatId, lastMessage, time }) {
   return (
     <TouchableNativeFeedback
       onPress={() =>
-        navigation.navigate("ChatScreen", {
+        navigation.push("ChatScreen", {
           chatId,
           ouid,
           pushToken: data?.data?.pushToken,

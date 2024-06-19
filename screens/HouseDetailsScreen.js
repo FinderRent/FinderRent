@@ -31,9 +31,8 @@ import HouseRoommates from "../components/House/HouseRoommates";
 import Seperator from "../components/Seperator";
 import HouseAssets from "../components/House/HouseAssets";
 import RoommatesInfo from "../components/House/RoommatesInfo";
-import Loader from "../components/ui/Loader";
 import fetchChats from "../api/chats/fetchChats";
-import fetchChatsList from "../api/chats/fetchChatsList";
+import getUser from "../api/users/getUser";
 
 const IMG_HEIGHT = 300;
 const { width } = Dimensions.get("window");
@@ -143,28 +142,20 @@ const HouseDetailsScreen = ({ navigation, route }) => {
     queryFn: () => fetchChats(ouid),
   });
 
-  const { data: userChatsList } = useQuery({
-    queryKey: ["chatList", userData.id],
-    queryFn: () => fetchChatsList(userData.id),
+  const { data: studentData, isLoading: studentDataIsLoading } = useQuery({
+    queryKey: ["chats", userData.id],
+    queryFn: () => getUser(userData.id),
   });
 
-  // useEffect(() => {
-  //   if (userChatsList && userChatsList.chat && userChatsList.chat.length > 0) {
-  //     const chat = userChatsList.chat.find(
-  //       (chat) =>
-  //         chat.members.includes(userData.id) && chat.members.includes(ouid)
-  //     );
+  const userChats = studentData?.data?.chats;
 
-  //     if (chat) {
-  //       chatId = chat._id;
-  //     } else {
-  //       chatId = null;
-  //     }
-  //   }
-  // }, []);
+  const foundObject = userChats?.find((chat) => chat.userID === ouid);
+
+  if (foundObject) {
+    chatId = foundObject.chatID;
+  }
 
   function interestedHandler() {
-    //להוסיף בדיקה
     navigation.navigate("ChatStackScreen", {
       screen: "ChatScreen",
       params: {
@@ -288,14 +279,14 @@ const HouseDetailsScreen = ({ navigation, route }) => {
 
       <Animated.View
         style={[styles.BottomTab, { marginBottom: tabBarHeight }]}
-        entering={SlideInDown.delay(200)}
+        entering={SlideInDown.delay(400)}
       >
         <View style={styles.BottomTabView}>
           <View style={styles.PriceView}>
             <Text style={styles.price}>{apartment.price}$</Text>
             <Text style={styles.monthPerson}>Month / Person</Text>
           </View>
-          {userData?.token && (
+          {userData?.token && !isLoading && !studentDataIsLoading && (
             <TouchableOpacity
               style={styles.ReserveBtn}
               onPress={interestedHandler}

@@ -5,7 +5,7 @@ async function newChat({ senderId, receiverId }) {
   try {
     const response = await axios.post(
       // `https://finder-rent-backend.vercel.app/api/v1/chats`,
-      `http://172.20.10.3:3000/api/v1/chats`,
+      `http://192.168.1.214:3000/api/v1/chats`,
       { senderId, receiverId },
       {
         headers: {
