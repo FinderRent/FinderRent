@@ -1,10 +1,5 @@
-import {
-  useCallback,
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useState,
-} from "react";
+import { useCallback, useContext, useLayoutEffect, useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import {
   Dimensions,
   StyleSheet,
@@ -39,7 +34,6 @@ import HouseAssets from "../components/House/HouseAssets";
 import RoommatesInfo from "../components/House/RoommatesInfo";
 import fetchChats from "../api/chats/fetchChats";
 import getUser from "../api/users/getUser";
-import { useFocusEffect } from "@react-navigation/native";
 
 const IMG_HEIGHT = 300;
 const { width } = Dimensions.get("window");
@@ -72,7 +66,7 @@ const HouseDetailsScreen = ({ navigation, route }) => {
   const scrollRef = useAnimatedRef();
   const tabBarHeight = useBottomTabBarHeight();
 
-  // let chatId = null;
+  let firstChat = true;
   const ouid = apartment?.owner[0];
   const [chatId, setChatId] = useState();
   const [mapPress, setMapPress] = useState(false);
@@ -171,6 +165,7 @@ const HouseDetailsScreen = ({ navigation, route }) => {
     navigation.navigate("ChatStackScreen", {
       screen: "ChatScreen",
       params: {
+        firstChat,
         chatId,
         ouid,
         pushToken: ownerData?.data?.pushToken,

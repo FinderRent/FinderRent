@@ -45,6 +45,7 @@ function ChatScreen({ navigation, route }) {
   const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
   const { ouid, pushToken, image, title } = route?.params;
+  const firstChat = route?.params?.firstChat;
 
   const socket = useRef();
   const scrollRef = useAnimatedRef();
@@ -221,8 +222,8 @@ function ChatScreen({ navigation, route }) {
       : require("../assets/images/ChatWhiteBackground.jpg");
   };
 
-  if (chatId) {
-    // scrollOffset = useScrollViewOffset(scrollRef);
+  if (!firstChat) {
+    scrollOffset = useScrollViewOffset(scrollRef);
   }
 
   const downButton = useAnimatedStyle(() => {
@@ -234,7 +235,7 @@ function ChatScreen({ navigation, route }) {
     };
   });
   const scrollDown = () => {
-    // scrollRef?.current?.scrollToOffset({ animated: true, offset: 0 });
+    scrollRef?.current?.scrollToOffset({ animated: true, offset: 0 });
   };
 
   return (
@@ -265,7 +266,7 @@ function ChatScreen({ navigation, route }) {
             )}
             {chatId && (
               <FlatList
-                // ref={scrollRef}
+                ref={scrollRef}
                 inverted={data?.length > 10 - imageMessage * 2.5 ? true : false}
                 data={
                   data?.length > 10 - imageMessage * 2.5
