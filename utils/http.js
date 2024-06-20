@@ -1,12 +1,12 @@
 import axios from "axios";
 
 // const BACKEND_URL = "http://10.0.0.53:3000/api/v1";
-// const BACKEND_URL = "http://192.168.1.246:3000/api/v1";
+const BACKEND_URL = "http://192.168.1.246:3000/api/v1";
 // const BACKEND_URL = "http://172.20.10.3:3000/api/v1";
 // const BACKEND_URL = "http://192.168.1.193:3000/api/v1";
 // const BACKEND_URL = "http://192.168.134.87:3000/api/v1";
 // const BACKEND_URL = "http://192.168.1.214:3000/api/v1";
-const BACKEND_URL = "https://finder-rent-backend.vercel.app/api/v1";
+// const BACKEND_URL = "https://finder-rent-backend.vercel.app/api/v1";
 
 export async function fetchAllApartments(filter) {
   // console.log("req", filter);
@@ -112,6 +112,16 @@ export async function addApartment(apartment) {
     return response.data.data;
   } catch (error) {
     console.error("Error adding apartment:", error);
+    throw error;
+  }
+}
+
+export async function updateEditedApartment(apartment) {
+  try {
+    const response = await axios.patch(BACKEND_URL + `/apartments`, apartment);
+    return response.data.data;
+  } catch (error) {
+    console.error("Error editing apartment:", error);
     throw error;
   }
 }
