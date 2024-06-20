@@ -10,6 +10,13 @@ function ChatScreenHeader({ image, title }) {
   const { isDarkMode } = useDarkMode();
   const navigation = useNavigation();
 
+  const handleNavigation = () => {
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "ChatListScreen" }],
+    });
+  };
+
   return (
     <View
       style={{
@@ -22,7 +29,7 @@ function ChatScreenHeader({ image, title }) {
           style={{
             paddingRight: 5,
           }}
-          onPress={() => navigation.navigate("ChatListScreen")}
+          onPress={handleNavigation}
         >
           <Ionicons
             name="arrow-back"

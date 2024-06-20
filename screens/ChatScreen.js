@@ -113,7 +113,14 @@ function ChatScreen({ navigation, route }) {
       headerLeft: () => <ChatScreenHeader image={image} title={title} />,
     });
     moment.locale("en");
-  }, [route.params]);
+    // Function to run when the component unmounts
+    return () => {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "ChatListScreen" }],
+      });
+    };
+  }, [route.params, navigation]);
 
   useEffect(() => {
     socket.current = io("http://192.168.1.214:3000");
