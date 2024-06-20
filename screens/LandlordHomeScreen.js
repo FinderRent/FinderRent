@@ -80,7 +80,7 @@ function LandlordHomeScreen({ navigation }) {
     isLoading: isLoadingApartments,
     isError: isErrorApartments,
     status: statusApartments,
-    refetch: refetchApartments,
+    refetch,
   } = useQuery({
     queryKey: ["apartments"],
     queryFn: () => fetchAllApartments({ owner: userData.id }),
@@ -95,47 +95,24 @@ function LandlordHomeScreen({ navigation }) {
     queryKey: ["User", userData.id],
     queryFn: () => fetchUser(userData.id),
   });
-  //---------------------------------------
-  // useEffect(() => {
-  //   refetch();
-  // }, [refetch]);
 
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     const fetched = async () => {
-  //       await refetch();
-  //     };
-  //     fetched();
-  //   }, [refetch])
-  // );
+  useFocusEffect(
+    useCallback(() => {
+      refetch();
+    }, [refetch])
+  );
 
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     refetchApartments();
-  //   }, [refetchApartments])
-  // );
-
-  // if (isLoadingApartments) {
-  //   return <Loader color={Color.Blue500} size={30} />;
-  // }
-
-  //---------------------------------------
   const renderApartmentCard = ({ item: apartment }) => {
-    let isFavourite = false;
-    userData.favouriteApartments.forEach((element) => {
-      if (apartment._id == element) {
-        isFavourite = true;
-      }
-    });
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate("HouseDetailsScreen", { apartment })}
+        onPress={() =>
+          navigation.navigate("LandlordHouseDetailsScreen", { apartment })
+        }
       >
         <LandlordHouseCard
           navigation={navigation}
           apartment={apartment}
           userData={userData}
-          isFavourite={isFavourite}
         />
       </TouchableOpacity>
     );
@@ -185,6 +162,7 @@ function LandlordHomeScreen({ navigation }) {
 
   const handleAddButtonPress = () => {
     setAddButtonPress((prevState) => !prevState);
+    refetch();
   };
 
   const snapPoints = useMemo(
