@@ -66,6 +66,20 @@ const HouseDetailsScreen = ({ navigation, route }) => {
   const scrollRef = useAnimatedRef();
   const tabBarHeight = useBottomTabBarHeight();
 
+  const templateMessage = `
+  Hello,
+
+  I am interested in the apartment listed at:
+
+  Address:
+  - City: ${apartment.address.city}
+  - Street: ${apartment.address.street}
+  - Apartment Number: ${apartment.address.apartmentNumber}
+  - Building Number: ${apartment.address.buildingNumber}
+
+   Thank you,
+  `;
+
   let firstChat = true;
   const ouid = apartment?.owner[0];
   const [chatId, setChatId] = useState();
@@ -77,7 +91,6 @@ const HouseDetailsScreen = ({ navigation, route }) => {
     "https://www.bhg.com/thmb/3Vf9GXp3T-adDlU6tKpTbb-AEyE=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/white-modern-house-curved-patio-archway-c0a4a3b3-aa51b24d14d0464ea15d36e05aa85ac9.jpg",
   ];
   const apartmentIsFavorite = favoriteApartmentsCtx.ids.includes(apartment._id);
-
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: "",
@@ -159,7 +172,6 @@ const HouseDetailsScreen = ({ navigation, route }) => {
     }, [])
   );
 
-  // console.log(chatId);
   function interestedHandler() {
     navigation.goBack();
     navigation.navigate("ChatStackScreen", {
@@ -167,6 +179,7 @@ const HouseDetailsScreen = ({ navigation, route }) => {
       params: {
         firstChat,
         chatId,
+        templateMessage,
         ouid,
         pushToken: ownerData?.data?.pushToken,
         image: ownerData?.data?.avatar?.url,

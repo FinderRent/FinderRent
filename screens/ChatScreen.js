@@ -45,15 +45,18 @@ function ChatScreen({ navigation, route }) {
   const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
   const { ouid, pushToken, image, title } = route?.params;
-  const firstChat = route?.params?.firstChat;
-
   const socket = useRef();
   const scrollRef = useAnimatedRef();
   let scrollOffset = null;
+
   const senderId = userData.id;
+  const firstChat = route?.params?.firstChat;
   const fullName = `${userData.firstName} ${userData.lastName}`;
   const [messages, setMessages] = useState([]);
   const [messageText, setMessageText] = useState("");
+  const [templateMessage, setTemplateMessage] = useState(
+    route?.params?.templateMessage || ""
+  );
   const [chatId, setChatId] = useState(route?.params?.chatId);
   const [onlineUsers, setOnilneUsers] = useState([]);
   const [sendMessage, setSendMessage] = useState(null);
@@ -72,7 +75,6 @@ function ChatScreen({ navigation, route }) {
     replyingTo,
     tempImageUri,
   };
-
   const pushData = {
     chatId,
     image: userData.avatar.url,
@@ -162,9 +164,14 @@ function ChatScreen({ navigation, route }) {
   const { mutate: handleCreateChat } = useMutation({
     mutationFn: ({ senderId, receiverId }) => newChat({ senderId, receiverId }),
     onSuccess: async (newChat) => {
-      handleUpdateChat({ messageText, chatId: newChat._id });
-      handleAddMessages({ ...message, chatId: newChat._id });
+      handleUpdateChat({ messageText: templateMessage, chatId: newChat._id });
+      handleAddMessages({
+        ...message,
+        chatId: newChat._id,
+        messageText: templateMessage,
+      });
       setChatId(newChat._id);
+      setTemplateMessage("");
     },
     onError: (err) => console.log(err.message),
   });
@@ -179,6 +186,7 @@ function ChatScreen({ navigation, route }) {
       setSendMessage({ ...message, ouid });
       setReplyingTo(null);
       setMessageText("");
+      setTemplateMessage("");
       await refetch();
       setTempImageUri("");
       setMessages([...messages, data]);
@@ -210,6 +218,16 @@ function ChatScreen({ navigation, route }) {
     }
     sendPushNotification(pushToken, message.messageText, fullName, pushData);
   }, [messageText, tempImageUri, chatId]);
+
+  const handleSendTemplateMessage = useCallback(() => {
+    if (!chatId) {
+      handleCreateChat({ senderId, receiverId: ouid });
+    } else {
+      handleUpdateChat({ templateMessage, chatId });
+      handleAddMessages(message);
+    }
+    sendPushNotification(pushToken, templateMessage, fullName, pushData);
+  }, [messageText, tempImageUri, chatId, templateMessage]);
 
   const handleDeleteMessage = useCallback(() => {
     handleUpdateChat({ messageText: "message deleted", chatId });
@@ -267,9 +285,9 @@ function ChatScreen({ navigation, route }) {
             {chatId && (
               <FlatList
                 ref={scrollRef}
-                inverted={data?.length > 10 - imageMessage * 2.5 ? true : false}
+                inverted={data?.length > 6 - imageMessage * 2.5 ? true : false}
                 data={
-                  data?.length > 10 - imageMessage * 2.5
+                  data?.length > 6 - imageMessage * 2.5
                     ? data && [...data].reverse()
                     : data
                 }
@@ -400,44 +418,85 @@ function ChatScreen({ navigation, route }) {
               </View>
             }
           />
-          <AwesomeAlert
-            show={deleteMessage.show !== false}
-            contentContainerStyle={
-              isDarkMode
-                ? { backgroundColor: Color.darkTheme }
-                : { backgroundColor: Color.defaultTheme }
-            }
-            title="Delete Message"
-            closeOnTouchOutside={true}
-            closeOnHardwareBackPress={false}
-            showCancelButton={true}
-            showConfirmButton={true}
-            confirmText="Yes"
-            cancelText="No"
-            confirmButtonColor={Color.Blue700}
-            cancelButtonColor={
-              isDarkMode ? Color.darkTheme : Color.defaultTheme
-            }
-            cancelButtonTextStyle={{ color: Color.Blue500 }}
-            titleStyle={styles.popupTitleStyle}
-            onCancelPressed={() =>
-              setDeleteMessage({ show: false, messageId: "" })
-            }
-            onConfirmPressed={handleDeleteMessage}
-            onDismiss={() => setDeleteMessage({ show: false, messageId: "" })}
-            customView={
-              <View>
-                {isPendingRemoveMessage && (
-                  <ActivityIndicator
-                    style={{ marginTop: 10 }}
-                    color={Color.Blue700}
-                  />
-                )}
-              </View>
-            }
-          />
         </View>
-
+        <AwesomeAlert
+          show={deleteMessage.show !== false}
+          contentContainerStyle={
+            isDarkMode
+              ? { backgroundColor: Color.darkTheme }
+              : { backgroundColor: Color.defaultTheme }
+          }
+          title="Delete Message"
+          closeOnTouchOutside={true}
+          closeOnHardwareBackPress={false}
+          showCancelButton={true}
+          showConfirmButton={true}
+          confirmText="Yes"
+          cancelText="No"
+          confirmButtonColor={Color.Blue700}
+          cancelButtonColor={isDarkMode ? Color.darkTheme : Color.defaultTheme}
+          cancelButtonTextStyle={{ color: Color.Blue500 }}
+          titleStyle={styles.popupTitleStyle}
+          onCancelPressed={() =>
+            setDeleteMessage({ show: false, messageId: "" })
+          }
+          onConfirmPressed={handleDeleteMessage}
+          onDismiss={() => setDeleteMessage({ show: false, messageId: "" })}
+          customView={
+            <View>
+              {isPendingRemoveMessage && (
+                <ActivityIndicator
+                  style={{ marginTop: 10 }}
+                  color={Color.Blue700}
+                />
+              )}
+            </View>
+          }
+        />
+        <AwesomeAlert
+          show={templateMessage !== ""}
+          contentContainerStyle={
+            isDarkMode
+              ? { backgroundColor: Color.darkTheme }
+              : { backgroundColor: Color.defaultTheme }
+          }
+          title="Send Message"
+          closeOnTouchOutside={true}
+          closeOnHardwareBackPress={false}
+          showCancelButton={true}
+          showConfirmButton={true}
+          confirmText="Yes"
+          cancelText="No"
+          confirmButtonColor={Color.Blue700}
+          cancelButtonColor={isDarkMode ? Color.darkTheme : Color.defaultTheme}
+          cancelButtonTextStyle={{ color: Color.Blue500 }}
+          titleStyle={styles.popupTitleStyle}
+          onCancelPressed={() => setTemplateMessage("")}
+          onConfirmPressed={handleSendTemplateMessage}
+          onDismiss={() => setTemplateMessage("")}
+          customView={
+            <View>
+              <TextInput
+                autoCapitalize="none"
+                style={
+                  isDarkMode
+                    ? { ...styles.templateTextbox, color: Color.white }
+                    : { ...styles.templateTextbox }
+                }
+                selectionColor={Color.Blue500}
+                placeholder="Message"
+                placeholderTextColor={
+                  isDarkMode ? Color.defaultTheme : Color.darkTheme
+                }
+                value={templateMessage}
+                editable={false}
+                multiline={true}
+                numberOfLines={8}
+                textAlignVertical="top"
+              />
+            </View>
+          }
+        />
         <Animated.View
           style={[
             { position: "absolute", bottom: "10%", right: 20 },
@@ -492,6 +551,15 @@ const styles = StyleSheet.create({
     fontFamily: "varelaRound",
     borderWidth: 1,
     borderRadius: 50,
+    marginHorizontal: 5,
+    paddingHorizontal: 15,
+    borderColor: Color.Blue500,
+  },
+  templateTextbox: {
+    fontSize: 16,
+    fontFamily: "varelaRound",
+    borderWidth: 1,
+    borderRadius: 20,
     marginHorizontal: 5,
     paddingHorizontal: 15,
     borderColor: Color.Blue500,
