@@ -77,7 +77,7 @@ function ChatScreen({ navigation, route }) {
   };
   const pushData = {
     chatId,
-    image: userData.avatar.url,
+    image: userData?.avatar?.url,
     title: fullName,
     pushToken: userData.pushToken,
     ouid: senderId,
@@ -224,7 +224,10 @@ function ChatScreen({ navigation, route }) {
       handleCreateChat({ senderId, receiverId: ouid });
     } else {
       handleUpdateChat({ templateMessage, chatId });
-      handleAddMessages(message);
+      handleAddMessages({
+        ...message,
+        messageText: templateMessage,
+      });
     }
     sendPushNotification(pushToken, templateMessage, fullName, pushData);
   }, [messageText, tempImageUri, chatId, templateMessage]);

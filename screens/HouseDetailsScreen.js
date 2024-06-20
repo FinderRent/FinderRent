@@ -1,5 +1,4 @@
-import { useCallback, useContext, useLayoutEffect, useState } from "react";
-import { useFocusEffect } from "@react-navigation/native";
+import { useContext, useLayoutEffect, useState } from "react";
 import {
   Dimensions,
   StyleSheet,
@@ -80,9 +79,9 @@ const HouseDetailsScreen = ({ navigation, route }) => {
    Thank you,
   `;
 
+  let chatId = null;
   let firstChat = true;
   const ouid = apartment?.owner[0];
-  const [chatId, setChatId] = useState();
   const [mapPress, setMapPress] = useState(false);
   const [showAll, setShowAll] = useState(false);
   const [apartmentContent, setApartmentContent] = useState([]);
@@ -162,15 +161,9 @@ const HouseDetailsScreen = ({ navigation, route }) => {
     queryFn: () => getUser(userData.id),
   });
 
-  useFocusEffect(
-    useCallback(() => {
-      const userChats = studentData?.data?.chats;
-      const foundObject = userChats?.find((chat) => chat.userID === ouid);
-      if (foundObject) {
-        setChatId(foundObject.chatID);
-      }
-    }, [])
-  );
+  const userChats = studentData?.data?.chats;
+  const foundObject = userChats?.find((chat) => chat?.userID === ouid);
+  chatId = foundObject?.chatID;
 
   function interestedHandler() {
     navigation.goBack();
