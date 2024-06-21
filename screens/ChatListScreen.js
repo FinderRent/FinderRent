@@ -12,9 +12,11 @@ import ErrorMessage from "../components/ui/ErrorMessage";
 import Loader from "../components/ui/Loader";
 import ChatList from "../components/chats/ChatList";
 import fetchChatsList from "../api/chats/fetchChatsList";
+import { useDarkMode } from "../context/DarkModeContext";
 
 function ChatListScreen({ navigation }) {
   const { userData } = useUsers();
+  const { isDarkMode } = useDarkMode();
 
   const { data, error, isLoading, refetch } = useQuery({
     queryKey: ["chatList", userData.id],
@@ -37,7 +39,12 @@ function ChatListScreen({ navigation }) {
   );
 
   if (isLoading) {
-    return <Loader color={Color.Blue500} size={30} />;
+    return (
+      <Loader
+        color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+        size={30}
+      />
+    );
   }
 
   if (error) {

@@ -136,33 +136,6 @@ function MainTabScreen() {
                 }}
               />
             )}
-            {/* {userData.userType === "landlord" && (
-              <Tab.Screen
-                name="LandlordHomeStackScreen"
-                component={LandlordHomeScreen}
-                options={{
-                  tabBarLabel: "",
-                  tabBarIcon: ({ focused }) => (
-                    <View style={{ alignItems: "center" }}>
-                      <MaterialCommunityIcons
-                        name={focused ? "home" : "home-outline"}
-                        style={{ marginTop: -10 }}
-                        color={isDarkMode ? Color.white : Color.darkTheme}
-                        size={26}
-                      />
-                      <Text
-                        style={{
-                          fontSize: focused ? 10 : 9,
-                          color: isDarkMode ? Color.white : Color.black,
-                        }}
-                      >
-                        Home
-                      </Text>
-                    </View>
-                  ),
-                }}
-              />
-            )} */}
             <Tab.Screen
               name="ProfileStackScreen"
               component={ProfileStackScreen}

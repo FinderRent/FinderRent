@@ -31,9 +31,8 @@ import HouseRoommates from "../components/House/HouseRoommates";
 import Seperator from "../components/Seperator";
 import HouseAssets from "../components/House/HouseAssets";
 import RoommatesInfo from "../components/House/RoommatesInfo";
-import Loader from "../components/ui/Loader";
 import fetchChats from "../api/chats/fetchChats";
-import fetchChatsList from "../api/chats/fetchChatsList";
+import getUser from "../api/users/getUser";
 
 const IMG_HEIGHT = 300;
 const { width } = Dimensions.get("window");
@@ -66,7 +65,22 @@ const HouseDetailsScreen = ({ navigation, route }) => {
   const scrollRef = useAnimatedRef();
   const tabBarHeight = useBottomTabBarHeight();
 
+  const templateMessage = `
+  Hello,
+
+  I am interested in the apartment listed at:
+
+  Address:
+  - City: ${apartment.address.city}
+  - Street: ${apartment.address.street}
+  - Apartment Number: ${apartment.address.apartmentNumber}
+  - Building Number: ${apartment.address.buildingNumber}
+
+   Thank you,
+  `;
+
   let chatId = null;
+  let firstChat = true;
   const ouid = apartment?.owner[0];
   const [mapPress, setMapPress] = useState(false);
   const [showAll, setShowAll] = useState(false);
@@ -76,7 +90,6 @@ const HouseDetailsScreen = ({ navigation, route }) => {
     "https://www.bhg.com/thmb/3Vf9GXp3T-adDlU6tKpTbb-AEyE=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/white-modern-house-curved-patio-archway-c0a4a3b3-aa51b24d14d0464ea15d36e05aa85ac9.jpg",
   ];
   const apartmentIsFavorite = favoriteApartmentsCtx.ids.includes(apartment._id);
-
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: "",
@@ -143,32 +156,23 @@ const HouseDetailsScreen = ({ navigation, route }) => {
     queryFn: () => fetchChats(ouid),
   });
 
-  const { data: userChatsList } = useQuery({
-    queryKey: ["chatList", userData.id],
-    queryFn: () => fetchChatsList(userData.id),
+  const { data: studentData, isLoading: studentDataIsLoading } = useQuery({
+    queryKey: ["chats", userData.id],
+    queryFn: () => getUser(userData.id),
   });
 
-  // useEffect(() => {
-  //   if (userChatsList && userChatsList.chat && userChatsList.chat.length > 0) {
-  //     const chat = userChatsList.chat.find(
-  //       (chat) =>
-  //         chat.members.includes(userData.id) && chat.members.includes(ouid)
-  //     );
-
-  //     if (chat) {
-  //       chatId = chat._id;
-  //     } else {
-  //       chatId = null;
-  //     }
-  //   }
-  // }, []);
+  const userChats = studentData?.data?.chats;
+  const foundObject = userChats?.find((chat) => chat?.userID === ouid);
+  chatId = foundObject?.chatID;
 
   function interestedHandler() {
-    //להוסיף בדיקה
+    navigation.goBack();
     navigation.navigate("ChatStackScreen", {
       screen: "ChatScreen",
       params: {
+        firstChat,
         chatId,
+        templateMessage,
         ouid,
         pushToken: ownerData?.data?.pushToken,
         image: ownerData?.data?.avatar?.url,
@@ -288,14 +292,14 @@ const HouseDetailsScreen = ({ navigation, route }) => {
 
       <Animated.View
         style={[styles.BottomTab, { marginBottom: tabBarHeight }]}
-        entering={SlideInDown.delay(200)}
+        entering={SlideInDown.delay(400)}
       >
         <View style={styles.BottomTabView}>
           <View style={styles.PriceView}>
             <Text style={styles.price}>{apartment.price}$</Text>
             <Text style={styles.monthPerson}>Month / Person</Text>
           </View>
-          {userData?.token && (
+          {userData?.token && !isLoading && !studentDataIsLoading && (
             <TouchableOpacity
               style={styles.ReserveBtn}
               onPress={interestedHandler}

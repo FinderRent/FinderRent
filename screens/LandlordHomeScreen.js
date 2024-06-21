@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
     },
   },
   addApartmentButton: {
-    bottom: "22%",
+    bottom: Platform.OS === "ios" ? "22%" : "12%",
     right: "15%",
   },
 });
