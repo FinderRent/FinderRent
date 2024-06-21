@@ -12,7 +12,7 @@ import { Color } from "../../constants/colors";
 import ErrorMessage from "../ui/ErrorMessage";
 import fetchChats from "../../api/chats/fetchChats";
 
-function ChatList({ ouid, chatId, lastMessage, time }) {
+function ChatList({ ouid, chatId, lastMessage, time, searchUser }) {
   const navigation = useNavigation();
   const { data, error, isLoading } = useQuery({
     queryKey: ["chats", ouid],
@@ -26,6 +26,15 @@ function ChatList({ ouid, chatId, lastMessage, time }) {
   if (error) {
     return <ErrorMessage errorMessage={error.message} />;
   }
+
+  const fullName =
+    `${data?.data?.firstName} ${data?.data?.lastName}`.toLowerCase();
+  const isChatVisible = fullName.includes(searchUser.toLowerCase());
+
+  if (!isChatVisible) {
+    return null;
+  }
+
   return (
     <TouchableNativeFeedback
       onPress={() =>
