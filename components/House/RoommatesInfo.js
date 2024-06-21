@@ -1,82 +1,88 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Image } from "react-native";
 import { Text } from "react-native-paper";
-import { ListItem, Avatar } from "react-native-elements";
-
+import { useQuery } from "@tanstack/react-query";
 import { useDarkMode } from "../../context/DarkModeContext";
 import { Color } from "../../constants/colors";
+import { fetchUser } from "../../utils/http";
 
 const RoommatesInfo = (props) => {
   const { isDarkMode } = useDarkMode();
 
+  //change it to the real person image
+  const images = [
+    "https://img.freepik.com/free-psd/3d-illustration-human-avatar-profile_23-2150671142.jpg?t=st=1718994903~exp=1718998503~hmac=5d66ee2ce11b89c86b03f926658dac5b99441c548a993f4beb7d0b539f76bfae&w=1480",
+  ];
+
+  const {
+    data: user,
+    isLoading: isLoadingUser,
+    isError: isErrorUser,
+    status: statusUser,
+  } = useQuery({
+    queryKey: ["User", props.tenant],
+    queryFn: () => fetchUser(props.tenant),
+  });
+
+  if (isLoadingUser) return <Text>Loading...</Text>;
+  if (isErrorUser) return <Text>Error loading user</Text>;
+
   return (
-    <View style={styles.seperator}>
-      <Text style={styles.Header}>You will live with</Text>
-      <View>
-        {props.Roommates.map((l, i) => (
-          <ListItem
-            containerStyle={
-              isDarkMode
-                ? { backgroundColor: Color.darkTheme }
-                : { backgroundColor: Color.white }
-            }
-            key={i}
-          >
-            <Avatar
-              source={{
-                //fix it to be dynamic
-                url: "https://thumbs.dreamstime.com/z/unknown-male-avatar-profile-image-businessman-vector-unknown-male-avatar-profile-image-businessman-vector-profile-179373829.jpg?w=768",
-              }}
-            />
-            <ListItem.Content>
-              <ListItem.Title
-                style={
-                  isDarkMode
-                    ? { color: Color.white }
-                    : { color: Color.darkTheme }
-                }
-              >
-                {l.name}
-              </ListItem.Title>
-              <ListItem.Subtitle
-                style={
-                  isDarkMode
-                    ? { color: Color.white }
-                    : { color: Color.darkTheme }
-                }
-              >
-                {l.subtitle}
-              </ListItem.Subtitle>
-            </ListItem.Content>
-          </ListItem>
-        ))}
+    <View>
+      <View
+        style={[
+          styles.card,
+          isDarkMode && { backgroundColor: Color.buttomSheetDarkTheme },
+        ]}
+      >
+        <View style={styles.cardContainer}>
+          <Image
+            source={{
+              uri: user.avatar?.url,
+            }}
+            style={styles.image}
+            resizeMode="cover"
+          />
+          <View style={styles.detailsContainer}>
+            <Text style={styles.userName}>
+              {user.firstName} {user.lastName}
+            </Text>
+          </View>
+        </View>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  Header: {
-    fontSize: 25,
-    fontWeight: "bold",
-  },
-  Button: {
-    fontSize: 20,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 12,
-    paddingHorizontal: 32,
+  card: {
+    position: "relative",
     borderRadius: 12,
-    elevation: 3,
-    borderWidth: 2,
-    borderColor: "#ccc",
-    marginVertical: 7,
+    margin: 5,
+    marginTop: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 4,
+    backgroundColor: "#fff",
   },
-  text: {
-    fontSize: 16,
-    lineHeight: 21,
+  cardContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 10,
+  },
+  detailsContainer: {
+    marginLeft: 15,
+  },
+  image: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+  },
+  userName: {
+    fontSize: 20,
     fontWeight: "bold",
-    letterSpacing: 0.25,
   },
 });
 
