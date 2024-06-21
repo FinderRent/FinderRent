@@ -123,7 +123,7 @@ function ChatScreen({ navigation, route }) {
   }, [route.params, navigation]);
 
   useEffect(() => {
-    socket.current = io("http://192.168.1.214:3000");
+    socket.current = io("https://finalprojectserver0-5.onrender.com");
     socket.current.emit("new-user-add", senderId);
     socket.current.on("get-users", (users) => {
       setOnilneUsers(users);
@@ -295,9 +295,9 @@ function ChatScreen({ navigation, route }) {
             {chatId && (
               <FlatList
                 ref={scrollRef}
-                inverted={data?.length > 6 - imageMessage * 2.5 ? true : false}
+                inverted={data?.length > 7 - imageMessage * 2.5 ? true : false}
                 data={
-                  data?.length > 6 - imageMessage * 2.5
+                  data?.length > 7 - imageMessage * 2.5
                     ? data && [...data].reverse()
                     : data
                 }
