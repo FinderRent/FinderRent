@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   View,
   Image,
+  FlatList,
 } from "react-native";
 import Animated, {
   SlideInDown,
@@ -59,7 +60,6 @@ const LandlordHouseDetailsScreen = ({ navigation, route }) => {
 
   const routes = navigation.getState()?.routes;
   const { apartment } = route.params;
-  console.log(apartment);
   const prevRoute = routes[routes.length - 1];
 
   const scrollRef = useAnimatedRef();
@@ -255,7 +255,19 @@ const LandlordHouseDetailsScreen = ({ navigation, route }) => {
             />
           )}
           <Seperator />
-          <RoommatesInfo Roommates={Roommates} />
+          {apartment.tenants && (
+            <Text style={styles.about}>Current tenants</Text>
+          )}
+          {apartment.tenants?.map((tenant) => (
+            <TouchableOpacity
+              key={tenant}
+              onPress={() =>
+                navigation.navigate("StudentProfileScreen", { tenant })
+              }
+            >
+              <RoommatesInfo tenant={tenant} />
+            </TouchableOpacity>
+          ))}
         </View>
         <View style={[styles.footer, { height: tabBarHeight }]}></View>
       </Animated.ScrollView>

@@ -50,11 +50,10 @@ const LandlordHouseCard = ({
 
   return (
     <View
-      style={
-        isDarkMode
-          ? { ...styles.card, backgroundColor: Color.buttomSheetDarkTheme }
-          : styles.card
-      }
+      style={[
+        styles.card,
+        isDarkMode && { backgroundColor: Color.buttomSheetDarkTheme },
+      ]}
     >
       <View style={styles.cardContainer}>
         <View style={styles.imagesContainer}>
@@ -83,26 +82,31 @@ const LandlordHouseCard = ({
 const styles = StyleSheet.create({
   card: {
     position: "relative",
-    backgroundColor: "#fff",
     borderRadius: 12,
-    overflow: "hidden",
-    elevation: 4,
     margin: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 4,
   },
   cardContainer: {
     flexDirection: "row",
     alignItems: "center",
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    overflow: "hidden",
   },
   detailsContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     padding: 15,
     flex: 0.75,
-    backgroundColor: "#ccc",
+    backgroundColor: "#fff",
   },
   imagesContainer: {
     flex: 0.25,
-    backgroundColor: "#ccc",
+    backgroundColor: "#fff",
   },
   image: {
     flex: 1,
