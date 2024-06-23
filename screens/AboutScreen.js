@@ -89,7 +89,7 @@ const AboutScreen = () => {
 const styles = StyleSheet.create({
   line: {
     borderTopWidth: 2,
-    borderColor: Color.Blue10,
+    borderColor: Color.Brown500,
     marginBottom: 10,
   },
   title: {
