@@ -74,7 +74,7 @@ function SettingsScreen() {
         console.log("Language pressed");
         break;
       case "about":
-        console.log("About pressed");
+        navigation.navigate("AboutScreen");
         break;
       case "contact":
         navigation.navigate("ContactUsScreen");

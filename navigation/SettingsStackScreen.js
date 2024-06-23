@@ -4,6 +4,7 @@ import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import SettingsScreen from "../screens/SettingsScreen";
 import ContactUsScreen from "../screens/ContactUsScreen";
+import AboutScreen from "../screens/AboutScreen";
 
 const SettingsStack = createNativeStackNavigator();
 
@@ -36,6 +37,25 @@ function SettingsStackScreen() {
               : Color.defaultTheme,
           },
           title: "ContactUs",
+          headerTitleStyle: {
+            fontFamily: "DancingScript",
+            fontSize: 32,
+            color: Color.Blue700,
+          },
+          headerTintColor: Color.Blue700,
+          animation: "simple_push",
+        }}
+      />
+      <SettingsStack.Screen
+        name="AboutScreen"
+        component={AboutScreen}
+        options={{
+          headerStyle: {
+            backgroundColor: isDarkMode
+              ? Color.buttomSheetDarkTheme
+              : Color.defaultTheme,
+          },
+          title: "",
           headerTitleStyle: {
             fontFamily: "DancingScript",
             fontSize: 32,

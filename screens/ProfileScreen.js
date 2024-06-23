@@ -112,12 +112,17 @@ const ProfileScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.menuWrapper}>
-        <TouchableRipple onPress={() => navigation.navigate("FavoritesScreen")}>
-          <View style={styles.menuItem}>
-            <Icon name="heart-outline" color={Color.icon} size={25} />
-            <Text style={styles.menuItemText}>Favorites</Text>
-          </View>
-        </TouchableRipple>
+        {userData?.userType === "student" && (
+          <TouchableRipple
+            onPress={() => navigation.navigate("FavoritesScreen")}
+          >
+            <View style={styles.menuItem}>
+              <Icon name="heart-outline" color={Color.icon} size={25} />
+              <Text style={styles.menuItemText}>Favorites</Text>
+            </View>
+          </TouchableRipple>
+        )}
+
         <TouchableRipple onPress={() => navigation.navigate("SecurityScreen")}>
           <View style={styles.menuItem}>
             <Icon name="shield-lock-outline" color={Color.icon} size={25} />
