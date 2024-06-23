@@ -60,6 +60,7 @@ function HouseList({
   const renderApartmentCard = ({ item: apartment }) => {
     return (
       <TouchableOpacity
+        activeOpacity={0.8}
         onPress={() => navigation.navigate("HouseDetailsScreen", { apartment })}
       >
         <HouseCard

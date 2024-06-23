@@ -286,7 +286,19 @@ const HouseDetailsScreen = ({ navigation, route }) => {
             />
           )}
           <Seperator />
-          <RoommatesInfo Roommates={Roommates} />
+          {apartment.tenants && (
+            <Text style={styles.about}>Current tenants</Text>
+          )}
+          {apartment.tenants?.map((tenant) => (
+            <TouchableOpacity
+              key={tenant}
+              onPress={() =>
+                navigation.navigate("StudentProfileScreen", { tenant })
+              }
+            >
+              <RoommatesInfo tenant={tenant} />
+            </TouchableOpacity>
+          ))}
         </View>
       </Animated.ScrollView>
 
