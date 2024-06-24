@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useDarkMode } from "../../context/DarkModeContext";
 import { Color } from "../../constants/colors";
 import { fetchUser } from "../../utils/http";
+import Loader from "../ui/Loader";
 
 const RoommatesInfo = (props) => {
   const { isDarkMode } = useDarkMode();
@@ -24,7 +25,7 @@ const RoommatesInfo = (props) => {
     queryFn: () => fetchUser(props.tenant),
   });
 
-  if (isLoadingUser) return <Text>Loading...</Text>;
+  if (isLoadingUser) return <Loader />;
   if (isErrorUser) return <Text>Error loading user</Text>;
 
   return (

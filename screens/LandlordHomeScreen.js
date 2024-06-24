@@ -174,6 +174,8 @@ function LandlordHomeScreen({ navigation }) {
     setSheetIndex(index);
   };
 
+  if (isLoadingApartments) return <Loader />;
+
   return (
     <SafeAreaView
       style={{

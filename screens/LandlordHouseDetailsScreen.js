@@ -269,7 +269,7 @@ const LandlordHouseDetailsScreen = ({ navigation, route }) => {
             </TouchableOpacity>
           ))}
         </View>
-        <View style={[styles.footer, { height: tabBarHeight }]}></View>
+        <View style={[styles.footer, { height: tabBarHeight + 10 }]}></View>
       </Animated.ScrollView>
     </View>
   );
