@@ -59,16 +59,11 @@ function HouseList({
   //render the apartment card
   const renderApartmentCard = ({ item: apartment }) => {
     return (
-      <TouchableOpacity
-        activeOpacity={0.8}
-        onPress={() => navigation.navigate("HouseDetailsScreen", { apartment })}
-      >
-        <HouseCard
-          navigation={navigation}
-          apartment={apartment}
-          userData={userData}
-        />
-      </TouchableOpacity>
+      <HouseCard
+        navigation={navigation}
+        apartment={apartment}
+        userData={userData}
+      />
     );
   };
 
