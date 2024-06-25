@@ -62,7 +62,7 @@ function HomeScreen({ navigation, route }) {
   const tabBarHeight = useBottomTabBarHeight();
 
   const token = userData.token;
-  let coordinates = null;
+  let coordinates = userData?.coordinates || null;
   try {
     coordinates = userData?.coordinates
       ? JSON.parse(userData.coordinates)

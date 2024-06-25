@@ -103,7 +103,7 @@ function SignUpScreen({ navigation }) {
     const index = listAcademic.findIndex((item) => item.value === academic);
     if (index !== -1) {
       // console.log("index: ", listAcademic[index].coordinates);
-      setCoordinates(JSON.stringify(listAcademic[index].coordinates));
+      setCoordinates(listAcademic[index].coordinates);
     }
   }, [academic]);
 

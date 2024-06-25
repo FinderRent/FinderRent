@@ -65,7 +65,7 @@ function useUsers() {
       setAge(age);
       setPhone(phone);
       setAcademic(academic);
-      setCoordinates(coordinates);
+      setCoordinates(JSON.stringify(coordinates));
       setDepartment(department);
       setYearbook(yearbook);
       setGender(gender);
