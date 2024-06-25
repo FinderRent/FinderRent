@@ -51,7 +51,6 @@ function SignUpScreen({ navigation }) {
     value: item.id,
     coordinates: item.coordinates,
   }));
-
   // List of year options for DropDown component
   const listYear = [
     { label: "Preparing", value: "Preparing" },
@@ -104,7 +103,7 @@ function SignUpScreen({ navigation }) {
     const index = listAcademic.findIndex((item) => item.value === academic);
     if (index !== -1) {
       // console.log("index: ", listAcademic[index].coordinates);
-      setCoordinates(listAcademic[index].coordinates);
+      setCoordinates(JSON.stringify(listAcademic[index].coordinates));
     }
   }, [academic]);
 

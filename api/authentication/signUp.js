@@ -4,7 +4,7 @@ import { ADDRESS } from "@env";
 async function signUp(userData) {
   try {
     const response = await axios.post(
-      `https://finder-rent-backend.vercel.app/api/v1/users/signup`,
+      `http://192.168.1.214:3000/api/v1/users/signup`,
       userData,
       {
         headers: {

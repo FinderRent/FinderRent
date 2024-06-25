@@ -48,6 +48,9 @@ function EditProfileScreen({ navigation }) {
   const [coordinates, setCoordinates] = useState(userData.coordinates);
   const [department, setDepartment] = useState(userData.department);
   const [yearbook, setYearbook] = useState(userData.yearbook);
+  const [hobbies, setHobbies] = useState(userData.hobbies);
+  const [funFact, setFunFact] = useState(userData.funFact);
+
   const [email, setEmail] = useState(userData.email);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
@@ -92,6 +95,8 @@ function EditProfileScreen({ navigation }) {
       coordinates,
       department,
       yearbook,
+      hobbies,
+      funFact,
       email,
       token,
     }) =>
@@ -106,6 +111,8 @@ function EditProfileScreen({ navigation }) {
         coordinates,
         department,
         yearbook,
+        hobbies,
+        funFact,
         email,
         token,
       }),
@@ -116,6 +123,9 @@ function EditProfileScreen({ navigation }) {
         text1: "Profile successfully updated",
       });
       navigation.goBack();
+    },
+    onError: (err) => {
+      console.log(err.message);
     },
   });
 
@@ -131,6 +141,8 @@ function EditProfileScreen({ navigation }) {
       coordinates,
       department,
       yearbook,
+      hobbies,
+      funFact,
       email,
       token,
     });
@@ -283,6 +295,25 @@ function EditProfileScreen({ navigation }) {
             </View>
           </View>
         )}
+
+        <View style={styles.textInput}>
+          <Input
+            label={hobbies ? "" : "what your hobbies?"}
+            value={hobbies ? hobbies : ""}
+            left={<TextInput.Icon icon={"controller-classic"} />}
+            mode="outlined"
+            onValueChange={(selectedHobbies) => setHobbies(selectedHobbies)}
+          />
+        </View>
+        <View style={styles.textInput}>
+          <Input
+            label={funFact ? "" : "tell us fun fact..."}
+            value={funFact ? funFact : ""}
+            left={<TextInput.Icon icon={"beer"} />}
+            mode="outlined"
+            onValueChange={(selectedFunFact) => setFunFact(selectedFunFact)}
+          />
+        </View>
         <View style={styles.textInput}>
           <Input
             label={email ? "" : "Email"}

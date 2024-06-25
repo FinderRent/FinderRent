@@ -11,6 +11,8 @@ async function updateUser({
   coordinates,
   department,
   yearbook,
+  hobbies,
+  funFact,
   email,
   token,
 }) {
@@ -25,6 +27,8 @@ async function updateUser({
     formData.append("coordinates", JSON.stringify(coordinates));
     formData.append("department", department);
     formData.append("yearbook", yearbook);
+    formData.append("hobbies", hobbies);
+    formData.append("funFact", funFact);
     formData.append("email", email);
 
     if (avatar) {
@@ -40,7 +44,6 @@ async function updateUser({
         type,
       });
     }
-
     const response = await axios.patch(
       `https://finder-rent-backend.vercel.app/api/v1/users/updateMe`,
       formData,
