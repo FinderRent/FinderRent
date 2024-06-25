@@ -37,29 +37,13 @@ import getUser from "../api/users/getUser";
 const IMG_HEIGHT = 300;
 const { width } = Dimensions.get("window");
 
-const Roommates = [
-  {
-    name: "Maor Saadia",
-    avatar_url: "../assets/images/profile-cartoon.png",
-    subtitle: "President",
-  },
-  {
-    name: "Amir Fukman",
-    avatar_url: "../assets/images/profile-cartoon.png",
-    subtitle: "Vice President",
-  },
-];
-
-const ParagraphDeatails =
-  "Discover the perfect three-bedroom rental nestled in a tranquil suburban setting. This charming house features an open-concept living area with ample natural light, a modern kitchen, and a master bedroom with an en-suite bathroom. Enjoy the peaceful backyard with a patio and fire pit. Conveniently located near parks and shopping, this home offers both comfort and convenience for your lifestyle.";
-
 const HouseDetailsScreen = ({ navigation, route }) => {
   const favoriteApartmentsCtx = useContext(FavoritesContext);
   const { isDarkMode } = useDarkMode();
   const { userData } = useUsers();
 
-  const routes = navigation.getState()?.routes;
   const { apartment } = route.params;
+  const routes = navigation.getState()?.routes;
   const prevRoute = routes[routes.length - 1];
 
   const scrollRef = useAnimatedRef();
@@ -82,8 +66,10 @@ const HouseDetailsScreen = ({ navigation, route }) => {
   let chatId = null;
   let firstChat = true;
   const ouid = apartment?.owner[0];
+  const coordinates = apartment.address?.coordinates;
   const [mapPress, setMapPress] = useState(false);
   const [showAll, setShowAll] = useState(false);
+
   const [apartmentContent, setApartmentContent] = useState([]);
   const images = [
     "https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/home-improvement/wp-content/uploads/2022/07/download-23.jpg",
@@ -270,10 +256,18 @@ const HouseDetailsScreen = ({ navigation, route }) => {
           />
           <Map
             handleMapPress={handleMapPress}
+            apartment={apartment}
+            coordinates={coordinates}
             zoomEnabled={false}
             scrollEnabled={false}
           />
-          {mapPress && <MapModal handleMapPress={handleMapPress} />}
+          {mapPress && (
+            <MapModal
+              handleMapPress={handleMapPress}
+              coordinates={coordinates}
+              apartment={apartment}
+            />
+          )}
           <Seperator />
           <HouseAssets
             handleShowAllPress={handleShowAllPress}

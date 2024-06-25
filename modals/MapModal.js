@@ -1,11 +1,15 @@
 import { View, StyleSheet, TouchableOpacity, Modal } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import MapView from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 
 function MapModal(props) {
   const handleMapPress = () => {
     props.handleMapPress();
   };
+
+  const street = props.apartment.address?.street;
+  const buildingNumber = props.apartment.address?.buildingNumber;
+  const apartmentNumber = props.apartment.address?.apartmentNumber;
 
   return (
     <Modal visible={true} transparent={true} animationType="fade">
@@ -13,13 +17,23 @@ function MapModal(props) {
         <View style={styles.modalContainer}>
           <MapView
             initialRegion={{
-              latitude: 31.2516416588409,
-              longitude: 34.78916604217377,
-              latitudeDelta: 0.0043,
-              longitudeDelta: 0.0034,
+              latitude: props.coordinates.latitude,
+              longitude: props.coordinates.longitude,
+              latitudeDelta: 0.001,
+              longitudeDelta: 0.001,
             }}
             style={styles.map}
-          />
+          >
+            <Marker
+              coordinate={{
+                latitude: props.coordinates.latitude,
+                longitude: props.coordinates.longitude,
+              }}
+              title={street}
+              description={`Apartment Number: ${buildingNumber}/${apartmentNumber}`}
+            />
+          </MapView>
+
           <TouchableOpacity style={styles.closeButton} onPress={handleMapPress}>
             <MaterialIcons name="close" size={24} color="#fff" />
           </TouchableOpacity>
