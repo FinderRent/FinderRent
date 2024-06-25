@@ -343,7 +343,7 @@ function EditProfileScreen({ navigation }) {
           </Button>
         </Spacer>
         <NavLink text="Back    " style={{ marginTop: -5, fontSize: 14 }} />
-        <View style={{ marginTop: 45 }}></View>
+        <View style={{ marginTop: 65 }}></View>
 
         <BottomSheetModal
           ref={bottomSheetModalRef}
