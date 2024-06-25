@@ -29,7 +29,7 @@ function useUsers() {
   const [yearbook, setYearbook] = useState(null);
   const [gender, setGender] = useState(null);
   const [hobbies, setHobbies] = useState(null);
-  const [funFuct, setFunFuct] = useState(null);
+  const [funFact, setFunFact] = useState(null);
   const [email, setEmail] = useState(null);
   const [avatar, setAvatar] = useState(null);
 
@@ -51,7 +51,7 @@ function useUsers() {
         phone,
         gender,
         hobbies,
-        funFuct,
+        funFact,
         email,
         avatar,
       } = data;
@@ -70,7 +70,7 @@ function useUsers() {
       setYearbook(yearbook);
       setGender(gender);
       setHobbies(hobbies);
-      setFunFuct(funFuct);
+      setFunFact(funFact);
       setEmail(email);
       setAvatar(avatar);
 
@@ -110,7 +110,7 @@ function useUsers() {
       setYearbook(null);
       setGender(null);
       setHobbies(null);
-      setFunFuct(null);
+      setFunFact(null);
       setEmail(null);
       setAvatar(null);
     };
@@ -163,7 +163,7 @@ function useUsers() {
     department,
     yearbook,
     hobbies,
-    funFuct,
+    funFact,
     email,
     avatar,
   };

@@ -328,7 +328,7 @@ function EditProfileScreen({ navigation }) {
 
         <Spacer>
           <Button
-            style={{ marginTop: 10 }}
+            style={{ marginTop: 10, marginHorizontal: 15 }}
             textColor={
               isDarkMode ? Color.buttomSheetDarkTheme : Color.defaultTheme
             }

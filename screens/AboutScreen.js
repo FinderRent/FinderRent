@@ -24,12 +24,12 @@ const AboutScreen = () => {
 
       <Text style={styles.paragraph}>
         Welcome to our application, developed as part of our final project at
-        the SCE College named after Sami Shimon. Our innovative project is
-        designed to revolutionize the way students find apartments for rent in
-        academic areas. Our application addresses the challenges of traditional
-        apartment search methods, replacing the cumbersome process of sifting
-        through Facebook groups, social networks, and other outdated channels
-        with a modern, efficient solution.
+        the SCE College. Our innovative project is designed to revolutionize the
+        way students find apartments for rent in academic areas. Our application
+        addresses the challenges of traditional apartment search methods,
+        replacing the cumbersome process of sifting through Facebook groups,
+        social networks, and other outdated channels with a modern, efficient
+        solution.
       </Text>
       <Text style={styles.paragraph}>
         Our platform is specifically tailored for students and apartment owners
