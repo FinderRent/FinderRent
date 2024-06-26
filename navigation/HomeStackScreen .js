@@ -7,6 +7,7 @@ import { useDarkMode } from "../context/DarkModeContext";
 import HomeScreen from "../screens/HomeScreen";
 import HouseDetailsScreen from "../screens/HouseDetailsScreen";
 import FilterScreen from "../screens/FilterScreen";
+import StudentProfileScreen from "../screens/StudentProfileScreen";
 
 const HomeStack = createNativeStackNavigator();
 
@@ -72,6 +73,13 @@ function HomeStackScreen({ navigation }) {
               />
             </TouchableOpacity>
           ),
+        }}
+      />
+      <HomeStack.Screen
+        name="StudentProfileScreen"
+        component={StudentProfileScreen}
+        options={{
+          headerTintColor: isDarkMode ? Color.white : Color.darkTheme,
         }}
       />
     </HomeStack.Navigator>

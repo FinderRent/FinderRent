@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import { Animated, StyleSheet, View, I18nManager } from "react-native";
 import { RectButton, Swipeable } from "react-native-gesture-handler";
 import { FontAwesome6 } from "@expo/vector-icons";
+
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 
@@ -54,7 +55,7 @@ const SwipeableRow = ({ children, onDelete }) => {
           <FontAwesome6
             name={icon}
             size={24}
-            color={isDarkMode ? Color.darkTheme : Color.darkTheme}
+            color={isDarkMode ? Color.darkTheme : Color.defaultTheme}
           />
         </RectButton>
       </Animated.View>
@@ -116,7 +117,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 10,
     marginBottom: 10,
-    // borderRadius: 10,
+    borderRadius: 10,
+    // borderBottomLeftRadius: 10,
+    // borderTopLeftRadius: 10,
   },
 });
 

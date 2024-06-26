@@ -28,9 +28,10 @@ function useUsers() {
   const [department, setDepartment] = useState(null);
   const [yearbook, setYearbook] = useState(null);
   const [gender, setGender] = useState(null);
+  const [hobbies, setHobbies] = useState(null);
+  const [funFact, setFunFact] = useState(null);
   const [email, setEmail] = useState(null);
   const [avatar, setAvatar] = useState(null);
-  const [favouriteApartments, setFavouriteApartments] = useState([null]);
 
   // Function to login the user and save data to AsyncStorage
   const login = useCallback((data, token) => {
@@ -49,9 +50,10 @@ function useUsers() {
         yearbook,
         phone,
         gender,
+        hobbies,
+        funFact,
         email,
         avatar,
-        favouriteApartments,
       } = data;
 
       setToken(token);
@@ -63,13 +65,14 @@ function useUsers() {
       setAge(age);
       setPhone(phone);
       setAcademic(academic);
-      setCoordinates(coordinates);
+      setCoordinates(JSON.stringify(coordinates));
       setDepartment(department);
       setYearbook(yearbook);
       setGender(gender);
+      setHobbies(hobbies);
+      setFunFact(funFact);
       setEmail(email);
       setAvatar(avatar);
-      setFavouriteApartments(favouriteApartments);
 
       try {
         // Save user data to AsyncStorage
@@ -106,9 +109,10 @@ function useUsers() {
       setDepartment(null);
       setYearbook(null);
       setGender(null);
+      setHobbies(null);
+      setFunFact(null);
       setEmail(null);
       setAvatar(null);
-      setFavouriteApartments([null]);
     };
 
     removeData();
@@ -158,9 +162,10 @@ function useUsers() {
     coordinates,
     department,
     yearbook,
+    hobbies,
+    funFact,
     email,
     avatar,
-    favouriteApartments,
   };
 }
 

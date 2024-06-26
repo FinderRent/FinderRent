@@ -1,22 +1,15 @@
-import { View, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
-import MapView from "react-native-maps";
-
-import { academicList } from "../../data/academic";
+import React from "react";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
+import MapView, { Marker } from "react-native-maps";
 
 const Map = (props) => {
   const handleMapPress = () => {
     props.handleMapPress();
   };
 
-  const location = academicList.find(
-    (item) => item.id === "מכללת סמי שמעון באר שבע"
-  );
-
-  // var marker = {
-  //   latitude: location.coordinates.lat,
-  //   longitude: location.coordinates.lng,
-  //   title: location.name,
-  // };
+  const street = props.apartment.address?.street;
+  const buildingNumber = props.apartment.address?.buildingNumber;
+  const apartmentNumber = props.apartment.address?.apartmentNumber;
 
   return (
     <TouchableOpacity activeOpacity={1} style={styles.mapWindow}>
@@ -27,15 +20,23 @@ const Map = (props) => {
           zoomEnabled={props.zoomEnabled}
           scrollEnabled={props.scrollEnabled}
           initialRegion={{
-            latitude: 31.2516416588409,
-            longitude: 34.78916604217377,
-            latitudeDelta: 0.0043,
-            longitudeDelta: 0.0034,
+            latitude: props?.coordinates?.latitude,
+            longitude: props?.coordinates?.longitude,
+            latitudeDelta: 0.002,
+            longitudeDelta: 0.002,
           }}
-          // userLocationUpdateInterval={
-          //   academicList.filter("מכללת סמי שמעון באר שבע").coordinates
-          // }
-        />
+        >
+          {props.coordinates && (
+            <Marker
+              coordinate={{
+                latitude: props.coordinates.latitude,
+                longitude: props.coordinates.longitude,
+              }}
+              title={street}
+              description={`Apartment Number: ${buildingNumber}/${apartmentNumber}`}
+            />
+          )}
+        </MapView>
       </View>
     </TouchableOpacity>
   );

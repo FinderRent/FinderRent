@@ -2,6 +2,7 @@ import { ADDRESS } from "@env";
 
 async function addMessages(message) {
   const { senderId, messageText, chatId, replyingTo, tempImageUri } = message;
+
   try {
     const formData = new FormData();
 

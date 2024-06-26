@@ -59,15 +59,11 @@ function HouseList({
   //render the apartment card
   const renderApartmentCard = ({ item: apartment }) => {
     return (
-      <TouchableOpacity
-        onPress={() => navigation.navigate("HouseDetailsScreen", { apartment })}
-      >
-        <HouseCard
-          navigation={navigation}
-          apartment={apartment}
-          userData={userData}
-        />
-      </TouchableOpacity>
+      <HouseCard
+        navigation={navigation}
+        apartment={apartment}
+        userData={userData}
+      />
     );
   };
 
@@ -130,7 +126,7 @@ export default HouseList;
 const styles = StyleSheet.create({
   absoluteView: {
     position: "absolute",
-    bottom: 10,
+    bottom: Platform.OS === "android" ? 10 : 100,
     width: "100%",
     alignItems: "center",
   },

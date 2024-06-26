@@ -1,5 +1,5 @@
 import { memo, useEffect, useRef } from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Platform } from "react-native";
 import { Text } from "react-native-paper";
 import { Marker } from "react-native-maps";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -115,7 +115,7 @@ const ListingsMap = memo(({ navigation, listings, coordinates }) => {
   return (
     <View style={styles.container}>
       <MapView
-        provider={PROVIDER_GOOGLE}
+        // provider={PROVIDER_GOOGLE}
         ref={mapRef}
         animationEnabled={false}
         style={styles.map}
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
   },
   locateBtn: {
     position: "absolute",
-    top: "85%",
+    top: Platform.OS === "android" ? "85%" : "75%",
     right: 20,
     backgroundColor: "#fff",
     padding: 10,

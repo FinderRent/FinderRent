@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { FlatList, StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
@@ -7,6 +7,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import moment from "moment";
 
 import { Color } from "../constants/colors";
+import { useDarkMode } from "../context/DarkModeContext";
 import { useUsers } from "../context/UserContext";
 import ErrorMessage from "../components/ui/ErrorMessage";
 import Loader from "../components/ui/Loader";
@@ -15,6 +16,8 @@ import fetchChatsList from "../api/chats/fetchChatsList";
 
 function ChatListScreen({ navigation }) {
   const { userData } = useUsers();
+  const { isDarkMode } = useDarkMode();
+  const [searchQuery, setSearchQuery] = useState("");
 
   const { data, error, isLoading, refetch } = useQuery({
     queryKey: ["chatList", userData.id],
@@ -24,8 +27,14 @@ function ChatListScreen({ navigation }) {
   useEffect(() => {
     navigation.setOptions({
       headerShown: true,
+      headerSearchBarOptions: {
+        placeholder: "Search Chat",
+        onChangeText: (event) => {
+          setSearchQuery(event.nativeEvent.text);
+        },
+      },
     });
-  }, []);
+  }, [navigation]);
 
   useFocusEffect(
     useCallback(() => {
@@ -37,7 +46,12 @@ function ChatListScreen({ navigation }) {
   );
 
   if (isLoading) {
-    return <Loader color={Color.Blue500} size={30} />;
+    return (
+      <Loader
+        color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+        size={30}
+      />
+    );
   }
 
   if (error) {
@@ -66,6 +80,7 @@ function ChatListScreen({ navigation }) {
   return (
     <View>
       <FlatList
+        keyboardDismissMode="on-drag"
         data={sortedChats}
         keyExtractor={(item) => item._id}
         renderItem={(itemData) => {
@@ -89,6 +104,7 @@ function ChatListScreen({ navigation }) {
               chatId={chatId}
               lastMessage={lastMessage}
               time={time}
+              searchUser={searchQuery}
             />
           );
         }}

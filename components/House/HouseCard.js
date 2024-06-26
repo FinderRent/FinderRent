@@ -55,34 +55,39 @@ const HouseCard = ({ navigation, apartment, userData }) => {
           />
         )}
       </TouchableOpacity>
-      <Animated.View style={styles.imagesContainer}>
-        <Carousel
-          // mode="parallax"
-          width={width}
-          height={250}
-          autoPlay={false}
-          data={images}
-          // scrollAnimationDuration={1000}
-          onSnapToItem={(index) => setCurrentIndex(index)}
-          renderItem={({ item }) => (
-            <View style={styles.imageWrapper}>
-              <Image source={{ uri: item }} style={styles.image} />
-            </View>
-          )}
-        />
-        <Indicators images={images} currentIndex={currentIndex} />
-      </Animated.View>
-      <View style={styles.detailsContainer}>
-        <View style={styles.addressContainer}>
-          <Text style={styles.city}>{apartment.address.city}</Text>
-          <Text style={styles.street}>
-            {apartment.address.street} {apartment.address.buildingNumber}/
-            {apartment.address.apartmentNumber}
-          </Text>
-          <Text style={styles.distance}>{apartment.distanceFromAcademy}</Text>
+      <TouchableOpacity
+        activeOpacity={0.7}
+        onPress={() => navigation.navigate("HouseDetailsScreen", { apartment })}
+      >
+        <Animated.View style={styles.imagesContainer}>
+          <Carousel
+            // mode="parallax"
+            width={width}
+            height={250}
+            autoPlay={false}
+            data={images}
+            // scrollAnimationDuration={1000}
+            onSnapToItem={(index) => setCurrentIndex(index)}
+            renderItem={({ item }) => (
+              <View style={styles.imageWrapper}>
+                <Image source={{ uri: item }} style={styles.image} />
+              </View>
+            )}
+          />
+          <Indicators images={images} currentIndex={currentIndex} />
+        </Animated.View>
+        <View style={styles.detailsContainer}>
+          <View style={styles.addressContainer}>
+            <Text style={styles.city}>{apartment.address.city}</Text>
+            <Text style={styles.street}>
+              {apartment.address.street} {apartment.address.buildingNumber}/
+              {apartment.address.apartmentNumber}
+            </Text>
+            <Text style={styles.distance}>{apartment.distanceFromAcademy}</Text>
+          </View>
+          <Text style={styles.price}>{apartment.price}$</Text>
         </View>
-        <Text style={styles.price}>{apartment.price}$</Text>
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };

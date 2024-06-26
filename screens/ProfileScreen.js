@@ -14,7 +14,6 @@ const ProfileScreen = ({ navigation }) => {
 
   const { userData } = useUsers();
   const isFocused = useIsFocused();
-
   const userType =
     userData?.userType?.charAt(0).toUpperCase() +
     userData?.userType?.slice(1).toLowerCase();
@@ -107,17 +106,48 @@ const ProfileScreen = ({ navigation }) => {
           </View>
         </View>
       )}
+
+      {userData.userType === "student" && (
+        <View>
+          <View style={styles.info}>
+            <Text style={styles.infoTitle}>Personal Info</Text>
+          </View>
+
+          <View style={styles.userInfoSection}>
+            <View style={styles.row}>
+              <Icon name="controller-classic" color={Color.icon} size={20} />
+              <Text style={styles.text}>
+                My Hobbies:{" "}
+                {userData.hobbies ? userData.hobbies : "Add your hobbies"}
+              </Text>
+            </View>
+
+            <View style={styles.row}>
+              <Icon name="beer" color={Color.icon} size={20} />
+              <Text style={styles.text}>
+                Fun Fact: {userData.funFact ? userData.funFact : "Empty"}
+              </Text>
+            </View>
+          </View>
+        </View>
+      )}
+
       <View style={styles.info}>
         <Text style={styles.infoTitle}>Other</Text>
       </View>
 
       <View style={styles.menuWrapper}>
-        <TouchableRipple onPress={() => navigation.navigate("FavoritesScreen")}>
-          <View style={styles.menuItem}>
-            <Icon name="heart-outline" color={Color.icon} size={25} />
-            <Text style={styles.menuItemText}>Favorites</Text>
-          </View>
-        </TouchableRipple>
+        {userData?.userType === "student" && (
+          <TouchableRipple
+            onPress={() => navigation.navigate("FavoritesScreen")}
+          >
+            <View style={styles.menuItem}>
+              <Icon name="heart-outline" color={Color.icon} size={25} />
+              <Text style={styles.menuItemText}>Favorites</Text>
+            </View>
+          </TouchableRipple>
+        )}
+
         <TouchableRipple onPress={() => navigation.navigate("SecurityScreen")}>
           <View style={styles.menuItem}>
             <Icon name="shield-lock-outline" color={Color.icon} size={25} />
@@ -143,20 +173,20 @@ const styles = StyleSheet.create({
   },
   userInfoSection: {
     paddingHorizontal: 30,
-    marginBottom: 25,
+    marginBottom: 20,
   },
   avatar: {
     alignItems: "center",
-    marginTop: 20,
+    marginTop: 10,
   },
   title: {
     marginTop: 5,
-    marginBottom: 25,
+    marginBottom: 15,
     fontSize: 24,
     fontWeight: "bold",
   },
   info: {
-    marginBottom: 20,
+    marginBottom: 10,
     marginHorizontal: 30,
     marginTop: -20,
     borderBottomWidth: 0.6,
@@ -180,7 +210,7 @@ const styles = StyleSheet.create({
   },
 
   menuWrapper: {
-    marginTop: -15,
+    marginTop: -10,
   },
   menuItem: {
     flexDirection: "row",

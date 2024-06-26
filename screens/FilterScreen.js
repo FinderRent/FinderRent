@@ -66,6 +66,7 @@ const FilterScreen = ({ navigation, route }) => {
   const [openCard, setOpenCard] = useState(0);
 
   const [sortApartments, setSort] = useState("");
+  const [distance, setDistance] = useState(filtersValues?.distance ?? 0.1);
   const [selectedType, setSelectedType] = useState(0);
   const [filters, setFilters] = useState(moreFilters);
 
@@ -82,6 +83,7 @@ const FilterScreen = ({ navigation, route }) => {
       count: 0,
     }));
     setSort("");
+    setDistance(0.1);
     setFilters(resetFilters);
     setSelectedType(0);
     setOpenCard(0);
@@ -118,7 +120,6 @@ const FilterScreen = ({ navigation, route }) => {
           break;
       }
     }
-
     // const resetFilters = moreFilters.map((filter) => ({
     //   ...filter,
     //   count: filtersValues?.numberOfRooms,
@@ -155,6 +156,7 @@ const FilterScreen = ({ navigation, route }) => {
 
     navigation.navigate("HomeScreen", {
       sort,
+      distance,
       category,
       apartmentFilters,
     });
@@ -199,6 +201,7 @@ const FilterScreen = ({ navigation, route }) => {
           </Animated.View>
         )}
       </View>
+
       <View
         style={
           isDarkMode
@@ -213,6 +216,95 @@ const FilterScreen = ({ navigation, route }) => {
             entering={FadeIn.duration(200)}
             exiting={FadeOut.duration(200)}
           >
+            <Text style={styles.previewText}>Distance</Text>
+            <Text style={styles.previewdData}>{distance}km</Text>
+          </AnimatedTouchableOpacity>
+        )}
+
+        {openCard === 1 && (
+          <Text style={styles.cardHeader}>Distance From Academy</Text>
+        )}
+        {openCard === 1 && (
+          <Animated.View style={styles.cardBody}>
+            <View style={styles.filterItem}>
+              <View>
+                <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+                  Distance In Km
+                </Text>
+                <Text style={{ fontSize: 14, color: Color.extraGray }}>
+                  select distance from academy
+                </Text>
+              </View>
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  gap: 2,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <TouchableOpacity
+                  onPress={() =>
+                    setDistance((prev) =>
+                      Math.max(0.1, parseFloat((prev - 0.1).toFixed(1)))
+                    )
+                  }
+                >
+                  <Ionicons
+                    name="remove-circle-outline"
+                    size={24}
+                    color={
+                      distance > 0.1
+                        ? isDarkMode
+                          ? Color.defaultTheme
+                          : Color.darkTheme
+                        : isDarkMode
+                        ? "#2e2e2e"
+                        : "#cdcdcd"
+                    }
+                  />
+                </TouchableOpacity>
+                <Text
+                  style={{
+                    fontSize: 14,
+                    minWidth: 18,
+                    textAlign: "center",
+                  }}
+                >
+                  {`${distance.toFixed(1)}km`}
+                </Text>
+                <TouchableOpacity
+                  onPress={() =>
+                    setDistance((prev) => parseFloat((prev + 0.1).toFixed(1)))
+                  }
+                >
+                  <Ionicons
+                    name="add-circle-outline"
+                    size={24}
+                    color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Animated.View>
+        )}
+      </View>
+
+      <View
+        style={
+          isDarkMode
+            ? { ...styles.card, backgroundColor: Color.buttomSheetDarkTheme }
+            : styles.card
+        }
+      >
+        {openCard !== 2 && (
+          <AnimatedTouchableOpacity
+            onPress={() => setOpenCard(2)}
+            style={styles.cardPreview}
+            entering={FadeIn.duration(200)}
+            exiting={FadeOut.duration(200)}
+          >
             <Text style={styles.previewText}>Apartment Type</Text>
             <Text style={styles.previewdData}>
               {categories[selectedType].name}
@@ -220,10 +312,10 @@ const FilterScreen = ({ navigation, route }) => {
           </AnimatedTouchableOpacity>
         )}
 
-        {openCard === 1 && (
+        {openCard === 2 && (
           <Text style={styles.cardHeader}>Apartment Type</Text>
         )}
-        {openCard === 1 && (
+        {openCard === 2 && (
           <Animated.View
             entering={FadeIn}
             exiting={FadeOut}
@@ -278,9 +370,9 @@ const FilterScreen = ({ navigation, route }) => {
             : styles.card
         }
       >
-        {openCard !== 2 && (
+        {openCard !== 3 && (
           <AnimatedTouchableOpacity
-            onPress={() => setOpenCard(2)}
+            onPress={() => setOpenCard(3)}
             style={styles.cardPreview}
             entering={FadeIn.duration(200)}
             exiting={FadeOut.duration(200)}
@@ -290,10 +382,10 @@ const FilterScreen = ({ navigation, route }) => {
           </AnimatedTouchableOpacity>
         )}
 
-        {openCard === 2 && (
+        {openCard === 3 && (
           <Text style={styles.cardHeader}>Apartment Filters</Text>
         )}
-        {openCard === 2 && (
+        {openCard === 3 && (
           <Animated.View style={styles.cardBody}>
             {filters.map((item, index) => (
               <View

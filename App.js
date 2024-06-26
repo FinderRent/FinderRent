@@ -6,6 +6,7 @@ import { I18nManager } from "react-native";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MenuProvider } from "react-native-popup-menu";
 import Toast from "react-native-toast-message";
+import FlashMessage from "react-native-flash-message";
 
 import { UserContext, useUsers } from "./context/UserContext";
 import { DarkModeProvider } from "./context/DarkModeContext";
@@ -46,8 +47,9 @@ export default function App() {
     coordinates,
     department,
     yearbook,
+    hobbies,
+    funFact,
     email,
-    favouriteApartments,
   } = useUsers();
 
   useEffect(() => {
@@ -101,8 +103,9 @@ export default function App() {
               coordinates,
               department,
               yearbook,
+              hobbies,
+              funFact,
               email,
-              favouriteApartments,
             }}
           >
             <FavoritesContextProvider userId={id}>
@@ -110,6 +113,7 @@ export default function App() {
                 <AuthStackScreens />
               </MenuProvider>
               <Toast />
+              <FlashMessage position="top" />
             </FavoritesContextProvider>
           </UserContext.Provider>
         </QueryClientProvider>

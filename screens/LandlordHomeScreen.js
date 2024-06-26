@@ -1,7 +1,7 @@
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   StyleSheet,
   SafeAreaView,
@@ -9,6 +9,7 @@ import {
   Platform,
   TouchableOpacity,
   View,
+  Keyboard,
 } from "react-native";
 import { Text } from "react-native-paper";
 import { StatusBar } from "expo-status-bar";
@@ -24,11 +25,12 @@ import SignInHeader from "../components/SignInHeader";
 import Loader from "../components/ui/Loader";
 import { fetchAllApartments } from "./../utils/http";
 import AddApartmentButton from "../components/ui/AddApartmentButton";
+import AddApartmentScreen from "./AddApartmentScreen";
+import BottomSheet from "@gorhom/bottom-sheet";
+import { useFocusEffect } from "@react-navigation/native";
 
-// function to get Permissions for PushNotifications
 async function registerForPushNotificationsAsync() {
   let token;
-
   if (Platform.OS === "android") {
     Notifications.setNotificationChannelAsync("default", {
       name: "default",
@@ -37,7 +39,6 @@ async function registerForPushNotificationsAsync() {
       lightColor: "#FF231F7C",
     });
   }
-
   if (Device.isDevice) {
     const { status: existingStatus } =
       await Notifications.getPermissionsAsync();
@@ -53,42 +54,38 @@ async function registerForPushNotificationsAsync() {
     token = await Notifications.getExpoPushTokenAsync({
       projectId: Constants.expoConfig.extra.eas.projectId,
     });
-
     return token.data;
   } else {
     console.log("Must use physical device for Push Notifications");
     return;
   }
 }
-
 function LandlordHomeScreen({ navigation }) {
   const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
   const tabBarHeight = useBottomTabBarHeight();
-
   const token = userData.token;
-  // const coordinates = JSON.parse(userData?.coordinates);
-
-  const [category, setCategory] = useState("All");
 
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
+  const [addButtonPress, setAddButtonPress] = useState(false);
+  const [sheetIndex, setSheetIndex] = useState(-1); // -1 means closed
+  const bottomSheetRef = useRef(null);
 
   const notificationListener = useRef();
   const responseListener = useRef();
 
-  //----------------------------------------------------------------------
   const {
     data: apartments,
     isLoading: isLoadingApartments,
     isError: isErrorApartments,
     status: statusApartments,
+    refetch,
   } = useQuery({
     queryKey: ["apartments"],
     queryFn: () => fetchAllApartments({ owner: userData.id }),
   });
 
-  //getting curreny user data
   const {
     data: user,
     isLoading: isLoadingUser,
@@ -99,29 +96,28 @@ function LandlordHomeScreen({ navigation }) {
     queryFn: () => fetchUser(userData.id),
   });
 
-  //render the apartment card
+  useFocusEffect(
+    useCallback(() => {
+      refetch();
+    }, [refetch])
+  );
+
   const renderApartmentCard = ({ item: apartment }) => {
-    let isFavourite = false;
-    userData.favouriteApartments.forEach((element) => {
-      if (apartment._id == element) {
-        isFavourite = true;
-      }
-    });
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate("HouseDetailsScreen", { apartment })}
+        onPress={() =>
+          navigation.navigate("LandlordHouseDetailsScreen", { apartment })
+        }
       >
         <LandlordHouseCard
           navigation={navigation}
           apartment={apartment}
           userData={userData}
-          isFavourite={isFavourite}
         />
       </TouchableOpacity>
     );
   };
 
-  //----------------------------------------------------------------------
   useEffect(() => {
     registerForPushNotificationsAsync().then((pushToken) =>
       setExpoPushToken(pushToken)
@@ -132,7 +128,6 @@ function LandlordHomeScreen({ navigation }) {
         setNotification(notification);
       });
 
-    // handle pressing the notifications
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
         const { data } = response.notification.request.content;
@@ -165,6 +160,22 @@ function LandlordHomeScreen({ navigation }) {
     };
   }, [notificationListener, token]);
 
+  const handleAddButtonPress = () => {
+    setAddButtonPress((prevState) => !prevState);
+    refetch();
+  };
+
+  const snapPoints = useMemo(
+    () => (Platform.OS === "ios" ? ["14%", "90%"] : ["3%", "76%"]),
+    []
+  );
+
+  const handleSheetChanges = (index) => {
+    setSheetIndex(index);
+  };
+
+  if (isLoadingApartments) return <Loader />;
+
   return (
     <SafeAreaView
       style={{
@@ -182,7 +193,18 @@ function LandlordHomeScreen({ navigation }) {
         keyExtractor={(item) => item._id}
         renderItem={renderApartmentCard}
       />
-      <AddApartmentButton style={styles.addApartmentButton} />
+      <BottomSheet
+        ref={bottomSheetRef}
+        snapPoints={snapPoints}
+        onChange={handleSheetChanges}
+        index={addButtonPress ? 1 : 0}
+      >
+        <AddApartmentScreen handleAddButtonPress={handleAddButtonPress} />
+      </BottomSheet>
+      <AddApartmentButton
+        style={styles.addApartmentButton}
+        handleAddButtonPress={handleAddButtonPress}
+      />
     </SafeAreaView>
   );
 }
@@ -199,7 +221,7 @@ const styles = StyleSheet.create({
   PropertiesHeader: {
     fontSize: 30,
     fontWeight: "bold",
-    marginLeft: "6%",
+    marginHorizontal: "5%",
   },
   sheetContainer: {
     elevation: 4,
@@ -212,7 +234,7 @@ const styles = StyleSheet.create({
     },
   },
   addApartmentButton: {
-    bottom: "22%",
+    bottom: Platform.OS === "ios" ? "22%" : "12%",
     right: "15%",
   },
 });

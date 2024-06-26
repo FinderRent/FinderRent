@@ -48,6 +48,8 @@ function EditProfileScreen({ navigation }) {
   const [coordinates, setCoordinates] = useState(userData.coordinates);
   const [department, setDepartment] = useState(userData.department);
   const [yearbook, setYearbook] = useState(userData.yearbook);
+  const [hobbies, setHobbies] = useState(userData.hobbies);
+  const [funFact, setFunFact] = useState(userData.funFact);
   const [email, setEmail] = useState(userData.email);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
@@ -92,6 +94,8 @@ function EditProfileScreen({ navigation }) {
       coordinates,
       department,
       yearbook,
+      hobbies,
+      funFact,
       email,
       token,
     }) =>
@@ -106,6 +110,8 @@ function EditProfileScreen({ navigation }) {
         coordinates,
         department,
         yearbook,
+        hobbies,
+        funFact,
         email,
         token,
       }),
@@ -116,6 +122,9 @@ function EditProfileScreen({ navigation }) {
         text1: "Profile successfully updated",
       });
       navigation.goBack();
+    },
+    onError: (err) => {
+      console.log(err.message);
     },
   });
 
@@ -131,6 +140,8 @@ function EditProfileScreen({ navigation }) {
       coordinates,
       department,
       yearbook,
+      hobbies,
+      funFact,
       email,
       token,
     });
@@ -283,6 +294,7 @@ function EditProfileScreen({ navigation }) {
             </View>
           </View>
         )}
+
         <View style={styles.textInput}>
           <Input
             label={email ? "" : "Email"}
@@ -292,28 +304,46 @@ function EditProfileScreen({ navigation }) {
             keyboardType="email-address"
             onValueChange={(selectedemail) => setEmail(selectedemail)}
           />
-
-          {isError && <ErrorMessage errorMessage={error.message} />}
-
-          <Spacer>
-            <Button
-              style={{ marginTop: 10 }}
-              textColor={
-                isDarkMode ? Color.buttomSheetDarkTheme : Color.defaultTheme
-              }
-              buttonColor={
-                isDarkMode ? Color.defaultTheme : Color.buttomSheetDarkTheme
-              }
-              mode="contained"
-              onPress={handleUpdateUser}
-              loading={isPending}
-            >
-              {!isPending && "Update    "}
-            </Button>
-          </Spacer>
-          <NavLink text="Back    " style={{ marginTop: -5, fontSize: 14 }} />
         </View>
-        <View style={{ marginTop: 45 }}></View>
+
+        <View style={styles.textInput}>
+          <Input
+            label={hobbies ? "" : "what your hobbies?"}
+            value={hobbies ? hobbies : ""}
+            left={<TextInput.Icon icon={"controller-classic"} />}
+            mode="outlined"
+            onValueChange={(selectedHobbies) => setHobbies(selectedHobbies)}
+          />
+        </View>
+        <View style={styles.textInput}>
+          <Input
+            label={funFact ? "" : "tell us fun fact..."}
+            value={funFact ? funFact : ""}
+            left={<TextInput.Icon icon={"beer"} />}
+            mode="outlined"
+            onValueChange={(selectedFunFact) => setFunFact(selectedFunFact)}
+          />
+        </View>
+        {isError && <ErrorMessage errorMessage={error.message} />}
+
+        <Spacer>
+          <Button
+            style={{ marginTop: 10, marginHorizontal: 15 }}
+            textColor={
+              isDarkMode ? Color.buttomSheetDarkTheme : Color.defaultTheme
+            }
+            buttonColor={
+              isDarkMode ? Color.defaultTheme : Color.buttomSheetDarkTheme
+            }
+            mode="contained"
+            onPress={handleUpdateUser}
+            loading={isPending}
+          >
+            {!isPending && "Update    "}
+          </Button>
+        </Spacer>
+        <NavLink text="Back    " style={{ marginTop: -5, fontSize: 14 }} />
+        <View style={{ marginTop: 65 }}></View>
 
         <BottomSheetModal
           ref={bottomSheetModalRef}

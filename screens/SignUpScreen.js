@@ -51,7 +51,6 @@ function SignUpScreen({ navigation }) {
     value: item.id,
     coordinates: item.coordinates,
   }));
-
   // List of year options for DropDown component
   const listYear = [
     { label: "Preparing", value: "Preparing" },

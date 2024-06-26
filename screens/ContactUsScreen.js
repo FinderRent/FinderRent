@@ -58,7 +58,9 @@ function ContactUsScreen({ navigation }) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ImageBackground
-        source={require("../assets/images/home-background.jpg")}
+        source={{
+          uri: "https://t4.ftcdn.net/jpg/04/85/71/61/360_F_485716154_uUQPWArGtO1TWsdIRQEV2gzTifkYOCjz.jpg",
+        }}
         resizeMode="cover"
         style={{ flex: 1 }}
       >
