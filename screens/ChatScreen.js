@@ -168,20 +168,22 @@ function ChatScreen({ navigation, route }) {
     (message) => message.messageText === "image"
   ).length;
 
-  const { mutate: handleCreateChat } = useMutation({
-    mutationFn: ({ senderId, receiverId }) => newChat({ senderId, receiverId }),
-    onSuccess: async (newChat) => {
-      handleUpdateChat({ messageText: templateMessage, chatId: newChat._id });
-      handleAddMessages({
-        ...message,
-        chatId: newChat._id,
-        messageText: templateMessage,
-      });
-      setChatId(newChat._id);
-      setTemplateMessage("");
-    },
-    onError: (err) => console.log(err.message),
-  });
+  const { mutate: handleCreateChat, isPending: isPendingCreateChat } =
+    useMutation({
+      mutationFn: ({ senderId, receiverId }) =>
+        newChat({ senderId, receiverId }),
+      onSuccess: async (newChat) => {
+        handleUpdateChat({ messageText: templateMessage, chatId: newChat._id });
+        handleAddMessages({
+          ...message,
+          chatId: newChat._id,
+          messageText: templateMessage,
+        });
+        setChatId(newChat._id);
+        setTemplateMessage("");
+      },
+      onError: (err) => console.log(err.message),
+    });
 
   const {
     mutate: handleAddMessages,
@@ -295,9 +297,9 @@ function ChatScreen({ navigation, route }) {
             {chatId && (
               <FlatList
                 ref={scrollRef}
-                inverted={data?.length > 7 - imageMessage * 2.5 ? true : false}
+                inverted={data?.length > 4 - imageMessage * 2.5 ? true : false}
                 data={
-                  data?.length > 7 - imageMessage * 2.5
+                  data?.length > 4 - imageMessage * 2.5
                     ? data && [...data].reverse()
                     : data
                 }
@@ -504,6 +506,12 @@ function ChatScreen({ navigation, route }) {
                 numberOfLines={8}
                 textAlignVertical="top"
               />
+              {isPendingAddMessages && (
+                <ActivityIndicator
+                  style={{ marginTop: 10 }}
+                  color={Color.Blue700}
+                />
+              )}
             </View>
           }
         />
