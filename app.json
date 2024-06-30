@@ -23,7 +23,7 @@
       },
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyAug_lrfsNi4uO2eEEVmFidP5f0t2iQbOk"
+          "apiKey": "AIzaSyDYInyCvJ1WQjqJohhMx2OnxioXWAvy39s"
         }
       },
       "permissions": ["android.permission.RECORD_AUDIO"],
