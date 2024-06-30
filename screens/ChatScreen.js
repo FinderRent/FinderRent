@@ -248,8 +248,8 @@ function ChatScreen({ navigation, route }) {
 
   const getBackgroundImage = (isDarkMode) => {
     return isDarkMode
-      ? require("../assets/images/ChatDarkBackground.jpg")
-      : require("../assets/images/ChatWhiteBackground.jpg");
+      ? "https://res.cloudinary.com/finderent/image/upload/v1719761539/ChatDarkBackground_mncoiv.jpg"
+      : "https://res.cloudinary.com/finderent/image/upload/v1719761540/ChatWhiteBackground_eormwx.jpg";
   };
 
   if (!firstChat) {
@@ -276,7 +276,7 @@ function ChatScreen({ navigation, route }) {
         keyboardVerticalOffset={100}
       >
         <ImageBackground
-          // source={getBackgroundImage(isDarkMode)}
+          source={{ uri: getBackgroundImage(isDarkMode) }}
           // style={styles.backgroundImage}
           style={
             isDarkMode

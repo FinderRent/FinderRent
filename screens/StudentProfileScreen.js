@@ -45,39 +45,39 @@ function StudentProfileScreen(props) {
           <View style={styles.imageContainer}>
             <Image
               source={{
-                uri: user.avatar?.url,
+                uri: user?.avatar?.url,
               }}
               style={styles.image}
               resizeMode="cover"
             />
           </View>
           <View style={styles.contentContainer}>
-            <Text style={styles.name}>{user.firstName}</Text>
+            <Text style={styles.name}>{user?.firstName}</Text>
             <Text style={styles.role}>Student</Text>
           </View>
         </View>
         <View style={styles.detailsContainer}>
           <Icon name="school" size={35} />
-          <Text style={styles.funFactText}>{user.academic}</Text>
+          <Text style={styles.funFactText}>Academic: {user?.academic}</Text>
         </View>
         <View style={styles.detailsContainer}>
           <Icon name="today" size={35} />
-          <Text style={styles.funFactText}>{user.department}</Text>
+          <Text style={styles.funFactText}>Department: {user?.department}</Text>
         </View>
         <View style={styles.detailsContainer}>
           <Icon name="body-sharp" size={35} />
-          <Text style={styles.funFactText}>Age: {user.age}</Text>
+          <Text style={styles.funFactText}>Age: {user?.age}</Text>
         </View>
         <View style={styles.detailsContainer}>
           <Icon name="game-controller-sharp" size={35} />
           <Text style={styles.funFactText}>
-            Hobbies: {user.hobbies ? user.hobbies : "Empty"}
+            Hobbies: {user?.hobbies ? user?.hobbies : "Empty"}
           </Text>
         </View>
         <View style={styles.detailsContainer}>
           <Icon name="beer" size={35} />
           <Text style={styles.funFactText}>
-            Fun Fact: {user.funFact ? user.funFact : "Empty"}
+            Fun Fact: {user?.funFact ? user?.funFact : "Empty"}
           </Text>
         </View>
 

@@ -299,15 +299,8 @@ const HouseDetailsScreen = ({ navigation, route }) => {
           {apartment.tenants && (
             <Text style={styles.about}>Current tenants</Text>
           )}
-          {apartment.tenants?.map((tenant) => (
-            <TouchableOpacity
-              key={tenant}
-              onPress={() =>
-                navigation.navigate("StudentProfileScreen", { tenant })
-              }
-            >
-              <RoommatesInfo tenant={tenant} />
-            </TouchableOpacity>
+          {apartment?.tenants?.map((tenant) => (
+            <RoommatesInfo key={tenant} tenant={tenant} />
           ))}
         </View>
       </Animated.ScrollView>
