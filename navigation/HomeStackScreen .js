@@ -79,6 +79,7 @@ function HomeStackScreen({ navigation }) {
         name="StudentProfileScreen"
         component={StudentProfileScreen}
         options={{
+          headerShown: false,
           headerTintColor: isDarkMode ? Color.white : Color.darkTheme,
         }}
       />
