@@ -7,9 +7,9 @@ function MapModal(props) {
     props.handleMapPress();
   };
 
-  const street = props.apartment.address?.street;
-  const buildingNumber = props.apartment.address?.buildingNumber;
-  const apartmentNumber = props.apartment.address?.apartmentNumber;
+  const street = props?.apartment?.address?.street;
+  const buildingNumber = props?.apartment?.address?.buildingNumber;
+  const apartmentNumber = props?.apartment?.address?.apartmentNumber;
 
   return (
     <Modal visible={true} transparent={true} animationType="fade">
@@ -17,8 +17,8 @@ function MapModal(props) {
         <View style={styles.modalContainer}>
           <MapView
             initialRegion={{
-              latitude: props.coordinates.latitude,
-              longitude: props.coordinates.longitude,
+              latitude: props?.coordinates?.latitude,
+              longitude: props?.coordinates?.longitude,
               latitudeDelta: 0.001,
               longitudeDelta: 0.001,
             }}
@@ -26,8 +26,8 @@ function MapModal(props) {
           >
             <Marker
               coordinate={{
-                latitude: props.coordinates.latitude,
-                longitude: props.coordinates.longitude,
+                latitude: props?.coordinates.latitude,
+                longitude: props?.coordinates.longitude,
               }}
               title={street}
               description={`Apartment Number: ${buildingNumber}/${apartmentNumber}`}
