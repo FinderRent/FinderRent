@@ -2,13 +2,7 @@ import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
 import { useCallback, useEffect, useRef, useState } from "react";
-import {
-  StyleSheet,
-  SafeAreaView,
-  FlatList,
-  Platform,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, SafeAreaView, FlatList, Platform } from "react-native";
 import { Text } from "react-native-paper";
 import { StatusBar } from "expo-status-bar";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
@@ -150,7 +144,8 @@ function LandlordHomeScreen({ navigation }) {
     setIsOpen((prevState) => !prevState);
   };
 
-  if (isLoadingApartments) return <Loader />;
+  if (isLoadingApartments)
+    return <Loader color={isDarkMode ? Color.defaultTheme : Color.darkTheme} />;
 
   return (
     <SafeAreaView
@@ -169,14 +164,6 @@ function LandlordHomeScreen({ navigation }) {
         keyExtractor={(item) => item._id}
         renderItem={renderApartmentCard}
       />
-      {/* <BottomSheet
-        ref={bottomSheetRef}
-        snapPoints={snapPoints}
-        onChange={handleSheetChanges}
-        index={addButtonPress ? 1 : 0}
-      >
-        <AddApartmentScreen handleAddButtonPress={handleAddButtonPress} />
-      </BottomSheet> */}
       <AddApartmentScreen
         handleAddButtonPress={handleAddButtonPress}
         bottomSheetIndex={addButtonPress}

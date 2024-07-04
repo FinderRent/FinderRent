@@ -62,7 +62,8 @@ function ChatStackScreen({ navigation, route }) {
           headerTitleStyle: { fontFamily: "varelaRound" },
           headerBackVisible: false,
           headerSearchBarOptions: {
-            placeholder: "Search Chat",
+            // headerIconColor: isDarkMode ? Color.defaultTheme : Color.darkTheme,
+            // textColor: isDarkMode ? Color.defaultTheme : Color.darkTheme,
           },
         }}
       />

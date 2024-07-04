@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   View,
   Keyboard,
+  ScrollView,
 } from "react-native";
 import { Text, Divider } from "react-native-paper";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -201,7 +202,7 @@ function AddApartmentScreen(props) {
   const bottomSheetRef = useRef(null);
 
   const snapPoints = useMemo(
-    () => (Platform.OS === "ios" ? ["14%", "90%"] : ["1%", "77%"]),
+    () => (Platform.OS === "ios" ? ["14%", "90%"] : ["3%", "77%"]),
     []
   );
 
@@ -377,10 +378,13 @@ function AddApartmentScreen(props) {
                     dropdownTextStyles={{
                       color: isDarkMode ? Color.defaultTheme : Color.darkTheme,
                     }}
+                    labelStyles={{
+                      color: isDarkMode ? Color.defaultTheme : Color.darkTheme,
+                    }}
                     dropdownShown={false}
                     search={false}
-                    setSelected={(selected) => {
-                      setSelected(selected);
+                    setSelected={(val) => {
+                      setSelected(val);
                     }}
                     data={houseAssets}
                     save="value"

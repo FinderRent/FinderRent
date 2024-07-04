@@ -8,6 +8,7 @@ import LandlordHouseDetailsScreen from "../screens/LandlordHouseDetailsScreen";
 import LandlordHomeScreen from "../screens/LandlordHomeScreen";
 import EditApartmentScreen from "../screens/EditApartmentScreen";
 import StudentProfileScreen from "../screens/StudentProfileScreen";
+import HomeScreen from "../screens/HomeScreen";
 
 const LandlordHomeStack = createNativeStackNavigator();
 
@@ -69,6 +70,13 @@ function LandlordHomeStackScreen({ navigation }) {
         component={StudentProfileScreen}
         options={{
           headerTintColor: isDarkMode ? Color.white : Color.darkTheme,
+        }}
+      />
+      <LandlordHomeStack.Screen
+        name="HomeScreen"
+        component={HomeScreen}
+        options={{
+          headerShown: false,
         }}
       />
     </LandlordHomeStack.Navigator>

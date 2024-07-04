@@ -1,60 +1,49 @@
-import * as Device from "expo-device";
-import * as Notifications from "expo-notifications";
-import Constants from "expo-constants";
-import { useEffect, useRef, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import {
-  StyleSheet,
-  SafeAreaView,
-  FlatList,
-  Platform,
-  TouchableOpacity,
-  View,
-  Keyboard,
-  Button,
-  KeyboardAvoidingView,
-} from "react-native";
-import { Text, TextInput, Divider } from "react-native-paper";
-import DropDown from "../components/inputs/DropDown";
-import { Color } from "../constants/colors";
-import { useDarkMode } from "../context/DarkModeContext";
-import { useUsers } from "../context/UserContext";
+import { useEffect, useState } from "react";
+import { StyleSheet, TouchableOpacity, View, Keyboard } from "react-native";
+import { Text, Divider } from "react-native-paper";
 import { MultipleSelectList } from "react-native-dropdown-select-list";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { showMessage } from "react-native-flash-message";
+
+import { Color } from "../constants/colors";
+import { useDarkMode } from "../context/DarkModeContext";
 import { updateEditedApartment } from "../utils/http";
-import FlashMessage, { showMessage } from "react-native-flash-message";
-import { renderNode } from "react-native-elements/dist/helpers";
+import { useUsers } from "../context/UserContext";
+import Input from "../components/inputs/Input";
+import DropDown from "../components/inputs/DropDown";
 
 function EditApartmentScreen({ route, navigation }) {
+  const { isDarkMode } = useDarkMode();
+
   const { apartment } = route.params;
 
   const { userData } = useUsers();
-  const [country, setCountry] = useState(apartment.address.country);
-  const [city, setCity] = useState(apartment.address.city);
-  const [street, setStreet] = useState(apartment.address.street);
+  const [country, setCountry] = useState(apartment?.address.country);
+  const [city, setCity] = useState(apartment?.address.city);
+  const [street, setStreet] = useState(apartment?.address.street);
   const [buildingNumber, setBuildingNumber] = useState(
-    apartment.address.buildingNumber.toString()
+    apartment?.address.buildingNumber.toString()
   );
   const [apartmentNumber, setApartmentNumber] = useState(
-    apartment.address.apartmentNumber.toString()
+    apartment?.address.apartmentNumber.toString()
   );
-  const [floor, setFloor] = useState(apartment.floor.toString());
-  const [rooms, setRooms] = useState(apartment.numberOfRooms.toString());
-  const [price, setPrice] = useState(apartment.price.toString());
+  const [floor, setFloor] = useState(apartment?.floor.toString());
+  const [rooms, setRooms] = useState(apartment?.numberOfRooms.toString());
+  const [price, setPrice] = useState(apartment?.price.toString());
   const [totalCapacity, setTotalCapacity] = useState(
-    apartment.totalCapacity.toString()
+    apartment?.totalCapacity.toString()
   );
   const [realTimeCapacity, setRealTimeCapacity] = useState(
-    apartment.realTimeCapacity.toString()
+    apartment?.realTimeCapacity.toString()
   );
   const [houseType, setHouseType] = useState(""); /////not working
   const [selected, setSelected] = useState([]); ///need to do
-  const [about, setAbout] = useState(apartment.about);
+  const [about, setAbout] = useState(apartment?.about);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [focusedInput, setFocusedInput] = useState(null);
 
   const houseTypeList = [
-    { label: "Land House", value: "Year Land House" },
+    { label: "Land House", value: "Land House" },
     { label: "Housing Unit", value: "Housing Unit" },
     { label: "Tower", value: "Tower" },
     { label: "Penthouse", value: "Penthouse" },
@@ -228,7 +217,7 @@ function EditApartmentScreen({ route, navigation }) {
           <View>
             <Text style={styles.subHeader}>Address</Text>
             <View style={styles.line}>
-              <TextInput
+              <Input
                 mode="outlined"
                 label="Country"
                 defaultValue={country}
@@ -236,7 +225,7 @@ function EditApartmentScreen({ route, navigation }) {
                 onChangeText={(country) => setCountry(country)}
                 style={styles.input}
               />
-              <TextInput
+              <Input
                 mode="outlined"
                 label="City"
                 value={city}
@@ -245,14 +234,14 @@ function EditApartmentScreen({ route, navigation }) {
               />
             </View>
             <View style={styles.line}>
-              <TextInput
+              <Input
                 mode="outlined"
                 label="Street"
                 value={street}
                 onChangeText={(street) => setStreet(street)}
                 style={styles.input}
               />
-              <TextInput
+              <Input
                 keyboardType="numeric"
                 mode="outlined"
                 label="Building Number"
@@ -264,7 +253,7 @@ function EditApartmentScreen({ route, navigation }) {
               />
             </View>
             <View style={styles.line}>
-              <TextInput
+              <Input
                 keyboardType="numeric"
                 mode="outlined"
                 label="Apartment Number"
@@ -274,7 +263,7 @@ function EditApartmentScreen({ route, navigation }) {
                 }
                 style={styles.input}
               />
-              <TextInput
+              <Input
                 keyboardType="numeric"
                 mode="outlined"
                 label="Floor"
@@ -287,7 +276,7 @@ function EditApartmentScreen({ route, navigation }) {
           <View>
             <Text style={styles.subHeader}>General Details</Text>
             <View style={styles.line}>
-              <TextInput
+              <Input
                 keyboardType="numeric"
                 mode="outlined"
                 label="Number Of Rooms"
@@ -295,7 +284,7 @@ function EditApartmentScreen({ route, navigation }) {
                 onChangeText={(rooms) => setRooms(rooms)}
                 style={styles.input}
               />
-              <TextInput
+              <Input
                 keyboardType="numeric"
                 mode="outlined"
                 label="Monthly Rent"
@@ -305,7 +294,7 @@ function EditApartmentScreen({ route, navigation }) {
               />
             </View>
             <View style={styles.line}>
-              <TextInput
+              <Input
                 keyboardType="numeric"
                 mode="outlined"
                 label="Total Capacity"
@@ -315,7 +304,7 @@ function EditApartmentScreen({ route, navigation }) {
                 }
                 style={styles.input}
               />
-              <TextInput
+              <Input
                 keyboardType="numeric"
                 mode="outlined"
                 label="Real Time Capacity"
@@ -346,6 +335,12 @@ function EditApartmentScreen({ route, navigation }) {
             <Text style={styles.subHeader}>House Assets</Text>
             <View style={styles.MultipleSelectList}>
               <MultipleSelectList
+                inputStyles={{
+                  color: isDarkMode ? Color.defaultTheme : Color.darkTheme,
+                }}
+                dropdownTextStyles={{
+                  color: isDarkMode ? Color.defaultTheme : Color.darkTheme,
+                }}
                 dropdownShown={false}
                 search={false}
                 setSelected={(selected) => {
@@ -361,7 +356,7 @@ function EditApartmentScreen({ route, navigation }) {
           <View>
             <Text style={styles.subHeader}>About</Text>
             <View style={styles.paragraphContainer}>
-              <TextInput
+              <Input
                 id="paragraph"
                 style={styles.paragraphInput}
                 placeholder="Describe your apartment"
@@ -422,7 +417,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 5,
   },
-  DropDown: {},
   MultipleSelectList: {
     marginTop: 5,
     marginHorizontal: 5,
@@ -438,9 +432,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     margin: 5,
-    backgroundColor: "#fff",
   },
-
   button: {
     backgroundColor: "#74E291",
     borderRadius: 5,
