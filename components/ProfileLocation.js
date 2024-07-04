@@ -8,8 +8,8 @@ const ProfileLocation = () => {
   const { userData } = useUsers();
   let academic = userData.academic;
 
-  if (userData.academic.length > 18) {
-    academic = userData.academic.substring(0, 21) + "..";
+  if (userData?.academic?.length > 18) {
+    academic = userData?.academic?.substring(0, 21) + "..";
   }
   return (
     <View style={styles.profileLocationView}>

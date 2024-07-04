@@ -1,33 +1,30 @@
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   StyleSheet,
   SafeAreaView,
   FlatList,
   Platform,
   TouchableOpacity,
-  View,
-  Keyboard,
 } from "react-native";
 import { Text } from "react-native-paper";
 import { StatusBar } from "expo-status-bar";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import { useFocusEffect } from "@react-navigation/native";
 import { useQuery } from "@tanstack/react-query";
-import { Ionicons } from "@expo/vector-icons";
-import LandlordHeader from "../components/LandlordHeader";
+
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { useUsers } from "../context/UserContext";
-import LandlordHouseCard from "../components/House/LandlordHouseCard";
-import SignInHeader from "../components/SignInHeader";
-import Loader from "../components/ui/Loader";
 import { fetchAllApartments } from "./../utils/http";
+import LandlordHeader from "../components/LandlordHeader";
+import SignInHeader from "../components/SignInHeader";
+import LandlordHouseCard from "../components/House/LandlordHouseCard";
 import AddApartmentButton from "../components/ui/AddApartmentButton";
 import AddApartmentScreen from "./AddApartmentScreen";
-import BottomSheet from "@gorhom/bottom-sheet";
-import { useFocusEffect } from "@react-navigation/native";
+import Loader from "../components/ui/Loader";
 
 async function registerForPushNotificationsAsync() {
   let token;
@@ -69,8 +66,8 @@ function LandlordHomeScreen({ navigation }) {
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
   const [addButtonPress, setAddButtonPress] = useState(false);
-  const [sheetIndex, setSheetIndex] = useState(-1); // -1 means closed
-  const bottomSheetRef = useRef(null);
+  const [isOpen, setIsOpen] = useState(false);
+  // const [sheetIndex, setSheetIndex] = useState(-1); // -1 means closed
 
   const notificationListener = useRef();
   const responseListener = useRef();
@@ -84,16 +81,6 @@ function LandlordHomeScreen({ navigation }) {
   } = useQuery({
     queryKey: ["apartments"],
     queryFn: () => fetchAllApartments({ owner: userData.id }),
-  });
-
-  const {
-    data: user,
-    isLoading: isLoadingUser,
-    isError: isErrorUser,
-    status: statusUser,
-  } = useQuery({
-    queryKey: ["User", userData.id],
-    queryFn: () => fetchUser(userData.id),
   });
 
   useFocusEffect(
@@ -165,13 +152,8 @@ function LandlordHomeScreen({ navigation }) {
     refetch();
   };
 
-  const snapPoints = useMemo(
-    () => (Platform.OS === "ios" ? ["14%", "90%"] : ["3%", "76%"]),
-    []
-  );
-
-  const handleSheetChanges = (index) => {
-    setSheetIndex(index);
+  const handleIsOpen = () => {
+    setIsOpen((prevState) => !prevState);
   };
 
   if (isLoadingApartments) return <Loader />;
@@ -193,17 +175,24 @@ function LandlordHomeScreen({ navigation }) {
         keyExtractor={(item) => item._id}
         renderItem={renderApartmentCard}
       />
-      <BottomSheet
+      {/* <BottomSheet
         ref={bottomSheetRef}
         snapPoints={snapPoints}
         onChange={handleSheetChanges}
         index={addButtonPress ? 1 : 0}
       >
         <AddApartmentScreen handleAddButtonPress={handleAddButtonPress} />
-      </BottomSheet>
+      </BottomSheet> */}
+      <AddApartmentScreen
+        handleAddButtonPress={handleAddButtonPress}
+        bottomSheetIndex={addButtonPress}
+        handleIsOpen={handleIsOpen}
+      />
       <AddApartmentButton
         style={styles.addApartmentButton}
         handleAddButtonPress={handleAddButtonPress}
+        handleIsOpen={handleIsOpen}
+        isOpen={isOpen}
       />
     </SafeAreaView>
   );

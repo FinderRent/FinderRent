@@ -1,29 +1,20 @@
-import * as Device from "expo-device";
-import * as Notifications from "expo-notifications";
-import Constants from "expo-constants";
-import { useEffect, useRef, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   StyleSheet,
-  SafeAreaView,
-  FlatList,
   Platform,
   TouchableOpacity,
   View,
   Keyboard,
-  Button,
-  KeyboardAvoidingView,
 } from "react-native";
 import { Text, TextInput, Divider } from "react-native-paper";
-import DropDown from "../components/inputs/DropDown";
-import { Color } from "../constants/colors";
-import { useDarkMode } from "../context/DarkModeContext";
-import { useUsers } from "../context/UserContext";
-import { MultipleSelectList } from "react-native-dropdown-select-list";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { MultipleSelectList } from "react-native-dropdown-select-list";
+import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
+
+import { useUsers } from "../context/UserContext";
 import { addApartment } from "../utils/http";
-import FlashMessage, { showMessage } from "react-native-flash-message";
-import { renderNode } from "react-native-elements/dist/helpers";
+import { showMessage } from "react-native-flash-message";
+import DropDown from "../components/inputs/DropDown";
 
 function AddApartmentScreen(props) {
   const { userData } = useUsers();
@@ -44,7 +35,7 @@ function AddApartmentScreen(props) {
   const [focusedInput, setFocusedInput] = useState(null);
 
   const houseTypeList = [
-    { label: "Land House", value: "Year Land House" },
+    { label: "Land House", value: "Land House" },
     { label: "Housing Unit", value: "Housing Unit" },
     { label: "Tower", value: "Tower" },
     { label: "Penthouse", value: "Penthouse" },
@@ -202,6 +193,12 @@ function AddApartmentScreen(props) {
     setSelected([]);
     setAbout("");
   };
+  const bottomSheetRef = useRef(null);
+
+  const snapPoints = useMemo(
+    () => (Platform.OS === "ios" ? ["14%", "90%"] : ["3%", "76%"]),
+    []
+  );
 
   const handleButtonPress = async () => {
     try {
@@ -213,7 +210,7 @@ function AddApartmentScreen(props) {
       });
       resetForm(); // Reset the form
       props.handleAddButtonPress();
-      props.handleAddButtonPress();
+      // props.handleAddButtonPress();
     } catch (error) {
       showMessage({
         message: "Error",
@@ -224,177 +221,189 @@ function AddApartmentScreen(props) {
   };
 
   return (
-    <KeyboardAwareScrollView
-      contentContainerStyle={styles.scrollViewContent}
-      keyboardShouldPersistTaps="handled"
-      enableOnAndroid={true}
-      extraScrollHeight={50} // Increased this value to move the text input further up
-      keyboardOpeningTime={0}
+    <BottomSheet
+      ref={bottomSheetRef}
+      snapPoints={snapPoints}
+      onChange={props.handleIsOpen}
+      index={props.bottomSheetIndex ? 1 : 0}
     >
-      <View style={styles.container}>
-        <Text style={styles.mainHeader}>Add Your Apartment</Text>
-        <View>
-          <View>
-            <Text style={styles.subHeader}>Address</Text>
-            <View style={styles.line}>
-              <TextInput
-                mode="outlined"
-                label="Country"
-                value={country}
-                onChangeText={(country) => setCountry(country)}
-                style={styles.input}
-              />
-              <TextInput
-                mode="outlined"
-                label="City"
-                value={city}
-                onChangeText={(city) => setCity(city)}
-                style={styles.input}
-              />
-            </View>
-            <View style={styles.line}>
-              <TextInput
-                mode="outlined"
-                label="Street"
-                value={street}
-                onChangeText={(street) => setStreet(street)}
-                style={styles.input}
-              />
-              <TextInput
-                keyboardType="numeric"
-                mode="outlined"
-                label="Building Number"
-                value={buildingNumber}
-                onChangeText={(buildingNumber) =>
-                  setBuildingNumber(buildingNumber)
-                }
-                style={styles.input}
-              />
-            </View>
-            <View style={styles.line}>
-              <TextInput
-                keyboardType="numeric"
-                mode="outlined"
-                label="Apartment Number"
-                value={apartmentNumber}
-                onChangeText={(apartmentNumber) =>
-                  setApartmentNumber(apartmentNumber)
-                }
-                style={styles.input}
-              />
-              <TextInput
-                keyboardType="numeric"
-                mode="outlined"
-                label="Floor"
-                value={floor}
-                onChangeText={(floor) => setFloor(floor)}
-                style={styles.input}
-              />
-            </View>
-          </View>
-          <View>
-            <Text style={styles.subHeader}>General Details</Text>
-            <View style={styles.line}>
-              <TextInput
-                keyboardType="numeric"
-                mode="outlined"
-                label="Number Of Rooms"
-                value={rooms}
-                onChangeText={(rooms) => setRooms(rooms)}
-                style={styles.input}
-              />
-              <TextInput
-                keyboardType="numeric"
-                mode="outlined"
-                label="Monthly Rent"
-                value={price}
-                onChangeText={(price) => setPrice(price)}
-                style={styles.input}
-              />
-            </View>
-            <View style={styles.line}>
-              <TextInput
-                keyboardType="numeric"
-                mode="outlined"
-                label="Total Capacity"
-                value={totalCapacity}
-                onChangeText={(totalCapacity) =>
-                  setTotalCapacity(totalCapacity)
-                }
-                style={styles.input}
-              />
-              <TextInput
-                keyboardType="numeric"
-                mode="outlined"
-                label="Real Time Capacity"
-                value={realTimeCapacity}
-                onChangeText={(realTimeCapacity) =>
-                  setRealTimeCapacity(realTimeCapacity)
-                }
-                style={styles.input}
-              />
-            </View>
-          </View>
-          <View>
-            <Text style={styles.subHeader}>Type</Text>
+      <BottomSheetScrollView>
+        <KeyboardAwareScrollView
+          contentContainerStyle={styles.scrollViewContent}
+          keyboardShouldPersistTaps="handled"
+          enableOnAndroid={true}
+          extraScrollHeight={50} // Increased this value to move the text input further up
+          keyboardOpeningTime={0}
+        >
+          <View style={styles.container}>
+            <Text style={styles.mainHeader}>Add Your Apartment</Text>
             <View>
-              <DropDown
-                style={styles.DropDown}
-                dropDownDirection="TOP" // This will force the dropdown to always open to the top
-                list={houseTypeList}
-                label="House Type"
-                placeholder={houseType}
-                searchable={false}
-                listMode="SCROLLVIEW"
-                onValueChange={(houseType) => setHouseType(houseType)}
-              />
-            </View>
-          </View>
-          <View>
-            <Text style={styles.subHeader}>House Assets</Text>
-            <View style={styles.MultipleSelectList}>
-              <MultipleSelectList
-                dropdownShown={false}
-                search={false}
-                setSelected={(selected) => {
-                  setSelected(selected);
-                }}
-                data={houseAssets}
-                save="value"
-                label="House Assets"
-              />
-            </View>
-          </View>
+              <View>
+                <Text style={styles.subHeader}>Address</Text>
+                <View style={styles.line}>
+                  <TextInput
+                    mode="outlined"
+                    label="Country"
+                    value={country}
+                    onChangeText={(country) => setCountry(country)}
+                    style={styles.input}
+                  />
+                  <TextInput
+                    mode="outlined"
+                    label="City"
+                    value={city}
+                    onChangeText={(city) => setCity(city)}
+                    style={styles.input}
+                  />
+                </View>
+                <View style={styles.line}>
+                  <TextInput
+                    mode="outlined"
+                    label="Street"
+                    value={street}
+                    onChangeText={(street) => setStreet(street)}
+                    style={styles.input}
+                  />
+                  <TextInput
+                    keyboardType="numeric"
+                    mode="outlined"
+                    label="Building Number"
+                    value={buildingNumber}
+                    onChangeText={(buildingNumber) =>
+                      setBuildingNumber(buildingNumber)
+                    }
+                    style={styles.input}
+                  />
+                </View>
+                <View style={styles.line}>
+                  <TextInput
+                    keyboardType="numeric"
+                    mode="outlined"
+                    label="Apartment Number"
+                    value={apartmentNumber}
+                    onChangeText={(apartmentNumber) =>
+                      setApartmentNumber(apartmentNumber)
+                    }
+                    style={styles.input}
+                  />
+                  <TextInput
+                    keyboardType="numeric"
+                    mode="outlined"
+                    label="Floor"
+                    value={floor}
+                    onChangeText={(floor) => setFloor(floor)}
+                    style={styles.input}
+                  />
+                </View>
+              </View>
+              <View>
+                <Text style={styles.subHeader}>General Details</Text>
+                <View style={styles.line}>
+                  <TextInput
+                    keyboardType="numeric"
+                    mode="outlined"
+                    label="Number Of Rooms"
+                    value={rooms}
+                    onChangeText={(rooms) => setRooms(rooms)}
+                    style={styles.input}
+                  />
+                  <TextInput
+                    keyboardType="numeric"
+                    mode="outlined"
+                    label="Monthly Rent"
+                    value={price}
+                    onChangeText={(price) => setPrice(price)}
+                    style={styles.input}
+                  />
+                </View>
+                <View style={styles.line}>
+                  <TextInput
+                    keyboardType="numeric"
+                    mode="outlined"
+                    label="Total Capacity"
+                    value={totalCapacity}
+                    onChangeText={(totalCapacity) =>
+                      setTotalCapacity(totalCapacity)
+                    }
+                    style={styles.input}
+                  />
+                  <TextInput
+                    keyboardType="numeric"
+                    mode="outlined"
+                    label="Real Time Capacity"
+                    value={realTimeCapacity}
+                    onChangeText={(realTimeCapacity) =>
+                      setRealTimeCapacity(realTimeCapacity)
+                    }
+                    style={styles.input}
+                  />
+                </View>
+              </View>
+              <View>
+                <Text style={styles.subHeader}>Type</Text>
+                <View>
+                  <DropDown
+                    style={styles.DropDown}
+                    dropDownDirection="TOP" // This will force the dropdown to always open to the top
+                    list={houseTypeList}
+                    label="House Type"
+                    placeholder={houseType}
+                    searchable={false}
+                    listMode="SCROLLVIEW"
+                    onValueChange={(houseType) => setHouseType(houseType)}
+                  />
+                </View>
+              </View>
+              <View>
+                <Text style={styles.subHeader}>House Assets</Text>
+                <View style={styles.MultipleSelectList}>
+                  <MultipleSelectList
+                    dropdownShown={false}
+                    search={false}
+                    setSelected={(selected) => {
+                      setSelected(selected);
+                    }}
+                    data={houseAssets}
+                    save="value"
+                    label="House Assets"
+                  />
+                </View>
+              </View>
 
-          <View>
-            <Text style={styles.subHeader}>About</Text>
-            <View style={styles.paragraphContainer}>
-              <TextInput
-                id="paragraph"
-                style={styles.paragraphInput}
-                placeholder="Describe your apartment"
-                multiline={true}
-                numberOfLines={4}
-                onChangeText={(about) => setAbout(about)}
-                value={about}
-                textAlignVertical="top"
-                onFocus={() => handleFocus("about")}
-                onBlur={handleBlur}
-              />
+              <View>
+                <Text style={styles.subHeader}>About</Text>
+                <View style={styles.paragraphContainer}>
+                  <TextInput
+                    id="paragraph"
+                    style={styles.paragraphInput}
+                    placeholder="Describe your apartment"
+                    multiline={true}
+                    numberOfLines={4}
+                    onChangeText={(about) => setAbout(about)}
+                    value={about}
+                    textAlignVertical="top"
+                    onFocus={() => handleFocus("about")}
+                    onBlur={handleBlur}
+                  />
+                </View>
+              </View>
+              <View>
+                <Text style={styles.subHeader}>Add Photos</Text>
+              </View>
+              <Divider bold={true} style={{ margin: 5 }} />
+              <View>
+                <TouchableOpacity
+                  onPress={handleButtonPress}
+                  style={styles.button}
+                >
+                  <Text style={styles.buttonText}>Add</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
-          <View>
-            <Text style={styles.subHeader}>Add Photos</Text>
-          </View>
-          <Divider bold={true} style={{ margin: 5 }} />
-          <View>
-            <TouchableOpacity onPress={handleButtonPress} style={styles.button}>
-              <Text style={styles.buttonText}>Add</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-    </KeyboardAwareScrollView>
+        </KeyboardAwareScrollView>
+      </BottomSheetScrollView>
+    </BottomSheet>
   );
 }
 

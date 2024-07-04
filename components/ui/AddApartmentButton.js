@@ -1,8 +1,7 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   StyleSheet,
   View,
-  Text,
   Animated,
   TouchableWithoutFeedback,
 } from "react-native";
@@ -10,12 +9,17 @@ import { AntDesign } from "@expo/vector-icons";
 
 const AddApartmentButton = (props) => {
   const animation = useRef(new Animated.Value(0)).current;
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(props.isOpen);
 
   const handleAddButtonPress = () => {
     props.handleAddButtonPress();
+    props.handleIsOpen();
     togglePage();
   };
+
+  useEffect(() => {
+    togglePage();
+  }, [props.isOpen]);
 
   const togglePage = () => {
     const toValue = open ? 0 : 1;
