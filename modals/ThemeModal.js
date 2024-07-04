@@ -85,9 +85,9 @@ function ThemeModal({ showVisible, appTheme }) {
               <Text style={styles.textRadio}>Dark</Text>
             </View>
             <View style={styles.confirmation}>
-              <TouchableOpacity style={{ right: 30 }} onPress={handleCancel}>
+              {/* <TouchableOpacity style={{ right: 30 }} onPress={handleCancel}>
                 <Text style={{ color: Color.Blue500 }}>Cancel</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
               <TouchableOpacity onPress={() => showVisible(false)}>
                 <Text style={{ color: Color.Blue500 }}>Confirm</Text>
               </TouchableOpacity>

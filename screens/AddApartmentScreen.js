@@ -6,17 +6,22 @@ import {
   View,
   Keyboard,
 } from "react-native";
-import { Text, TextInput, Divider } from "react-native-paper";
+import { Text, Divider } from "react-native-paper";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { MultipleSelectList } from "react-native-dropdown-select-list";
+import { showMessage } from "react-native-flash-message";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 
+import { Color } from "../constants/colors";
+import { useDarkMode } from "../context/DarkModeContext";
 import { useUsers } from "../context/UserContext";
 import { addApartment } from "../utils/http";
-import { showMessage } from "react-native-flash-message";
 import DropDown from "../components/inputs/DropDown";
+import Input from "../components/inputs/Input";
 
 function AddApartmentScreen(props) {
+  const { isDarkMode } = useDarkMode();
+
   const { userData } = useUsers();
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
@@ -196,7 +201,7 @@ function AddApartmentScreen(props) {
   const bottomSheetRef = useRef(null);
 
   const snapPoints = useMemo(
-    () => (Platform.OS === "ios" ? ["14%", "90%"] : ["3%", "76%"]),
+    () => (Platform.OS === "ios" ? ["14%", "90%"] : ["1%", "77%"]),
     []
   );
 
@@ -208,7 +213,7 @@ function AddApartmentScreen(props) {
         description: "Apartment added successfully!",
         type: "success",
       });
-      resetForm(); // Reset the form
+      resetForm();
       props.handleAddButtonPress();
       // props.handleAddButtonPress();
     } catch (error) {
@@ -226,6 +231,14 @@ function AddApartmentScreen(props) {
       snapPoints={snapPoints}
       onChange={props.handleIsOpen}
       index={props.bottomSheetIndex ? 1 : 0}
+      backgroundStyle={{
+        backgroundColor: isDarkMode ? Color.buttomSheetDarkTheme : Color.white,
+      }}
+      handleIndicatorStyle={
+        isDarkMode
+          ? { backgroundColor: Color.gray }
+          : { backgroundColor: Color.darkTheme }
+      }
     >
       <BottomSheetScrollView>
         <KeyboardAwareScrollView
@@ -241,57 +254,57 @@ function AddApartmentScreen(props) {
               <View>
                 <Text style={styles.subHeader}>Address</Text>
                 <View style={styles.line}>
-                  <TextInput
+                  <Input
                     mode="outlined"
                     label="Country"
                     value={country}
-                    onChangeText={(country) => setCountry(country)}
+                    onValueChange={(country) => setCountry(country)}
                     style={styles.input}
                   />
-                  <TextInput
+                  <Input
                     mode="outlined"
                     label="City"
                     value={city}
-                    onChangeText={(city) => setCity(city)}
+                    onValueChange={(city) => setCity(city)}
                     style={styles.input}
                   />
                 </View>
                 <View style={styles.line}>
-                  <TextInput
+                  <Input
                     mode="outlined"
                     label="Street"
                     value={street}
-                    onChangeText={(street) => setStreet(street)}
+                    onValueChange={(street) => setStreet(street)}
                     style={styles.input}
                   />
-                  <TextInput
+                  <Input
                     keyboardType="numeric"
                     mode="outlined"
                     label="Building Number"
                     value={buildingNumber}
-                    onChangeText={(buildingNumber) =>
+                    onValueChange={(buildingNumber) =>
                       setBuildingNumber(buildingNumber)
                     }
                     style={styles.input}
                   />
                 </View>
                 <View style={styles.line}>
-                  <TextInput
+                  <Input
                     keyboardType="numeric"
                     mode="outlined"
                     label="Apartment Number"
                     value={apartmentNumber}
-                    onChangeText={(apartmentNumber) =>
+                    onValueChange={(apartmentNumber) =>
                       setApartmentNumber(apartmentNumber)
                     }
                     style={styles.input}
                   />
-                  <TextInput
+                  <Input
                     keyboardType="numeric"
                     mode="outlined"
                     label="Floor"
                     value={floor}
-                    onChangeText={(floor) => setFloor(floor)}
+                    onValueChange={(floor) => setFloor(floor)}
                     style={styles.input}
                   />
                 </View>
@@ -299,40 +312,40 @@ function AddApartmentScreen(props) {
               <View>
                 <Text style={styles.subHeader}>General Details</Text>
                 <View style={styles.line}>
-                  <TextInput
+                  <Input
                     keyboardType="numeric"
                     mode="outlined"
                     label="Number Of Rooms"
                     value={rooms}
-                    onChangeText={(rooms) => setRooms(rooms)}
+                    onValueChange={(rooms) => setRooms(rooms)}
                     style={styles.input}
                   />
-                  <TextInput
+                  <Input
                     keyboardType="numeric"
                     mode="outlined"
                     label="Monthly Rent"
                     value={price}
-                    onChangeText={(price) => setPrice(price)}
+                    onValueChange={(price) => setPrice(price)}
                     style={styles.input}
                   />
                 </View>
                 <View style={styles.line}>
-                  <TextInput
+                  <Input
                     keyboardType="numeric"
                     mode="outlined"
                     label="Total Capacity"
                     value={totalCapacity}
-                    onChangeText={(totalCapacity) =>
+                    onValueChange={(totalCapacity) =>
                       setTotalCapacity(totalCapacity)
                     }
                     style={styles.input}
                   />
-                  <TextInput
+                  <Input
                     keyboardType="numeric"
                     mode="outlined"
                     label="Real Time Capacity"
                     value={realTimeCapacity}
-                    onChangeText={(realTimeCapacity) =>
+                    onValueChange={(realTimeCapacity) =>
                       setRealTimeCapacity(realTimeCapacity)
                     }
                     style={styles.input}
@@ -358,6 +371,12 @@ function AddApartmentScreen(props) {
                 <Text style={styles.subHeader}>House Assets</Text>
                 <View style={styles.MultipleSelectList}>
                   <MultipleSelectList
+                    inputStyles={{
+                      color: isDarkMode ? Color.defaultTheme : Color.darkTheme,
+                    }}
+                    dropdownTextStyles={{
+                      color: isDarkMode ? Color.defaultTheme : Color.darkTheme,
+                    }}
                     dropdownShown={false}
                     search={false}
                     setSelected={(selected) => {
@@ -373,13 +392,13 @@ function AddApartmentScreen(props) {
               <View>
                 <Text style={styles.subHeader}>About</Text>
                 <View style={styles.paragraphContainer}>
-                  <TextInput
+                  <Input
                     id="paragraph"
                     style={styles.paragraphInput}
                     placeholder="Describe your apartment"
                     multiline={true}
                     numberOfLines={4}
-                    onChangeText={(about) => setAbout(about)}
+                    onValueChange={(about) => setAbout(about)}
                     value={about}
                     textAlignVertical="top"
                     onFocus={() => handleFocus("about")}
@@ -438,7 +457,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 5,
   },
-  DropDown: {},
   MultipleSelectList: {
     marginTop: 5,
     marginHorizontal: 5,
@@ -454,9 +472,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     margin: 5,
-    backgroundColor: "#fff",
   },
-
   button: {
     backgroundColor: "#74E291",
     borderRadius: 5,

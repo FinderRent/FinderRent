@@ -91,17 +91,11 @@ function LandlordHomeScreen({ navigation }) {
 
   const renderApartmentCard = ({ item: apartment }) => {
     return (
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate("LandlordHouseDetailsScreen", { apartment })
-        }
-      >
-        <LandlordHouseCard
-          navigation={navigation}
-          apartment={apartment}
-          userData={userData}
-        />
-      </TouchableOpacity>
+      <LandlordHouseCard
+        navigation={navigation}
+        apartment={apartment}
+        userData={userData}
+      />
     );
   };
 
@@ -223,7 +217,7 @@ const styles = StyleSheet.create({
     },
   },
   addApartmentButton: {
-    bottom: Platform.OS === "ios" ? "22%" : "12%",
+    bottom: Platform.OS === "ios" ? "22%" : "13%",
     right: "15%",
   },
 });
