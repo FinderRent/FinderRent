@@ -21,6 +21,7 @@ function HouseList({
   numberOfRooms,
   floor,
   totalCapacity,
+  distance,
 }) {
   const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
@@ -45,12 +46,13 @@ function HouseList({
         numberOfRooms,
         floor,
         totalCapacity,
+        distance,
       }),
   });
 
   useEffect(() => {
     refetch();
-  }, [category, sort, refetch]);
+  }, [category, sort, refetch, distance]);
 
   const onShowMap = () => {
     bottomSheetRef.current?.collapse();

@@ -66,7 +66,7 @@ const FilterScreen = ({ navigation, route }) => {
   const [openCard, setOpenCard] = useState(0);
 
   const [sortApartments, setSort] = useState("");
-  const [distance, setDistance] = useState(filtersValues?.distance ?? 0.1);
+  const [distance, setDistance] = useState(filtersValues?.distance ?? 0.5);
   const [selectedType, setSelectedType] = useState(0);
   const [filters, setFilters] = useState(moreFilters);
 
@@ -83,7 +83,7 @@ const FilterScreen = ({ navigation, route }) => {
       count: 0,
     }));
     setSort("");
-    setDistance(0.1);
+    setDistance(0.5);
     setFilters(resetFilters);
     setSelectedType(0);
     setOpenCard(0);

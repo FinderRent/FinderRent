@@ -99,6 +99,7 @@ function HomeScreen({ navigation, route }) {
         numberOfRooms,
         floor,
         totalCapacity,
+        distance,
       }),
   });
 
@@ -162,7 +163,6 @@ function HomeScreen({ navigation, route }) {
     setFloor(route?.params?.apartmentFilters[1][1]);
     setTotalCapacity(route?.params?.apartmentFilters[2][1]);
   }, [route?.params]);
-
   const onDataChanged = (category) => {
     setCategory(category);
   };
@@ -205,6 +205,7 @@ function HomeScreen({ navigation, route }) {
         numberOfRooms={numberOfRooms}
         floor={floor}
         totalCapacity={totalCapacity}
+        distance={distance}
       />
     </SafeAreaView>
   );

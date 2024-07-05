@@ -5,9 +5,9 @@ import axios from "axios";
 // const BACKEND_URL = "http://172.20.10.3:3000/api/v1";
 // const BACKEND_URL = "http://192.168.1.193:3000/api/v1";
 // const BACKEND_URL = "http://192.168.134.87:3000/api/v1";
-// const BACKEND_URL = "http://192.168.1.214:3000/api/v1";
+const BACKEND_URL = "http://192.168.1.214:3000/api/v1";
 // const BACKEND_URL = "http://10.100.102.96:3000/api/v1";
-const BACKEND_URL = "https://finder-rent-backend.vercel.app/api/v1";
+// const BACKEND_URL = "https://finder-rent-backend.vercel.app/api/v1";
 
 export async function fetchAllApartments(filter) {
   // console.log("req", filter);
@@ -35,7 +35,11 @@ export async function fetchAllApartments(filter) {
       }
     }
 
-    const response = await axios.get(BACKEND_URL + "/apartments", { params });
+    const response = await axios.get(
+      BACKEND_URL +
+        `/apartments/apartments-within/${filter.distance}/center/31.251641658,34.789166042/unit/km`,
+      { params }
+    );
 
     const responseData = response.data.data;
 
