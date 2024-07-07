@@ -186,12 +186,12 @@ const LandlordHouseDetailsScreen = ({ navigation, route }) => {
             floor={apartment?.floor}
             totalCapacity={apartment?.totalCapacity}
           />
-          <Map
+          {/* <Map
             handleMapPress={handleMapPress}
             zoomEnabled={false}
             scrollEnabled={false}
           />
-          {mapPress && <MapModal handleMapPress={handleMapPress} />}
+          {mapPress && <MapModal handleMapPress={handleMapPress} />} */}
           <Seperator />
           <HouseAssets
             handleShowAllPress={handleShowAllPress}

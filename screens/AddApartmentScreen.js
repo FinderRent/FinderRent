@@ -5,13 +5,13 @@ import {
   TouchableOpacity,
   View,
   Keyboard,
-  ScrollView,
 } from "react-native";
 import { Text, Divider } from "react-native-paper";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { MultipleSelectList } from "react-native-dropdown-select-list";
 import { showMessage } from "react-native-flash-message";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
+import Geocoder from "react-native-geocoding";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
@@ -37,6 +37,10 @@ function AddApartmentScreen(props) {
   const [houseType, setHouseType] = useState("");
   const [selected, setSelected] = useState([]);
   const [about, setAbout] = useState("");
+  const [coordinates, setCoordinates] = useState({
+    latitude: "",
+    longitude: "",
+  });
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [focusedInput, setFocusedInput] = useState(null);
 
@@ -85,6 +89,30 @@ function AddApartmentScreen(props) {
       keyboardDidShowListener.remove();
     };
   }, []);
+  useEffect(() => {
+    if (
+      city &&
+      street &&
+      buildingNumber &&
+      focusedInput !== "city" &&
+      focusedInput !== "street" &&
+      focusedInput !== "buildingNumber"
+    ) {
+      Geocoder.init("AIzaSyDYInyCvJ1WQjqJohhMx2OnxioXWAvy39s");
+      const address = `${city} ${street} ${buildingNumber}`;
+      // console.log(address);
+      // console.log(coordinates);
+      Geocoder.from(address)
+        .then((json) => {
+          const location = json.results[0].geometry.location;
+          setCoordinates({
+            latitude: JSON.stringify(location.lat),
+            longitude: JSON.stringify(location.lng),
+          });
+        })
+        .catch((error) => console.warn(error));
+    }
+  }, [city, street, buildingNumber, focusedInput]);
 
   const handleFocus = (input) => {
     setFocusedInput(input);
@@ -164,10 +192,7 @@ function AddApartmentScreen(props) {
         buildingNumber !== "" ? parseInt(buildingNumber) : undefined,
       apartmentNumber:
         apartmentNumber !== "" ? parseInt(apartmentNumber) : undefined,
-      coordinates: {
-        latitude: 23.232323,
-        longitude: 65.234556,
-      },
+      coordinates: coordinates,
     },
     distanceFromAcademy: 20,
     totalCapacity: totalCapacity !== "" ? parseInt(totalCapacity) : undefined,
@@ -183,7 +208,6 @@ function AddApartmentScreen(props) {
     owner: userData.id,
     houseType: houseType,
   };
-
   const resetForm = () => {
     setCountry("");
     setCity("");
@@ -267,6 +291,8 @@ function AddApartmentScreen(props) {
                     label="City"
                     value={city}
                     onValueChange={(city) => setCity(city)}
+                    onFocus={() => handleFocus("city")}
+                    onBlur={handleBlur}
                     style={styles.input}
                   />
                 </View>
@@ -276,6 +302,8 @@ function AddApartmentScreen(props) {
                     label="Street"
                     value={street}
                     onValueChange={(street) => setStreet(street)}
+                    onFocus={() => handleFocus("street")}
+                    onBlur={handleBlur}
                     style={styles.input}
                   />
                   <Input
@@ -286,6 +314,8 @@ function AddApartmentScreen(props) {
                     onValueChange={(buildingNumber) =>
                       setBuildingNumber(buildingNumber)
                     }
+                    onFocus={() => handleFocus("buildingNumber")}
+                    onBlur={handleBlur}
                     style={styles.input}
                   />
                 </View>
@@ -309,6 +339,40 @@ function AddApartmentScreen(props) {
                     style={styles.input}
                   />
                 </View>
+                {city &&
+                  street &&
+                  buildingNumber &&
+                  focusedInput !== "city" &&
+                  focusedInput !== "street" &&
+                  focusedInput !== "buildingNumber" && (
+                    <View>
+                      <Text style={styles.subHeader}>
+                        Check Apartment Coordinates
+                      </Text>
+                      <View style={styles.line}>
+                        <Input
+                          keyboardType="numeric"
+                          mode="outlined"
+                          label="latitude"
+                          value={coordinates.latitude}
+                          onValueChange={(latitude) =>
+                            setCoordinates((prev) => ({ ...prev, latitude }))
+                          }
+                          style={styles.input}
+                        />
+                        <Input
+                          keyboardType="numeric"
+                          mode="outlined"
+                          label="longitude"
+                          value={coordinates.longitude}
+                          onValueChange={(longitude) =>
+                            setCoordinates((prev) => ({ ...prev, longitude }))
+                          }
+                          style={styles.input}
+                        />
+                      </View>
+                    </View>
+                  )}
               </View>
               <View>
                 <Text style={styles.subHeader}>General Details</Text>
@@ -382,6 +446,7 @@ function AddApartmentScreen(props) {
                       color: isDarkMode ? Color.defaultTheme : Color.darkTheme,
                     }}
                     dropdownShown={false}
+                    maxHeight={700}
                     search={false}
                     setSelected={(val) => {
                       setSelected(val);
