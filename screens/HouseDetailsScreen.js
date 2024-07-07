@@ -14,7 +14,6 @@ import Animated, {
   useScrollViewOffset,
 } from "react-native-reanimated";
 import Carousel from "react-native-reanimated-carousel";
-import Geocoder from "react-native-geocoding";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { Paragraph, Text } from "react-native-paper";
 import { useQuery } from "@tanstack/react-query";
@@ -49,21 +48,6 @@ const HouseDetailsScreen = ({ navigation, route }) => {
 
   const scrollRef = useAnimatedRef();
   const tabBarHeight = useBottomTabBarHeight();
-
-  // Geocoder.init("AIzaSyDYInyCvJ1WQjqJohhMx2OnxioXWAvy39s");
-  // const address = `${apartment.address.city} ${apartment.address.street} ${apartment.address.buildingNumber}`;
-  // console.log(address);
-
-  // // const [address, setAddress] = useState("Beer Sheva Avigdor hameiri 21");
-  // console.log(address);
-  // const [coordinates1, setCoordinates1] = useState(null);
-  // console.log(coordinates1);
-  // Geocoder.from(address)
-  //   .then((json) => {
-  //     const location = json.results[0].geometry.location;
-  //     setCoordinates1({ latitude: location.lat, longitude: location.lng });
-  //   })
-  //   .catch((error) => console.warn(error));
 
   const templateMessage = `
   Hello,
