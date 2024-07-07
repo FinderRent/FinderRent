@@ -123,11 +123,18 @@ function HouseList({
           )}
         </View>
       ) : (
-        <BottomSheetFlatList
-          data={apartments?.apartments}
-          keyExtractor={(item) => item._id}
-          renderItem={renderApartmentCard}
-        />
+        <>
+          {token && (
+            <Text style={styles.header}>
+              Apartments Within {distance}Km From Academy
+            </Text>
+          )}
+          <BottomSheetFlatList
+            data={apartments?.apartments}
+            keyExtractor={(item) => item._id}
+            renderItem={renderApartmentCard}
+          />
+        </>
       )}
       <View style={styles.absoluteView}>
         <TouchableOpacity onPress={onShowMap} style={styles.mapBtn}>
@@ -152,6 +159,11 @@ const styles = StyleSheet.create({
     bottom: Platform.OS === "android" ? 10 : 100,
     width: "100%",
     alignItems: "center",
+  },
+  header: {
+    textAlign: "center",
+    fontSize: 15,
+    fontWeight: "bold",
   },
   mapBtn: {
     backgroundColor: Color.darkTheme,
