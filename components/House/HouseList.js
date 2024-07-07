@@ -22,6 +22,8 @@ function HouseList({
   floor,
   totalCapacity,
   distance,
+  coordinates,
+  token,
 }) {
   const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
@@ -47,12 +49,22 @@ function HouseList({
         floor,
         totalCapacity,
         distance,
+        coordinates,
       }),
   });
 
   useEffect(() => {
     refetch();
-  }, [category, sort, refetch, distance]);
+  }, [
+    sort,
+    category,
+    numberOfRooms,
+    floor,
+    totalCapacity,
+    distance,
+    coordinates,
+    token,
+  ]);
 
   const onShowMap = () => {
     bottomSheetRef.current?.collapse();
@@ -97,9 +109,18 @@ function HouseList({
             size={120}
             color={Color.buttomSheetDarkTheme}
           />
-          <Text style={styles.noResultsText}>
-            There's No {category} Apartments.
-          </Text>
+          {!token ? (
+            <Text style={styles.noResultsText}>
+              There's No {category} Apartments.
+            </Text>
+          ) : (
+            <View>
+              <Text style={styles.noResultsText}>No {category} apartments</Text>
+              <Text style={styles.noResultsText}>
+                within {distance}km from the academy.
+              </Text>
+            </View>
+          )}
         </View>
       ) : (
         <BottomSheetFlatList
