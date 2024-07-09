@@ -1,6 +1,6 @@
 import { View, StyleSheet, TouchableOpacity, Modal } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 
 function MapModal(props) {
   const handleMapPress = () => {
@@ -16,6 +16,7 @@ function MapModal(props) {
       <View style={styles.modalBackground}>
         <View style={styles.modalContainer}>
           <MapView
+            provider={PROVIDER_GOOGLE}
             initialRegion={{
               latitude: props?.coordinates?.latitude,
               longitude: props?.coordinates?.longitude,
@@ -52,8 +53,8 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     width: "95%",
-    height: "85%", // adjust height as needed
-    backgroundColor: "#fff", // change background color here
+    height: "85%",
+    backgroundColor: "#fff",
     borderRadius: 12,
     justifyContent: "center",
     alignItems: "center",

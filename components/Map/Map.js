@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 
 const Map = (props) => {
   const handleMapPress = () => {
@@ -15,6 +15,7 @@ const Map = (props) => {
     <TouchableOpacity activeOpacity={1} style={styles.mapWindow}>
       <View style={styles.map}>
         <MapView
+          provider={PROVIDER_GOOGLE}
           style={{ flex: 1 }}
           onPress={handleMapPress}
           zoomEnabled={props?.zoomEnabled}

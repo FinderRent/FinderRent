@@ -115,7 +115,7 @@ const ListingsMap = memo(({ navigation, listings, coordinates }) => {
   return (
     <View style={styles.container}>
       <MapView
-        // provider={PROVIDER_GOOGLE}
+        provider={PROVIDER_GOOGLE}
         ref={mapRef}
         animationEnabled={false}
         style={styles.map}
