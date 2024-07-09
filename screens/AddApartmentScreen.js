@@ -1,17 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import {
-  StyleSheet,
-  Platform,
-  TouchableOpacity,
-  View,
-  Keyboard,
-} from "react-native";
-import { Text, Divider } from "react-native-paper";
+import { StyleSheet, Platform, View, Keyboard } from "react-native";
+import { Text, Divider, Button } from "react-native-paper";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { MultipleSelectList } from "react-native-dropdown-select-list";
 import { showMessage } from "react-native-flash-message";
+import { useMutation } from "@tanstack/react-query";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import Geocoder from "react-native-geocoding";
+import Toast from "react-native-toast-message";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
@@ -19,6 +15,7 @@ import { useUsers } from "../context/UserContext";
 import { addApartment } from "../utils/http";
 import DropDown from "../components/inputs/DropDown";
 import Input from "../components/inputs/Input";
+import ErrorMessage from "../components/ui/ErrorMessage";
 
 function AddApartmentScreen(props) {
   const { isDarkMode } = useDarkMode();
@@ -34,7 +31,7 @@ function AddApartmentScreen(props) {
   const [price, setPrice] = useState("");
   const [totalCapacity, setTotalCapacity] = useState("");
   const [realTimeCapacity, setRealTimeCapacity] = useState("");
-  const [houseType, setHouseType] = useState("");
+  const [apartmentType, setApartmentType] = useState("");
   const [selected, setSelected] = useState([]);
   const [about, setAbout] = useState("");
   const [coordinates, setCoordinates] = useState({
@@ -44,7 +41,7 @@ function AddApartmentScreen(props) {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [focusedInput, setFocusedInput] = useState(null);
 
-  const houseTypeList = [
+  const apartmentTypeList = [
     { label: "Land House", value: "Land House" },
     { label: "Housing Unit", value: "Housing Unit" },
     { label: "Tower", value: "Tower" },
@@ -185,20 +182,21 @@ function AddApartmentScreen(props) {
   //object to send to the backend
   const apartmentData = {
     address: {
-      street: street,
-      city: city,
-      country: country,
+      street,
+      city,
+      country,
       buildingNumber:
         buildingNumber !== "" ? parseInt(buildingNumber) : undefined,
       apartmentNumber:
         apartmentNumber !== "" ? parseInt(apartmentNumber) : undefined,
-      coordinates: coordinates,
+      coordinates,
     },
+    apartmentType,
     distanceFromAcademy: 20,
     totalCapacity: totalCapacity !== "" ? parseInt(totalCapacity) : undefined,
     realTimeCapacity:
       realTimeCapacity !== "" ? parseInt(realTimeCapacity) : undefined,
-    about: about,
+    about,
     numberOfRooms: rooms !== "" ? parseInt(rooms) : undefined,
     apartmentContent: createApartmentContent(selected),
     rating: 5,
@@ -206,7 +204,6 @@ function AddApartmentScreen(props) {
     // images: [5],
     floor: floor !== "" ? parseInt(floor) : undefined,
     owner: userData.id,
-    houseType: houseType,
   };
   const resetForm = () => {
     setCountry("");
@@ -219,9 +216,13 @@ function AddApartmentScreen(props) {
     setPrice("");
     setTotalCapacity("");
     setRealTimeCapacity("");
-    setHouseType("");
-    setSelected([]);
+    setApartmentType("");
     setAbout("");
+    setSelected([]);
+    setCoordinates({
+      latitude: "",
+      longitude: "",
+    });
   };
   const bottomSheetRef = useRef(null);
 
@@ -230,25 +231,53 @@ function AddApartmentScreen(props) {
     []
   );
 
-  const handleButtonPress = async () => {
-    try {
-      const data = await addApartment(apartmentData);
-      showMessage({
-        message: "Success",
-        description: "Apartment added successfully!",
-        type: "success",
-      });
+  const { mutate, isPending, isError, error } = useMutation({
+    mutationFn: (apartmentData) => addApartment(apartmentData),
+    onSuccess: () => {
+      if (Platform.OS === "ios") {
+        showMessage({
+          message: "Success",
+          description: "Apartment added successfully!",
+          type: "success",
+        });
+      } else {
+        Toast.show({
+          type: "success",
+          text1: "Apartment added successfully!",
+        });
+      }
+
       resetForm();
       props.handleAddButtonPress();
-      // props.handleAddButtonPress();
-    } catch (error) {
-      showMessage({
-        message: "Error",
-        description: "Failed to add apartment.",
-        type: "danger",
-      });
-    }
+    },
+    onError: (err) => {
+      console.log(err.message);
+    },
+  });
+
+  const handleAddApartment = () => {
+    mutate(apartmentData);
   };
+
+  // const handleButtonPress = async () => {
+  //   try {
+  //     const data = await addApartment(apartmentData);
+  //     showMessage({
+  //       message: "Success",
+  //       description: "Apartment added successfully!",
+  //       type: "success",
+  //     });
+  //     resetForm();
+  //     props.handleAddButtonPress();
+  //     // props.handleAddButtonPress();
+  //   } catch (error) {
+  //     showMessage({
+  //       message: "Error",
+  //       description: "Failed to add apartment.",
+  //       type: "danger",
+  //     });
+  //   }
+  // };
 
   return (
     <BottomSheet
@@ -423,12 +452,14 @@ function AddApartmentScreen(props) {
                   <DropDown
                     style={styles.DropDown}
                     dropDownDirection="TOP" // This will force the dropdown to always open to the top
-                    list={houseTypeList}
+                    list={apartmentTypeList}
                     label="House Type"
-                    placeholder={houseType}
+                    placeholder={apartmentType}
                     searchable={false}
                     listMode="SCROLLVIEW"
-                    onValueChange={(houseType) => setHouseType(houseType)}
+                    onValueChange={(apartmentType) =>
+                      setApartmentType(apartmentType)
+                    }
                   />
                 </View>
               </View>
@@ -479,14 +510,25 @@ function AddApartmentScreen(props) {
                 <Text style={styles.subHeader}>Add Photos</Text>
               </View>
               <Divider bold={true} style={{ margin: 5 }} />
-              <View>
+              {isError && <ErrorMessage errorMessage={error.message} />}
+              <Button
+                style={{ marginTop: 10 }}
+                buttonColor={"#74E291"}
+                textColor={Color.defaultTheme}
+                mode="contained"
+                onPress={handleAddApartment}
+                loading={isPending}
+              >
+                {!isPending && "Add"}
+              </Button>
+              {/* <View>
                 <TouchableOpacity
-                  onPress={handleButtonPress}
+                  onPress={handleAddApartment}
                   style={styles.button}
                 >
                   <Text style={styles.buttonText}>Add</Text>
                 </TouchableOpacity>
-              </View>
+              </View> */}
             </View>
           </View>
         </KeyboardAwareScrollView>
