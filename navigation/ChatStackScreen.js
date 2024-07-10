@@ -61,9 +61,9 @@ function ChatStackScreen({ navigation, route }) {
           headerTintColor: isDarkMode ? Color.white : Color.darkTheme,
           headerTitleStyle: { fontFamily: "varelaRound" },
           headerBackVisible: false,
-          headerSearchBarOptions: {
-            placeholder: "Search Chat",
-          },
+          // headerSearchBarOptions: {
+          //   placeholder: "Search Chat",
+          // },
         }}
       />
       <ChatStack.Screen

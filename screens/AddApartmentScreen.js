@@ -3,6 +3,8 @@ import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
 import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import * as FileSystem from "expo-file-system";
+import Loader from "../components/ui/Loader";
 import {
   StyleSheet,
   SafeAreaView,
@@ -24,6 +26,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { addApartment } from "../utils/http";
 import FlashMessage, { showMessage } from "react-native-flash-message";
 import { renderNode } from "react-native-elements/dist/helpers";
+import ImagePicker from "../components/ImagePicker";
 
 function AddApartmentScreen(props) {
   const { userData } = useUsers();
@@ -42,7 +45,9 @@ function AddApartmentScreen(props) {
   const [about, setAbout] = useState("");
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [focusedInput, setFocusedInput] = useState(null);
-
+  const [apartmentImage, setApartmentImage] = useState("");
+  const [publicImageURL, setPublicImageURL] = useState("");
+  const [loading, setLoading] = useState(false);
   const houseTypeList = [
     { label: "Land House", value: "Year Land House" },
     { label: "Housing Unit", value: "Housing Unit" },
@@ -157,6 +162,94 @@ function AddApartmentScreen(props) {
     return apartmentContent;
   }
 
+  ///------------------------
+  // const handleImageUpload = async (image) => {
+  //   console.log("image:", image);
+  //   setApartmentImage(image);
+  //   console.log("Attempting to read file:", image);
+
+  //   // Check if the file exists
+  //   const fileInfo = await FileSystem.getInfoAsync(image);
+  //   if (!fileInfo.exists) {
+  //     throw new Error(`File does not exist at path: ${image}`);
+  //   }
+
+  //   // Convert the image to base64 format
+  //   const base64Image = await FileSystem.readAsStringAsync(image, {
+  //     encoding: FileSystem.EncodingType.Base64,
+  //   });
+
+  //   const data = new FormData();
+  //   data.append("file", `data:image/jpeg;base64,${base64Image}`);
+  //   data.append("upload_preset", "FindeRent");
+  //   data.append("cloud_name", "finderent");
+  //   data.append("folder", "Apartments");
+
+  //   await fetch("https://api.cloudinary.com/v1_1/finderent/image/upload", {
+  //     method: "post",
+  //     headers: {
+  //       "Content-Type": "multipart/form-data",
+  //     },
+  //     body: data,
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       console.log(data.url);
+  //       setPublicImageURL(data.url);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error uploading image: ", error);
+  //     });
+  //   image = "";
+  // };
+  const handleImageUpload = async (image) => {
+    console.log("upload image...");
+
+    // Check if the file exists
+    const fileInfo = await FileSystem.getInfoAsync(image);
+    if (!fileInfo.exists) {
+      throw new Error(`File does not exist at path: ${image}`);
+    }
+
+    // Convert the image to base64 format
+    const base64Image = await FileSystem.readAsStringAsync(image, {
+      encoding: FileSystem.EncodingType.Base64,
+    });
+
+    const data = new FormData();
+    data.append("file", `data:image/jpeg;base64,${base64Image}`);
+    data.append("upload_preset", "FindeRent");
+    data.append("cloud_name", "finderent");
+    data.append("folder", "Apartments");
+
+    try {
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/finderent/image/upload",
+        {
+          method: "post",
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          body: data,
+        }
+      );
+
+      const result = await response.json();
+      console.log("image upload: ", result.url);
+      setPublicImageURL(result.url);
+      return result.url; // Return the image URL
+    } catch (error) {
+      console.error("Error uploading image: ", error);
+      throw new Error("Failed to upload image");
+    }
+  };
+
+  ///------------------------
+
+  const localUri = apartmentImage;
+  const filename = localUri.split("/").pop();
+
+  // ///------------------------
   //object to send to the backend
   const apartmentData = {
     address: {
@@ -185,6 +278,10 @@ function AddApartmentScreen(props) {
     floor: floor !== "" ? parseInt(floor) : undefined,
     owner: userData.id,
     houseType: houseType,
+    images: {
+      public_id: publicImageURL,
+      url: publicImageURL,
+    },
   };
 
   const resetForm = () => {
@@ -201,11 +298,46 @@ function AddApartmentScreen(props) {
     setHouseType("");
     setSelected([]);
     setAbout("");
+    setPublicImageURL("");
   };
 
+  // const handleButtonPress = async () => {
+  //   try {
+  //     const data = await addApartment(apartmentData);
+  //     showMessage({
+  //       message: "Success",
+  //       description: "Apartment added successfully!",
+  //       type: "success",
+  //     });
+  //     resetForm(); // Reset the form
+  //     props.handleAddButtonPress();
+  //     props.handleAddButtonPress();
+  //   } catch (error) {
+  //     showMessage({
+  //       message: "Error",
+  //       description: "Failed to add apartment.",
+  //       type: "danger",
+  //     });
+  //   }
+  // };
+
   const handleButtonPress = async () => {
+    setLoading(true);
+    console.log("start to add apartment...");
     try {
-      const data = await addApartment(apartmentData);
+      const imageUrl = await handleImageUpload(apartmentImage);
+      console.log("finished upload ");
+
+      const updatedApartmentData = {
+        ...apartmentData,
+        images: {
+          public_id: imageUrl,
+          url: imageUrl,
+        },
+      };
+
+      console.log("finish to update apartment: ", updatedApartmentData);
+      const data = await addApartment(updatedApartmentData);
       showMessage({
         message: "Success",
         description: "Apartment added successfully!",
@@ -214,12 +346,14 @@ function AddApartmentScreen(props) {
       resetForm(); // Reset the form
       props.handleAddButtonPress();
       props.handleAddButtonPress();
+      setLoading(false);
     } catch (error) {
       showMessage({
         message: "Error",
         description: "Failed to add apartment.",
         type: "danger",
       });
+      setLoading(false);
     }
   };
 
@@ -384,13 +518,26 @@ function AddApartmentScreen(props) {
             </View>
           </View>
           <View>
-            <Text style={styles.subHeader}>Add Photos</Text>
+            <Text style={[styles.subHeader, { marginBottom: 10 }]}>
+              Add Photos
+            </Text>
+            {/* <ImagePicker
+              onPickImage={(image) => setApartmentImage(image)}
+              // handleImageUpload={(image) => handleImageUpload(image)}
+            /> */}
+            <ImagePicker onPickImage={(image) => setApartmentImage(image)} />
           </View>
           <Divider bold={true} style={{ margin: 5 }} />
           <View>
-            <TouchableOpacity onPress={handleButtonPress} style={styles.button}>
-              <Text style={styles.buttonText}>Add</Text>
-            </TouchableOpacity>
+            {!loading && (
+              <TouchableOpacity
+                onPress={handleButtonPress}
+                style={styles.button}
+              >
+                <Text style={styles.buttonText}>Add</Text>
+              </TouchableOpacity>
+            )}
+            {loading && <Loader />}
           </View>
         </View>
       </View>
@@ -439,10 +586,9 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   paragraphInput: {
-    height: 150,
+    // height: 150,
     borderColor: "gray",
     borderWidth: 1,
-    padding: 10,
     borderRadius: 5,
     margin: 5,
     backgroundColor: "#fff",

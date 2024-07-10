@@ -30,26 +30,12 @@ import HouseRoommates from "../components/House/HouseRoommates";
 import Seperator from "../components/Seperator";
 import HouseAssets from "../components/House/HouseAssets";
 import RoommatesInfo from "../components/House/RoommatesInfo";
-import Loader from "../components/ui/Loader";
 import fetchChats from "../api/chats/fetchChats";
 import fetchChatsList from "../api/chats/fetchChatsList";
 import EditApartmentScreen from "../screens/EditApartmentScreen";
 
 const IMG_HEIGHT = 300;
 const { width } = Dimensions.get("window");
-
-const Roommates = [
-  {
-    name: "Maor Saadia",
-    avatar_url: "../assets/images/profile-cartoon.png",
-    subtitle: "President",
-  },
-  {
-    name: "Amir Fukman",
-    avatar_url: "../assets/images/profile-cartoon.png",
-    subtitle: "Vice President",
-  },
-];
 
 const ParagraphDeatails =
   "Discover the perfect three-bedroom rental nestled in a tranquil suburban setting. This charming house features an open-concept living area with ample natural light, a modern kitchen, and a master bedroom with an en-suite bathroom. Enjoy the peaceful backyard with a patio and fire pit. Conveniently located near parks and shopping, this home offers both comfort and convenience for your lifestyle.";
@@ -70,10 +56,18 @@ const LandlordHouseDetailsScreen = ({ navigation, route }) => {
   const [mapPress, setMapPress] = useState(false);
   const [showAll, setShowAll] = useState(false);
   const [apartmentContent, setApartmentContent] = useState([]);
-  const images = [
-    "https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/home-improvement/wp-content/uploads/2022/07/download-23.jpg",
-    "https://www.bhg.com/thmb/3Vf9GXp3T-adDlU6tKpTbb-AEyE=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/white-modern-house-curved-patio-archway-c0a4a3b3-aa51b24d14d0464ea15d36e05aa85ac9.jpg",
-  ];
+
+  let images = [];
+  if (apartment.images) {
+    images = [apartment.images.url];
+  } else {
+    images = [
+      "https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/home-improvement/wp-content/uploads/2022/07/download-23.jpg",
+      "https://www.bhg.com/thmb/3Vf9GXp3T-adDlU6tKpTbb-AEyE=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/white-modern-house-curved-patio-archway-c0a4a3b3-aa51b24d14d0464ea15d36e05aa85ac9.jpg",
+    ];
+  }
+
+  const coordinates = apartment.address?.coordinates;
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -237,12 +231,12 @@ const LandlordHouseDetailsScreen = ({ navigation, route }) => {
             floor={apartment.floor}
             totalCapacity={apartment.totalCapacity}
           />
-          <Map
+          {/* <Map
             handleMapPress={handleMapPress}
             zoomEnabled={false}
             scrollEnabled={false}
           />
-          {mapPress && <MapModal handleMapPress={handleMapPress} />}
+          {mapPress && <MapModal handleMapPress={handleMapPress} />} */}
           <Seperator />
           <HouseAssets
             handleShowAllPress={handleShowAllPress}
@@ -255,7 +249,7 @@ const LandlordHouseDetailsScreen = ({ navigation, route }) => {
             />
           )}
           <Seperator />
-          {apartment.tenants && (
+          {apartment.tenants.length > 0 && (
             <Text style={styles.about}>Current tenants</Text>
           )}
           {apartment.tenants?.map((tenant) => (

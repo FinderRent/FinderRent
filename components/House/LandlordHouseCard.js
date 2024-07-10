@@ -38,7 +38,6 @@ const LandlordHouseCard = ({
         queryKey: ["removeFavourite"],
         queryFn: () => removeFavourite(apartment._id, userData.id),
       };
-
   const { data, isLoading, isError, status } = useQuery(handleFavoriteQuery);
   //-----------------------------------------------------
 
@@ -58,7 +57,8 @@ const LandlordHouseCard = ({
       <View style={styles.cardContainer}>
         <View style={styles.imagesContainer}>
           <Image
-            source={{ uri: images[0] }} // Use the first image in the array
+            // source={{ uri: images[0] }} // Use the first image in the array
+            source={{ uri: apartment.images.url }} // Use the first image in the array
             style={styles.image}
             resizeMode="cover"
           />

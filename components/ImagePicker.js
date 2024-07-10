@@ -1,11 +1,11 @@
-import * as ImagePickerFromGallery from 'expo-image-picker';
-import { StyleSheet, View } from 'react-native';
-import { Button } from 'react-native-paper';
+import * as ImagePickerFromGallery from "expo-image-picker";
+import { StyleSheet, View } from "react-native";
+import { Button } from "react-native-paper";
 
-import { useDarkMode } from '../context/DarkModeContext';
-import { Color } from '../constants/colors';
+import { useDarkMode } from "../context/DarkModeContext";
+import { Color } from "../constants/colors";
 
-function ImagePicker({ onPickImage }) {
+function ImagePicker({ onPickImage, handleImageUpload }) {
   const { isDarkMode } = useDarkMode();
 
   async function pickedImageHandler() {
@@ -18,6 +18,7 @@ function ImagePicker({ onPickImage }) {
 
     if (!image.canceled) {
       onPickImage(image.assets[0].uri);
+      // handleImageUpload(image.assets[0].uri);
     }
   }
 
@@ -42,8 +43,8 @@ export default ImagePicker;
 
 const styles = StyleSheet.create({
   image: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
   },
   button: {
     marginBottom: 15,

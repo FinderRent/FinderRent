@@ -23,7 +23,6 @@ import { MultipleSelectList } from "react-native-dropdown-select-list";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { updateEditedApartment } from "../utils/http";
 import FlashMessage, { showMessage } from "react-native-flash-message";
-import { renderNode } from "react-native-elements/dist/helpers";
 
 function EditApartmentScreen({ route, navigation }) {
   const { apartment } = route.params;
@@ -432,7 +431,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   paragraphInput: {
-    height: 150,
+    // height: 150,
     borderColor: "gray",
     borderWidth: 1,
     padding: 10,
