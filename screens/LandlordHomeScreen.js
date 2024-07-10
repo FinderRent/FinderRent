@@ -19,6 +19,7 @@ import LandlordHouseCard from "../components/House/LandlordHouseCard";
 import AddApartmentButton from "../components/ui/AddApartmentButton";
 import AddApartmentScreen from "./AddApartmentScreen";
 import Loader from "../components/ui/Loader";
+import ErrorMessage from "../components/ui/ErrorMessage";
 
 async function registerForPushNotificationsAsync() {
   let token;
@@ -55,32 +56,42 @@ function LandlordHomeScreen({ navigation }) {
   const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
   const tabBarHeight = useBottomTabBarHeight();
-  const token = userData.token;
 
+  const token = userData.token;
+  const owner = userData.id;
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
   const [addButtonPress, setAddButtonPress] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  // const [sheetIndex, setSheetIndex] = useState(-1); // -1 means closed
 
   const notificationListener = useRef();
   const responseListener = useRef();
 
   const {
     data: apartments,
-    isLoading: isLoadingApartments,
+    isFetching: isFetchingApartments,
     isError: isErrorApartments,
-    status: statusApartments,
+    error,
     refetch,
   } = useQuery({
-    queryKey: ["apartments"],
-    queryFn: () => fetchAllApartments({ owner: userData.id }),
+    queryKey: ["apartments", owner],
+    queryFn: () => fetchAllApartments({ owner }),
+    enabled: !!owner, // Enable the query only if owner is defined
   });
+
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     refetch();
+  //   }, [refetch])
+  // );
 
   useFocusEffect(
     useCallback(() => {
-      refetch();
-    }, [refetch])
+      const fetched = async () => {
+        await refetch();
+      };
+      fetched();
+    }, [])
   );
 
   const renderApartmentCard = ({ item: apartment }) => {
@@ -143,9 +154,10 @@ function LandlordHomeScreen({ navigation }) {
   const handleIsOpen = () => {
     setIsOpen((prevState) => !prevState);
   };
+  // console.log(isFetching);
 
-  if (isLoadingApartments)
-    return <Loader color={isDarkMode ? Color.defaultTheme : Color.darkTheme} />;
+  // if (isFetching)
+  //   return <Loader color={isDarkMode ? Color.defaultTheme : Color.darkTheme} />;
 
   return (
     <SafeAreaView
@@ -159,11 +171,16 @@ function LandlordHomeScreen({ navigation }) {
       <StatusBar style={isDarkMode ? "light" : "dark"} />
       {token ? <LandlordHeader /> : <SignInHeader />}
       <Text style={styles.PropertiesHeader}>Your properties</Text>
-      <FlatList
-        data={apartments?.apartments}
-        keyExtractor={(item) => item._id}
-        renderItem={renderApartmentCard}
-      />
+      {isFetchingApartments ? (
+        <Loader color={isDarkMode ? Color.defaultTheme : Color.darkTheme} />
+      ) : (
+        <FlatList
+          data={apartments?.apartments}
+          keyExtractor={(item) => item._id}
+          renderItem={renderApartmentCard}
+        />
+      )}
+      {isErrorApartments && <ErrorMessage errorMessage={error} />}
       <AddApartmentScreen
         handleAddButtonPress={handleAddButtonPress}
         bottomSheetIndex={addButtonPress}

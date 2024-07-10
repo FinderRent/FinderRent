@@ -545,7 +545,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: "5%",
   },
   scrollViewContent: {
-    paddingBottom: 100,
+    paddingBottom: Platform.OS === "ios" ? 100 : -250,
   },
   mainHeader: {
     fontSize: 30,

@@ -14,6 +14,7 @@ import Carousel from "react-native-reanimated-carousel";
 import { Color } from "../../constants/colors";
 import { useDarkMode } from "../../context/DarkModeContext";
 import { FavoritesContext } from "../../context/FavoritesContext";
+import { capitalizeWords } from "../../utils/features";
 import Indicators from "./Indicators";
 
 const { width } = Dimensions.get("window");
@@ -31,6 +32,9 @@ const HouseCard = ({ navigation, apartment, userData }) => {
       favoriteApartmentsCtx.addFavorite(apartment._id);
     }
   }
+
+  const city = capitalizeWords(apartment.address.city);
+  const street = capitalizeWords(apartment.address.street);
 
   const images = [
     "https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/home-improvement/wp-content/uploads/2022/07/download-23.jpg",
@@ -78,12 +82,13 @@ const HouseCard = ({ navigation, apartment, userData }) => {
         </Animated.View>
         <View style={styles.detailsContainer}>
           <View style={styles.addressContainer}>
-            <Text style={styles.city}>{apartment.address.city}</Text>
+            {/* <Text style={styles.apartmentType}>{apartment.apartmentType}</Text> */}
+            <Text style={styles.city}>{city}</Text>
             <Text style={styles.street}>
-              {apartment.address.street} {apartment.address.buildingNumber}/
+              {street} {apartment.address.buildingNumber}/
               {apartment.address.apartmentNumber}
             </Text>
-            <Text style={styles.distance}>{apartment.distanceFromAcademy}</Text>
+            {/* <Text style={styles.distance}>{apartment.distanceFromAcademy}</Text> */}
           </View>
           <Text style={styles.price}>{apartment.price}$</Text>
         </View>
@@ -99,7 +104,9 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     overflow: "hidden",
     elevation: 4,
-    margin: 10,
+    marginHorizontal: 15,
+    marginTop: 10,
+    marginBottom: 15,
   },
   imagesContainer: {
     height: 250,
@@ -120,27 +127,33 @@ const styles = StyleSheet.create({
   detailsContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    padding: 15,
+    padding: 10,
   },
   addressContainer: {
     flex: 1,
   },
+  apartmentType: {
+    fontSize: 18,
+    textAlign: "center",
+    paddingLeft: 90,
+    // fontWeight: "bold",
+    fontFamily: "OrbitronMedium",
+  },
   city: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: "bold",
-    marginBottom: 5,
   },
   street: {
     fontSize: 15,
-    marginBottom: 5,
   },
   distance: {
     fontSize: 15,
     color: "#65B741",
   },
   price: {
-    fontSize: 20,
+    fontSize: 28,
     fontWeight: "bold",
+    marginTop: 5,
     color: "#65B741",
   },
   favoriteButton: {
