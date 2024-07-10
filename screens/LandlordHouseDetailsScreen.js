@@ -16,6 +16,7 @@ import Carousel from "react-native-reanimated-carousel";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { Paragraph, Text } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
+
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { useUsers } from "../context/UserContext";

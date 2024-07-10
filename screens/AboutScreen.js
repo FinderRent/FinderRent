@@ -68,12 +68,12 @@ const AboutScreen = () => {
       </Text>
       <View style={styles.footer}>
         <Text style={styles.footerText}>
-          Built with a lot of work and love by Amir Fukman and Maor Saadia.
+          {/* Built with a lot of work and love by Amir Fukman and Maor Saadia. */}
         </Text>
         <Text
           style={{
             ...styles.footerText,
-            marginTop: -25,
+            marginTop: -55,
             fontFamily: "",
             fontSize: 12,
             color: isDarkMode ? Color.Brown100 : Color.Brown700,

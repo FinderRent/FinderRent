@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import { StyleSheet, TouchableOpacity, View, Keyboard } from "react-native";
-import { Text, Divider } from "react-native-paper";
+import { StyleSheet, View, Keyboard, Platform } from "react-native";
+import { Text, Divider, Button } from "react-native-paper";
 import { MultipleSelectList } from "react-native-dropdown-select-list";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { showMessage } from "react-native-flash-message";
+import { useMutation } from "@tanstack/react-query";
+import Toast from "react-native-toast-message";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
@@ -11,6 +13,8 @@ import { updateEditedApartment } from "../utils/http";
 import { useUsers } from "../context/UserContext";
 import Input from "../components/inputs/Input";
 import DropDown from "../components/inputs/DropDown";
+import ErrorMessage from "../components/ui/ErrorMessage";
+import NavLink from "../components/ui/NavLink";
 
 function EditApartmentScreen({ route, navigation }) {
   const { isDarkMode } = useDarkMode();
@@ -27,6 +31,10 @@ function EditApartmentScreen({ route, navigation }) {
   const [apartmentNumber, setApartmentNumber] = useState(
     apartment?.address.apartmentNumber.toString()
   );
+  const [coordinates, setCoordinates] = useState({
+    latitude: apartment?.address?.coordinates.latitude.toString(),
+    longitude: apartment?.address?.coordinates.longitude.toString(),
+  });
   const [floor, setFloor] = useState(apartment?.floor.toString());
   const [rooms, setRooms] = useState(apartment?.numberOfRooms.toString());
   const [price, setPrice] = useState(apartment?.price.toString());
@@ -36,13 +44,13 @@ function EditApartmentScreen({ route, navigation }) {
   const [realTimeCapacity, setRealTimeCapacity] = useState(
     apartment?.realTimeCapacity.toString()
   );
-  const [houseType, setHouseType] = useState(""); /////not working
+  const [apartmentType, setApartmentType] = useState("");
   const [selected, setSelected] = useState([]); ///need to do
   const [about, setAbout] = useState(apartment?.about);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [focusedInput, setFocusedInput] = useState(null);
 
-  const houseTypeList = [
+  const apartmentTypeList = [
     { label: "Land House", value: "Land House" },
     { label: "Housing Unit", value: "Housing Unit" },
     { label: "Tower", value: "Tower" },
@@ -157,23 +165,20 @@ function EditApartmentScreen({ route, navigation }) {
   const apartmentData = {
     id: apartment._id,
     address: {
-      street: street,
-      city: city,
-      country: country,
+      street,
+      city,
+      country,
       buildingNumber:
         buildingNumber !== "" ? parseInt(buildingNumber) : undefined,
       apartmentNumber:
         apartmentNumber !== "" ? parseInt(apartmentNumber) : undefined,
-      coordinates: {
-        latitude: 23.232323,
-        longitude: 65.234556,
-      },
+      coordinates,
     },
     distanceFromAcademy: 20,
     totalCapacity: totalCapacity !== "" ? parseInt(totalCapacity) : undefined,
     realTimeCapacity:
       realTimeCapacity !== "" ? parseInt(realTimeCapacity) : undefined,
-    about: about,
+    about,
     numberOfRooms: rooms !== "" ? parseInt(rooms) : undefined,
     apartmentContent: createApartmentContent(selected),
     rating: 5,
@@ -181,34 +186,61 @@ function EditApartmentScreen({ route, navigation }) {
     // images: [5],
     floor: floor !== "" ? parseInt(floor) : undefined,
     owner: userData.id,
-    houseType: houseType,
+    apartmentType,
   };
 
-  const handleButtonPress = async () => {
-    try {
-      const data = await updateEditedApartment(apartmentData);
-      showMessage({
-        message: "Success",
-        description: "Apartment edited successfully!",
-        type: "success",
-      });
+  const { mutate, isPending, isError, error } = useMutation({
+    mutationFn: (apartmentData) => updateEditedApartment(apartmentData),
+    onSuccess: () => {
+      if (Platform.OS === "ios") {
+        showMessage({
+          message: "Success",
+          description: "Apartment edited successfully!",
+          type: "success",
+        });
+      } else {
+        Toast.show({
+          type: "success",
+          text1: "Apartment edited successfully!",
+        });
+      }
       navigation.goBack();
       navigation.goBack();
-    } catch (error) {
-      showMessage({
-        message: "Error",
-        description: "Failed to edit apartment",
-        type: "danger",
-      });
-    }
+    },
+    onError: (err) => {
+      console.log(err.message);
+    },
+  });
+
+  const handleEditApartment = () => {
+    mutate(apartmentData);
   };
+
+  // const handleButtonPress = async () => {
+  //   try {
+  //     const data = await updateEditedApartment(apartmentData);
+  //     showMessage({
+  //       message: "Success",
+  //       description: "Apartment edited successfully!",
+  //       type: "success",
+  //     });
+  //     navigation.goBack();
+  //     navigation.goBack();
+  //   } catch (error) {
+  //     showMessage({
+  //       message: "Error",
+  //       description: "Failed to edit apartment",
+  //       type: "danger",
+  //     });
+  //   }
+  // };
 
   return (
     <KeyboardAwareScrollView
       contentContainerStyle={styles.scrollViewContent}
       keyboardShouldPersistTaps="handled"
       enableOnAndroid={true}
-      extraScrollHeight={50} // Increased this value to move the text input further up
+      extraScrollHeight={50}
       keyboardOpeningTime={0}
     >
       <View style={styles.container}>
@@ -222,14 +254,14 @@ function EditApartmentScreen({ route, navigation }) {
                 label="Country"
                 defaultValue={country}
                 value={country}
-                onChangeText={(country) => setCountry(country)}
+                onValueChange={(country) => setCountry(country)}
                 style={styles.input}
               />
               <Input
                 mode="outlined"
                 label="City"
                 value={city}
-                onChangeText={(city) => setCity(city)}
+                onValueChange={(city) => setCity(city)}
                 style={styles.input}
               />
             </View>
@@ -238,7 +270,7 @@ function EditApartmentScreen({ route, navigation }) {
                 mode="outlined"
                 label="Street"
                 value={street}
-                onChangeText={(street) => setStreet(street)}
+                onValueChange={(street) => setStreet(street)}
                 style={styles.input}
               />
               <Input
@@ -246,7 +278,7 @@ function EditApartmentScreen({ route, navigation }) {
                 mode="outlined"
                 label="Building Number"
                 value={buildingNumber}
-                onChangeText={(buildingNumber) =>
+                onValueChange={(buildingNumber) =>
                   setBuildingNumber(buildingNumber)
                 }
                 style={styles.input}
@@ -258,7 +290,7 @@ function EditApartmentScreen({ route, navigation }) {
                 mode="outlined"
                 label="Apartment Number"
                 value={apartmentNumber}
-                onChangeText={(apartmentNumber) =>
+                onValueChange={(apartmentNumber) =>
                   setApartmentNumber(apartmentNumber)
                 }
                 style={styles.input}
@@ -268,9 +300,34 @@ function EditApartmentScreen({ route, navigation }) {
                 mode="outlined"
                 label="Floor"
                 value={floor}
-                onChangeText={(floor) => setFloor(floor)}
+                onValueChange={(floor) => setFloor(floor)}
                 style={styles.input}
               />
+            </View>
+            <View>
+              <Text style={styles.subHeader}>Apartment Coordinates</Text>
+              <View style={styles.line}>
+                <Input
+                  keyboardType="numeric"
+                  mode="outlined"
+                  label="latitude"
+                  value={coordinates.latitude}
+                  onValueChange={(latitude) =>
+                    setCoordinates((prev) => ({ ...prev, latitude }))
+                  }
+                  style={styles.input}
+                />
+                <Input
+                  keyboardType="numeric"
+                  mode="outlined"
+                  label="longitude"
+                  value={coordinates.longitude}
+                  onValueChange={(longitude) =>
+                    setCoordinates((prev) => ({ ...prev, longitude }))
+                  }
+                  style={styles.input}
+                />
+              </View>
             </View>
           </View>
           <View>
@@ -281,7 +338,7 @@ function EditApartmentScreen({ route, navigation }) {
                 mode="outlined"
                 label="Number Of Rooms"
                 value={rooms}
-                onChangeText={(rooms) => setRooms(rooms)}
+                onValueChange={(rooms) => setRooms(rooms)}
                 style={styles.input}
               />
               <Input
@@ -289,7 +346,7 @@ function EditApartmentScreen({ route, navigation }) {
                 mode="outlined"
                 label="Monthly Rent"
                 value={price}
-                onChangeText={(price) => setPrice(price)}
+                onValueChange={(price) => setPrice(price)}
                 style={styles.input}
               />
             </View>
@@ -299,7 +356,7 @@ function EditApartmentScreen({ route, navigation }) {
                 mode="outlined"
                 label="Total Capacity"
                 value={totalCapacity}
-                onChangeText={(totalCapacity) =>
+                onValueChange={(totalCapacity) =>
                   setTotalCapacity(totalCapacity)
                 }
                 style={styles.input}
@@ -309,7 +366,7 @@ function EditApartmentScreen({ route, navigation }) {
                 mode="outlined"
                 label="Real Time Capacity"
                 value={realTimeCapacity}
-                onChangeText={(realTimeCapacity) =>
+                onValueChange={(realTimeCapacity) =>
                   setRealTimeCapacity(realTimeCapacity)
                 }
                 style={styles.input}
@@ -321,13 +378,15 @@ function EditApartmentScreen({ route, navigation }) {
             <View>
               <DropDown
                 style={styles.DropDown}
-                dropDownDirection="TOP" // This will force the dropdown to always open to the top
-                list={houseTypeList}
+                dropDownDirection="TOP"
+                list={apartmentTypeList}
                 label="House Type"
-                placeholder={houseType}
+                placeholder={apartmentType}
                 searchable={false}
                 listMode="SCROLLVIEW"
-                onValueChange={(houseType) => setHouseType(houseType)}
+                onValueChange={(apartmentType) =>
+                  setApartmentType(apartmentType)
+                }
               />
             </View>
           </View>
@@ -341,7 +400,11 @@ function EditApartmentScreen({ route, navigation }) {
                 dropdownTextStyles={{
                   color: isDarkMode ? Color.defaultTheme : Color.darkTheme,
                 }}
+                labelStyles={{
+                  color: isDarkMode ? Color.defaultTheme : Color.darkTheme,
+                }}
                 dropdownShown={false}
+                maxHeight={700}
                 search={false}
                 setSelected={(selected) => {
                   setSelected(selected);
@@ -362,7 +425,7 @@ function EditApartmentScreen({ route, navigation }) {
                 placeholder="Describe your apartment"
                 multiline={true}
                 numberOfLines={4}
-                onChangeText={(about) => setAbout(about)}
+                onValueChange={(about) => setAbout(about)}
                 value={about}
                 textAlignVertical="top"
                 onFocus={() => handleFocus("about")}
@@ -374,11 +437,26 @@ function EditApartmentScreen({ route, navigation }) {
             <Text style={styles.subHeader}>Photos</Text>
           </View>
           <Divider bold={true} style={{ margin: 5 }} />
-          <View>
-            <TouchableOpacity onPress={handleButtonPress} style={styles.button}>
+          {isError && <ErrorMessage errorMessage={error.message} />}
+          <Button
+            style={{ marginTop: 10 }}
+            buttonColor={"#74E291"}
+            textColor={Color.defaultTheme}
+            mode="contained"
+            onPress={handleEditApartment}
+            loading={isPending}
+          >
+            {!isPending && "Done"}
+          </Button>
+          <NavLink text=" Back" style={{ fontSize: 14 }} />
+          {/* <View>
+            <TouchableOpacity
+              onPress={handleEditApartment}
+              style={styles.button}
+            >
               <Text style={styles.buttonText}>Done</Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
         </View>
       </View>
     </KeyboardAwareScrollView>

@@ -140,11 +140,20 @@ export async function checkIfFavourite(apartmentID, userID) {
 
 export async function addApartment(apartment) {
   try {
-    const response = await axios.post(BACKEND_URL + `/apartments`, apartment);
-    return response.data.data;
-  } catch (error) {
-    console.error("Error adding apartment:", error);
-    throw error;
+    const response = await axios.post(BACKEND_URL + `/apartments`, apartment, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const responseData = response.data.data;
+
+    if (response.status !== 201) {
+      throw new Error(responseData.message);
+    }
+
+    return responseData;
+  } catch (err) {
+    throw new Error(err.response.data.message);
   }
 }
 
