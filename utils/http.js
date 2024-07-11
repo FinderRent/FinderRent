@@ -5,9 +5,9 @@ import axios from "axios";
 // const BACKEND_URL = "http://172.20.10.3:3000/api/v1";
 // const BACKEND_URL = "http://192.168.1.193:3000/api/v1";
 // const BACKEND_URL = "http://192.168.134.87:3000/api/v1";
-// const BACKEND_URL = "http://192.168.1.214:3000/api/v1";
+const BACKEND_URL = "http://192.168.1.214:3000/api/v1";
 // const BACKEND_URL = "http://10.100.102.96:3000/api/v1";
-const BACKEND_URL = "https://finder-rent-backend.vercel.app/api/v1";
+//const BACKEND_URL = "https://finder-rent-backend.vercel.app/api/v1";
 
 export async function fetchAllApartments(filter) {
   // console.log("req", filter);
@@ -43,6 +43,25 @@ export async function fetchAllApartments(filter) {
     }
 
     const response = await axios.get(BACKEND_URL + url, { params });
+
+    const responseData = response.data.data;
+
+    if (response.status !== 200) {
+      throw new Error(responseData.message);
+    }
+
+    return responseData;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+}
+
+export async function getDistances(coordinates) {
+  const { lat, lng } = coordinates || {};
+  try {
+    const response = await axios.get(
+      BACKEND_URL + `/apartments/distances/${lat},${lng}/unit/km`
+    );
 
     const responseData = response.data.data;
 

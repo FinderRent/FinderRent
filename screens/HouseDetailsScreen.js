@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   View,
   Image,
+  Platform,
 } from "react-native";
 import Animated, {
   SlideInDown,
@@ -22,6 +23,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { FavoritesContext } from "../context/FavoritesContext";
+import { capitalizeWords } from "../utils/features";
 import { useUsers } from "../context/UserContext";
 import HouseAssetsModal from "../modals/HouseAssetsModal";
 import MapModal from "../modals/MapModal";
@@ -48,6 +50,9 @@ const HouseDetailsScreen = ({ navigation, route }) => {
 
   const scrollRef = useAnimatedRef();
   const tabBarHeight = useBottomTabBarHeight();
+
+  const city = capitalizeWords(apartment.address.city);
+  const street = capitalizeWords(apartment.address.street);
 
   const templateMessage = `
   Hello,
@@ -76,6 +81,7 @@ const HouseDetailsScreen = ({ navigation, route }) => {
     "https://www.bhg.com/thmb/3Vf9GXp3T-adDlU6tKpTbb-AEyE=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/white-modern-house-curved-patio-archway-c0a4a3b3-aa51b24d14d0464ea15d36e05aa85ac9.jpg",
   ];
   const apartmentIsFavorite = favoriteApartmentsCtx.ids.includes(apartment._id);
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: "",
@@ -235,13 +241,13 @@ const HouseDetailsScreen = ({ navigation, route }) => {
         </Animated.View>
 
         <View style={styles.houseInfo}>
-          <Text style={styles.city}>{apartment.address.city}</Text>
+          <Text style={styles.city}>{city}</Text>
           <Text style={styles.street}>
-            {apartment.address.street} {apartment.address.buildingNumber}/
+            {street} {apartment.address.buildingNumber}/
             {apartment.address.apartmentNumber}
           </Text>
           <Text style={styles.distance}>
-            {apartment.distanceFromAcademy} kilometers away from SCE College
+            {apartment.distance} Kilometers away from {userData.academic}
           </Text>
           <HouseRoommates
             totalCapacity={apartment.totalCapacity}
@@ -323,20 +329,19 @@ const styles = StyleSheet.create({
     flexDirection: "col",
     marginHorizontal: "4%",
   },
-
   city: {
-    fontSize: 35,
-    marginBottom: 5,
+    fontSize: 40,
+    // marginBottom: 5,
     fontWeight: "bold",
   },
   street: {
     fontSize: 25,
-    marginBottom: 5,
+    marginTop: Platform.OS === "android" ? -5 : 0,
     fontWeight: "bold",
   },
   distance: {
-    fontSize: 20,
-    color: "#65B741",
+    fontSize: 15,
+    // color: "#65B741",
   },
   about: {
     fontSize: 25,

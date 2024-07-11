@@ -88,7 +88,7 @@ const HouseCard = ({ navigation, apartment, userData }) => {
               {street} {apartment.address.buildingNumber}/
               {apartment.address.apartmentNumber}
             </Text>
-            {/* <Text style={styles.distance}>{apartment.distanceFromAcademy}</Text> */}
+            <Text style={styles.distance}>{apartment.distance}Km</Text>
           </View>
           <Text style={styles.price}>{apartment.price}$</Text>
         </View>
@@ -147,13 +147,13 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   distance: {
-    fontSize: 15,
-    color: "#65B741",
+    fontSize: 13,
+    // color: "#65B741",
   },
   price: {
-    fontSize: 28,
+    fontSize: 32,
     fontWeight: "bold",
-    marginTop: 5,
+    marginTop: 12,
     color: "#65B741",
   },
   favoriteButton: {

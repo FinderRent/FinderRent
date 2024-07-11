@@ -9,7 +9,7 @@ import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
 import { Color } from "../../constants/colors";
 import { useUsers } from "../../context/UserContext";
 import { useDarkMode } from "../../context/DarkModeContext";
-import { fetchAllApartments } from "../../utils/http";
+import { fetchAllApartments, getDistances } from "../../utils/http";
 import HouseCard from "./HouseCard";
 import Loader from "../../components/ui/Loader";
 import ErrorMessage from "../../components/ui/ErrorMessage";
@@ -53,8 +53,14 @@ function HouseList({
       }),
   });
 
+  const { data: distances, refetch: refetchDistance } = useQuery({
+    queryKey: ["distances"],
+    queryFn: () => getDistances(coordinates),
+  });
+
   useEffect(() => {
     refetch();
+    refetchDistance();
   }, [
     sort,
     category,
@@ -72,10 +78,22 @@ function HouseList({
 
   //render the apartment card
   const renderApartmentCard = ({ item: apartment }) => {
+    let distanceData = null;
+    distances?.data.forEach((d) => {
+      if (d._id === apartment._id) {
+        distanceData = d;
+      }
+    });
+
+    const apartmentWithDistance = {
+      ...apartment,
+      distance: distanceData ? distanceData.distance.toFixed(2) : null,
+    };
+
     return (
       <HouseCard
         navigation={navigation}
-        apartment={apartment}
+        apartment={apartmentWithDistance}
         userData={userData}
       />
     );
@@ -96,7 +114,7 @@ function HouseList({
       }
       style={styles.sheetContainer}
     >
-      {isErrorApartments && <ErrorMessage errorMessage={errorApartments} />}
+      {/* {isErrorApartments && <ErrorMessage errorMessage={errorApartments} />} */}
 
       {isFetchingApartments ? (
         <View style={{ paddingTop: "80%" }}>
