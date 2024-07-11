@@ -20,7 +20,7 @@ const HouseRoommates = (props) => {
       <View style={styles.viewContainer}>
         <Text style={styles.Text}>There are</Text>
         <Text style={[styles.Text, styles.numberInfo]}>
-          {props.totalCapacity - props.realTimeCapacity}
+          {Math.max(0, props.totalCapacity - props.realTimeCapacity)}
         </Text>
         <Text style={styles.Text}>available Rooms</Text>
       </View>

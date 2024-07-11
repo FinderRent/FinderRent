@@ -21,6 +21,10 @@ function EditApartmentScreen({ route, navigation }) {
 
   const { apartment } = route.params;
 
+  const selectedFeatures = Object.keys(apartment.apartmentContent).filter(
+    (key) => apartment.apartmentContent[key] === true
+  );
+
   const { userData } = useUsers();
   const [country, setCountry] = useState(apartment?.address.country);
   const [city, setCity] = useState(apartment?.address.city);
@@ -44,7 +48,8 @@ function EditApartmentScreen({ route, navigation }) {
   const [realTimeCapacity, setRealTimeCapacity] = useState(
     apartment?.realTimeCapacity.toString()
   );
-  const [apartmentType, setApartmentType] = useState("");
+
+  const [apartmentType, setApartmentType] = useState(apartment?.apartmentType);
   const [selected, setSelected] = useState([]); ///need to do
   const [about, setAbout] = useState(apartment?.about);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
@@ -448,7 +453,7 @@ function EditApartmentScreen({ route, navigation }) {
           >
             {!isPending && "Done"}
           </Button>
-          <NavLink text=" Back" style={{ fontSize: 14 }} />
+          <NavLink text="Back" style={{ fontSize: 14 }} />
           {/* <View>
             <TouchableOpacity
               onPress={handleEditApartment}
