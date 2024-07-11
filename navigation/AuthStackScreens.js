@@ -16,7 +16,6 @@ import { useDarkMode } from "../context/DarkModeContext";
 import MainTabScreen from "./MainTabScreen";
 import SignUpScreen from "../screens/SignUpScreen";
 import ResetPasswordScreen from "../screens/ResetPasswordScreen";
-import SignInScreen from "../screens/SignInScreen";
 
 const AuthStack = createNativeStackNavigator();
 
@@ -118,7 +117,6 @@ function AuthStackScreens() {
               animation: "simple_push",
             }}
           />
-          <AuthStack.Screen name="SignInScreen" component={SignInScreen} />
         </AuthStack.Navigator>
       </PaperProvider>
     </NavigationContainer>

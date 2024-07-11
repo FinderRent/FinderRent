@@ -96,7 +96,7 @@ const FavoritesScreen = ({ navigation }) => {
                   source={{
                     uri:
                       apartment?.images?.[0] ||
-                      "https://www.bhg.com/thmb/3Vf9GXp3T-adDlU6tKpTbb-AEyE=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/white-modern-house-curved-patio-archway-c0a4a3b3-aa51b24d14d0464ea15d36e05aa85ac9.jpg",
+                      "https://img.mako.co.il/2018/11/07/Wellcome_Realter_Beer_Sheva_18_3_g.jpg",
                   }}
                 />
                 <Card.Content style={styles.cardContent}>

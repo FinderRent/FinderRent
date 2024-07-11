@@ -67,7 +67,7 @@ const FilterScreen = ({ navigation, route }) => {
   const { isDarkMode } = useDarkMode();
   const [openCard, setOpenCard] = useState(0);
   const [sortApartments, setSort] = useState("");
-  const [distance, setDistance] = useState(filtersValues?.distance ?? 0.5);
+  const [distance, setDistance] = useState(filtersValues?.distance ?? 1.0);
   const [selectedType, setSelectedType] = useState(0);
   const [filters, setFilters] = useState(moreFilters);
 
@@ -84,7 +84,7 @@ const FilterScreen = ({ navigation, route }) => {
       count: 0,
     }));
     setSort("");
-    setDistance(0.5);
+    setDistance(1.0);
     setFilters(resetFilters);
     setSelectedType(0);
     setOpenCard(0);
@@ -188,7 +188,7 @@ const FilterScreen = ({ navigation, route }) => {
           >
             <DropDown
               list={sortBy}
-              label="SortBy"
+              label={sortApartments || "SortBy"}
               placeholder={sortApartments}
               searchable={false}
               listMode="SCROLLVIEW"

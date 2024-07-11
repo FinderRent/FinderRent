@@ -5,15 +5,15 @@ import axios from "axios";
 // const BACKEND_URL = "http://172.20.10.3:3000/api/v1";
 // const BACKEND_URL = "http://192.168.1.193:3000/api/v1";
 // const BACKEND_URL = "http://192.168.134.87:3000/api/v1";
-const BACKEND_URL = "http://192.168.1.214:3000/api/v1";
+// const BACKEND_URL = "http://192.168.1.214:3000/api/v1";
 // const BACKEND_URL = "http://10.100.102.96:3000/api/v1";
-//const BACKEND_URL = "https://finder-rent-backend.vercel.app/api/v1";
+const BACKEND_URL = "https://finder-rent-backend.vercel.app/api/v1";
 
 export async function fetchAllApartments(filter) {
   // console.log("req", filter);
 
   const { lat, lng } = filter.coordinates || {};
-  const distance = filter.distance || 0.5;
+  const distance = filter.distance || 1.0;
 
   const url = filter.coordinates
     ? `/apartments/apartments-within/${distance}/center/${lat},${lng}/unit/km`

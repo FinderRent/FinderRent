@@ -155,13 +155,28 @@ function HouseList({
         </>
       )}
       <View style={styles.absoluteView}>
-        <TouchableOpacity onPress={onShowMap} style={styles.mapBtn}>
-          <Text style={{ color: "#fff" }}>Map</Text>
+        <TouchableOpacity
+          onPress={onShowMap}
+          style={
+            isDarkMode
+              ? { ...styles.mapBtn, backgroundColor: Color.defaultTheme }
+              : { ...styles.mapBtn }
+          }
+        >
+          <Text
+            style={
+              isDarkMode
+                ? { color: Color.darkTheme }
+                : { color: Color.defaultTheme }
+            }
+          >
+            Map
+          </Text>
           <Ionicons
             name="map"
             size={20}
-            style={{ marginLeft: 10 }}
-            color={"#fff"}
+            style={{ marginLeft: 5 }}
+            color={isDarkMode ? Color.darkTheme : Color.defaultTheme}
           />
         </TouchableOpacity>
       </View>

@@ -17,7 +17,7 @@ import Toast from "react-native-toast-message";
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { UserContext } from "../context/UserContext";
-import { academicList } from "../data/academic";
+import { academicList } from "../data/academicEnglish";
 import Input from "../components/inputs/Input";
 import PasswordInput from "../components/inputs/PasswordInput";
 import DropDown from "../components/inputs/DropDown";

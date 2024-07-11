@@ -37,8 +37,9 @@ const HouseCard = ({ navigation, apartment, userData }) => {
   const street = capitalizeWords(apartment.address.street);
 
   const images = [
-    "https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/home-improvement/wp-content/uploads/2022/07/download-23.jpg",
-    "https://www.bhg.com/thmb/3Vf9GXp3T-adDlU6tKpTbb-AEyE=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/white-modern-house-curved-patio-archway-c0a4a3b3-aa51b24d14d0464ea15d36e05aa85ac9.jpg",
+    "https://img.mako.co.il/2018/11/07/Wellcome_Realter_Beer_Sheva_18_3_g.jpg",
+    "https://uploads.homeless.co.il/sale/202205/nvFile4211510.JPG",
+    "https://images2.madlan.co.il/t:nonce:v=2/projects/%D7%9E%D7%AA%D7%97%D7%9D%20%D7%A7%D7%95%D7%A4%D7%AA%20%D7%97%D7%95%D7%9C%D7%99%D7%9D%20-%20%D7%A2%D7%96%D7%A8%D7%99%D7%90%D7%9C%D7%99/48950_br_group_pic_950x650_3-683b75f9-b8f5-427d-8f29-cad7d8865ff4.jpg",
   ];
 
   return (
@@ -118,16 +119,22 @@ const styles = StyleSheet.create({
   imageWrapper: {
     width: width,
     height: 250,
+    padding: 20,
+    marginLeft: 10,
   },
   image: {
     width: "100%",
     height: "100%",
     resizeMode: "cover",
+    borderTopRightRadius: 12,
+    borderTopLeftRadius: 12,
+    margin: -10,
   },
   detailsContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     padding: 10,
+    marginTop: -30,
   },
   addressContainer: {
     flex: 1,
@@ -158,8 +165,8 @@ const styles = StyleSheet.create({
   },
   favoriteButton: {
     position: "absolute",
-    top: 10,
-    right: 10,
+    top: 15,
+    right: 12,
     zIndex: 1,
   },
 });
