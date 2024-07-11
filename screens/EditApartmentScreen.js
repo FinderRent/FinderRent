@@ -244,7 +244,7 @@ function EditApartmentScreen({ route, navigation }) {
     <KeyboardAwareScrollView
       contentContainerStyle={styles.scrollViewContent}
       keyboardShouldPersistTaps="handled"
-      enableOnAndroid={true}
+      // enableOnAndroid={true}
       extraScrollHeight={50}
       keyboardOpeningTime={0}
     >
@@ -474,10 +474,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: "5%",
-    marginTop: "15%",
+    // marginTop: "15%",
   },
   scrollViewContent: {
-    paddingBottom: 100,
+    paddingBottom: Platform.OS === "ios" ? 100 : 75,
   },
   mainHeader: {
     fontSize: 30,

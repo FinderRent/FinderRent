@@ -298,7 +298,7 @@ function AddApartmentScreen(props) {
         <KeyboardAwareScrollView
           contentContainerStyle={styles.scrollViewContent}
           keyboardShouldPersistTaps="handled"
-          enableOnAndroid={true}
+          // enableOnAndroid={true}
           extraScrollHeight={50} // Increased this value to move the text input further up
           keyboardOpeningTime={0}
         >
@@ -545,7 +545,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: "5%",
   },
   scrollViewContent: {
-    paddingBottom: Platform.OS === "ios" ? 100 : -250,
+    paddingBottom: Platform.OS === "ios" ? 100 : 50,
   },
   mainHeader: {
     fontSize: 30,
