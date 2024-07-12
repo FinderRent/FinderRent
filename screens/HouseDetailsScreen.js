@@ -247,9 +247,11 @@ const HouseDetailsScreen = ({ navigation, route }) => {
             {street} {apartment.address.buildingNumber}/
             {apartment.address.apartmentNumber}
           </Text>
-          <Text style={styles.distance}>
-            {apartment.distance} Kilometers away from {userData.academic}
-          </Text>
+          {userData.token && (
+            <Text style={styles.distance}>
+              {apartment.distance} Kilometers Away From {userData.academic}
+            </Text>
+          )}
           <HouseRoommates
             totalCapacity={apartment.totalCapacity}
             realTimeCapacity={apartment.realTimeCapacity}

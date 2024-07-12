@@ -21,6 +21,7 @@ const { width } = Dimensions.get("window");
 
 const HouseCard = ({ navigation, apartment, userData }) => {
   const { isDarkMode } = useDarkMode();
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const favoriteApartmentsCtx = useContext(FavoritesContext);
   const apartmentIsFavorite = favoriteApartmentsCtx.ids.includes(apartment._id);
@@ -89,7 +90,9 @@ const HouseCard = ({ navigation, apartment, userData }) => {
               {street} {apartment.address.buildingNumber}/
               {apartment.address.apartmentNumber}
             </Text>
-            <Text style={styles.distance}>{apartment.distance}Km</Text>
+            {userData.token && (
+              <Text style={styles.distance}>{apartment.distance}Km</Text>
+            )}
           </View>
           <Text style={styles.price}>{apartment.price}$</Text>
         </View>
