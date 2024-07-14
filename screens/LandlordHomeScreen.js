@@ -1,33 +1,25 @@
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import {
-  StyleSheet,
-  SafeAreaView,
-  FlatList,
-  Platform,
-  TouchableOpacity,
-  View,
-  Keyboard,
-} from "react-native";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { StyleSheet, SafeAreaView, FlatList, Platform } from "react-native";
 import { Text } from "react-native-paper";
 import { StatusBar } from "expo-status-bar";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import { useFocusEffect } from "@react-navigation/native";
 import { useQuery } from "@tanstack/react-query";
-import { Ionicons } from "@expo/vector-icons";
-import LandlordHeader from "../components/LandlordHeader";
+
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { useUsers } from "../context/UserContext";
-import LandlordHouseCard from "../components/House/LandlordHouseCard";
-import SignInHeader from "../components/SignInHeader";
-import Loader from "../components/ui/Loader";
 import { fetchAllApartments } from "./../utils/http";
+import LandlordHeader from "../components/LandlordHeader";
+import SignInHeader from "../components/SignInHeader";
+import LandlordHouseCard from "../components/House/LandlordHouseCard";
 import AddApartmentButton from "../components/ui/AddApartmentButton";
 import AddApartmentScreen from "./AddApartmentScreen";
-import BottomSheet from "@gorhom/bottom-sheet";
-import { useFocusEffect } from "@react-navigation/native";
+import Loader from "../components/ui/Loader";
+import ErrorMessage from "../components/ui/ErrorMessage";
 
 async function registerForPushNotificationsAsync() {
   let token;
@@ -64,57 +56,51 @@ function LandlordHomeScreen({ navigation }) {
   const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
   const tabBarHeight = useBottomTabBarHeight();
-  const token = userData.token;
 
+  const token = userData.token;
+  const owner = userData.id;
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
   const [addButtonPress, setAddButtonPress] = useState(false);
-  const [sheetIndex, setSheetIndex] = useState(-1); // -1 means closed
-  const bottomSheetRef = useRef(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   const notificationListener = useRef();
   const responseListener = useRef();
 
   const {
     data: apartments,
-    isLoading: isLoadingApartments,
+    isFetching: isFetchingApartments,
     isError: isErrorApartments,
-    status: statusApartments,
+    error,
     refetch,
   } = useQuery({
-    queryKey: ["apartments"],
-    queryFn: () => fetchAllApartments({ owner: userData.id }),
+    queryKey: ["apartments", owner],
+    queryFn: () => fetchAllApartments({ owner }),
+    enabled: !!owner, // Enable the query only if owner is defined
   });
 
-  const {
-    data: user,
-    isLoading: isLoadingUser,
-    isError: isErrorUser,
-    status: statusUser,
-  } = useQuery({
-    queryKey: ["User", userData.id],
-    queryFn: () => fetchUser(userData.id),
-  });
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     refetch();
+  //   }, [refetch])
+  // );
 
   useFocusEffect(
     useCallback(() => {
-      refetch();
-    }, [refetch])
+      const fetched = async () => {
+        await refetch();
+      };
+      fetched();
+    }, [])
   );
 
   const renderApartmentCard = ({ item: apartment }) => {
     return (
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate("LandlordHouseDetailsScreen", { apartment })
-        }
-      >
-        <LandlordHouseCard
-          navigation={navigation}
-          apartment={apartment}
-          userData={userData}
-        />
-      </TouchableOpacity>
+      <LandlordHouseCard
+        navigation={navigation}
+        apartment={apartment}
+        userData={userData}
+      />
     );
   };
 
@@ -165,16 +151,13 @@ function LandlordHomeScreen({ navigation }) {
     refetch();
   };
 
-  const snapPoints = useMemo(
-    () => (Platform.OS === "ios" ? ["14%", "90%"] : ["3%", "76%"]),
-    []
-  );
-
-  const handleSheetChanges = (index) => {
-    setSheetIndex(index);
+  const handleIsOpen = () => {
+    setIsOpen((prevState) => !prevState);
   };
+  // console.log(isFetching);
 
-  if (isLoadingApartments) return <Loader />;
+  // if (isFetching)
+  //   return <Loader color={isDarkMode ? Color.defaultTheme : Color.darkTheme} />;
 
   return (
     <SafeAreaView
@@ -188,22 +171,26 @@ function LandlordHomeScreen({ navigation }) {
       <StatusBar style={isDarkMode ? "light" : "dark"} />
       {token ? <LandlordHeader /> : <SignInHeader />}
       <Text style={styles.PropertiesHeader}>Your properties</Text>
-      <FlatList
-        data={apartments?.apartments}
-        keyExtractor={(item) => item._id}
-        renderItem={renderApartmentCard}
+      {isFetchingApartments ? (
+        <Loader color={isDarkMode ? Color.defaultTheme : Color.darkTheme} />
+      ) : (
+        <FlatList
+          data={apartments?.apartments}
+          keyExtractor={(item) => item._id}
+          renderItem={renderApartmentCard}
+        />
+      )}
+      {isErrorApartments && <ErrorMessage errorMessage={error} />}
+      <AddApartmentScreen
+        handleAddButtonPress={handleAddButtonPress}
+        bottomSheetIndex={addButtonPress}
+        handleIsOpen={handleIsOpen}
       />
-      <BottomSheet
-        ref={bottomSheetRef}
-        snapPoints={snapPoints}
-        onChange={handleSheetChanges}
-        index={addButtonPress ? 1 : 0}
-      >
-        <AddApartmentScreen handleAddButtonPress={handleAddButtonPress} />
-      </BottomSheet>
       <AddApartmentButton
         style={styles.addApartmentButton}
         handleAddButtonPress={handleAddButtonPress}
+        handleIsOpen={handleIsOpen}
+        isOpen={isOpen}
       />
     </SafeAreaView>
   );
@@ -234,7 +221,7 @@ const styles = StyleSheet.create({
     },
   },
   addApartmentButton: {
-    bottom: Platform.OS === "ios" ? "22%" : "12%",
+    bottom: Platform.OS === "ios" ? "22%" : "13%",
     right: "15%",
   },
 });

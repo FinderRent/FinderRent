@@ -21,7 +21,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { UserContext, useUsers } from "../context/UserContext";
 import { useDarkMode } from "../context/DarkModeContext";
-import { academicList } from "../data/academic";
+import { academicList } from "../data/academicEnglish";
 import { Color } from "../constants/colors";
 import DropDown from "../components/inputs/DropDown";
 import Input from "../components/inputs/Input";

@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   View,
   Image,
+  Platform,
 } from "react-native";
 import Animated, {
   SlideInDown,
@@ -14,7 +15,6 @@ import Animated, {
   useScrollViewOffset,
 } from "react-native-reanimated";
 import Carousel from "react-native-reanimated-carousel";
-import Geocoder from "react-native-geocoding";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { Paragraph, Text } from "react-native-paper";
 import { useQuery } from "@tanstack/react-query";
@@ -23,6 +23,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { FavoritesContext } from "../context/FavoritesContext";
+import { capitalizeWords } from "../utils/features";
 import { useUsers } from "../context/UserContext";
 import HouseAssetsModal from "../modals/HouseAssetsModal";
 import MapModal from "../modals/MapModal";
@@ -43,27 +44,15 @@ const HouseDetailsScreen = ({ navigation, route }) => {
   const { isDarkMode } = useDarkMode();
   const { userData } = useUsers();
 
-  const { apartment } = route.params;
+  const { apartmentWithDistance: apartment } = route.params;
   const routes = navigation.getState()?.routes;
   const prevRoute = routes[routes.length - 1];
 
   const scrollRef = useAnimatedRef();
   const tabBarHeight = useBottomTabBarHeight();
 
-  // Geocoder.init("AIzaSyDYInyCvJ1WQjqJohhMx2OnxioXWAvy39s");
-  // const address = `${apartment.address.city} ${apartment.address.street} ${apartment.address.buildingNumber}`;
-  // console.log(address);
-
-  // // const [address, setAddress] = useState("Beer Sheva Avigdor hameiri 21");
-  // console.log(address);
-  // const [coordinates1, setCoordinates1] = useState(null);
-  // console.log(coordinates1);
-  // Geocoder.from(address)
-  //   .then((json) => {
-  //     const location = json.results[0].geometry.location;
-  //     setCoordinates1({ latitude: location.lat, longitude: location.lng });
-  //   })
-  //   .catch((error) => console.warn(error));
+  const city = capitalizeWords(apartment?.address.city);
+  const street = capitalizeWords(apartment?.address.street);
 
   const templateMessage = `
   Hello,
@@ -71,10 +60,10 @@ const HouseDetailsScreen = ({ navigation, route }) => {
   I am interested in the apartment listed at:
 
   Address:
-  - City: ${apartment.address.city}
-  - Street: ${apartment.address.street}
-  - Apartment Number: ${apartment.address.apartmentNumber}
-  - Building Number: ${apartment.address.buildingNumber}
+  - City: ${apartment?.address.city}
+  - Street: ${apartment?.address.street}
+  - Apartment Number: ${apartment?.address.apartmentNumber}
+  - Building Number: ${apartment?.address.buildingNumber}
 
    Thank you,
   `;
@@ -82,16 +71,18 @@ const HouseDetailsScreen = ({ navigation, route }) => {
   let chatId = null;
   let firstChat = true;
   const ouid = apartment?.owner[0];
-  const coordinates = apartment.address?.coordinates;
+  const coordinates = apartment?.address?.coordinates;
   const [mapPress, setMapPress] = useState(false);
   const [showAll, setShowAll] = useState(false);
 
   const [apartmentContent, setApartmentContent] = useState([]);
   const images = [
-    "https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/home-improvement/wp-content/uploads/2022/07/download-23.jpg",
-    "https://www.bhg.com/thmb/3Vf9GXp3T-adDlU6tKpTbb-AEyE=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/white-modern-house-curved-patio-archway-c0a4a3b3-aa51b24d14d0464ea15d36e05aa85ac9.jpg",
+    "https://img.mako.co.il/2018/11/07/Wellcome_Realter_Beer_Sheva_18_3_g.jpg",
+    "https://uploads.homeless.co.il/sale/202205/nvFile4211510.JPG",
+    "https://images2.madlan.co.il/t:nonce:v=2/projects/%D7%9E%D7%AA%D7%97%D7%9D%20%D7%A7%D7%95%D7%A4%D7%AA%20%D7%97%D7%95%D7%9C%D7%99%D7%9D%20-%20%D7%A2%D7%96%D7%A8%D7%99%D7%90%D7%9C%D7%99/48950_br_group_pic_950x650_3-683b75f9-b8f5-427d-8f29-cad7d8865ff4.jpg",
   ];
   const apartmentIsFavorite = favoriteApartmentsCtx.ids.includes(apartment._id);
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: "",
@@ -251,14 +242,16 @@ const HouseDetailsScreen = ({ navigation, route }) => {
         </Animated.View>
 
         <View style={styles.houseInfo}>
-          <Text style={styles.city}>{apartment.address.city}</Text>
+          <Text style={styles.city}>{city}</Text>
           <Text style={styles.street}>
-            {apartment.address.street} {apartment.address.buildingNumber}/
-            {apartment.address.apartmentNumber}
+            {street} {apartment?.address?.buildingNumber}/
+            {apartment?.address?.apartmentNumber}
           </Text>
-          <Text style={styles.distance}>
-            {apartment.distanceFromAcademy} kilometers away from SCE College
-          </Text>
+          {userData.token && !prevRoute?.params?.favorite && (
+            <Text style={styles.distance}>
+              {apartment?.distance}Km Away From {userData?.academic}
+            </Text>
+          )}
           <HouseRoommates
             totalCapacity={apartment.totalCapacity}
             realTimeCapacity={apartment.realTimeCapacity}
@@ -339,20 +332,19 @@ const styles = StyleSheet.create({
     flexDirection: "col",
     marginHorizontal: "4%",
   },
-
   city: {
-    fontSize: 35,
-    marginBottom: 5,
+    fontSize: 40,
+    // marginBottom: 5,
     fontWeight: "bold",
   },
   street: {
     fontSize: 25,
-    marginBottom: 5,
+    marginTop: Platform.OS === "android" ? -5 : 0,
     fontWeight: "bold",
   },
   distance: {
-    fontSize: 20,
-    color: "#65B741",
+    fontSize: 15,
+    // color: "#65B741",
   },
   about: {
     fontSize: 25,

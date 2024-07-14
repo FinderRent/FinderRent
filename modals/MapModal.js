@@ -1,24 +1,25 @@
 import { View, StyleSheet, TouchableOpacity, Modal } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 
 function MapModal(props) {
   const handleMapPress = () => {
     props.handleMapPress();
   };
 
-  const street = props.apartment.address?.street;
-  const buildingNumber = props.apartment.address?.buildingNumber;
-  const apartmentNumber = props.apartment.address?.apartmentNumber;
+  const street = props?.apartment?.address?.street;
+  const buildingNumber = props?.apartment?.address?.buildingNumber;
+  const apartmentNumber = props?.apartment?.address?.apartmentNumber;
 
   return (
     <Modal visible={true} transparent={true} animationType="fade">
       <View style={styles.modalBackground}>
         <View style={styles.modalContainer}>
           <MapView
+            provider={PROVIDER_GOOGLE}
             initialRegion={{
-              latitude: props.coordinates.latitude,
-              longitude: props.coordinates.longitude,
+              latitude: props?.coordinates?.latitude,
+              longitude: props?.coordinates?.longitude,
               latitudeDelta: 0.001,
               longitudeDelta: 0.001,
             }}
@@ -26,8 +27,8 @@ function MapModal(props) {
           >
             <Marker
               coordinate={{
-                latitude: props.coordinates.latitude,
-                longitude: props.coordinates.longitude,
+                latitude: props?.coordinates.latitude,
+                longitude: props?.coordinates.longitude,
               }}
               title={street}
               description={`Apartment Number: ${buildingNumber}/${apartmentNumber}`}
@@ -52,8 +53,8 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     width: "95%",
-    height: "85%", // adjust height as needed
-    backgroundColor: "#fff", // change background color here
+    height: "85%",
+    backgroundColor: "#fff",
     borderRadius: 12,
     justifyContent: "center",
     alignItems: "center",

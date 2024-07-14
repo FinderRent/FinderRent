@@ -1,46 +1,11 @@
-import React, { useEffect, useState, useSyncExternalStore } from "react";
 import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
-import { SliderBox } from "react-native-image-slider-box";
-import { useQuery } from "@tanstack/react-query";
+
 import { useDarkMode } from "../../context/DarkModeContext";
 import { Color } from "../../constants/colors";
 import { Text } from "react-native-paper";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import {
-  addFavourite,
-  removeFavourite,
-  checkIfFavourite,
-} from "../../utils/http";
-import Loader from "../../components/ui/Loader";
 
-const LandlordHouseCard = ({
-  navigation,
-  apartment,
-  userData,
-  isFavourite,
-}) => {
+const LandlordHouseCard = ({ navigation, apartment }) => {
   const { isDarkMode } = useDarkMode();
-
-  const [isFavorite, setIsFavorite] = useState(isFavourite);
-
-  //component updating ----------------------------------
-  const toggleFavorite = () => {
-    setIsFavorite(!isFavorite);
-  };
-
-  const handleFavoriteQuery = isFavorite
-    ? {
-        queryKey: ["addFavourite"],
-        queryFn: () => addFavourite(apartment._id, userData.id),
-      }
-    : {
-        queryKey: ["removeFavourite"],
-        queryFn: () => removeFavourite(apartment._id, userData.id),
-      };
-
-  const { data, isLoading, isError, status } = useQuery(handleFavoriteQuery);
-  //-----------------------------------------------------
 
   const images = [
     "https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/home-improvement/wp-content/uploads/2022/07/download-23.jpg",
@@ -55,26 +20,38 @@ const LandlordHouseCard = ({
         isDarkMode && { backgroundColor: Color.buttomSheetDarkTheme },
       ]}
     >
-      <View style={styles.cardContainer}>
-        <View style={styles.imagesContainer}>
-          <Image
-            source={{ uri: images[0] }} // Use the first image in the array
-            style={styles.image}
-            resizeMode="cover"
-          />
-        </View>
-
-        <View style={styles.detailsContainer}>
-          <View style={styles.addressContainer}>
-            <Text style={styles.city}>{apartment.address.city}</Text>
-            <Text style={styles.street}>
-              {apartment.address.street} {apartment.address.buildingNumber}/
-              {apartment.address.apartmentNumber}
-            </Text>
+      <TouchableOpacity
+        activeOpacity={0.7}
+        onPress={() =>
+          navigation.navigate("LandlordHouseDetailsScreen", { apartment })
+        }
+      >
+        <View
+          style={[
+            styles.cardContainer,
+            isDarkMode && { backgroundColor: Color.buttomSheetDarkTheme },
+          ]}
+        >
+          <View style={styles.imagesContainer}>
+            <Image
+              source={{ uri: images[0] }}
+              style={styles.image}
+              resizeMode="cover"
+            />
           </View>
-          <Text style={styles.price}>{apartment.price}$</Text>
+
+          <View style={styles.detailsContainer}>
+            <View style={styles.addressContainer}>
+              <Text style={styles.city}>{apartment.address.city}</Text>
+              <Text style={styles.street}>
+                {apartment.address.street} {apartment.address.buildingNumber}/
+                {apartment.address.apartmentNumber}
+              </Text>
+            </View>
+            <Text style={styles.price}>{apartment.price}$</Text>
+          </View>
         </View>
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -102,11 +79,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     padding: 15,
     flex: 0.75,
-    backgroundColor: "#fff",
   },
   imagesContainer: {
     flex: 0.25,
-    backgroundColor: "#fff",
   },
   image: {
     flex: 1,

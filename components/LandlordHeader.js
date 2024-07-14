@@ -1,4 +1,4 @@
-import { View, StyleSheet, Image, ImageBackground } from "react-native";
+import { View, StyleSheet, ImageBackground } from "react-native";
 import { Text } from "react-native-paper";
 
 import { Color } from "../constants/colors";
@@ -9,13 +9,7 @@ const LandlordHeader = () => {
   return (
     <View style={styles.profileLocationView}>
       <View style={styles.midContainer}>
-        <ImageBackground
-          style={{ height: 10, width: 10 }}
-          source={require("../assets/images/placeholder.png")}
-        />
-        <View>
-          <Text style={styles.Name}>Hello, {userData.firstName}</Text>
-        </View>
+        <Text style={styles.Name}>Hello, {userData.firstName}</Text>
       </View>
 
       <View style={styles.midContainer}>

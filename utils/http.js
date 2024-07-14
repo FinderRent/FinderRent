@@ -12,6 +12,13 @@ const BACKEND_URL = "https://finder-rent-backend.vercel.app/api/v1";
 export async function fetchAllApartments(filter) {
   // console.log("req", filter);
 
+  const { lat, lng } = filter.coordinates || {};
+  const distance = filter.distance || 1.0;
+
+  const url = filter.coordinates
+    ? `/apartments/apartments-within/${distance}/center/${lat},${lng}/unit/km`
+    : "/apartments";
+
   try {
     const params = {};
     if (filter) {
@@ -35,7 +42,26 @@ export async function fetchAllApartments(filter) {
       }
     }
 
-    const response = await axios.get(BACKEND_URL + "/apartments", { params });
+    const response = await axios.get(BACKEND_URL + url, { params });
+
+    const responseData = response.data.data;
+
+    if (response.status !== 200) {
+      throw new Error(responseData.message);
+    }
+
+    return responseData;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+}
+
+export async function getDistances(coordinates) {
+  const { lat, lng } = coordinates || {};
+  try {
+    const response = await axios.get(
+      BACKEND_URL + `/apartments/distances/${lat},${lng}/unit/km`
+    );
 
     const responseData = response.data.data;
 
@@ -133,11 +159,20 @@ export async function checkIfFavourite(apartmentID, userID) {
 
 export async function addApartment(apartment) {
   try {
-    const response = await axios.post(BACKEND_URL + `/apartments`, apartment);
-    return response.data.data;
-  } catch (error) {
-    console.error("Error adding apartment:", error);
-    throw error;
+    const response = await axios.post(BACKEND_URL + `/apartments`, apartment, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const responseData = response.data.data;
+
+    if (response.status !== 201) {
+      throw new Error(responseData.message);
+    }
+
+    return responseData;
+  } catch (err) {
+    throw new Error(err.response.data.message);
   }
 }
 
