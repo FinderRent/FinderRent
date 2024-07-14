@@ -63,7 +63,11 @@ const HouseCard = ({ navigation, apartment, userData }) => {
       </TouchableOpacity>
       <TouchableOpacity
         activeOpacity={0.7}
-        onPress={() => navigation.navigate("HouseDetailsScreen", { apartment })}
+        onPress={() =>
+          navigation.navigate("HouseDetailsScreen", {
+            apartmentWithDistance: apartment,
+          })
+        }
       >
         <Animated.View style={styles.imagesContainer}>
           <Carousel

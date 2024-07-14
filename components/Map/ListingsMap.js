@@ -10,6 +10,8 @@ import MapView from "react-native-map-clustering";
 import { Color } from "../../constants/colors";
 import { useDarkMode } from "../../context/DarkModeContext";
 import { useUsers } from "../../context/UserContext";
+import { getDistances } from "../../utils/http";
+import { useQuery } from "@tanstack/react-query";
 
 const type = [
   {
@@ -112,6 +114,31 @@ const ListingsMap = memo(({ navigation, listings, coordinates }) => {
     return typeObject ? typeObject.icon : "home";
   };
 
+  const {
+    data: distances,
+    // refetch: refetchDistance,
+    // isFetching: isFetchingDistance,
+  } = useQuery({
+    queryKey: ["distances", coordinates],
+    queryFn: () => getDistances(coordinates),
+    enabled: !!coordinates,
+  });
+
+  const handleNavigation = (apartment) => {
+    let distanceData = null;
+    distances?.data.forEach((d) => {
+      if (d._id === apartment._id) {
+        distanceData = d;
+      }
+    });
+
+    const apartmentWithDistance = {
+      ...apartment,
+      distance: distanceData ? distanceData.distance.toFixed(2) : null,
+    };
+    navigation.navigate("HouseDetailsScreen", { apartmentWithDistance });
+  };
+
   return (
     <View style={styles.container}>
       <MapView
@@ -131,9 +158,7 @@ const ListingsMap = memo(({ navigation, listings, coordinates }) => {
               longitude: +apartment.address?.coordinates?.longitude,
             }}
             key={apartment._id}
-            onPress={() =>
-              navigation.navigate("HouseDetailsScreen", { apartment })
-            }
+            onPress={() => handleNavigation(apartment)}
           >
             <View
               style={

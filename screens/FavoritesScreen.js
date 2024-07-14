@@ -5,7 +5,6 @@ import { TouchableOpacity } from "@gorhom/bottom-sheet";
 import { ScrollView } from "react-native-gesture-handler";
 import { Card, Text } from "react-native-paper";
 import { Fontisto } from "@expo/vector-icons";
-import { FontAwesome6 } from "@expo/vector-icons";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
@@ -85,7 +84,7 @@ const FavoritesScreen = ({ navigation }) => {
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate("HouseDetailsScreen", {
-                  apartment,
+                  apartmentWithDistance: apartment,
                   favorite: true,
                 })
               }
@@ -114,33 +113,6 @@ const FavoritesScreen = ({ navigation }) => {
                   </Text>
                 </Card.Content>
               </View>
-              {/* <View style={styles.iconContainer}>
-              <TouchableOpacity
-                style={styles.arrow}
-                onPress={() =>
-                  navigation.navigate("HouseDetailsScreen", {
-                    apartment,
-                    favorite: true,
-                  })
-                }
-              >
-                <FontAwesome6
-                  name="building-circle-arrow-right"
-                  size={20}
-                  color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.trash}
-                onPress={() => changeFavoriteStatusHandler(apartment._id)}
-              >
-                <FontAwesome6
-                  name="trash-can"
-                  size={20}
-                  color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
-                />
-              </TouchableOpacity>
-            </View> */}
             </TouchableOpacity>
           </Card>
         </SwipeableRow>

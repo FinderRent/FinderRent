@@ -44,15 +44,15 @@ const HouseDetailsScreen = ({ navigation, route }) => {
   const { isDarkMode } = useDarkMode();
   const { userData } = useUsers();
 
-  const { apartment } = route.params;
+  const { apartmentWithDistance: apartment } = route.params;
   const routes = navigation.getState()?.routes;
   const prevRoute = routes[routes.length - 1];
 
   const scrollRef = useAnimatedRef();
   const tabBarHeight = useBottomTabBarHeight();
 
-  const city = capitalizeWords(apartment.address.city);
-  const street = capitalizeWords(apartment.address.street);
+  const city = capitalizeWords(apartment?.address.city);
+  const street = capitalizeWords(apartment?.address.street);
 
   const templateMessage = `
   Hello,
@@ -60,10 +60,10 @@ const HouseDetailsScreen = ({ navigation, route }) => {
   I am interested in the apartment listed at:
 
   Address:
-  - City: ${apartment.address.city}
-  - Street: ${apartment.address.street}
-  - Apartment Number: ${apartment.address.apartmentNumber}
-  - Building Number: ${apartment.address.buildingNumber}
+  - City: ${apartment?.address.city}
+  - Street: ${apartment?.address.street}
+  - Apartment Number: ${apartment?.address.apartmentNumber}
+  - Building Number: ${apartment?.address.buildingNumber}
 
    Thank you,
   `;
@@ -71,7 +71,7 @@ const HouseDetailsScreen = ({ navigation, route }) => {
   let chatId = null;
   let firstChat = true;
   const ouid = apartment?.owner[0];
-  const coordinates = apartment.address?.coordinates;
+  const coordinates = apartment?.address?.coordinates;
   const [mapPress, setMapPress] = useState(false);
   const [showAll, setShowAll] = useState(false);
 
@@ -244,12 +244,12 @@ const HouseDetailsScreen = ({ navigation, route }) => {
         <View style={styles.houseInfo}>
           <Text style={styles.city}>{city}</Text>
           <Text style={styles.street}>
-            {street} {apartment.address.buildingNumber}/
-            {apartment.address.apartmentNumber}
+            {street} {apartment?.address?.buildingNumber}/
+            {apartment?.address?.apartmentNumber}
           </Text>
-          {userData.token && (
+          {userData.token && !prevRoute?.params?.favorite && (
             <Text style={styles.distance}>
-              {apartment.distance} Kilometers Away From {userData.academic}
+              {apartment?.distance}Km Away From {userData?.academic}
             </Text>
           )}
           <HouseRoommates
