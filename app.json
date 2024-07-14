@@ -26,7 +26,6 @@
           "apiKey": "AIzaSyDYInyCvJ1WQjqJohhMx2OnxioXWAvy39s"
         }
       },
-      "googleServicesFile": "./finderent-firebase-adminsdk-ebt6l-27e84edf11.json",
       "permissions": ["android.permission.RECORD_AUDIO"],
       "package": "com.maorsa.finderrent"
     },
