@@ -53,9 +53,14 @@ function HouseList({
       }),
   });
 
-  const { data: distances, refetch: refetchDistance } = useQuery({
-    queryKey: ["distances"],
+  const {
+    data: distances,
+    refetch: refetchDistance,
+    isFetching: isFetchingDistance,
+  } = useQuery({
+    queryKey: ["distances", coordinates],
     queryFn: () => getDistances(coordinates),
+    enabled: !!coordinates,
   });
 
   useEffect(() => {
@@ -71,7 +76,6 @@ function HouseList({
     coordinates,
     token,
   ]);
-
   const onShowMap = () => {
     bottomSheetRef.current?.collapse();
   };
@@ -89,7 +93,6 @@ function HouseList({
       ...apartment,
       distance: distanceData ? distanceData.distance.toFixed(2) : null,
     };
-
     return (
       <HouseCard
         navigation={navigation}
@@ -114,9 +117,9 @@ function HouseList({
       }
       style={styles.sheetContainer}
     >
-      {/* {isErrorApartments && <ErrorMessage errorMessage={errorApartments} />} */}
+      {isErrorApartments && <ErrorMessage errorMessage={errorApartments} />}
 
-      {isFetchingApartments ? (
+      {isFetchingApartments && isFetchingDistance ? (
         <View style={{ paddingTop: "80%" }}>
           <Loader color={isDarkMode ? Color.white : Color.darkTheme} />
         </View>
