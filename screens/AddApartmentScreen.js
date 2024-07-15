@@ -4,7 +4,7 @@ import { Text, Divider, Button, TextInput } from "react-native-paper";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { MultipleSelectList } from "react-native-dropdown-select-list";
 import { showMessage } from "react-native-flash-message";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import * as FileSystem from "expo-file-system";
 import Loader from "../components/ui/Loader";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
@@ -14,7 +14,7 @@ import Toast from "react-native-toast-message";
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { useUsers } from "../context/UserContext";
-import { addApartment } from "../utils/http";
+import { addApartment, fetchAllstudents } from "../utils/http";
 import DropDown from "../components/inputs/DropDown";
 import Input from "../components/inputs/Input";
 import ErrorMessage from "../components/ui/ErrorMessage";
@@ -36,6 +36,7 @@ function AddApartmentScreen(props) {
   const [realTimeCapacity, setRealTimeCapacity] = useState("");
   const [apartmentType, setApartmentType] = useState("");
   const [selected, setSelected] = useState([]);
+  const [selectTenants, setSelectTenants] = useState([]);
   const [about, setAbout] = useState("");
   const [coordinates, setCoordinates] = useState({
     latitude: "",
@@ -285,16 +286,15 @@ function AddApartmentScreen(props) {
       coordinates,
     },
     apartmentType,
-    distanceFromAcademy: 20,
     totalCapacity: totalCapacity !== "" ? parseInt(totalCapacity) : undefined,
     realTimeCapacity:
       realTimeCapacity !== "" ? parseInt(realTimeCapacity) : undefined,
     about,
     numberOfRooms: rooms !== "" ? parseInt(rooms) : undefined,
     apartmentContent: createApartmentContent(selected),
+    tenants: selectTenants,
     rating: 5,
     price: price !== "" ? parseInt(price) : undefined,
-    // images: [5],
     floor: floor !== "" ? parseInt(floor) : undefined,
     owner: userData.id,
     apartmentType,
@@ -386,6 +386,30 @@ function AddApartmentScreen(props) {
   //     });
   //   }
   // };
+
+  const {
+    data: students,
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["students"],
+    queryFn: () =>
+      fetchAllstudents({
+        userType: "student",
+      }),
+  });
+
+  let tenants = [];
+  if (!isLoading) {
+    students.users.forEach((student) => {
+      tenants.push([student.firstName + " " + student.lastName, student._id]);
+    });
+  }
+  // Transform tenants array to an array of objects with label and value
+  const tenantOptions = tenants.map(([key, id]) => ({
+    key: id,
+    value: key,
+  }));
 
   return (
     <BottomSheet
@@ -597,6 +621,31 @@ function AddApartmentScreen(props) {
                 </View>
               </View>
 
+              <View>
+                <Text style={styles.subHeader}>Pick Your Tenants</Text>
+                <View style={styles.MultipleSelectList}>
+                  <MultipleSelectList
+                    inputStyles={{
+                      color: isDarkMode ? Color.defaultTheme : Color.darkTheme,
+                    }}
+                    dropdownTextStyles={{
+                      color: isDarkMode ? Color.defaultTheme : Color.darkTheme,
+                    }}
+                    labelStyles={{
+                      color: isDarkMode ? Color.defaultTheme : Color.darkTheme,
+                    }}
+                    dropdownShown={false}
+                    maxHeight={700}
+                    search={true}
+                    setSelected={(val) => {
+                      setSelectTenants(val);
+                    }}
+                    data={tenantOptions}
+                    save="key"
+                    label="Tenants"
+                  />
+                </View>
+              </View>
               <View>
                 <Text style={styles.subHeader}>About</Text>
                 <View style={styles.paragraphContainer}>
