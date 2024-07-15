@@ -44,10 +44,16 @@ const LandlordHouseDetailsScreen = ({ navigation, route }) => {
   const [mapPress, setMapPress] = useState(false);
   const [showAll, setShowAll] = useState(false);
   const [apartmentContent, setApartmentContent] = useState([]);
-  const images = [
-    "https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/home-improvement/wp-content/uploads/2022/07/download-23.jpg",
-    "https://www.bhg.com/thmb/3Vf9GXp3T-adDlU6tKpTbb-AEyE=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/white-modern-house-curved-patio-archway-c0a4a3b3-aa51b24d14d0464ea15d36e05aa85ac9.jpg",
-  ];
+
+  let images = [];
+  if (apartment.images) {
+    images = [apartment.images.url];
+  } else {
+    images = [
+      "https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/home-improvement/wp-content/uploads/2022/07/download-23.jpg",
+      "https://www.bhg.com/thmb/3Vf9GXp3T-adDlU6tKpTbb-AEyE=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/white-modern-house-curved-patio-archway-c0a4a3b3-aa51b24d14d0464ea15d36e05aa85ac9.jpg",
+    ];
+  }
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -205,7 +211,7 @@ const LandlordHouseDetailsScreen = ({ navigation, route }) => {
             />
           )}
           <Seperator />
-          {apartment?.tenants && (
+          {apartment.tenants.length > 0 && (
             <Text style={styles.about}>Current tenants</Text>
           )}
           {apartment?.tenants?.map((tenant) => (

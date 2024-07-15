@@ -509,7 +509,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   paragraphInput: {
-    height: 150,
+    // height: 150,
     borderColor: "gray",
     borderWidth: 1,
     padding: 10,
