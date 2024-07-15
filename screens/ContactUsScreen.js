@@ -59,7 +59,7 @@ function ContactUsScreen({ navigation }) {
     <SafeAreaView style={{ flex: 1 }}>
       <ImageBackground
         source={{
-          uri: "https://t4.ftcdn.net/jpg/04/85/71/61/360_F_485716154_uUQPWArGtO1TWsdIRQEV2gzTifkYOCjz.jpg",
+          uri: "https://res.cloudinary.com/finderent/image/upload/v1719761520/home-background_cc1dmu.jpg",
         }}
         resizeMode="cover"
         style={{ flex: 1 }}

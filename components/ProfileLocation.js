@@ -1,4 +1,4 @@
-import { View, StyleSheet, Image, ImageBackground } from "react-native";
+import { View, StyleSheet, ImageBackground } from "react-native";
 import { Text } from "react-native-paper";
 
 import { Color } from "../constants/colors";
@@ -6,17 +6,24 @@ import { useUsers } from "../context/UserContext";
 
 const ProfileLocation = () => {
   const { userData } = useUsers();
+  let academic = userData.academic;
+
+  if (userData?.academic?.length > 18) {
+    academic = userData?.academic?.substring(0, 21) + "..";
+  }
   return (
     <View style={styles.profileLocationView}>
       <View style={styles.midContainer}>
         <ImageBackground
-          style={{ height: 10, width: 10 }}
-          source={require("../assets/images/placeholder.png")}
+          style={{ height: 20, width: 20, marginBottom: 25 }}
+          source={{
+            uri: "https://res.cloudinary.com/finderent/image/upload/v1719761526/placeholder_eyilhp.png",
+          }}
         />
         <View>
           <Text style={styles.location}>Location</Text>
           <Text style={styles.locationName}>
-            {userData.academic !== "undefined" ? userData.academic : ""}
+            {academic !== "undefined" ? academic : ""}
           </Text>
         </View>
       </View>
@@ -44,6 +51,7 @@ const styles = StyleSheet.create({
     color: Color.Blue500,
   },
   locationName: {
+    marginLeft: -5,
     fontSize: 20,
     fontWeight: "bold",
   },
@@ -58,7 +66,7 @@ const styles = StyleSheet.create({
     borderColor: Color.gray,
   },
   midContainer: {
-    padding: 10,
+    padding: 5,
     marginRight: 5,
     flexDirection: "row",
     alignItems: "center",

@@ -13,6 +13,7 @@ import { BlurView } from "expo-blur";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
+import { useUsers } from "../context/UserContext";
 import DropDown from "../components/inputs/DropDown";
 
 const AnimatedTouchableOpacity =
@@ -42,6 +43,7 @@ const categories = [
 ];
 
 const FilterScreen = ({ navigation, route }) => {
+  const { userData } = useUsers();
   const filtersValues = route?.params;
 
   const moreFilters = [
@@ -64,9 +66,8 @@ const FilterScreen = ({ navigation, route }) => {
 
   const { isDarkMode } = useDarkMode();
   const [openCard, setOpenCard] = useState(0);
-
   const [sortApartments, setSort] = useState("");
-  const [distance, setDistance] = useState(filtersValues?.distance ?? 0.1);
+  const [distance, setDistance] = useState(filtersValues?.distance ?? 1.0);
   const [selectedType, setSelectedType] = useState(0);
   const [filters, setFilters] = useState(moreFilters);
 
@@ -83,7 +84,7 @@ const FilterScreen = ({ navigation, route }) => {
       count: 0,
     }));
     setSort("");
-    setDistance(0.1);
+    setDistance(1.0);
     setFilters(resetFilters);
     setSelectedType(0);
     setOpenCard(0);
@@ -120,11 +121,6 @@ const FilterScreen = ({ navigation, route }) => {
           break;
       }
     }
-    // const resetFilters = moreFilters.map((filter) => ({
-    //   ...filter,
-    //   count: filtersValues?.numberOfRooms,
-    // }));
-    // setFilters(resetFilters);
   }, [route?.params]);
 
   const handleAplly = () => {
@@ -192,7 +188,7 @@ const FilterScreen = ({ navigation, route }) => {
           >
             <DropDown
               list={sortBy}
-              label="SortBy"
+              label={sortApartments || "SortBy"}
               placeholder={sortApartments}
               searchable={false}
               listMode="SCROLLVIEW"
@@ -202,95 +198,96 @@ const FilterScreen = ({ navigation, route }) => {
         )}
       </View>
 
-      <View
-        style={
-          isDarkMode
-            ? { ...styles.card, backgroundColor: Color.buttomSheetDarkTheme }
-            : styles.card
-        }
-      >
-        {openCard !== 1 && (
-          <AnimatedTouchableOpacity
-            onPress={() => setOpenCard(1)}
-            style={styles.cardPreview}
-            entering={FadeIn.duration(200)}
-            exiting={FadeOut.duration(200)}
-          >
-            <Text style={styles.previewText}>Distance</Text>
-            <Text style={styles.previewdData}>{distance}km</Text>
-          </AnimatedTouchableOpacity>
-        )}
+      {userData.token && (
+        <View
+          style={
+            isDarkMode
+              ? { ...styles.card, backgroundColor: Color.buttomSheetDarkTheme }
+              : styles.card
+          }
+        >
+          {openCard !== 1 && (
+            <AnimatedTouchableOpacity
+              onPress={() => setOpenCard(1)}
+              style={styles.cardPreview}
+              entering={FadeIn.duration(200)}
+              exiting={FadeOut.duration(200)}
+            >
+              <Text style={styles.previewText}>Distance</Text>
+              <Text style={styles.previewdData}>{distance}km</Text>
+            </AnimatedTouchableOpacity>
+          )}
 
-        {openCard === 1 && (
-          <Text style={styles.cardHeader}>Distance From Academy</Text>
-        )}
-        {openCard === 1 && (
-          <Animated.View style={styles.cardBody}>
-            <View style={styles.filterItem}>
-              <View>
-                <Text style={{ fontWeight: "bold", fontSize: 16 }}>
-                  Distance In Km
-                </Text>
-                <Text style={{ fontSize: 14, color: Color.extraGray }}>
-                  select distance from academy
-                </Text>
-              </View>
+          {openCard === 1 && (
+            <Text style={styles.cardHeader}>Distance From Academy</Text>
+          )}
+          {openCard === 1 && (
+            <Animated.View style={styles.cardBody}>
+              <View style={styles.filterItem}>
+                <View>
+                  <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+                    Distance In Km
+                  </Text>
+                  <Text style={{ fontSize: 14, color: Color.extraGray }}>
+                    select distance from academy
+                  </Text>
+                </View>
 
-              <View
-                style={{
-                  flexDirection: "row",
-                  gap: 2,
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <TouchableOpacity
-                  onPress={() =>
-                    setDistance((prev) =>
-                      Math.max(0.1, parseFloat((prev - 0.1).toFixed(1)))
-                    )
-                  }
-                >
-                  <Ionicons
-                    name="remove-circle-outline"
-                    size={24}
-                    color={
-                      distance > 0.1
-                        ? isDarkMode
-                          ? Color.defaultTheme
-                          : Color.darkTheme
-                        : isDarkMode
-                        ? "#2e2e2e"
-                        : "#cdcdcd"
-                    }
-                  />
-                </TouchableOpacity>
-                <Text
+                <View
                   style={{
-                    fontSize: 14,
-                    minWidth: 18,
-                    textAlign: "center",
+                    flexDirection: "row",
+                    gap: 2,
+                    alignItems: "center",
+                    justifyContent: "center",
                   }}
                 >
-                  {`${distance.toFixed(1)}km`}
-                </Text>
-                <TouchableOpacity
-                  onPress={() =>
-                    setDistance((prev) => parseFloat((prev + 0.1).toFixed(1)))
-                  }
-                >
-                  <Ionicons
-                    name="add-circle-outline"
-                    size={24}
-                    color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
-                  />
-                </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() =>
+                      setDistance((prev) =>
+                        Math.max(0.1, parseFloat((prev - 0.1).toFixed(1)))
+                      )
+                    }
+                  >
+                    <Ionicons
+                      name="remove-circle-outline"
+                      size={24}
+                      color={
+                        distance > 0.1
+                          ? isDarkMode
+                            ? Color.defaultTheme
+                            : Color.darkTheme
+                          : isDarkMode
+                          ? "#2e2e2e"
+                          : "#cdcdcd"
+                      }
+                    />
+                  </TouchableOpacity>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      minWidth: 18,
+                      textAlign: "center",
+                    }}
+                  >
+                    {`${distance.toFixed(1)}km`}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() =>
+                      setDistance((prev) => parseFloat((prev + 0.1).toFixed(1)))
+                    }
+                  >
+                    <Ionicons
+                      name="add-circle-outline"
+                      size={24}
+                      color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+                    />
+                  </TouchableOpacity>
+                </View>
               </View>
-            </View>
-          </Animated.View>
-        )}
-      </View>
-
+            </Animated.View>
+          )}
+        </View>
+      )}
       <View
         style={
           isDarkMode
@@ -501,7 +498,6 @@ const FilterScreen = ({ navigation, route }) => {
                 ? { ...styles.btn, backgroundColor: Color.defaultTheme }
                 : styles.btn
             }
-            // disabled={sort === ""}
             onPress={handleAplly}
           >
             <Text

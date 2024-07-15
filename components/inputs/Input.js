@@ -19,6 +19,8 @@ function Input({
   color,
   multiline,
   numberOfLines,
+  onFocus,
+  onBlur,
 }) {
   const { isDarkMode } = useDarkMode();
   const [changeValue, setChangeValue] = useState();
@@ -52,6 +54,8 @@ function Input({
         numberOfLines={numberOfLines}
         onChangeText={(value) => handleValueChange(value)}
         keyboardType={keyboardType ? keyboardType : null}
+        onFocus={onFocus}
+        onBlur={onBlur}
       />
     </View>
   );

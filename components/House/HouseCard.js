@@ -14,12 +14,14 @@ import Carousel from "react-native-reanimated-carousel";
 import { Color } from "../../constants/colors";
 import { useDarkMode } from "../../context/DarkModeContext";
 import { FavoritesContext } from "../../context/FavoritesContext";
+import { capitalizeWords } from "../../utils/features";
 import Indicators from "./Indicators";
 
 const { width } = Dimensions.get("window");
 
 const HouseCard = ({ navigation, apartment, userData }) => {
   const { isDarkMode } = useDarkMode();
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const favoriteApartmentsCtx = useContext(FavoritesContext);
   const apartmentIsFavorite = favoriteApartmentsCtx.ids.includes(apartment._id);
@@ -32,9 +34,13 @@ const HouseCard = ({ navigation, apartment, userData }) => {
     }
   }
 
+  const city = capitalizeWords(apartment.address.city);
+  const street = capitalizeWords(apartment.address.street);
+
   const images = [
-    "https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/home-improvement/wp-content/uploads/2022/07/download-23.jpg",
-    "https://www.bhg.com/thmb/3Vf9GXp3T-adDlU6tKpTbb-AEyE=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/white-modern-house-curved-patio-archway-c0a4a3b3-aa51b24d14d0464ea15d36e05aa85ac9.jpg",
+    "https://img.mako.co.il/2018/11/07/Wellcome_Realter_Beer_Sheva_18_3_g.jpg",
+    "https://uploads.homeless.co.il/sale/202205/nvFile4211510.JPG",
+    "https://images2.madlan.co.il/t:nonce:v=2/projects/%D7%9E%D7%AA%D7%97%D7%9D%20%D7%A7%D7%95%D7%A4%D7%AA%20%D7%97%D7%95%D7%9C%D7%99%D7%9D%20-%20%D7%A2%D7%96%D7%A8%D7%99%D7%90%D7%9C%D7%99/48950_br_group_pic_950x650_3-683b75f9-b8f5-427d-8f29-cad7d8865ff4.jpg",
   ];
 
   return (
@@ -57,7 +63,11 @@ const HouseCard = ({ navigation, apartment, userData }) => {
       </TouchableOpacity>
       <TouchableOpacity
         activeOpacity={0.7}
-        onPress={() => navigation.navigate("HouseDetailsScreen", { apartment })}
+        onPress={() =>
+          navigation.navigate("HouseDetailsScreen", {
+            apartmentWithDistance: apartment,
+          })
+        }
       >
         <Animated.View style={styles.imagesContainer}>
           <Carousel
@@ -78,12 +88,15 @@ const HouseCard = ({ navigation, apartment, userData }) => {
         </Animated.View>
         <View style={styles.detailsContainer}>
           <View style={styles.addressContainer}>
-            <Text style={styles.city}>{apartment.address.city}</Text>
+            {/* <Text style={styles.apartmentType}>{apartment.apartmentType}</Text> */}
+            <Text style={styles.city}>{city}</Text>
             <Text style={styles.street}>
-              {apartment.address.street} {apartment.address.buildingNumber}/
+              {street} {apartment.address.buildingNumber}/
               {apartment.address.apartmentNumber}
             </Text>
-            <Text style={styles.distance}>{apartment.distanceFromAcademy}</Text>
+            {userData.token && (
+              <Text style={styles.distance}>{apartment.distance}Km</Text>
+            )}
           </View>
           <Text style={styles.price}>{apartment.price}$</Text>
         </View>
@@ -99,7 +112,9 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     overflow: "hidden",
     elevation: 4,
-    margin: 10,
+    marginHorizontal: 15,
+    marginTop: 10,
+    marginBottom: 15,
   },
   imagesContainer: {
     height: 250,
@@ -111,42 +126,54 @@ const styles = StyleSheet.create({
   imageWrapper: {
     width: width,
     height: 250,
+    padding: 20,
+    marginLeft: 10,
   },
   image: {
     width: "100%",
     height: "100%",
     resizeMode: "cover",
+    borderTopRightRadius: 12,
+    borderTopLeftRadius: 12,
+    margin: -10,
   },
   detailsContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    padding: 15,
+    padding: 10,
+    marginTop: -30,
   },
   addressContainer: {
     flex: 1,
   },
+  apartmentType: {
+    fontSize: 18,
+    textAlign: "center",
+    paddingLeft: 90,
+    // fontWeight: "bold",
+    fontFamily: "OrbitronMedium",
+  },
   city: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: "bold",
-    marginBottom: 5,
   },
   street: {
     fontSize: 15,
-    marginBottom: 5,
   },
   distance: {
-    fontSize: 15,
-    color: "#65B741",
+    fontSize: 13,
+    // color: "#65B741",
   },
   price: {
-    fontSize: 20,
+    fontSize: 32,
     fontWeight: "bold",
+    marginTop: 12,
     color: "#65B741",
   },
   favoriteButton: {
     position: "absolute",
-    top: 10,
-    right: 10,
+    top: 15,
+    right: 12,
     zIndex: 1,
   },
 });

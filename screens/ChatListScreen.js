@@ -30,7 +30,10 @@ function ChatListScreen({ navigation }) {
     navigation.setOptions({
       headerShown: true,
       headerSearchBarOptions: {
-        placeholder: "Search Chat",
+        placeholder: "",
+
+        headerIconColor: isDarkMode ? Color.defaultTheme : Color.darkTheme,
+        textColor: isDarkMode ? Color.defaultTheme : Color.darkTheme,
         onChangeText: (event) => {
           setSearchQuery(event.nativeEvent.text);
         },

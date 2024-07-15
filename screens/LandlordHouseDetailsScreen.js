@@ -1,14 +1,12 @@
-import { useContext, useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import {
   Dimensions,
   StyleSheet,
   TouchableOpacity,
   View,
   Image,
-  FlatList,
 } from "react-native";
 import Animated, {
-  SlideInDown,
   interpolate,
   useAnimatedRef,
   useAnimatedStyle,
@@ -17,8 +15,8 @@ import Animated, {
 import Carousel from "react-native-reanimated-carousel";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { Paragraph, Text } from "react-native-paper";
-import { useQuery } from "@tanstack/react-query";
 import { Ionicons } from "@expo/vector-icons";
+
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { useUsers } from "../context/UserContext";
@@ -30,29 +28,19 @@ import HouseRoommates from "../components/House/HouseRoommates";
 import Seperator from "../components/Seperator";
 import HouseAssets from "../components/House/HouseAssets";
 import RoommatesInfo from "../components/House/RoommatesInfo";
-import fetchChats from "../api/chats/fetchChats";
-import fetchChatsList from "../api/chats/fetchChatsList";
-import EditApartmentScreen from "../screens/EditApartmentScreen";
 
 const IMG_HEIGHT = 300;
 const { width } = Dimensions.get("window");
-
-const ParagraphDeatails =
-  "Discover the perfect three-bedroom rental nestled in a tranquil suburban setting. This charming house features an open-concept living area with ample natural light, a modern kitchen, and a master bedroom with an en-suite bathroom. Enjoy the peaceful backyard with a patio and fire pit. Conveniently located near parks and shopping, this home offers both comfort and convenience for your lifestyle.";
 
 const LandlordHouseDetailsScreen = ({ navigation, route }) => {
   const { isDarkMode } = useDarkMode();
   const { userData } = useUsers();
 
-  const routes = navigation.getState()?.routes;
   const { apartment } = route.params;
-  const prevRoute = routes[routes.length - 1];
 
   const scrollRef = useAnimatedRef();
   const tabBarHeight = useBottomTabBarHeight();
 
-  let chatId = null;
-  const ouid = apartment?.owner[0];
   const [mapPress, setMapPress] = useState(false);
   const [showAll, setShowAll] = useState(false);
   const [apartmentContent, setApartmentContent] = useState([]);
@@ -66,8 +54,6 @@ const LandlordHouseDetailsScreen = ({ navigation, route }) => {
       "https://www.bhg.com/thmb/3Vf9GXp3T-adDlU6tKpTbb-AEyE=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/white-modern-house-curved-patio-archway-c0a4a3b3-aa51b24d14d0464ea15d36e05aa85ac9.jpg",
     ];
   }
-
-  const coordinates = apartment.address?.coordinates;
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -130,30 +116,6 @@ const LandlordHouseDetailsScreen = ({ navigation, route }) => {
     });
   }, [navigation, isDarkMode]);
 
-  const { data: ownerData, isLoading } = useQuery({
-    queryKey: ["chats", ouid],
-    queryFn: () => fetchChats(ouid),
-  });
-
-  const { data: userChatsList } = useQuery({
-    queryKey: ["chatList", userData.id],
-    queryFn: () => fetchChatsList(userData.id),
-  });
-
-  function interestedHandler() {
-    //להוסיף בדיקה
-    navigation.navigate("ChatStackScreen", {
-      screen: "ChatScreen",
-      params: {
-        chatId,
-        ouid,
-        pushToken: ownerData?.data?.pushToken,
-        image: ownerData?.data?.avatar?.url,
-        title: `${ownerData?.data?.firstName} ${ownerData?.data?.lastName}`,
-      },
-    });
-  }
-
   function handleEditPress() {
     navigation.navigate("EditApartmentScreen", { apartment: apartment });
   }
@@ -212,24 +174,24 @@ const LandlordHouseDetailsScreen = ({ navigation, route }) => {
         </Animated.View>
 
         <View style={styles.houseInfo}>
-          <Text style={styles.city}>{apartment.address.city}</Text>
+          <Text style={styles.city}>{apartment?.address?.city}</Text>
           <Text style={styles.street}>
-            {apartment.address.street} {apartment.address.buildingNumber}/
-            {apartment.address.apartmentNumber}
+            {apartment?.address?.street} {apartment?.address?.buildingNumber}/
+            {apartment?.address?.apartmentNumber}
           </Text>
           <Text style={styles.distance}>
-            {apartment.distanceFromAcademy} kilometers away from SCE College
+            {apartment?.distanceFromAcademy} kilometers away from SCE College
           </Text>
           <HouseRoommates
-            totalCapacity={apartment.totalCapacity}
-            realTimeCapacity={apartment.realTimeCapacity}
+            totalCapacity={apartment?.totalCapacity}
+            realTimeCapacity={apartment?.realTimeCapacity}
           />
           <Text style={styles.about}>About</Text>
-          <Paragraph>{apartment.about}</Paragraph>
+          <Paragraph>{apartment?.about}</Paragraph>
           <HouseInfo
-            numberOfRooms={apartment.numberOfRooms}
-            floor={apartment.floor}
-            totalCapacity={apartment.totalCapacity}
+            numberOfRooms={apartment?.numberOfRooms}
+            floor={apartment?.floor}
+            totalCapacity={apartment?.totalCapacity}
           />
           {/* <Map
             handleMapPress={handleMapPress}
@@ -240,7 +202,7 @@ const LandlordHouseDetailsScreen = ({ navigation, route }) => {
           <Seperator />
           <HouseAssets
             handleShowAllPress={handleShowAllPress}
-            apartmentContent={apartment.apartmentContent}
+            apartmentContent={apartment?.apartmentContent}
           />
           {showAll && (
             <HouseAssetsModal
@@ -252,7 +214,7 @@ const LandlordHouseDetailsScreen = ({ navigation, route }) => {
           {apartment.tenants.length > 0 && (
             <Text style={styles.about}>Current tenants</Text>
           )}
-          {apartment.tenants?.map((tenant) => (
+          {apartment?.tenants?.map((tenant) => (
             <TouchableOpacity
               key={tenant}
               onPress={() =>
@@ -306,42 +268,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 4,
   },
-  footerPrice: {
-    fontSize: 18,
-  },
-  BottomTab: {
-    height: 60,
-    borderTopWidth: 1,
-    borderColor: "black",
-  },
-  BottomTabView: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginHorizontal: 10,
-  },
-  PriceView: {
-    flexDirection: "row",
-    alignItems: "flex-end",
-  },
-  price: {
-    fontSize: 35,
-    fontWeight: "bold",
-  },
-  monthPerson: {
-    marginHorizontal: 5,
-  },
-  ReserveBtn: {
-    paddingHorizontal: 15,
-    paddingVertical: 12,
-    backgroundColor: "#9ADE7B",
-    borderRadius: 10,
-  },
-  BtnText: {
-    color: "white",
-    fontWeight: "bold",
-  },
 
   roundButton: {
     width: 40,
@@ -363,10 +289,5 @@ const styles = StyleSheet.create({
     height: 100,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: Color.gray,
-  },
-
-  description: {
-    fontSize: 16,
-    marginTop: 10,
   },
 });

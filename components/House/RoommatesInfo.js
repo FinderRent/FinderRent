@@ -1,14 +1,17 @@
-import React from "react";
-import { View, StyleSheet, Image } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Text } from "react-native-paper";
 import { useQuery } from "@tanstack/react-query";
-import { useDarkMode } from "../../context/DarkModeContext";
+
 import { Color } from "../../constants/colors";
+import { useDarkMode } from "../../context/DarkModeContext";
 import { fetchUser } from "../../utils/http";
 import Loader from "../ui/Loader";
+import ErrorMessage from "../ui/ErrorMessage";
 
-const RoommatesInfo = (props) => {
+const RoommatesInfo = ({ tenant }) => {
   const { isDarkMode } = useDarkMode();
+  const navigation = useNavigation();
 
   //change it to the real person image
   const images = [
@@ -20,13 +23,16 @@ const RoommatesInfo = (props) => {
     isLoading: isLoadingUser,
     isError: isErrorUser,
     status: statusUser,
+    error: errorUser,
   } = useQuery({
-    queryKey: ["User", props.tenant],
-    queryFn: () => fetchUser(props.tenant),
+    queryKey: ["User", tenant],
+    queryFn: () => fetchUser(tenant),
   });
 
-  if (isLoadingUser) return <Loader />;
-  if (isErrorUser) return <Text>Error loading user</Text>;
+  if (isLoadingUser)
+    return <Loader color={isDarkMode ? Color.defaultTheme : Color.darkTheme} />;
+
+  if (isErrorUser) return <ErrorMessage errorMessage={errorUser} />;
 
   return (
     <View>
@@ -36,20 +42,26 @@ const RoommatesInfo = (props) => {
           isDarkMode && { backgroundColor: Color.buttomSheetDarkTheme },
         ]}
       >
-        <View style={styles.cardContainer}>
+        <TouchableOpacity
+          style={styles.cardContainer}
+          key={tenant}
+          onPress={() =>
+            navigation.navigate("StudentProfileScreen", { tenant })
+          }
+        >
           <Image
             source={{
-              uri: user.avatar?.url,
+              uri: user?.avatar?.url,
             }}
             style={styles.image}
             resizeMode="cover"
           />
           <View style={styles.detailsContainer}>
             <Text style={styles.userName}>
-              {user.firstName} {user.lastName}
+              {user?.firstName} {user?.lastName}
             </Text>
           </View>
-        </View>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -67,6 +79,8 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 4,
     backgroundColor: "#fff",
+    // borderTopWidth: 1,
+    // borderBottomColor: Color.gray,
   },
   cardContainer: {
     flexDirection: "row",

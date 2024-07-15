@@ -76,7 +76,7 @@ function HomeScreen({ navigation, route }) {
   );
   const [category, setCategory] = useState(route?.params?.category[1]);
   const [sort, setSort] = useState(route?.params?.sort);
-  const [distance, setDistance] = useState(route?.params?.distance);
+  const [distance, setDistance] = useState(route?.params?.distance || 1.0);
   const [numberOfRooms, setNumberOfRooms] = useState(
     route?.params?.apartmentFilters[0][1]
   );
@@ -95,10 +95,12 @@ function HomeScreen({ navigation, route }) {
     queryFn: () =>
       fetchAllApartments({
         sort,
-        category,
+        apartmentType: category,
         numberOfRooms,
         floor,
         totalCapacity,
+        distance,
+        coordinates,
       }),
   });
 
@@ -151,18 +153,17 @@ function HomeScreen({ navigation, route }) {
         await refetch();
       };
       fetched();
-    }, [])
+    }, [token, coordinates])
   );
   useEffect(() => {
     setCategoryIndex(route?.params?.category[0]);
     setCategory(route?.params?.category[1]);
     setSort(route?.params?.sort);
-    setDistance(route?.params?.distance);
+    setDistance(route?.params?.distance || 1.0);
     setNumberOfRooms(route?.params?.apartmentFilters[0][1]);
     setFloor(route?.params?.apartmentFilters[1][1]);
     setTotalCapacity(route?.params?.apartmentFilters[2][1]);
   }, [route?.params]);
-
   const onDataChanged = (category) => {
     setCategory(category);
   };
@@ -205,6 +206,9 @@ function HomeScreen({ navigation, route }) {
         numberOfRooms={numberOfRooms}
         floor={floor}
         totalCapacity={totalCapacity}
+        distance={distance}
+        coordinates={coordinates}
+        token={token}
       />
     </SafeAreaView>
   );

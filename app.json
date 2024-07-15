@@ -2,7 +2,7 @@
   "expo": {
     "name": "FindeRent",
     "slug": "finderrent",
-    "version": "0.7.4",
+    "version": "0.8.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -23,7 +23,7 @@
       },
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyAug_lrfsNi4uO2eEEVmFidP5f0t2iQbOk"
+          "apiKey": "AIzaSyDYInyCvJ1WQjqJohhMx2OnxioXWAvy39s"
         }
       },
       "permissions": ["android.permission.RECORD_AUDIO"],

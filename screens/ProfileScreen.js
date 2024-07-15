@@ -50,12 +50,12 @@ const ProfileScreen = ({ navigation }) => {
               borderColor: Color.gray,
             }}
             source={{
-              uri: userData.avatar?.url,
+              uri: userData?.avatar?.url,
             }}
           />
           <View>
             <Title style={styles.title}>
-              {userData.firstName} {userData.lastName}
+              {userData?.firstName} {userData?.lastName}
             </Title>
           </View>
         </View>

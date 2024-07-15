@@ -9,7 +9,7 @@ import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
 import { Color } from "../../constants/colors";
 import { useUsers } from "../../context/UserContext";
 import { useDarkMode } from "../../context/DarkModeContext";
-import { fetchAllApartments } from "../../utils/http";
+import { fetchAllApartments, getDistances } from "../../utils/http";
 import HouseCard from "./HouseCard";
 import Loader from "../../components/ui/Loader";
 import ErrorMessage from "../../components/ui/ErrorMessage";
@@ -21,6 +21,9 @@ function HouseList({
   numberOfRooms,
   floor,
   totalCapacity,
+  distance,
+  coordinates,
+  token,
 }) {
   const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
@@ -45,23 +48,55 @@ function HouseList({
         numberOfRooms,
         floor,
         totalCapacity,
+        distance,
+        coordinates,
       }),
+  });
+
+  const {
+    data: distances,
+    refetch: refetchDistance,
+    isFetching: isFetchingDistance,
+  } = useQuery({
+    queryKey: ["distances", coordinates],
+    queryFn: () => getDistances(coordinates),
+    enabled: !!coordinates,
   });
 
   useEffect(() => {
     refetch();
-  }, [category, sort, refetch]);
-
+    refetchDistance();
+  }, [
+    sort,
+    category,
+    numberOfRooms,
+    floor,
+    totalCapacity,
+    distance,
+    coordinates,
+    token,
+  ]);
   const onShowMap = () => {
     bottomSheetRef.current?.collapse();
   };
 
   //render the apartment card
   const renderApartmentCard = ({ item: apartment }) => {
+    let distanceData = null;
+    distances?.data.forEach((d) => {
+      if (d._id === apartment._id) {
+        distanceData = d;
+      }
+    });
+
+    const apartmentWithDistance = {
+      ...apartment,
+      distance: distanceData ? distanceData.distance.toFixed(2) : null,
+    };
     return (
       <HouseCard
         navigation={navigation}
-        apartment={apartment}
+        apartment={apartmentWithDistance}
         userData={userData}
       />
     );
@@ -84,7 +119,7 @@ function HouseList({
     >
       {isErrorApartments && <ErrorMessage errorMessage={errorApartments} />}
 
-      {isFetchingApartments ? (
+      {isFetchingApartments && isFetchingDistance ? (
         <View style={{ paddingTop: "80%" }}>
           <Loader color={isDarkMode ? Color.white : Color.darkTheme} />
         </View>
@@ -95,25 +130,56 @@ function HouseList({
             size={120}
             color={Color.buttomSheetDarkTheme}
           />
-          <Text style={styles.noResultsText}>
-            There's No {category} Apartments.
-          </Text>
+          {!token ? (
+            <Text style={styles.noResultsText}>
+              There's No {category} Apartments.
+            </Text>
+          ) : (
+            <View>
+              <Text style={styles.noResultsText}>No {category} apartments</Text>
+              <Text style={styles.noResultsText}>
+                within {distance}km from the academy.
+              </Text>
+            </View>
+          )}
         </View>
       ) : (
-        <BottomSheetFlatList
-          data={apartments?.apartments}
-          keyExtractor={(item) => item._id}
-          renderItem={renderApartmentCard}
-        />
+        <>
+          {token && (
+            <Text style={styles.header}>
+              Apartments Within {distance}Km From Academy
+            </Text>
+          )}
+          <BottomSheetFlatList
+            data={apartments?.apartments}
+            keyExtractor={(item) => item._id}
+            renderItem={renderApartmentCard}
+          />
+        </>
       )}
       <View style={styles.absoluteView}>
-        <TouchableOpacity onPress={onShowMap} style={styles.mapBtn}>
-          <Text style={{ color: "#fff" }}>Map</Text>
+        <TouchableOpacity
+          onPress={onShowMap}
+          style={
+            isDarkMode
+              ? { ...styles.mapBtn, backgroundColor: Color.defaultTheme }
+              : { ...styles.mapBtn }
+          }
+        >
+          <Text
+            style={
+              isDarkMode
+                ? { color: Color.darkTheme }
+                : { color: Color.defaultTheme }
+            }
+          >
+            Map
+          </Text>
           <Ionicons
             name="map"
             size={20}
-            style={{ marginLeft: 10 }}
-            color={"#fff"}
+            style={{ marginLeft: 5 }}
+            color={isDarkMode ? Color.darkTheme : Color.defaultTheme}
           />
         </TouchableOpacity>
       </View>
@@ -129,6 +195,11 @@ const styles = StyleSheet.create({
     bottom: Platform.OS === "android" ? 10 : 100,
     width: "100%",
     alignItems: "center",
+  },
+  header: {
+    textAlign: "center",
+    fontSize: 15,
+    fontWeight: "bold",
   },
   mapBtn: {
     backgroundColor: Color.darkTheme,
