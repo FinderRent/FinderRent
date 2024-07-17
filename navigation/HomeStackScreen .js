@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { TouchableOpacity, View } from "react-native";
+import { Platform, TouchableOpacity, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 import { Color } from "../constants/colors";
@@ -31,20 +31,6 @@ function HomeStackScreen({ navigation }) {
       <HomeStack.Screen
         name="HouseDetailsScreen"
         component={HouseDetailsScreen}
-        options={{
-          headerShown: true,
-          headerRight: () => (
-            <View style={{ marginLeft: -10 }}>
-              <Ionicons.Button
-                name="menu"
-                size={25}
-                color={Color.darkTheme}
-                backgroundColor={isDarkMode ? Color.Brown700 : Color.Brown100}
-                onPress={() => navigation.openDrawer()}
-              />
-            </View>
-          ),
-        }}
       />
       <HomeStack.Screen
         name="FilterScreen"
@@ -79,8 +65,10 @@ function HomeStackScreen({ navigation }) {
         name="StudentProfileScreen"
         component={StudentProfileScreen}
         options={{
-          headerShown: false,
-          headerTintColor: isDarkMode ? Color.white : Color.darkTheme,
+          headerShown: Platform.OS === "android" ? true : false,
+          headerStyle: {
+            backgroundColor: isDarkMode ? Color.darkTheme : Color.defaultTheme,
+          },
         }}
       />
     </HomeStack.Navigator>

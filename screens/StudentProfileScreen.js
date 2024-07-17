@@ -1,30 +1,29 @@
-import * as Device from "expo-device";
-import * as Notifications from "expo-notifications";
-import Constants from "expo-constants";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   StyleSheet,
-  SafeAreaView,
-  FlatList,
-  Platform,
   TouchableOpacity,
   View,
-  Keyboard,
   Image,
   Linking,
+  Platform,
 } from "react-native";
-import { Text } from "react-native-paper";
+import { Button, Text } from "react-native-paper";
 import { useQuery } from "@tanstack/react-query";
 import { fetchUser } from "../utils/http";
 import { ScrollView } from "react-native-gesture-handler";
-import Loader from "../components/ui/Loader";
-import Icon from "react-native-vector-icons/Ionicons";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 
+import Loader from "../components/ui/Loader";
+import Icon from "react-native-vector-icons/Ionicons";
+import { useDarkMode } from "../context/DarkModeContext";
+import { Color } from "../constants/colors";
+import Spacer from "../components/ui/Spacer";
+
 function StudentProfileScreen(props) {
+  const { isDarkMode } = useDarkMode();
+
   const userID = props.route.params.tenant;
   const tabBarHeight = useBottomTabBarHeight();
-
+  // console.log(userID);
   const {
     data: user,
     isLoading: isLoadingUser,
@@ -40,8 +39,15 @@ function StudentProfileScreen(props) {
 
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
-      <View style={styles.container}>
-        <View style={styles.card}>
+      <View
+        style={[styles.container, isDarkMode && { backgroundColor: "#505050" }]}
+      >
+        <View
+          style={[
+            styles.card,
+            isDarkMode && { backgroundColor: Color.buttomSheetDarkTheme },
+          ]}
+        >
           <View style={styles.imageContainer}>
             <Image
               source={{
@@ -57,25 +63,45 @@ function StudentProfileScreen(props) {
           </View>
         </View>
         <View style={styles.detailsContainer}>
-          <Icon name="school" size={35} />
+          <Icon
+            name="school"
+            size={35}
+            color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+          />
           <Text style={styles.funFactText}>Academic: {user?.academic}</Text>
         </View>
         <View style={styles.detailsContainer}>
-          <Icon name="today" size={35} />
+          <Icon
+            name="today"
+            size={35}
+            color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+          />
           <Text style={styles.funFactText}>Department: {user?.department}</Text>
         </View>
         <View style={styles.detailsContainer}>
-          <Icon name="body-sharp" size={35} />
+          <Icon
+            name="body-sharp"
+            size={35}
+            color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+          />
           <Text style={styles.funFactText}>Age: {user?.age}</Text>
         </View>
         <View style={styles.detailsContainer}>
-          <Icon name="game-controller-sharp" size={35} />
+          <Icon
+            name="game-controller-sharp"
+            size={35}
+            color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+          />
           <Text style={styles.funFactText}>
             Hobbies: {user?.hobbies ? user?.hobbies : "Empty"}
           </Text>
         </View>
         <View style={styles.detailsContainer}>
-          <Icon name="beer" size={35} />
+          <Icon
+            name="beer"
+            size={35}
+            color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+          />
           <Text style={styles.funFactText}>
             Fun Fact: {user?.funFact ? user?.funFact : "Empty"}
           </Text>
@@ -114,6 +140,23 @@ function StudentProfileScreen(props) {
             </TouchableOpacity>
           </View>
         </View>
+
+        <Spacer>
+          <Button
+            style={{ marginTop: 10, marginHorizontal: 15 }}
+            textColor={
+              isDarkMode ? Color.buttomSheetDarkTheme : Color.defaultTheme
+            }
+            buttonColor={
+              isDarkMode ? Color.defaultTheme : Color.buttomSheetDarkTheme
+            }
+            mode="contained"
+            onPress={() => console.log("gfg")}
+          >
+            {"Chat with me"}
+          </Button>
+        </Spacer>
+
         <View style={[styles.footer, { height: tabBarHeight + 10 }]}></View>
       </View>
     </ScrollView>
@@ -135,7 +178,7 @@ const styles = StyleSheet.create({
   },
   card: {
     width: "90%",
-    aspectRatio: 1.2, // Ensures the card maintains a square shape
+    aspectRatio: 1.2,
     backgroundColor: "#FFFFFF",
     borderRadius: 20,
     shadowColor: "#000",
@@ -149,7 +192,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
-    marginTop: "20%", // Adjust as needed to control the spacing from the top
+    marginTop: Platform.OS === "android" ? "10%" : "20%",
     marginBottom: 10,
   },
   imageContainer: {
@@ -173,7 +216,7 @@ const styles = StyleSheet.create({
   },
   role: {
     fontSize: 16,
-    color: "#373A40",
+    // color: "#373A40",
   },
   detailsContainer: {
     flexDirection: "row",
@@ -186,7 +229,7 @@ const styles = StyleSheet.create({
   funFactText: {
     marginLeft: 10,
     fontSize: 20,
-    color: "#373A40",
+    // color: "#373A40",
     paddingRight: "12%",
   },
   socialLinksContainer: {
@@ -198,12 +241,15 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 20,
-    marginTop: 40,
+    marginTop: 20,
     textAlign: "center",
   },
   socialLinks: {
     flexDirection: "row",
     justifyContent: "space-evenly",
     width: "80%",
+  },
+  footer: {
+    width: "100%",
   },
 });
