@@ -51,8 +51,7 @@ async function updateUser({
       });
     }
     const response = await axios.patch(
-      // `https://finder-rent-backend.vercel.app/api/v1/users/updateMe`,
-      `http://192.168.1.246:3000/api/v1/users/updateMe`,
+      `https://finder-rent-backend.vercel.app/api/v1/users/updateMe`,
       formData,
       {
         headers: {

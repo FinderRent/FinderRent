@@ -67,7 +67,6 @@ function ChatScreen({ navigation, route }) {
     show: false,
     messageId: "",
   });
-
   const message = {
     senderId,
     messageText,
@@ -177,7 +176,7 @@ function ChatScreen({ navigation, route }) {
         handleAddMessages({
           ...message,
           chatId: newChat._id,
-          messageText: templateMessage,
+          messageText: templateMessage || messageText,
         });
         setChatId(newChat._id);
         setTemplateMessage("");
@@ -297,9 +296,9 @@ function ChatScreen({ navigation, route }) {
             {chatId && (
               <FlatList
                 ref={scrollRef}
-                inverted={data?.length > 4 - imageMessage * 2.5 ? true : false}
+                inverted={data?.length > 7 - imageMessage * 3 ? true : false}
                 data={
-                  data?.length > 4 - imageMessage * 2.5
+                  data?.length > 7 - imageMessage * 3
                     ? data && [...data].reverse()
                     : data
                 }

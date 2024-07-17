@@ -22,7 +22,7 @@ const HouseAssets = (props) => {
 
   return (
     <View style={styles.seperator}>
-      <Text style={styles.Header}>What this place offers</Text>
+      <Text style={styles.Header}>What This Place Offers</Text>
       <View>
         {/* if bigger than 6 items */}
         {apartmentContent.length >= 6 &&

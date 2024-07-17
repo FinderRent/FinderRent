@@ -16,13 +16,13 @@ const SignInHeader = () => {
       <View style={styles.container}>
         <View style={styles.midContainer}>
           <View>
-            <Text style={styles.text}>Sign in to see your Location</Text>
+            <Text style={styles.text}>SignIn to see your location</Text>
           </View>
         </View>
 
         <View style={styles.midContainer}>
           <Button
-            title="Sign In"
+            title="SignIn"
             buttonStyle={
               isDarkMode
                 ? { backgroundColor: Color.defaultTheme }

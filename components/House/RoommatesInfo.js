@@ -6,31 +6,33 @@ import { useQuery } from "@tanstack/react-query";
 import { Color } from "../../constants/colors";
 import { useDarkMode } from "../../context/DarkModeContext";
 import { fetchUser } from "../../utils/http";
-import Loader from "../ui/Loader";
 import ErrorMessage from "../ui/ErrorMessage";
+import Loader from "../ui/Loader";
 
 const RoommatesInfo = ({ tenant }) => {
   const { isDarkMode } = useDarkMode();
   const navigation = useNavigation();
 
-  //change it to the real person image
-  const images = [
-    "https://img.freepik.com/free-psd/3d-illustration-human-avatar-profile_23-2150671142.jpg?t=st=1718994903~exp=1718998503~hmac=5d66ee2ce11b89c86b03f926658dac5b99441c548a993f4beb7d0b539f76bfae&w=1480",
-  ];
-
   const {
     data: user,
     isLoading: isLoadingUser,
     isError: isErrorUser,
-    status: statusUser,
     error: errorUser,
   } = useQuery({
     queryKey: ["User", tenant],
     queryFn: () => fetchUser(tenant),
   });
 
-  if (isLoadingUser)
-    return <Loader color={isDarkMode ? Color.defaultTheme : Color.darkTheme} />;
+  // if (isLoadingUser) {
+  //   return (
+  //     <View style={{ margin: 20 }}>
+  //       <Loader
+  //         color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+  //         size={18}
+  //       />
+  //     </View>
+  //   );
+  // }
 
   if (isErrorUser) return <ErrorMessage errorMessage={errorUser} />;
 
@@ -72,15 +74,13 @@ const styles = StyleSheet.create({
     position: "relative",
     borderRadius: 12,
     margin: 5,
-    marginTop: 10,
+    marginTop: 20,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 4,
     backgroundColor: "#fff",
-    // borderTopWidth: 1,
-    // borderBottomColor: Color.gray,
   },
   cardContainer: {
     flexDirection: "row",

@@ -35,6 +35,7 @@ import HouseAssets from "../components/House/HouseAssets";
 import RoommatesInfo from "../components/House/RoommatesInfo";
 import fetchChats from "../api/chats/fetchChats";
 import getUser from "../api/users/getUser";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 const IMG_HEIGHT = 300;
 const { width } = Dimensions.get("window");
@@ -290,11 +291,18 @@ const HouseDetailsScreen = ({ navigation, route }) => {
           )}
           <Seperator />
           {apartment.tenants && (
-            <Text style={styles.about}>Current tenants</Text>
+            <Text style={styles.about}>Current Tenants</Text>
           )}
-          {apartment?.tenants?.map((tenant) => (
-            <RoommatesInfo key={tenant} tenant={tenant} />
-          ))}
+          {userData.token ? (
+            apartment?.tenants?.map((tenant) => (
+              <RoommatesInfo key={tenant} tenant={tenant} />
+            ))
+          ) : (
+            <TouchableWithoutFeedback style={styles.customView}>
+              <Text style={styles.customText}>Login To View Tenants</Text>
+            </TouchableWithoutFeedback>
+          )}
+          <View style={{ height: tabBarHeight - 20 }}></View>
         </View>
       </Animated.ScrollView>
 
@@ -304,7 +312,7 @@ const HouseDetailsScreen = ({ navigation, route }) => {
       >
         <View style={styles.BottomTabView}>
           <View style={styles.PriceView}>
-            <Text style={styles.price}>{apartment.price}$</Text>
+            <Text style={styles.price}>{apartment.price}₪</Text>
             <Text style={styles.monthPerson}>Month / Person</Text>
           </View>
           {userData?.token && !isLoading && !studentDataIsLoading && (
@@ -334,7 +342,6 @@ const styles = StyleSheet.create({
   },
   city: {
     fontSize: 40,
-    // marginBottom: 5,
     fontWeight: "bold",
   },
   street: {
@@ -344,10 +351,22 @@ const styles = StyleSheet.create({
   },
   distance: {
     fontSize: 15,
-    // color: "#65B741",
   },
   about: {
     fontSize: 25,
+    fontWeight: "bold",
+  },
+  customView: {
+    marginTop: 25,
+    padding: 20,
+    backgroundColor: Color.darkTheme,
+    borderRadius: 20,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  customText: {
+    color: Color.defaultTheme,
+    fontSize: 18,
     fontWeight: "bold",
   },
   footerText: {
