@@ -5,7 +5,6 @@ import { Text } from "react-native-paper";
 import { useQuery } from "@tanstack/react-query";
 import { FontAwesome5 } from "@expo/vector-icons";
 import moment from "moment";
-import { useHeaderHeight } from "@react-navigation/elements";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
@@ -14,24 +13,21 @@ import ErrorMessage from "../components/ui/ErrorMessage";
 import Loader from "../components/ui/Loader";
 import ChatList from "../components/chats/ChatList";
 import fetchChatsList from "../api/chats/fetchChatsList";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 
 function ChatListScreen({ navigation }) {
   const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
   const [searchQuery, setSearchQuery] = useState("");
-  const tabBarHeight = useHeaderHeight();
   const { data, error, isLoading, refetch } = useQuery({
     queryKey: ["chatList", userData.id],
     queryFn: () => fetchChatsList(userData.id),
   });
-  console.log(data);
+
   useEffect(() => {
     navigation.setOptions({
       headerShown: true,
       headerSearchBarOptions: {
         placeholder: "",
-
         headerIconColor: isDarkMode ? Color.defaultTheme : Color.darkTheme,
         textColor: isDarkMode ? Color.defaultTheme : Color.darkTheme,
         onChangeText: (event) => {

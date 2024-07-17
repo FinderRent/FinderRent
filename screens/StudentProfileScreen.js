@@ -8,37 +8,67 @@ import {
 } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { useQuery } from "@tanstack/react-query";
-import { fetchUser } from "../utils/http";
 import { ScrollView } from "react-native-gesture-handler";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import { useNavigation } from "@react-navigation/native";
 
-import Loader from "../components/ui/Loader";
-import Icon from "react-native-vector-icons/Ionicons";
-import { useDarkMode } from "../context/DarkModeContext";
 import { Color } from "../constants/colors";
+import { useDarkMode } from "../context/DarkModeContext";
+import { useUsers } from "../context/UserContext";
+import { fetchUser } from "../utils/http";
+import Icon from "react-native-vector-icons/Ionicons";
 import Spacer from "../components/ui/Spacer";
+import Loader from "../components/ui/Loader";
+import ErrorMessage from "../components/ui/ErrorMessage";
 
 function StudentProfileScreen(props) {
   const { isDarkMode } = useDarkMode();
+  const { userData } = useUsers();
 
-  const userID = props.route.params.tenant;
+  let chatId = null;
+  let firstChat = true;
+  const navigation = useNavigation();
+  const ouid = props.route.params.tenant;
   const tabBarHeight = useBottomTabBarHeight();
-  // console.log(userID);
+
   const {
     data: user,
     isLoading: isLoadingUser,
     isError: isErrorUser,
-    status: statusUser,
+    error,
   } = useQuery({
-    queryKey: ["User", userID],
-    queryFn: () => fetchUser(userID),
+    queryKey: ["User", ouid],
+    queryFn: () => fetchUser(ouid),
   });
 
-  if (isLoadingUser) return <Loader />;
-  if (isErrorUser) return <Text>Error loading user</Text>;
+  // if (isLoadingUser) return <Loader />;
 
+  const { data: studentData, isLoading: studentDataIsLoading } = useQuery({
+    queryKey: ["chats", userData.id],
+    queryFn: () => getUser(userData.id),
+  });
+
+  const userChats = studentData?.data?.chats;
+  const foundObject = userChats?.find((chat) => chat?.userID === ouid);
+  chatId = foundObject?.chatID;
+
+  function chatWithMe() {
+    navigation.goBack();
+    navigation.navigate("ChatStackScreen", {
+      screen: "ChatScreen",
+      params: {
+        firstChat,
+        chatId,
+        ouid,
+        pushToken: user?.pushToken,
+        image: user?.avatar?.url,
+        title: `${user?.firstName} ${user?.lastName}`,
+      },
+    });
+  }
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
+      {isErrorUser && <ErrorMessage errorMessage={error} />}
       <View
         style={[styles.container, isDarkMode && { backgroundColor: "#505050" }]}
       >
@@ -142,19 +172,21 @@ function StudentProfileScreen(props) {
         </View>
 
         <Spacer>
-          <Button
-            style={{ marginTop: 10, marginHorizontal: 15 }}
-            textColor={
-              isDarkMode ? Color.buttomSheetDarkTheme : Color.defaultTheme
-            }
-            buttonColor={
-              isDarkMode ? Color.defaultTheme : Color.buttomSheetDarkTheme
-            }
-            mode="contained"
-            onPress={() => console.log("gfg")}
-          >
-            {"Chat with me"}
-          </Button>
+          {!isLoadingUser && !studentDataIsLoading && (
+            <Button
+              style={{ marginTop: 10, marginHorizontal: 15 }}
+              textColor={
+                isDarkMode ? Color.buttomSheetDarkTheme : Color.defaultTheme
+              }
+              buttonColor={
+                isDarkMode ? Color.defaultTheme : Color.buttomSheetDarkTheme
+              }
+              mode="contained"
+              onPress={chatWithMe}
+            >
+              {"Chat with me"}
+            </Button>
+          )}
         </Spacer>
 
         <View style={[styles.footer, { height: tabBarHeight + 10 }]}></View>
