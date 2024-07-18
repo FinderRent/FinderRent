@@ -16,6 +16,7 @@ import Animated, {
 } from "react-native-reanimated";
 import Carousel from "react-native-reanimated-carousel";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { Paragraph, Text } from "react-native-paper";
 import { useQuery } from "@tanstack/react-query";
 import { Ionicons } from "@expo/vector-icons";
@@ -35,7 +36,6 @@ import HouseAssets from "../components/House/HouseAssets";
 import RoommatesInfo from "../components/House/RoommatesInfo";
 import fetchChats from "../api/chats/fetchChats";
 import getUser from "../api/users/getUser";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 const IMG_HEIGHT = 300;
 const { width } = Dimensions.get("window");

@@ -25,7 +25,7 @@ describe("removeMessage", () => {
       .onDelete(
         `https://finder-rent-backend.vercel.app/api/v1/messages/${messageId}`
       )
-      .reply(200, mockData);
+      .reply(204, mockData);
 
     const result = await removeMessage(messageId);
 

@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   ImageBackground,
   StyleSheet,
@@ -14,10 +15,12 @@ import { useDarkMode } from "../../context/DarkModeContext";
 import ErrorMessage from "../ui/ErrorMessage";
 import fetchChats from "../../api/chats/fetchChats";
 
-function ChatList({ ouid, chatId, lastMessage, time, searchUser }) {
+function ChatList({ ouid, chatId, lastMessage, time, searchUser, deleteChat }) {
   const { isDarkMode } = useDarkMode();
-
   const navigation = useNavigation();
+
+  const [selectedChatId, setSelectedChatId] = useState(false);
+
   const { data, error, isLoading } = useQuery({
     queryKey: ["chats", ouid],
     queryFn: () => fetchChats(ouid),
@@ -39,8 +42,14 @@ function ChatList({ ouid, chatId, lastMessage, time, searchUser }) {
     return null;
   }
 
+  const isSelected = selectedChatId === chatId;
+
   return (
     <TouchableNativeFeedback
+      onLongPress={() => {
+        setSelectedChatId(!selectedChatId);
+        deleteChat(chatId);
+      }}
       onPress={() =>
         navigation.push("ChatScreen", {
           chatId,
@@ -51,7 +60,9 @@ function ChatList({ ouid, chatId, lastMessage, time, searchUser }) {
         })
       }
     >
-      <View style={styles.container}>
+      <View
+        style={[styles.container, selectedChatId && styles.selectedContainer]}
+      >
         <ImageBackground
           style={{ height: 50, width: 50 }}
           imageStyle={{
@@ -62,7 +73,16 @@ function ChatList({ ouid, chatId, lastMessage, time, searchUser }) {
           source={{
             uri: data?.data?.avatar.url,
           }}
-        />
+        >
+          {isSelected && (
+            <Ionicons
+              name="checkmark-circle"
+              size={24}
+              color="green"
+              style={styles.checkmarkIcon}
+            />
+          )}
+        </ImageBackground>
         <View style={styles.textContainer}>
           <Text numberOfLines={1} style={styles.title}>
             {data?.data?.firstName} {data?.data?.lastName}
@@ -100,6 +120,9 @@ const styles = StyleSheet.create({
     marginTop: 8,
     padding: 8,
   },
+  selectedContainer: {
+    backgroundColor: Color.Brown200,
+  },
   textContainer: {
     marginLeft: 10,
   },
@@ -115,12 +138,15 @@ const styles = StyleSheet.create({
   time: {
     fontSize: 10,
     color: Color.Brown500,
-    // left: 220,
-    // position: "absolute",
   },
   type: {
     left: 245,
     position: "absolute",
+  },
+  checkmarkIcon: {
+    position: "absolute",
+    top: 0,
+    right: 0,
   },
 });
 
