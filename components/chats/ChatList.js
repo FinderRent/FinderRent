@@ -7,12 +7,16 @@ import {
 import { Text } from "react-native-paper";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigation } from "@react-navigation/native";
+import { Ionicons } from "@expo/vector-icons";
 
 import { Color } from "../../constants/colors";
+import { useDarkMode } from "../../context/DarkModeContext";
 import ErrorMessage from "../ui/ErrorMessage";
 import fetchChats from "../../api/chats/fetchChats";
 
 function ChatList({ ouid, chatId, lastMessage, time, searchUser }) {
+  const { isDarkMode } = useDarkMode();
+
   const navigation = useNavigation();
   const { data, error, isLoading } = useQuery({
     queryKey: ["chats", ouid],
@@ -64,7 +68,7 @@ function ChatList({ ouid, chatId, lastMessage, time, searchUser }) {
             {data?.data?.firstName} {data?.data?.lastName}
           </Text>
 
-          <View style={styles.subTitle}>
+          <View>
             <Text numberOfLines={1} style={styles.lastMessage}>
               {lastMessage}
             </Text>
@@ -72,6 +76,16 @@ function ChatList({ ouid, chatId, lastMessage, time, searchUser }) {
             <Text numberOfLines={1} style={styles.time}>
               {time}
             </Text>
+            <Ionicons
+              style={styles.type}
+              name={
+                data?.data?.userType === "student"
+                  ? "school-outline"
+                  : "briefcase-outline"
+              }
+              size={20}
+              color={isDarkMode ? "white" : "black"}
+            />
           </View>
         </View>
       </View>
@@ -94,9 +108,6 @@ const styles = StyleSheet.create({
     fontSize: 17,
     letterSpacing: 0.3,
   },
-  subTitle: {
-    // flexDirection: "row",
-  },
   lastMessage: {
     color: Color.gray,
     letterSpacing: 0.3,
@@ -104,6 +115,12 @@ const styles = StyleSheet.create({
   time: {
     fontSize: 10,
     color: Color.Brown500,
+    // left: 220,
+    // position: "absolute",
+  },
+  type: {
+    left: 245,
+    position: "absolute",
   },
 });
 

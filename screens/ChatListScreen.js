@@ -35,7 +35,7 @@ function ChatListScreen({ navigation }) {
         },
       },
     });
-  }, [navigation]);
+  }, [navigation, isDarkMode]);
 
   useFocusEffect(
     useCallback(() => {
