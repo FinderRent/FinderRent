@@ -1,6 +1,6 @@
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import deleteChat from "../../../api/chats/deleteChat"; // Adjust the path as needed
+import deleteChat from "../../../api/chats/deleteChat";
 
 describe("deleteChat", () => {
   let mock;
