@@ -14,7 +14,10 @@ async function fetchChatsList(id) {
 
     return responseData;
   } catch (err) {
-    throw new Error(err);
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    }
+    throw new Error(err.message);
   }
 }
 

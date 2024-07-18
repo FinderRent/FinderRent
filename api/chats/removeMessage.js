@@ -8,13 +8,16 @@ async function removeMessage(messageId) {
 
     const responseData = response.data;
 
-    if (!response.status === 200) {
+    if (response.status !== 200) {
       throw new Error(responseData.message);
     }
 
     return responseData;
   } catch (err) {
-    throw new Error(err);
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    }
+    throw new Error(err.message);
   }
 }
 

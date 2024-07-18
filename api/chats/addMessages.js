@@ -44,7 +44,7 @@ async function addMessages(message) {
     }
     return responseData;
   } catch (err) {
-    console.log(err.message);
+    // console.log(err.message);
     throw new Error(err);
   }
 }
