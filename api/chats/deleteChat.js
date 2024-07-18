@@ -3,8 +3,8 @@ import axios from "axios";
 async function deleteChat(chatId) {
   try {
     const response = await axios.delete(
-      // `https://finder-rent-backend.vercel.app/api/v1/chats/${chatId}`
-      `http://192.168.1.214:3000/api/v1/chats/${chatId}`
+      `https://finder-rent-backend.vercel.app/api/v1/chats/${chatId}`
+      // `http://192.168.1.214:3000/api/v1/chats/${chatId}`
     );
 
     const responseData = response.data;
