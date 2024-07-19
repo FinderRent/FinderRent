@@ -42,8 +42,6 @@ function ChatList({ ouid, chatId, lastMessage, time, searchUser, deleteChat }) {
     return null;
   }
 
-  const isSelected = selectedChatId === chatId;
-
   return (
     <TouchableNativeFeedback
       onLongPress={() => {
@@ -74,11 +72,11 @@ function ChatList({ ouid, chatId, lastMessage, time, searchUser, deleteChat }) {
             uri: data?.data?.avatar.url,
           }}
         >
-          {isSelected && (
+          {selectedChatId && (
             <Ionicons
               name="checkmark-circle"
               size={24}
-              color="green"
+              color={Color.green100}
               style={styles.checkmarkIcon}
             />
           )}
@@ -121,7 +119,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   selectedContainer: {
-    backgroundColor: Color.Brown200,
+    backgroundColor: Color.Brown300,
   },
   textContainer: {
     marginLeft: 10,
@@ -145,8 +143,8 @@ const styles = StyleSheet.create({
   },
   checkmarkIcon: {
     position: "absolute",
-    top: 0,
-    right: 0,
+    bottom: 2,
+    right: 2,
   },
 });
 

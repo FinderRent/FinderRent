@@ -75,8 +75,17 @@ function ChatListScreen({ navigation }) {
       },
 
       headerLeft: () => (
-        <View>
-          <Text></Text>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          {selectedChatIds.length > 0 && (
+            <Text
+              style={{
+                marginRight: 10,
+                fontSize: 20,
+              }}
+            >
+              {selectedChatIds.length}
+            </Text>
+          )}
           <TouchableOpacity
             onPress={() => setAlertDeleteChat(!alertDeleteChat)}
           >
@@ -151,7 +160,9 @@ function ChatListScreen({ navigation }) {
         ]}
       ></View>
 
-      <View style={{ marginBottom: tabBarHeight + 40 }}>
+      <View
+        style={sortedChats.length > 7 && { marginBottom: tabBarHeight + 40 }}
+      >
         <FlatList
           keyboardDismissMode="on-drag"
           data={sortedChats}
@@ -188,7 +199,7 @@ function ChatListScreen({ navigation }) {
         show={alertDeleteChat !== false}
         contentContainerStyle={
           isDarkMode
-            ? { backgroundColor: Color.darkTheme }
+            ? { backgroundColor: Color.buttomSheetDarkTheme }
             : { backgroundColor: Color.defaultTheme }
         }
         title={selectedChatIds.length === 1 ? "Delete Chat" : "Delete Chats"}
@@ -199,13 +210,20 @@ function ChatListScreen({ navigation }) {
         confirmText="Yes"
         cancelText="No"
         confirmButtonColor={isDarkMode ? Color.defaultTheme : Color.darkTheme}
-        cancelButtonColor={isDarkMode ? Color.darkTheme : Color.defaultTheme}
+        confirmButtonTextStyle={
+          isDarkMode
+            ? { color: Color.darkTheme }
+            : { color: Color.defaultTheme }
+        }
+        cancelButtonColor={
+          isDarkMode ? Color.buttomSheetDarkTheme : Color.defaultTheme
+        }
+        titleStyle={isDarkMode ? styles.whiteTitle : styles.darkTitle}
         cancelButtonTextStyle={
           isDarkMode
             ? { color: Color.defaultTheme }
             : { color: Color.darkTheme }
         }
-        titleStyle={styles.popupTitleStyle}
         onCancelPressed={() => setAlertDeleteChat(false)}
         onConfirmPressed={handleRemoveChat}
         onDismiss={() => setAlertDeleteChat(false)}
@@ -243,6 +261,12 @@ const styles = StyleSheet.create({
     fontFamily: "varelaRound",
     fontSize: 17,
     letterSpacing: 0.3,
+  },
+  whiteTitle: {
+    color: Color.defaultTheme,
+  },
+  darkTitle: {
+    color: Color.darkTheme,
   },
   line: {
     margin: 10,
