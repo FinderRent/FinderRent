@@ -1,50 +1,70 @@
 import axios from "axios";
+import MockAdapter from "axios-mock-adapter";
 import forgotPasswordEmail from "../../../api/emails/forgotPasswordEmail";
+// import forgotPasswordEmail from "../../api/emails/forgotPasswordEmail";
 
-jest.mock("axios");
+describe("forgotPasswordEmail", () => {
+  let mock;
 
-describe("forgotPasswordEmail function", () => {
-  it("should send the forgot password email successfully", async () => {
-    const mockResponse = {
-      status: 200,
-      data: {
-        message: "Email sent successfully",
-      },
-    };
+  beforeEach(() => {
+    mock = new MockAdapter(axios);
+  });
 
-    axios.post.mockResolvedValue(mockResponse);
+  afterEach(() => {
+    mock.restore();
+  });
 
-    const requestData = {
+  it("should send forgot password email successfully", async () => {
+    const emailData = {
       email: "john.doe@example.com",
     };
 
-    const result = await forgotPasswordEmail(requestData);
+    const mockResponse = {
+      message: "Password reset link sent successfully",
+    };
 
-    expect(result).toEqual(mockResponse.data);
+    mock
+      .onPost(
+        "https://finder-rent-backend.vercel.app/api/v1/users/forgotPassword"
+      )
+      .reply(200, mockResponse);
+
+    const response = await forgotPasswordEmail(emailData);
+
+    expect(response).toEqual(mockResponse);
   });
 
-  it("should throw an error for an invalid email", async () => {
-    const errorMessage = "Invalid email address";
-
-    const mockErrorResponse = {
-      response: {
-        status: 400,
-        data: {
-          message: errorMessage,
-        },
-      },
+  it("should throw an error when the status is not 200", async () => {
+    const emailData = {
+      email: "john.doe@example.com",
     };
 
-    axios.post.mockRejectedValue(mockErrorResponse);
-
-    const requestData = {
-      email: "invalid-email",
+    const mockError = {
+      message: "Error occurred",
     };
 
-    try {
-      await forgotPasswordEmail(requestData);
-    } catch (error) {
-      expect(error.message).toEqual(errorMessage);
-    }
+    mock
+      .onPost(
+        "https://finder-rent-backend.vercel.app/api/v1/users/forgotPassword"
+      )
+      .reply(400, mockError);
+
+    await expect(forgotPasswordEmail(emailData)).rejects.toThrow(
+      "Error occurred"
+    );
+  });
+
+  it("should throw an error when there is no response data", async () => {
+    const emailData = {
+      email: "john.doe@example.com",
+    };
+
+    mock
+      .onPost(
+        "https://finder-rent-backend.vercel.app/api/v1/users/forgotPassword"
+      )
+      .networkError();
+
+    await expect(forgotPasswordEmail(emailData)).rejects.toThrow();
   });
 });

@@ -1,7 +1,7 @@
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import DarkModeSwitch from "../../components/ui/DarkModeSwitch";
+import DarkModeSwitch from "../../../components/ui/DarkModeSwitch";
 
 // Mock AsyncStorage
 jest.mock("@react-native-async-storage/async-storage", () => ({
