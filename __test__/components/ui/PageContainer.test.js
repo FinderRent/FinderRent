@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
 import { Text } from "react-native-paper";
-import PageContainer from "../../components/PageContainer";
+import PageContainer from "../../../components/PageContainer";
 
 describe("PageContainer", () => {
   it("should render children correctly", () => {

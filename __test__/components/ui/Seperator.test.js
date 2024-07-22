@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
-import Separator from "../../components/Seperator";
+import Separator from "../../../components/Seperator";
 
 describe("Separator", () => {
   it("renders correctly with the expected styles", () => {
