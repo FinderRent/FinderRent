@@ -1,6 +1,13 @@
-import { StyleSheet, ScrollView, Platform, View } from "react-native";
+import {
+  StyleSheet,
+  ScrollView,
+  Platform,
+  View,
+  I18nManager,
+} from "react-native";
 import { Text } from "react-native-paper";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import { useTranslation } from "react-i18next";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
@@ -8,6 +15,9 @@ import { useDarkMode } from "../context/DarkModeContext";
 const AboutScreen = () => {
   const { isDarkMode } = useDarkMode();
   const tabBarHeight = useBottomTabBarHeight();
+  const { t } = useTranslation();
+  const isRTL = I18nManager.isRTL;
+
   return (
     <ScrollView
       contentContainerStyle={{
@@ -19,57 +29,19 @@ const AboutScreen = () => {
       }}
     >
       <View style={styles.line}></View>
-      <Text style={styles.title}>About Our Application</Text>
+      <Text style={styles.title}>{t("about.title")}</Text>
       <View style={styles.line}></View>
 
-      <Text style={styles.paragraph}>
-        Welcome to our application, developed as part of our final project at
-        the SCE College. Our innovative project is designed to revolutionize the
-        way students find apartments for rent in academic areas. Our application
-        addresses the challenges of traditional apartment search methods,
-        replacing the cumbersome process of sifting through Facebook groups,
-        social networks, and other outdated channels with a modern, efficient
-        solution.
-      </Text>
-      <Text style={styles.paragraph}>
-        Our platform is specifically tailored for students and apartment owners
-        near academic institutions, offering a centralized hub where students
-        can effortlessly connect with landlords. By leveraging advanced
-        technologies such as geographic location services and personalized
-        preferences, our application streamlines the apartment search process,
-        making it easier and more intuitive.
-      </Text>
-      <Text style={styles.subtitle}>Key Features:</Text>
-      <Text style={styles.bulletPoint}>
-        • Centralized Platform: Bringing students and landlords together in one
-        convenient place.
-      </Text>
-      <Text style={styles.bulletPoint}>
-        • Geographic Location Services: Helping you find apartments based on
-        proximity to your academic institution.
-      </Text>
-      <Text style={styles.bulletPoint}>
-        • Personalized Preferences: Matching you with properties that meet your
-        specific needs and preferences.
-      </Text>
-      <Text style={styles.bulletPoint}>
-        • User-Friendly Interface: Ensuring a smooth and enjoyable search
-        experience.
-      </Text>
-      <Text style={styles.bulletPoint}>
-        • Comfortable User Experience: Simplifying the process of finding the
-        perfect apartment.
-      </Text>
-      <Text style={styles.paragraph}>
-        Our mission is to create a seamless and efficient apartment search
-        experience for students, transforming a traditionally stressful process
-        into a hassle-free journey. Join us and discover a better way to find
-        your next home near your academic institution.
-      </Text>
+      <Text style={styles.paragraph}>{t("about.welcome")}</Text>
+      <Text style={styles.paragraph}>{t("about.platform")}</Text>
+      <Text style={styles.subtitle}>{t("about.features.title")}</Text>
+      <Text style={styles.bulletPoint}>{t("about.features.centralized")}</Text>
+      <Text style={styles.bulletPoint}>{t("about.features.location")}</Text>
+      <Text style={styles.bulletPoint}>{t("about.features.preferences")}</Text>
+      <Text style={styles.bulletPoint}>{t("about.features.interface")}</Text>
+      <Text style={styles.bulletPoint}>{t("about.features.experience")}</Text>
+      <Text style={styles.paragraph}>{t("about.mission")}</Text>
       <View style={styles.footer}>
-        <Text style={styles.footerText}>
-          {/* Built with a lot of work and love by Amir Fukman and Maor Saadia. */}
-        </Text>
         <Text
           style={{
             ...styles.footerText,
@@ -79,7 +51,7 @@ const AboutScreen = () => {
             color: isDarkMode ? Color.Brown100 : Color.Brown700,
           }}
         >
-          {new Date().getFullYear()} &copy; All Rights Reserved
+          {new Date().getFullYear()} &copy; {t("about.copyright")}
         </Text>
       </View>
     </ScrollView>
@@ -103,18 +75,22 @@ const styles = StyleSheet.create({
     fontFamily: "Merienda",
     fontSize: 14,
     textAlign: "justify",
+    writingDirection: I18nManager.isRTL ? "rtl" : "ltr",
   },
   subtitle: {
     fontFamily: "OrbitronMedium",
     fontSize: 20,
     marginVertical: 10,
     color: Color.Blue500,
+    textAlign: I18nManager.isRTL ? "right" : "left",
   },
   bulletPoint: {
     fontFamily: "Merienda",
     fontSize: 14,
     marginVertical: 5,
-    marginLeft: 20,
+    marginLeft: I18nManager.isRTL ? 0 : 20,
+    marginRight: I18nManager.isRTL ? 20 : 0,
+    textAlign: I18nManager.isRTL ? "right" : "left",
   },
   footer: {
     marginTop: 20,

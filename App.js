@@ -3,6 +3,7 @@ import * as Font from "expo-font";
 import { useCallback, useEffect, useState } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { I18nManager } from "react-native";
+import { useTranslation } from "react-i18next";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MenuProvider } from "react-native-popup-menu";
 import Toast from "react-native-toast-message";
@@ -25,8 +26,8 @@ const queryClient = new QueryClient({
 });
 
 export default function App() {
-  I18nManager.forceRTL(false);
-  I18nManager.allowRTL(false);
+  // I18nManager.forceRTL(false);
+  // I18nManager.allowRTL(false);
 
   const [appIsLoaded, setAppIsLoaded] = useState(false);
 
@@ -51,6 +52,14 @@ export default function App() {
     funFact,
     email,
   } = useUsers();
+
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    // Force RTL layout for Hebrew
+    I18nManager.forceRTL(i18n.language === "he");
+    I18nManager.allowRTL(i18n.language === "he");
+  }, []);
 
   useEffect(() => {
     const prepare = async () => {

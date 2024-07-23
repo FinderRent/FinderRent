@@ -1,0 +1,22 @@
+{
+  "about": {
+    "title": "About Our Application",
+    "welcome": "Welcome to our application, developed as part of our final project at the SCE College. Our innovative project is designed to revolutionize the way students find apartments for rent in academic areas. Our application addresses the challenges of traditional apartment search methods, replacing the cumbersome process of sifting through Facebook groups, social networks, and other outdated channels with a modern, efficient solution.",
+    "platform": "Our platform is specifically tailored for students and apartment owners near academic institutions, offering a centralized hub where students can effortlessly connect with landlords. By leveraging advanced technologies such as geographic location services and personalized preferences, our application streamlines the apartment search process, making it easier and more intuitive.",
+    "features": {
+      "title": "Key Features:",
+      "centralized": "Centralized Platform: Bringing students and landlords together in one convenient place.",
+      "location": "Geographic Location Services: Helping you find apartments based on proximity to your academic institution.",
+      "preferences": "Personalized Preferences: Matching you with properties that meet your specific needs and preferences.",
+      "interface": "User-Friendly Interface: Ensuring a smooth and enjoyable search experience.",
+      "experience": "Comfortable User Experience: Simplifying the process of finding the perfect apartment."
+    },
+    "mission": "Our mission is to create a seamless and efficient apartment search experience for students, transforming a traditionally stressful process into a hassle-free journey. Join us and discover a better way to find your next home near your academic institution.",
+    "copyright": "All Rights Reserved"
+  },
+
+  "home": "Home",
+  "profile": "Profile",
+  "chats": "Chats",
+  "settings": "Settings"
+}

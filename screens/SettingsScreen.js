@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   StyleSheet,
   SafeAreaView,
@@ -15,6 +15,10 @@ import { version as app_version } from "../package.json";
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import ThemeModal from "../modals/ThemeModal";
+import { useTranslation } from "react-i18next";
+import i18next from "../services/i18next";
+
+import ChangeLanguage from "../modals/ChangeLanguage";
 
 const SECTIONS = [
   {
@@ -56,22 +60,32 @@ const SECTIONS = [
 
 function SettingsScreen() {
   const { isDarkMode, handleTheme, theme } = useDarkMode();
+  const { t } = useTranslation();
   const navigation = useNavigation();
 
   const [showThemeModal, setShowThemeModal] = useState(false);
+  const [showLanguageModal, setShowLanguageModal] = useState(false);
   // const [language, setLanguage] = useState("English");
   // const [notifications, setNotifications] = useState(true);
 
   const [form, setForm] = useState({
-    language: "English",
+    language: i18next.language,
     notifications: true,
   });
+
+  useEffect(() => {
+    const newLang = i18next.language === "he" ? "עברית" : "English";
+    setForm((prevForm) => ({
+      ...prevForm,
+      language: newLang,
+    }));
+  }, [i18next.language]);
 
   const handlePress = (id) => {
     // switch statement to handle different ids
     switch (id) {
       case "language":
-        console.log("Language pressed");
+        setShowLanguageModal(true);
         break;
       case "about":
         navigation.navigate("AboutScreen");
@@ -176,6 +190,13 @@ function SettingsScreen() {
             showVisible={(showVisible) => setShowThemeModal(showVisible)}
             handleTheme={handleTheme}
             appTheme={theme}
+          />
+        )}
+        {showLanguageModal && (
+          <ChangeLanguage
+            showVisible={(showVisible) => setShowLanguageModal(showVisible)}
+            // handleTheme={handleTheme}
+            // appTheme={theme}
           />
         )}
       </ScrollView>
