@@ -1,10 +1,4 @@
-import {
-  StyleSheet,
-  ScrollView,
-  Platform,
-  View,
-  I18nManager,
-} from "react-native";
+import { StyleSheet, ScrollView, Platform, View } from "react-native";
 import { Text } from "react-native-paper";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { useTranslation } from "react-i18next";
@@ -16,7 +10,6 @@ const AboutScreen = () => {
   const { isDarkMode } = useDarkMode();
   const tabBarHeight = useBottomTabBarHeight();
   const { t } = useTranslation();
-  const isRTL = I18nManager.isRTL;
 
   return (
     <ScrollView
@@ -29,25 +22,38 @@ const AboutScreen = () => {
       }}
     >
       <View style={styles.line}></View>
-      <Text style={styles.title}>{t("about.title")}</Text>
+      <Text style={styles.title}>{t("aboutApp.title")}</Text>
       <View style={styles.line}></View>
 
-      <Text style={styles.paragraph}>{t("about.welcome")}</Text>
-      <Text style={styles.paragraph}>{t("about.platform")}</Text>
-      <Text style={styles.subtitle}>{t("about.features.title")}</Text>
-      <Text style={styles.bulletPoint}>{t("about.features.centralized")}</Text>
-      <Text style={styles.bulletPoint}>{t("about.features.location")}</Text>
-      <Text style={styles.bulletPoint}>{t("about.features.preferences")}</Text>
-      <Text style={styles.bulletPoint}>{t("about.features.interface")}</Text>
-      <Text style={styles.bulletPoint}>{t("about.features.experience")}</Text>
-      <Text style={styles.paragraph}>{t("about.mission")}</Text>
+      <Text style={styles.paragraph}>{t("aboutApp.welcome")}</Text>
+      <Text style={styles.paragraph}>{t("aboutApp.platform")}</Text>
+      <Text style={styles.subtitle}>{t("aboutApp.features.title")}</Text>
+      <Text style={styles.bulletPoint}>
+        • {t("aboutApp.features.centralized")}
+      </Text>
+      <Text style={styles.bulletPoint}>
+        • {t("aboutApp.features.location")}
+      </Text>
+      <Text style={styles.bulletPoint}>
+        • {t("aboutApp.features.preferences")}
+      </Text>
+      <Text style={styles.bulletPoint}>
+        • {t("aboutApp.features.interface")}
+      </Text>
+      <Text style={styles.bulletPoint}>
+        • {t("aboutApp.features.experience")}
+      </Text>
+      <Text style={styles.paragraph}>{t("aboutApp.mission")}</Text>
       <View style={styles.footer}>
+        <Text style={styles.footerText}>
+          {/* Built with a lot of work and love by Amir Fukman and Maor Saadia. */}
+        </Text>
         <Text
           style={{
             ...styles.footerText,
             marginTop: -55,
             fontFamily: "",
-            fontSize: 12,
+            fontSize: 14,
             color: isDarkMode ? Color.Brown100 : Color.Brown700,
           }}
         >
@@ -75,22 +81,18 @@ const styles = StyleSheet.create({
     fontFamily: "Merienda",
     fontSize: 14,
     textAlign: "justify",
-    writingDirection: I18nManager.isRTL ? "rtl" : "ltr",
   },
   subtitle: {
     fontFamily: "OrbitronMedium",
     fontSize: 20,
     marginVertical: 10,
     color: Color.Blue500,
-    textAlign: I18nManager.isRTL ? "right" : "left",
   },
   bulletPoint: {
     fontFamily: "Merienda",
     fontSize: 14,
     marginVertical: 5,
-    marginLeft: I18nManager.isRTL ? 0 : 20,
-    marginRight: I18nManager.isRTL ? 20 : 0,
-    textAlign: I18nManager.isRTL ? "right" : "left",
+    marginLeft: 20,
   },
   footer: {
     marginTop: 20,

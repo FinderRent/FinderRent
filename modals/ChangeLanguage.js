@@ -84,11 +84,11 @@ const styles = StyleSheet.create({
   closeButton: {
     position: "absolute",
     top: 20,
-    left: 15,
+    left: 20,
   },
   closeIcon: {
-    height: 40,
-    width: 40,
+    height: 35,
+    width: 35,
   },
   languagesList: {
     flex: 1,

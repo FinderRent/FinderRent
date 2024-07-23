@@ -19,17 +19,15 @@ SplashScreen.preventAutoHideAsync();
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      // staleTime: 60 * 1000,
       staleTime: 0,
     },
   },
 });
 
 export default function App() {
-  // I18nManager.forceRTL(false);
-  // I18nManager.allowRTL(false);
-
+  const { i18n } = useTranslation();
   const [appIsLoaded, setAppIsLoaded] = useState(false);
+  const [rtlKey, setRtlKey] = useState(0); // State to force re-render
 
   const {
     login,
@@ -53,14 +51,6 @@ export default function App() {
     email,
   } = useUsers();
 
-  const { i18n } = useTranslation();
-
-  useEffect(() => {
-    // Force RTL layout for Hebrew
-    I18nManager.forceRTL(i18n.language === "he");
-    I18nManager.allowRTL(i18n.language === "he");
-  }, []);
-
   useEffect(() => {
     const prepare = async () => {
       try {
@@ -71,7 +61,7 @@ export default function App() {
           Merienda: require("./assets/fonts/Merienda-Regular.ttf"),
         });
       } catch (error) {
-        console.log.error();
+        console.log(error);
       } finally {
         setAppIsLoaded(true);
       }
@@ -79,6 +69,24 @@ export default function App() {
 
     prepare();
   }, []);
+
+  useEffect(() => {
+    const changeLayoutDirection = async () => {
+      const isRTL = i18n.language === "he";
+      if (I18nManager.isRTL !== isRTL) {
+        I18nManager.forceRTL(isRTL);
+        I18nManager.allowRTL(isRTL);
+        RNRestart.Restart();
+        setRtlKey((prevKey) => prevKey + 1);
+      }
+
+      if (appIsLoaded) {
+        await SplashScreen.hideAsync();
+      }
+    };
+
+    changeLayoutDirection();
+  }, [i18n.language, appIsLoaded]);
 
   const onLayout = useCallback(async () => {
     if (appIsLoaded) {
@@ -91,7 +99,7 @@ export default function App() {
   }
 
   return (
-    <SafeAreaProvider onLayout={onLayout}>
+    <SafeAreaProvider key={rtlKey} onLayout={onLayout}>
       <DarkModeProvider>
         <QueryClientProvider client={queryClient}>
           <UserContext.Provider
