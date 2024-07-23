@@ -8,8 +8,11 @@ import {
   FlatList,
   Pressable,
   Image,
+  Alert,
 } from "react-native";
 import { Text } from "react-native-paper";
+import RNRestart from "react-native-restart";
+
 // import { useTranslation } from "react-i18next";
 
 import { Color } from "../constants/colors";
@@ -23,6 +26,22 @@ const ChangeLanguage = ({ showVisible }) => {
   //   const { t } = useTranslation();
 
   const changeLng = (lng) => {
+    if (lng === "he") {
+      Alert.alert(
+        "Restart Required",
+        "The app needs to restart to apply RTL layout changes. Would you like to restart now?",
+        [
+          {
+            text: "Restart",
+            onPress: () => RNRestart.Restart(),
+          },
+          {
+            text: "Later",
+            style: "cancel",
+          },
+        ]
+      );
+    }
     i18next.changeLanguage(lng);
     showVisible(false);
   };

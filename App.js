@@ -5,6 +5,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { I18nManager } from "react-native";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MenuProvider } from "react-native-popup-menu";
+import { useTranslation } from "react-i18next";
 import Toast from "react-native-toast-message";
 import FlashMessage from "react-native-flash-message";
 
@@ -12,7 +13,6 @@ import { UserContext, useUsers } from "./context/UserContext";
 import { DarkModeProvider } from "./context/DarkModeContext";
 import AuthStackScreens from "./navigation/AuthStackScreens";
 import FavoritesContextProvider from "./context/FavoritesContext";
-import { useTranslation } from "react-i18next";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -57,8 +57,11 @@ export default function App() {
   useEffect(() => {
     const changeLayoutDirection = async () => {
       const isRTL = i18n.language === "he";
-      I18nManager.forceRTL(isRTL);
-      I18nManager.allowRTL(isRTL);
+      if (I18nManager.isRTL !== isRTL) {
+        I18nManager.forceRTL(isRTL);
+        I18nManager.allowRTL(isRTL);
+        RNRestart.Restart();
+      }
 
       if (appIsLoaded) {
         await SplashScreen.hideAsync();
