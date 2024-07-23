@@ -3,32 +3,34 @@ import * as Font from "expo-font";
 import { useCallback, useEffect, useState } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { I18nManager } from "react-native";
-import { useTranslation } from "react-i18next";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MenuProvider } from "react-native-popup-menu";
 import Toast from "react-native-toast-message";
 import FlashMessage from "react-native-flash-message";
-import * as Updates from "expo-updates";
 
 import { UserContext, useUsers } from "./context/UserContext";
 import { DarkModeProvider } from "./context/DarkModeContext";
 import AuthStackScreens from "./navigation/AuthStackScreens";
 import FavoritesContextProvider from "./context/FavoritesContext";
+import { useTranslation } from "react-i18next";
 
 SplashScreen.preventAutoHideAsync();
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
+      // staleTime: 60 * 1000,
       staleTime: 0,
     },
   },
 });
 
 export default function App() {
+  // I18nManager.forceRTL(false);
+  // I18nManager.allowRTL(false);
+
   const { i18n } = useTranslation();
   const [appIsLoaded, setAppIsLoaded] = useState(false);
-  const [rtlChanged, setRtlChanged] = useState(false); // State to track RTL changes
 
   const {
     login,
@@ -53,6 +55,20 @@ export default function App() {
   } = useUsers();
 
   useEffect(() => {
+    const changeLayoutDirection = async () => {
+      const isRTL = i18n.language === "he";
+      I18nManager.forceRTL(isRTL);
+      I18nManager.allowRTL(isRTL);
+
+      if (appIsLoaded) {
+        await SplashScreen.hideAsync();
+      }
+    };
+
+    changeLayoutDirection();
+  }, [i18n.language, appIsLoaded]);
+
+  useEffect(() => {
     const prepare = async () => {
       try {
         await Font.loadAsync({
@@ -62,7 +78,7 @@ export default function App() {
           Merienda: require("./assets/fonts/Merienda-Regular.ttf"),
         });
       } catch (error) {
-        console.log(error);
+        console.log.error();
       } finally {
         setAppIsLoaded(true);
       }
@@ -71,39 +87,13 @@ export default function App() {
     prepare();
   }, []);
 
-  useEffect(() => {
-    const changeLayoutDirection = async () => {
-      const isRTL = i18n.language === "he";
-      if (I18nManager.isRTL !== isRTL) {
-        I18nManager.forceRTL(isRTL);
-        I18nManager.allowRTL(isRTL);
-        setRtlChanged(true);
-      }
-    };
-
-    changeLayoutDirection();
-  }, [i18n.language]);
-
-  useEffect(() => {
-    const restartApp = async () => {
-      if (rtlChanged) {
-        // Wait for a moment to ensure RTL settings are applied before restarting
-        setTimeout(async () => {
-          await Updates.reloadAsync();
-        }, 500);
-      }
-    };
-
-    restartApp();
-  }, [rtlChanged]);
-
   const onLayout = useCallback(async () => {
-    if (appIsLoaded && !rtlChanged) {
+    if (appIsLoaded) {
       await SplashScreen.hideAsync();
     }
-  }, [appIsLoaded, rtlChanged]);
+  }, [appIsLoaded]);
 
-  if (!appIsLoaded || rtlChanged) {
+  if (!appIsLoaded) {
     return null;
   }
 
