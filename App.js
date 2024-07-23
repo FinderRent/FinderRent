@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MenuProvider } from "react-native-popup-menu";
 import Toast from "react-native-toast-message";
 import FlashMessage from "react-native-flash-message";
+import * as Updates from "expo-updates";
 
 import { UserContext, useUsers } from "./context/UserContext";
 import { DarkModeProvider } from "./context/DarkModeContext";
@@ -27,7 +28,7 @@ const queryClient = new QueryClient({
 export default function App() {
   const { i18n } = useTranslation();
   const [appIsLoaded, setAppIsLoaded] = useState(false);
-  const [rtlKey, setRtlKey] = useState(0); // State to force re-render
+  const [rtlChanged, setRtlChanged] = useState(false); // State to track RTL changes
 
   const {
     login,
@@ -76,30 +77,38 @@ export default function App() {
       if (I18nManager.isRTL !== isRTL) {
         I18nManager.forceRTL(isRTL);
         I18nManager.allowRTL(isRTL);
-        RNRestart.Restart();
-        setRtlKey((prevKey) => prevKey + 1);
-      }
-
-      if (appIsLoaded) {
-        await SplashScreen.hideAsync();
+        setRtlChanged(true);
       }
     };
 
     changeLayoutDirection();
-  }, [i18n.language, appIsLoaded]);
+  }, [i18n.language]);
+
+  useEffect(() => {
+    const restartApp = async () => {
+      if (rtlChanged) {
+        // Wait for a moment to ensure RTL settings are applied before restarting
+        setTimeout(async () => {
+          await Updates.reloadAsync();
+        }, 500);
+      }
+    };
+
+    restartApp();
+  }, [rtlChanged]);
 
   const onLayout = useCallback(async () => {
-    if (appIsLoaded) {
+    if (appIsLoaded && !rtlChanged) {
       await SplashScreen.hideAsync();
     }
-  }, [appIsLoaded]);
+  }, [appIsLoaded, rtlChanged]);
 
-  if (!appIsLoaded) {
+  if (!appIsLoaded || rtlChanged) {
     return null;
   }
 
   return (
-    <SafeAreaProvider key={rtlKey} onLayout={onLayout}>
+    <SafeAreaProvider onLayout={onLayout}>
       <DarkModeProvider>
         <QueryClientProvider client={queryClient}>
           <UserContext.Provider
