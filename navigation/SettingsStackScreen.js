@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useTranslation } from "react-i18next";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
@@ -10,6 +11,7 @@ const SettingsStack = createNativeStackNavigator();
 
 function SettingsStackScreen() {
   const { isDarkMode } = useDarkMode();
+  const { t } = useTranslation();
 
   return (
     <SettingsStack.Navigator
@@ -36,7 +38,7 @@ function SettingsStackScreen() {
               ? Color.buttomSheetDarkTheme
               : Color.defaultTheme,
           },
-          title: "ContactUs",
+          title: t("ContactUs"),
           headerTitleStyle: {
             fontFamily: "DancingScript",
             fontSize: 32,

@@ -10,6 +10,7 @@ import { Button, Text } from "react-native-paper";
 import { useMutation } from "@tanstack/react-query";
 import { useIsFocused } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
+import { useTranslation } from "react-i18next";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
@@ -19,6 +20,7 @@ import contactUsEmail from "../api/emails/contactUsEmail";
 import ErrorMessage from "../components/ui/ErrorMessage";
 
 function ContactUsScreen({ navigation }) {
+  const { t } = useTranslation();
   const { isDarkMode } = useDarkMode();
   const isFocused = useIsFocused();
 
@@ -40,7 +42,7 @@ function ContactUsScreen({ navigation }) {
     onSuccess: () => {
       Toast.show({
         type: "success",
-        text1: "Your message has been sent successfully",
+        text1: t("contactUsPage.successMessage"),
       });
 
       setFirstName("");
@@ -81,7 +83,7 @@ function ContactUsScreen({ navigation }) {
                     : styles.subTitle
                 }
               >
-                Reach Us Out for Support Inquiries or Feedback
+                {t("contactUsPage.title")}
               </Text>
               <View style={styles.line} />
             </View>
@@ -90,14 +92,14 @@ function ContactUsScreen({ navigation }) {
               <Input
                 style={{ flex: 1, marginRight: 10 }}
                 value={firstName}
-                label="First Name"
+                label={t("contactUsPage.firstName")}
                 mode="outlined"
                 onValueChange={(firstName) => setFirstName(firstName)}
               />
               <Input
                 style={{ flex: 1, marginLeft: 10 }}
                 value={lastName}
-                label="Last Name"
+                label={t("contactUsPage.lastName")}
                 mode="outlined"
                 onValueChange={(lastName) => setLastName(lastName)}
               />
@@ -105,7 +107,7 @@ function ContactUsScreen({ navigation }) {
             <Input
               style={styles.textInput}
               value={email}
-              label="Email"
+              label={t("contactUsPage.email")}
               keyboardType="email-address"
               mode="outlined"
               onValueChange={(email) => setEmail(email)}
@@ -113,14 +115,14 @@ function ContactUsScreen({ navigation }) {
             <Input
               style={styles.textInput}
               value={subject}
-              label="Subject"
+              label={t("contactUsPage.subject")}
               mode="outlined"
               onValueChange={(subject) => setSubject(subject)}
             />
             <Input
               style={styles.textInput}
               value={message}
-              label="Message"
+              label={t("contactUsPage.message")}
               multiline
               numberOfLines={7}
               onChangeText={(text) => setMessage(text)}
@@ -140,7 +142,7 @@ function ContactUsScreen({ navigation }) {
                 onPress={handleContactUsEmail}
                 loading={isPending}
               >
-                {!isPending && "Send Message"}
+                {!isPending && t("contactUsPage.sendMessage")}
               </Button>
             </Spacer>
           </View>

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
@@ -9,6 +10,7 @@ import { useUsers } from "../context/UserContext";
 import SignInModal from "../modals/SignInModal";
 
 function LoginScreen({ navigation, route }) {
+  const { t } = useTranslation();
   const { isDarkMode } = useDarkMode();
   const { userData } = useUsers();
 
@@ -18,10 +20,10 @@ function LoginScreen({ navigation, route }) {
   let screenName = null;
 
   if (headerTitle === "ProfileScreen") {
-    screenName = "profile";
+    screenName = t("profile");
   }
   if (headerTitle === "ChatListScreen") {
-    screenName = "chats";
+    screenName = t("chats");
   }
 
   useEffect(() => {
@@ -40,7 +42,7 @@ function LoginScreen({ navigation, route }) {
         color={isDarkMode ? Color.defaultTheme : Color.buttomSheetDarkTheme}
         style={styles.icon}
       />
-      <Text style={styles.text}>Sign in to see the {screenName} screen.</Text>
+      <Text style={styles.text}>{t("loginPrompt", { screenName })}</Text>
 
       <Button
         style={styles.button}
@@ -51,7 +53,7 @@ function LoginScreen({ navigation, route }) {
         mode="elevated"
         onPress={() => setShowSignInModal(true)}
       >
-        SignIn
+        {t("signInButton")}
       </Button>
 
       {showSignInModal && (

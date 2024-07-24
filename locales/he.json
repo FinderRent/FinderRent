@@ -35,5 +35,113 @@
   "choose_theme": "בחר ערכת נושא",
   "system_default": "ברירת מחדל מערכת",
   "bright": "בהיר",
-  "dark": "כהה"
+  "dark": "כהה",
+
+  "login": "התחברות",
+  "email": "אימייל",
+  "password": "סיסמה",
+  "forgot_password": "שכחת סיסמה?",
+  "no_account_register": "אין לך חשבון? הירשם",
+  "login_button": "התחברות",
+  "logged_in_successfully": "התחברת בהצלחה",
+
+  "forgotPassword": {
+    "enterEmail": "נא להזין כתובת אימייל לקבלת קוד לאיפוס הסיסמה",
+    "email": "אימייל",
+    "send": "שלח",
+    "toast": {
+      "success": "קוד לאיפוס סיסמה נשלח לאימייל"
+    }
+  },
+  "signUp": {
+    "header": "הירשם",
+    "firstName": "שם פרטי",
+    "lastName": "שם משפחה",
+    "age": "גיל",
+    "gender": "מגדר",
+    "male": "זכר",
+    "female": "נקבה",
+    "role": "תפקיד",
+    "landlord": "בעל דירה",
+    "student": "סטודנט",
+    "academicInstitution": "מוסד אקדמי",
+    "searchAcademic": "חפש מוסד אקדמי",
+    "department": "מחלקה",
+    "yearbook": "שנה",
+    "preparing": "מכינה",
+    "year1": "שנה 1",
+    "year2": "שנה 2",
+    "year3": "שנה 3",
+    "year4": "שנה 4",
+    "masterDegree": "תואר שני",
+    "email": "אימייל",
+    "password": "סיסמה",
+    "passwordConfirm": "אשר סיסמה",
+    "passwordError": "הסיסמה חייבת להיות באורך של לפחות 8 תווים",
+    "signUp": "הרשם",
+    "back": "חזור",
+    "toast": {
+      "success": "הרשמה בוצעה בהצלחה!"
+    }
+  },
+  "signInPrompt": "התחבר כדי לראות את המיקום שלך",
+  "signInButton": "התחבר",
+
+  "loginPrompt": "התחבר כדי לראות את מסך ה{{screenName}}.",
+
+  "contactUsPage": {
+    "title": "צרו קשר לבקשות תמיכה או משוב",
+    "firstName": "שם פרטי",
+    "lastName": "שם משפחה",
+    "email": "אימייל",
+    "subject": "נושא",
+    "message": "הודעה",
+    "successMessage": "ההודעה שלך נשלחה בהצלחה",
+    "sendMessage": "שלח הודעה"
+  },
+
+  "categories": {
+    "allCategories": "כל הקטגוריות",
+    "landHouse": "בית קרקע",
+    "housingUnit": "יחידת דיור",
+    "tower": "מגדל",
+    "penthouse": "פנטהאוז"
+  },
+
+  "filterScreen": {
+    "sortBy": "מיין לפי",
+    "distance": "מרחק",
+    "apartmentType": "סוג דירה",
+    "clearAll": "נקה הכל",
+    "apply": "החל",
+    "selectNumberOfBedrooms": "בחר מספר חדרי שינה",
+    "selectFloorNumber": "בחר מספר קומה",
+    "selectHowManyRoommates": "בחר כמה שותפים",
+    "distanceInKm": "מרחק בק\"מ",
+    "selectDistanceFromAcademy": "בחר מרחק מהאקדמיה",
+    "rooms": "חדרים",
+    "floor": "קומה",
+    "roommates": "שותפים",
+    "lowToHigh": "מנמוך לגבוה",
+    "highToLow": "מגבוה לנמוך",
+    "newToOld": "חדש לישן",
+    "oldToNew": "ישן לחדש",
+    "remove": "הסר",
+    "add": "הוסף",
+    "filters": "מסננים",
+    "apartmentFilters": "מסנני דירה",
+    "selectNumber": "בחר מספר",
+    "distanceFromAcademy": "מרחק מהאקדמיה",
+    "km": "ק\"מ"
+  },
+
+  "All Categories": "כל הקטגוריות",
+  "Land House": "בית קרקע",
+  "Houseing Unit": "יחידת דיור",
+  "Tower": "מגדל",
+  "Penthouse": "פנטהאוז",
+  "lowToHigh": "מנמוך לגבוה",
+  "highToLow": "מגבוה לנמוך",
+  "newToOld": "חדש לישן",
+  "oldToNew": "ישן לחדש"
 }

@@ -70,11 +70,7 @@ const ChangeLanguage = ({ showVisible }) => {
               keyExtractor={(item) => item}
               renderItem={({ item }) => (
                 <TouchableOpacity
-                  style={
-                    isDarkMode
-                      ? [styles.languageButtonWhite]
-                      : [styles.languageButtonDark]
-                  }
+                  style={styles.languageButton}
                   onPress={() => changeLng(item)}
                 >
                   <Text style={styles.lngName}>
@@ -149,14 +145,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "100%",
   },
-  languageButtonDark: {
+  languageButton: {
     padding: 10,
-    borderBottomColor: Color.darkTheme,
-    borderBottomWidth: 1,
-  },
-  languageButtonWhite: {
-    padding: 10,
-    borderBottomColor: Color.defaultTheme,
+    borderBottomColor: Color.gray,
     borderBottomWidth: 1,
   },
   selectedLanguageButtonWhite: {
@@ -189,18 +180,8 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
   buttonClose: {
     backgroundColor: Color.Blue300,
-  },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
   },
   modalText: {
     textAlign: "center",

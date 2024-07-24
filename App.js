@@ -28,9 +28,6 @@ const queryClient = new QueryClient({
 });
 
 export default function App() {
-  // I18nManager.forceRTL(false);
-  // I18nManager.allowRTL(false);
-
   const { i18n } = useTranslation();
   const [appIsLoaded, setAppIsLoaded] = useState(false);
 
@@ -59,10 +56,8 @@ export default function App() {
   useEffect(() => {
     const changeLayoutDirection = async () => {
       const isRTL = i18n.language === "he";
-      if (I18nManager.isRTL !== isRTL) {
-        I18nManager.forceRTL(isRTL);
-        I18nManager.allowRTL(isRTL);
-      }
+      I18nManager.forceRTL(isRTL);
+      I18nManager.allowRTL(isRTL);
 
       if (appIsLoaded) {
         await SplashScreen.hideAsync();

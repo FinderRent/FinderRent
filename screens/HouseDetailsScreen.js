@@ -298,8 +298,25 @@ const HouseDetailsScreen = ({ navigation, route }) => {
               <RoommatesInfo key={tenant} tenant={tenant} />
             ))
           ) : (
-            <TouchableWithoutFeedback style={styles.customView}>
-              <Text style={styles.customText}>Login To View Tenants</Text>
+            <TouchableWithoutFeedback
+              style={
+                isDarkMode
+                  ? {
+                      ...styles.customView,
+                      backgroundColor: Color.defaultTheme,
+                    }
+                  : styles.customView
+              }
+            >
+              <Text
+                style={
+                  isDarkMode
+                    ? { ...styles.customText, color: Color.darkTheme }
+                    : styles.customText
+                }
+              >
+                Login To View Tenants
+              </Text>
             </TouchableWithoutFeedback>
           )}
           <View style={{ height: tabBarHeight - 20 }}></View>

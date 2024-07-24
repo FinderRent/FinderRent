@@ -13,6 +13,7 @@ import { Button, RadioButton, Text } from "react-native-paper";
 import { useMutation } from "@tanstack/react-query";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-toast-message";
+import { useTranslation } from "react-i18next";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
@@ -29,6 +30,7 @@ import ErrorMessage from "../components/ui/ErrorMessage";
 function SignUpScreen({ navigation }) {
   const { isDarkMode } = useDarkMode();
   const auth = useContext(UserContext);
+  const { t } = useTranslation();
 
   // State variables for form inputs
   const [pushToken, setPushToken] = useState("");
@@ -51,14 +53,15 @@ function SignUpScreen({ navigation }) {
     value: item.id,
     coordinates: item.coordinates,
   }));
+
   // List of year options for DropDown component
   const listYear = [
-    { label: "Preparing", value: "Preparing" },
-    { label: "Year 1", value: "Year 1" },
-    { label: "Year 2", value: "Year 2" },
-    { label: "Year 3", value: "Year 3" },
-    { label: "Year 4", value: "Year 4" },
-    { label: "Master's degree", value: "Master's degree" },
+    { label: t("signUp.preparing"), value: "Preparing" },
+    { label: t("signUp.year1"), value: "Year 1" },
+    { label: t("signUp.year2"), value: "Year 2" },
+    { label: t("signUp.year3"), value: "Year 3" },
+    { label: t("signUp.year4"), value: "Year 4" },
+    { label: t("signUp.masterDegree"), value: "Master's degree" },
   ];
 
   const userData = {
@@ -77,7 +80,7 @@ function SignUpScreen({ navigation }) {
     passwordConfirm,
   };
 
-  // store the expoPustToken in database to send notification
+  // Store the expoPushToken in database to send notifications
   useEffect(() => {
     async function storePushToken() {
       if (!Device.isDevice) {
@@ -102,7 +105,6 @@ function SignUpScreen({ navigation }) {
   useEffect(() => {
     const index = listAcademic.findIndex((item) => item.value === academic);
     if (index !== -1) {
-      // console.log("index: ", listAcademic[index].coordinates);
       setCoordinates(listAcademic[index].coordinates);
     }
   }, [academic]);
@@ -114,7 +116,7 @@ function SignUpScreen({ navigation }) {
       auth.login(user.data.user, user.token);
       Toast.show({
         type: "success",
-        text1: "Account Successfully Created",
+        text1: t("signUp.toast.success"),
       });
       if (user.data.user.userType === "student") {
         navigation.navigate("HomeScreen");
@@ -149,7 +151,7 @@ function SignUpScreen({ navigation }) {
           {/* Header text */}
           <View style={styles.container}>
             <Text variant="displaySmall" style={styles.text}>
-              ── SignUp ──
+              ── {t("signUp.header")} ──
             </Text>
           </View>
 
@@ -157,7 +159,7 @@ function SignUpScreen({ navigation }) {
           <View style={styles.inputsRow}>
             <Input
               style={styles.textInput}
-              label="First Name"
+              label={t("signUp.firstName")}
               mode="outlined"
               onValueChange={(selectedFirstName) =>
                 setFirstName(selectedFirstName)
@@ -166,7 +168,7 @@ function SignUpScreen({ navigation }) {
 
             <Input
               style={styles.textInput}
-              label="Last Name"
+              label={t("signUp.lastName")}
               mode="outlined"
               onValueChange={(selectedLastName) =>
                 setLastName(selectedLastName)
@@ -182,7 +184,7 @@ function SignUpScreen({ navigation }) {
           >
             <Input
               style={styles.textInput}
-              label="Age"
+              label={t("signUp.age")}
               mode="outlined"
               keyboardType="decimal-pad"
               maxLength={2}
@@ -201,25 +203,25 @@ function SignUpScreen({ navigation }) {
                 style={{ ...styles.title, marginTop: 5 }}
                 variant="titleMedium"
               >
-                Gender:
+                {t("signUp.gender")}:
               </Text>
               <RadioButton
                 color={Color.Blue500}
                 status={gender === "Male" ? "checked" : "unchecked"}
                 onPress={() => setGender("Male")}
               />
-              <Text style={styles.textRadio}>Male</Text>
+              <Text style={styles.textRadio}>{t("signUp.male")}</Text>
               <RadioButton
                 color={Color.Blue500}
                 status={gender === "Female" ? "checked" : "unchecked"}
                 onPress={() => setGender("Female")}
               />
-              <Text style={styles.textRadio}>Female</Text>
+              <Text style={styles.textRadio}>{t("signUp.female")}</Text>
             </View>
           </View>
 
           <Text style={styles.title} variant="titleMedium">
-            Role:
+            {t("signUp.role")}:
           </Text>
           <View style={styles.radioButtom}>
             <RadioButton
@@ -227,7 +229,7 @@ function SignUpScreen({ navigation }) {
               status={userType === "landlord" ? "checked" : "unchecked"}
               onPress={() => setUserType("landlord")}
             />
-            <Text style={styles.textRadio}>Landlord</Text>
+            <Text style={styles.textRadio}>{t("signUp.landlord")}</Text>
           </View>
           <View style={styles.radioButtom}>
             <RadioButton
@@ -235,23 +237,23 @@ function SignUpScreen({ navigation }) {
               status={userType === "student" ? "checked" : "unchecked"}
               onPress={() => setUserType("student")}
             />
-            <Text style={styles.textRadio}>Student</Text>
+            <Text style={styles.textRadio}>{t("signUp.student")}</Text>
           </View>
 
           {/* DropDown component for selecting academic institution */}
-          {userType === "student" && ( //if the user is student than the dropdown is visible
+          {userType === "student" && ( // If the user is a student, then the dropdown is visible
             <View>
               <View>
                 <DropDown
                   list={listAcademic}
-                  label="Academic Institution"
+                  label={t("signUp.academicInstitution")}
                   placeholder={academic}
                   listMode="MODAL"
                   searchable={true}
                   onValueChange={(selectedAcademic) =>
                     setAcademic(selectedAcademic)
                   }
-                  searchPlaceholder="Search For Academic Institution"
+                  searchPlaceholder={t("signUp.searchAcademic")}
                 />
               </View>
 
@@ -260,7 +262,7 @@ function SignUpScreen({ navigation }) {
                 <View style={styles.inputsRow}>
                   <Input
                     style={styles.textInput}
-                    label="Department"
+                    label={t("signUp.department")}
                     value={department}
                     mode="outlined"
                     onValueChange={(selectedDepartment) =>
@@ -269,7 +271,7 @@ function SignUpScreen({ navigation }) {
                   />
                   <DropDown
                     list={listYear}
-                    label="Yearbook"
+                    label={t("signUp.yearbook")}
                     placeholder={yearbook}
                     searchable={false}
                     listMode="SCROLLVIEW"
@@ -285,7 +287,7 @@ function SignUpScreen({ navigation }) {
           {/* Input fields for email and passwords */}
           <View style={styles.textInput}>
             <Input
-              label="Email"
+              label={t("signUp.email")}
               mode="outlined"
               keyboardType="email-address"
               onValueChange={(selectedEmail) => setEmail(selectedEmail)}
@@ -293,10 +295,10 @@ function SignUpScreen({ navigation }) {
 
             <PasswordInput
               mode="outlined"
-              label="Password"
+              label={t("signUp.password")}
               onValueChange={(password) => setPassword(password)}
             />
-            {password.length > 0 && password.length < 6 && (
+            {password.length > 0 && password.length < 8 && (
               <Text
                 style={
                   isDarkMode
@@ -304,13 +306,13 @@ function SignUpScreen({ navigation }) {
                     : { color: Color.errorText, paddingLeft: 5 }
                 }
               >
-                Password must contain at least 6 characters
+                {t("signUp.passwordError")}
               </Text>
             )}
 
             <PasswordInput
               mode="outlined"
-              label="Password Confirm"
+              label={t("signUp.passwordConfirm")}
               onValueChange={(passwordConfirm) =>
                 setPasswordConfirm(passwordConfirm)
               }
@@ -326,10 +328,13 @@ function SignUpScreen({ navigation }) {
               onPress={handleSignUp}
               loading={isPending}
             >
-              {!isPending && "SignUp   "}
+              {!isPending && t("signUp.signUp")}
             </Button>
             <Spacer>
-              <NavLink text="Back   " style={{ marginTop: -5, fontSize: 14 }} />
+              <NavLink
+                text={t("signUp.back")}
+                style={{ marginTop: -5, fontSize: 14 }}
+              />
             </Spacer>
           </View>
         </ScrollView>

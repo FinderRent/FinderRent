@@ -26,7 +26,7 @@
   "theme": "Theme",
   "allowNotifications": "Allow Notifications",
   "about": "About",
-  "contactUs": "Contact Us",
+  "Page": "Contact Us",
   "version": "version",
 
   "language_change_message": "The app needs to restart to apply language changes.",
@@ -36,5 +36,113 @@
   "choose_theme": "Choose Theme",
   "system_default": "System Default",
   "bright": "Bright",
-  "dark": "Dark"
+  "dark": "Dark",
+
+  "login": "Login",
+  "email": "Email",
+  "password": "Password",
+  "forgot_password": "Forgot Password?",
+  "no_account_register": "Doesn't have an account? Register",
+  "login_button": "Login",
+  "logged_in_successfully": "Logged In Successfully",
+
+  "forgotPassword": {
+    "enterEmail": "Please enter an email to receive a password reset code",
+    "email": "Email",
+    "send": "Send",
+    "toast": {
+      "success": "Password reset code sent to email"
+    }
+  },
+  "signUp": {
+    "header": "Sign Up",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "age": "Age",
+    "gender": "Gender",
+    "male": "Male",
+    "female": "Female",
+    "role": "Role",
+    "landlord": "Landlord",
+    "student": "Student",
+    "academicInstitution": "Academic Institution",
+    "searchAcademic": "Search Academic Institution",
+    "department": "Department",
+    "yearbook": "Yearbook",
+    "preparing": "Preparing",
+    "year1": "Year 1",
+    "year2": "Year 2",
+    "year3": "Year 3",
+    "year4": "Year 4",
+    "masterDegree": "Master's degree",
+    "email": "Email",
+    "password": "Password",
+    "passwordConfirm": "Confirm Password",
+    "passwordError": "Password must be at least 8 characters long",
+    "signUp": "Sign Up",
+    "back": "Back",
+    "toast": {
+      "success": "Successfully signed up!"
+    }
+  },
+
+  "signInPrompt": "Sign in to see your location",
+  "signInButton": "Sign In",
+  "loginPrompt": "Sign in to see the {{screenName}} screen.",
+
+  "contactUsPage": {
+    "title": "Reach Us Out for Support Inquiries or Feedback",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "subject": "Subject",
+    "message": "Message",
+    "successMessage": "Your message has been sent successfully",
+    "sendMessage": "Send Message"
+  },
+
+  "categories": {
+    "allCategories": "All Categories",
+    "landHouse": "Land House",
+    "housingUnit": "Housing Unit",
+    "tower": "Tower",
+    "penthouse": "Penthouse"
+  },
+
+  "filterScreen": {
+    "sortBy": "Sort By",
+    "distance": "Distance",
+    "apartmentType": "Apartment Type",
+    "clearAll": "Clear All",
+    "apply": "Apply",
+    "selectNumberOfBedrooms": "Select number of bedrooms",
+    "selectFloorNumber": "Select floor number",
+    "selectHowManyRoommates": "Select how many roommates",
+    "distanceInKm": "Distance In Km",
+    "selectDistanceFromAcademy": "Select distance from academy",
+    "rooms": "Rooms",
+    "floor": "Floor",
+    "roommates": "Roommates",
+    "lowToHigh": "Low to High",
+    "highToLow": "High to Low",
+    "newToOld": "New to Old",
+    "oldToNew": "Old to New",
+    "remove": "Remove",
+    "add": "Add",
+    "filters": "Filters",
+    "apartmentFilters": "Apartment Filters",
+    "selectNumber": "Select Numbers",
+    "distanceFromAcademy": "Distance From Academy",
+    "km": "km"
+  },
+
+  "All Categories": "All Categories",
+  "Land House": "Land House",
+  "Houseing Unit": "Houseing Unit",
+  "Tower": "Tower",
+  "Penthouse": "Penthouse",
+  "lowToHigh": "Low to High",
+  "highToLow": "High to Low",
+  "newToOld": "New to Old",
+  "oldToNew": "Old to New"
 }
