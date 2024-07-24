@@ -1,15 +1,9 @@
 import axios from "axios";
 
-async function fetchAllApartment(apartmentType = null) {
+async function fetchAllApartment() {
   try {
-    const params = {};
-    if (apartmentType) {
-      params.apartmentType = apartmentType;
-    }
-
     const response = await axios.get(
-      `https://finder-rent-backend.vercel.app/api/v1/apartments`,
-      { params }
+      `https://finder-rent-backend.vercel.app/api/v1/apartments`
     );
 
     const responseData = response.data;
@@ -20,7 +14,10 @@ async function fetchAllApartment(apartmentType = null) {
 
     return responseData;
   } catch (err) {
-    throw new Error(err);
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    }
+    throw new Error(err.message);
   }
 }
 
