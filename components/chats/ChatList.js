@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import {
+  Dimensions,
   ImageBackground,
+  Platform,
   StyleSheet,
   TouchableNativeFeedback,
   View,
@@ -14,6 +16,8 @@ import { Color } from "../../constants/colors";
 import { useDarkMode } from "../../context/DarkModeContext";
 import ErrorMessage from "../ui/ErrorMessage";
 import fetchChats from "../../api/chats/fetchChats";
+
+const { width } = Dimensions.get("window");
 
 function ChatList({ ouid, chatId, lastMessage, time, searchUser, deleteChat }) {
   const { isDarkMode } = useDarkMode();
@@ -138,7 +142,7 @@ const styles = StyleSheet.create({
     color: Color.Brown500,
   },
   type: {
-    left: 245,
+    left: width < 370 ? "280%" : "330%",
     position: "absolute",
   },
   checkmarkIcon: {

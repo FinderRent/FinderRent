@@ -1,4 +1,4 @@
-export const academicList = [
+export const academicListHebrew = [
   {
     id: "אוניברסיטת אריאל בשומרון",
     name: "אוניברסיטת אריאל בשומרון",

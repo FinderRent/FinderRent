@@ -1,10 +1,12 @@
 import { View, StyleSheet, ImageBackground } from "react-native";
 import { Text } from "react-native-paper";
+import { useTranslation } from "react-i18next";
 
 import { Color } from "../constants/colors";
 import { useUsers } from "../context/UserContext";
 
 const ProfileLocation = () => {
+  const { t } = useTranslation();
   const { userData } = useUsers();
   let academic = userData.academic;
 
@@ -21,7 +23,7 @@ const ProfileLocation = () => {
           }}
         />
         <View>
-          <Text style={styles.location}>Location</Text>
+          <Text style={styles.location}>{t("location")}</Text>
           <Text style={styles.locationName}>
             {academic !== "undefined" ? academic : ""}
           </Text>

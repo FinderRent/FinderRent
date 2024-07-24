@@ -144,5 +144,62 @@
   "lowToHigh": "Low to High",
   "highToLow": "High to Low",
   "newToOld": "New to Old",
-  "oldToNew": "Old to New"
+  "oldToNew": "Old to New",
+
+  "Logged Out Successfully": "Logged Out Successfully",
+  "Profile": "Profile",
+  "Student": "Student",
+  "Not available": "Not available",
+  "Personal Info": "Personal Info",
+  "My Hobbies": "My Hobbies",
+  "Add your hobbies": "Add your hobbies",
+  "Fun Fact": "Fun Fact",
+  "Empty": "Empty",
+  "Other": "Other",
+  "Favorites": "Favorites",
+  "Security": "Security",
+  "Logout": "Logout",
+
+  "update_picture": "Update Picture",
+  "first_name": "First Name",
+  "last_name": "Last Name",
+  "age": "Age",
+  "phone": "Phone",
+  "academic_institution": "Search For Academic Institution",
+  "department": "Department",
+  "yearbook": "Yearbook",
+  "hobbies": "What are your hobbies?",
+  "fun_fact": "Tell us a fun fact...",
+  "profile_success": "Profile successfully updated!",
+  "update": "Update",
+  "back": "Back",
+  "choose_profile_picture": "Choose Your Profile Picture",
+  "delete_picture": "Delete Picture",
+
+  "chooseFromGallery": "Choose From Gallery",
+  "takePicture": "Take Picture",
+
+  "location": "Location",
+
+  "HouseList": {
+    "noResults": {
+      "noApartments": "There's No {{category}} Apartments.",
+      "noApartmentsWithDistance": "No {{category}} apartments within {{distance}}km from the academy."
+    },
+    "header": "Apartments Within {{distance}}Km From Academy",
+    "mapButton": "Map"
+  },
+
+  "houseDetails": {
+    "city": "City",
+    "street": "Street",
+    "distance": "{{distance}} Km Away From {{academic}}",
+    "about": "About",
+    "currentTenants": "Current Tenants",
+    "loginToViewTenants": "Login To View Tenants",
+    "monthPerson": "Month / Person",
+    "interested": "Interested"
+  },
+
+  "noResultsText": "No Chats To Display."
 }

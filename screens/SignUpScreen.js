@@ -11,14 +11,15 @@ import {
 } from "react-native";
 import { Button, RadioButton, Text } from "react-native-paper";
 import { useMutation } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-toast-message";
-import { useTranslation } from "react-i18next";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { UserContext } from "../context/UserContext";
-import { academicList } from "../data/academicEnglish";
+import { academicListEnglish } from "../data/academicEnglish";
+import { academicListHebrew } from "../data/academicHebrew";
 import Input from "../components/inputs/Input";
 import PasswordInput from "../components/inputs/PasswordInput";
 import DropDown from "../components/inputs/DropDown";
@@ -28,11 +29,12 @@ import signUp from "../api/authentication/signUp";
 import ErrorMessage from "../components/ui/ErrorMessage";
 
 function SignUpScreen({ navigation }) {
+  const { t, i18n } = useTranslation();
   const { isDarkMode } = useDarkMode();
   const auth = useContext(UserContext);
-  const { t } = useTranslation();
 
   // State variables for form inputs
+  let listAcademic = null;
   const [pushToken, setPushToken] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -48,20 +50,31 @@ function SignUpScreen({ navigation }) {
   const [passwordConfirm, setPasswordConfirm] = useState("");
 
   // Mapping academic list for DropDown component
-  const listAcademic = academicList.map((item) => ({
-    label: item.name,
-    value: item.id,
-    coordinates: item.coordinates,
-  }));
+  switch (i18n.language) {
+    case "en":
+      listAcademic = academicListEnglish.map((item) => ({
+        label: item.name,
+        value: item.id,
+        coordinates: item.coordinates,
+      }));
+      break;
+    case "he":
+      listAcademic = academicListHebrew.map((item) => ({
+        label: item.name,
+        value: item.id,
+        coordinates: item.coordinates,
+      }));
+      break;
+  }
 
   // List of year options for DropDown component
   const listYear = [
-    { label: t("signUp.preparing"), value: "Preparing" },
-    { label: t("signUp.year1"), value: "Year 1" },
-    { label: t("signUp.year2"), value: "Year 2" },
-    { label: t("signUp.year3"), value: "Year 3" },
-    { label: t("signUp.year4"), value: "Year 4" },
-    { label: t("signUp.masterDegree"), value: "Master's degree" },
+    { label: t("signUp.preparing"), value: t("signUp.preparing") },
+    { label: t("signUp.year1"), value: t("signUp.year1") },
+    { label: t("signUp.year2"), value: t("signUp.year2") },
+    { label: t("signUp.year3"), value: t("signUp.year3") },
+    { label: t("signUp.year4"), value: t("signUp.year4") },
+    { label: t("signUp.masterDegree"), value: t("signUp.masterDegree") },
   ];
 
   const userData = {

@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react";
 import { View, SafeAreaView, StyleSheet, ImageBackground } from "react-native";
 import { Title, Text, TouchableRipple } from "react-native-paper";
 import { useIsFocused } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Toast from "react-native-toast-message";
@@ -10,6 +11,7 @@ import { Color } from "../constants/colors";
 import { UserContext, useUsers } from "../context/UserContext";
 
 const ProfileScreen = ({ navigation }) => {
+  const { t } = useTranslation();
   const auth = useContext(UserContext);
 
   const { userData } = useUsers();
@@ -30,7 +32,7 @@ const ProfileScreen = ({ navigation }) => {
       auth.logout();
       Toast.show({
         type: "success",
-        text1: "Logged Out Successfully",
+        text1: t("Logged Out Successfully"),
       });
       navigation.navigate("HomeScreen");
     } catch (err) {
@@ -62,7 +64,9 @@ const ProfileScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.info}>
-        <Text style={styles.infoTitle}>{userType} Profile</Text>
+        <Text style={styles.infoTitle}>
+          {t(userType)} {t("Profile")}
+        </Text>
       </View>
 
       {userData.userType === "student" ? (
@@ -96,7 +100,7 @@ const ProfileScreen = ({ navigation }) => {
           <View style={styles.row}>
             <Icon name="phone-outline" color={Color.icon} size={20} />
             <Text style={styles.text}>
-              {userData.phone ? userData.phone : "Not available"}
+              {userData.phone ? userData.phone : t("Not available")}
             </Text>
           </View>
 
@@ -110,22 +114,23 @@ const ProfileScreen = ({ navigation }) => {
       {userData.userType === "student" && (
         <View>
           <View style={styles.info}>
-            <Text style={styles.infoTitle}>Personal Info</Text>
+            <Text style={styles.infoTitle}>{t("Personal Info")}</Text>
           </View>
 
           <View style={styles.userInfoSection}>
             <View style={styles.row}>
               <Icon name="controller-classic" color={Color.icon} size={20} />
               <Text style={styles.text}>
-                My Hobbies:{" "}
-                {userData.hobbies ? userData.hobbies : "Add your hobbies"}
+                {t("My Hobbies")}:{" "}
+                {userData.hobbies ? userData.hobbies : t("Add your hobbies")}
               </Text>
             </View>
 
             <View style={styles.row}>
               <Icon name="beer" color={Color.icon} size={20} />
               <Text style={styles.text}>
-                Fun Fact: {userData.funFact ? userData.funFact : "Empty"}
+                {t("Fun Fact")}:{" "}
+                {userData.funFact ? userData.funFact : t("Empty")}
               </Text>
             </View>
           </View>
@@ -133,7 +138,7 @@ const ProfileScreen = ({ navigation }) => {
       )}
 
       <View style={styles.info}>
-        <Text style={styles.infoTitle}>Other</Text>
+        <Text style={styles.infoTitle}>{t("Other")}</Text>
       </View>
 
       <View style={styles.menuWrapper}>
@@ -143,7 +148,7 @@ const ProfileScreen = ({ navigation }) => {
           >
             <View style={styles.menuItem}>
               <Icon name="heart-outline" color={Color.icon} size={25} />
-              <Text style={styles.menuItemText}>Favorites</Text>
+              <Text style={styles.menuItemText}>{t("Favorites")}</Text>
             </View>
           </TouchableRipple>
         )}
@@ -151,13 +156,13 @@ const ProfileScreen = ({ navigation }) => {
         <TouchableRipple onPress={() => navigation.navigate("SecurityScreen")}>
           <View style={styles.menuItem}>
             <Icon name="shield-lock-outline" color={Color.icon} size={25} />
-            <Text style={styles.menuItemText}>Security</Text>
+            <Text style={styles.menuItemText}>{t("Security")}</Text>
           </View>
         </TouchableRipple>
         <TouchableRipple onPress={() => logoutHandler(auth, navigation)}>
           <View style={styles.menuItem}>
             <Icon name="logout-variant" color={Color.icon} size={25} />
-            <Text style={styles.menuItemText}>Logout</Text>
+            <Text style={styles.menuItemText}>{t("Logout")}</Text>
           </View>
         </TouchableRipple>
       </View>

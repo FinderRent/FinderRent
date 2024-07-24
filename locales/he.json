@@ -143,5 +143,62 @@
   "lowToHigh": "מנמוך לגבוה",
   "highToLow": "מגבוה לנמוך",
   "newToOld": "חדש לישן",
-  "oldToNew": "ישן לחדש"
+  "oldToNew": "ישן לחדש",
+
+  "Logged Out Successfully": "התנתקת בהצלחה",
+  "Profile": "פרופיל",
+  "Student": "סטודנט",
+  "Not available": "לא זמין",
+  "Personal Info": "מידע אישי",
+  "My Hobbies": "התחביבים שלי",
+  "Add your hobbies": "הוסף את התחביבים שלך",
+  "Fun Fact": "עובדה כיפית",
+  "Empty": "אין",
+  "Other": "אחר",
+  "Favorites": "מועדפים",
+  "Security": "אבטחה",
+  "Logout": "התנתקות",
+
+  "update_picture": "עדכן תמונה",
+  "first_name": "שם פרטי",
+  "last_name": "שם משפחה",
+  "age": "גיל",
+  "phone": "טלפון",
+  "academic_institution": "חפש מוסד אקדמי",
+  "department": "מחלקה",
+  "yearbook": "שנה",
+  "hobbies": "מה התחביבים שלך?",
+  "fun_fact": "ספר לנו עובדה מעניינת...",
+  "profile_success": "הפרופיל עודכן בהצלחה",
+  "update": "עדכן",
+  "back": "חזור",
+  "choose_profile_picture": "בחר תמונת פרופיל",
+  "delete_picture": "מחק תמונה",
+
+  "chooseFromGallery": "בחר מהגלרייה",
+  "takePicture": "צלם תמונה",
+
+  "location": "מיקום",
+
+  "HouseList": {
+    "noResults": {
+      "noApartments": "אין דירות {{category}}.",
+      "noApartmentsWithDistance": "אין דירות {{category}} במרחק של {{distance}} ק\"מ מהאקדמיה."
+    },
+    "header": "דירות במרחק של {{distance}} ק\"מ מהאקדמיה",
+    "mapButton": "מפה"
+  },
+
+  "houseDetails": {
+    "city": "עיר",
+    "street": "רחוב",
+    "distance": "במרחק {{distance}} ק\"מ מ{{academic}}",
+    "about": "אודות",
+    "currentTenants": "דיירים נוכחיים",
+    "loginToViewTenants": "התחבר לצפייה בדיירים",
+    "monthPerson": "חודש / אדם",
+    "interested": "מעוניין"
+  },
+
+  "noResultsText": "אין צ'אטים להצגה."
 }

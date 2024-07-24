@@ -12,6 +12,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { TouchableOpacity } from "@gorhom/bottom-sheet";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import { useTranslation } from "react-i18next";
 import AwesomeAlert from "react-native-awesome-alerts";
 import moment from "moment";
 
@@ -25,6 +26,7 @@ import fetchChatsList from "../api/chats/fetchChatsList";
 import deleteChat from "../api/chats/deleteChat";
 
 function ChatListScreen({ navigation }) {
+  const { t } = useTranslation();
   const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
   const tabBarHeight = useBottomTabBarHeight();
@@ -146,7 +148,7 @@ function ChatListScreen({ navigation }) {
           size={100}
           color={Color.buttomSheetDarkTheme}
         />
-        <Text style={styles.noResultsText}>There's No Chats Yet.</Text>
+        <Text style={styles.noResultsText}>{t("noResultsText")}</Text>
       </View>
     );
   }

@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
+import { useTranslation } from "react-i18next";
 
 import { Color } from "../../constants/colors";
 import { useUsers } from "../../context/UserContext";
@@ -25,6 +26,7 @@ function HouseList({
   coordinates,
   token,
 }) {
+  const { t } = useTranslation();
   const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
   const bottomSheetRef = useRef(null);
@@ -132,13 +134,18 @@ function HouseList({
           />
           {!token ? (
             <Text style={styles.noResultsText}>
-              There's No {category} Apartments.
+              {t("HouseList.noResults.noApartments", { category })}
             </Text>
           ) : (
             <View>
-              <Text style={styles.noResultsText}>No {category} apartments</Text>
+              {/* <Text style={styles.noResultsText}>
+                {t("HouseList.noResults.noApartments", { category })}
+              </Text> */}
               <Text style={styles.noResultsText}>
-                within {distance}km from the academy.
+                {t("HouseList.noResults.noApartmentsWithDistance", {
+                  category,
+                  distance,
+                })}
               </Text>
             </View>
           )}
@@ -147,7 +154,7 @@ function HouseList({
         <>
           {token && (
             <Text style={styles.header}>
-              Apartments Within {distance}Km From Academy
+              {t("HouseList.header", { distance })}
             </Text>
           )}
           <BottomSheetFlatList
@@ -173,7 +180,7 @@ function HouseList({
                 : { color: Color.defaultTheme }
             }
           >
-            Map
+            {t("HouseList.mapButton")}
           </Text>
           <Ionicons
             name="map"

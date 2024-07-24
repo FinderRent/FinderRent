@@ -2,7 +2,7 @@
   "expo": {
     "name": "FindeRent",
     "slug": "finderrent",
-    "version": "0.8.6",
+    "version": "0.9.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
