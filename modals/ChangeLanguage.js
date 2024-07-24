@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -8,12 +8,10 @@ import {
   FlatList,
   Pressable,
   Image,
-  Alert,
 } from "react-native";
 import { Text } from "react-native-paper";
-import RNRestart from "react-native-restart";
-
-// import { useTranslation } from "react-i18next";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Updates from "expo-updates";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
@@ -22,28 +20,20 @@ import languagesList from "../services/languagesList.json";
 
 const ChangeLanguage = ({ showVisible }) => {
   const { isDarkMode } = useDarkMode();
-  const [visible, setVisible] = useState(true);
-  //   const { t } = useTranslation();
 
-  const changeLng = (lng) => {
-    if (lng === "he") {
-      Alert.alert(
-        "Restart Required",
-        "The app needs to restart to apply RTL layout changes. Would you like to restart now?",
-        [
-          {
-            text: "Restart",
-            onPress: () => RNRestart.Restart(),
-          },
-          {
-            text: "Later",
-            style: "cancel",
-          },
-        ]
-      );
-    }
+  const [visible, setVisible] = useState(true);
+  const [showRestartModal, setShowRestartModal] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState(null);
+
+  const handleRestart = async () => {
+    await Updates.reloadAsync();
+  };
+
+  const changeLng = async (lng) => {
+    await AsyncStorage.setItem("appLanguage", lng);
     i18next.changeLanguage(lng);
-    showVisible(false);
+    setSelectedLanguage(lng);
+    setShowRestartModal(true);
   };
 
   const handleCancel = () => {
@@ -57,7 +47,13 @@ const ChangeLanguage = ({ showVisible }) => {
         onRequestClose={() => setVisible(false)}
         transparent={true}
       >
-        <View style={styles.modalContent}>
+        <View
+          style={
+            isDarkMode
+              ? { ...styles.modalContent, backgroundColor: Color.darkTheme }
+              : styles.modalContent
+          }
+        >
           <Pressable onPress={handleCancel} style={styles.closeButton}>
             <Image
               source={require("../assets/images/close.png")}
@@ -70,7 +66,19 @@ const ChangeLanguage = ({ showVisible }) => {
               keyExtractor={(item) => item}
               renderItem={({ item }) => (
                 <TouchableOpacity
-                  style={styles.languageButton}
+                  style={
+                    isDarkMode
+                      ? [
+                          styles.languageButtonWhite,
+                          selectedLanguage === item &&
+                            styles.selectedLanguageButtonWhite,
+                        ]
+                      : [
+                          styles.languageButtonDark,
+                          selectedLanguage === item &&
+                            styles.selectedLanguageButtonDark,
+                        ]
+                  }
                   onPress={() => changeLng(item)}
                 >
                   <Text style={styles.lngName}>
@@ -79,6 +87,26 @@ const ChangeLanguage = ({ showVisible }) => {
                 </TouchableOpacity>
               )}
             />
+          </View>
+        </View>
+      </Modal>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={showRestartModal}
+        onRequestClose={() => setShowRestartModal(false)}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>
+              The app needs to restart to apply language changes.
+            </Text>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={handleRestart}
+            >
+              <Text style={styles.textStyle}>Restart Now</Text>
+            </Pressable>
           </View>
         </View>
       </Modal>
@@ -91,7 +119,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: Color.white,
   },
   modalContent: {
     flex: 1,
@@ -114,13 +141,62 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: "100%",
   },
-  languageButton: {
+  languageButtonDark: {
     padding: 10,
-    borderBottomColor: "#dddddd",
+    borderBottomColor: Color.darkTheme,
     borderBottomWidth: 1,
+  },
+  languageButtonWhite: {
+    padding: 10,
+    borderBottomColor: Color.defaultTheme,
+    borderBottomWidth: 1,
+  },
+  selectedLanguageButtonWhite: {
+    backgroundColor: Color.defaultTheme,
+  },
+  selectedLanguageButtonDark: {
+    backgroundColor: Color.darkTheme,
   },
   lngName: {
     fontSize: 16,
+    textAlign: "center",
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonClose: {
+    backgroundColor: Color.Blue300,
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
     textAlign: "center",
   },
 });

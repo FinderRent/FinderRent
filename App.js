@@ -8,11 +8,13 @@ import { MenuProvider } from "react-native-popup-menu";
 import { useTranslation } from "react-i18next";
 import Toast from "react-native-toast-message";
 import FlashMessage from "react-native-flash-message";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { UserContext, useUsers } from "./context/UserContext";
 import { DarkModeProvider } from "./context/DarkModeContext";
 import AuthStackScreens from "./navigation/AuthStackScreens";
 import FavoritesContextProvider from "./context/FavoritesContext";
+import i18next from "./services/i18next";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -60,7 +62,7 @@ export default function App() {
       if (I18nManager.isRTL !== isRTL) {
         I18nManager.forceRTL(isRTL);
         I18nManager.allowRTL(isRTL);
-        RNRestart.Restart();
+        // RNRestart.Restart();
       }
 
       if (appIsLoaded) {
@@ -73,6 +75,13 @@ export default function App() {
 
   useEffect(() => {
     const prepare = async () => {
+      const loadLanguage = async () => {
+        const savedLanguage = await AsyncStorage.getItem("appLanguage");
+        if (savedLanguage) {
+          i18next.changeLanguage(savedLanguage);
+        }
+      };
+      loadLanguage();
       try {
         await Font.loadAsync({
           varelaRound: require("./assets/fonts/VarelaRound-Regular.ttf"),
