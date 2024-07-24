@@ -57,7 +57,7 @@ const AboutScreen = () => {
             color: isDarkMode ? Color.Brown100 : Color.Brown700,
           }}
         >
-          {new Date().getFullYear()} &copy; {t("about.copyright")}
+          {new Date().getFullYear()} &copy; {t("aboutApp.copyright")}
         </Text>
       </View>
     </ScrollView>

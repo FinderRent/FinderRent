@@ -16,7 +16,7 @@
   },
   "home": "בית",
   "profile": "פרופיל",
-  "chats": "צאט",
+  "chats": "צ'אט",
   "settings": "הגדרות",
 
   "preferences": "העדפות",
@@ -26,5 +26,14 @@
   "allowNotifications": "אפשר התראות",
   "about": "אודות",
   "contactUs": "צור קשר",
-  "version": "גרסה"
+  "version": "גרסה",
+
+  "language_change_message": "יש להפעיל מחדש את האפליקציה כדי להחיל את שינויי השפה.",
+  "cancel": "ביטול",
+  "confirm": "אשר",
+
+  "choose_theme": "בחר ערכת נושא",
+  "system_default": "ברירת מחדל מערכת",
+  "bright": "בהיר",
+  "dark": "כהה"
 }

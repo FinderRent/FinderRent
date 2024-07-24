@@ -10,6 +10,7 @@ import {
   Image,
 } from "react-native";
 import { Text } from "react-native-paper";
+import { useTranslation } from "react-i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Updates from "expo-updates";
 
@@ -20,19 +21,22 @@ import languagesList from "../services/languagesList.json";
 
 const ChangeLanguage = ({ showVisible }) => {
   const { isDarkMode } = useDarkMode();
+  const { t } = useTranslation();
 
   const [visible, setVisible] = useState(true);
   const [showRestartModal, setShowRestartModal] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(null);
+  const [lng, setLng] = useState(i18next.language);
 
   const handleRestart = async () => {
+    i18next.changeLanguage(lng);
+    setSelectedLanguage(lng);
     await Updates.reloadAsync();
   };
 
   const changeLng = async (lng) => {
+    setLng(lng);
     await AsyncStorage.setItem("appLanguage", lng);
-    i18next.changeLanguage(lng);
-    setSelectedLanguage(lng);
     setShowRestartModal(true);
   };
 
@@ -68,16 +72,8 @@ const ChangeLanguage = ({ showVisible }) => {
                 <TouchableOpacity
                   style={
                     isDarkMode
-                      ? [
-                          styles.languageButtonWhite,
-                          selectedLanguage === item &&
-                            styles.selectedLanguageButtonWhite,
-                        ]
-                      : [
-                          styles.languageButtonDark,
-                          selectedLanguage === item &&
-                            styles.selectedLanguageButtonDark,
-                        ]
+                      ? [styles.languageButtonWhite]
+                      : [styles.languageButtonDark]
                   }
                   onPress={() => changeLng(item)}
                 >
@@ -97,16 +93,28 @@ const ChangeLanguage = ({ showVisible }) => {
         onRequestClose={() => setShowRestartModal(false)}
       >
         <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>
-              The app needs to restart to apply language changes.
-            </Text>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={handleRestart}
-            >
-              <Text style={styles.textStyle}>Restart Now</Text>
-            </Pressable>
+          <View
+            style={
+              isDarkMode
+                ? {
+                    ...styles.modalView,
+                    backgroundColor: Color.buttomSheetDarkTheme,
+                  }
+                : styles.modalView
+            }
+          >
+            <Text style={styles.modalText}>{t("language_change_message")}</Text>
+            <View style={styles.confirmation}>
+              <TouchableOpacity
+                style={{ right: 30 }}
+                onPress={() => showVisible(false)}
+              >
+                <Text style={{ color: Color.Blue500 }}>{t("cancel")}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={handleRestart}>
+                <Text style={{ color: Color.Blue500 }}>{t("confirm")}</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </Modal>
@@ -165,14 +173,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22,
+    marginTop: 20,
   },
   modalView: {
-    margin: 20,
+    margin: 10,
     backgroundColor: "white",
     borderRadius: 20,
-    padding: 35,
-    alignItems: "center",
+    padding: 40,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -196,8 +203,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   modalText: {
-    marginBottom: 15,
     textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  confirmation: {
+    flexDirection: "row",
+    marginTop: 25,
+    justifyContent: "flex-end",
   },
 });
 

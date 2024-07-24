@@ -11,14 +11,13 @@ import {
 import { Switch, Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 
 import { version as app_version } from "../package.json";
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import ThemeModal from "../modals/ThemeModal";
-import { useTranslation } from "react-i18next";
 import i18next from "../services/i18next";
-
 import ChangeLanguage from "../modals/ChangeLanguage";
 
 const SECTIONS = [

@@ -27,5 +27,14 @@
   "allowNotifications": "Allow Notifications",
   "about": "About",
   "contactUs": "Contact Us",
-  "version": "version"
+  "version": "version",
+
+  "language_change_message": "The app needs to restart to apply language changes.",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+
+  "choose_theme": "Choose Theme",
+  "system_default": "System Default",
+  "bright": "Bright",
+  "dark": "Dark"
 }

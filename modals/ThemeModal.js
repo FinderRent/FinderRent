@@ -8,12 +8,14 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { RadioButton, Text } from "react-native-paper";
+import { useTranslation } from "react-i18next";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 
 function ThemeModal({ showVisible, appTheme }) {
   const { isDarkMode, handleTheme } = useDarkMode();
+  const { t } = useTranslation();
 
   const [themeVisible, setThemeVisible] = useState(true);
   const [theme, setTheme] = useState(appTheme);
@@ -59,14 +61,14 @@ function ThemeModal({ showVisible, appTheme }) {
               />
             </Pressable>
 
-            <Text style={styles.modalText}>Choose Theme</Text>
+            <Text style={styles.modalText}>{t("choose_theme")}</Text>
             <View style={styles.radioButtom}>
               <RadioButton
                 color={Color.Blue500}
                 status={theme === "SystemDefault" ? "checked" : "unchecked"}
                 onPress={() => handleAppTheme("SystemDefault")}
               />
-              <Text style={styles.textRadio}>System Default</Text>
+              <Text style={styles.textRadio}>{t("system_default")}</Text>
             </View>
             <View style={styles.radioButtom}>
               <RadioButton
@@ -74,7 +76,7 @@ function ThemeModal({ showVisible, appTheme }) {
                 status={theme === "Bright" ? "checked" : "unchecked"}
                 onPress={() => handleAppTheme("Bright")}
               />
-              <Text style={styles.textRadio}>Bright</Text>
+              <Text style={styles.textRadio}>{t("bright")}</Text>
             </View>
             <View style={styles.radioButtom}>
               <RadioButton
@@ -82,14 +84,14 @@ function ThemeModal({ showVisible, appTheme }) {
                 status={theme === "Dark" ? "checked" : "unchecked"}
                 onPress={() => handleAppTheme("Dark")}
               />
-              <Text style={styles.textRadio}>Dark</Text>
+              <Text style={styles.textRadio}>{t("dark")}</Text>
             </View>
             <View style={styles.confirmation}>
               {/* <TouchableOpacity style={{ right: 30 }} onPress={handleCancel}>
                 <Text style={{ color: Color.Blue500 }}>Cancel</Text>
               </TouchableOpacity> */}
               <TouchableOpacity onPress={() => showVisible(false)}>
-                <Text style={{ color: Color.Blue500 }}>Confirm</Text>
+                <Text style={{ color: Color.Blue500 }}>{t("confirm")}</Text>
               </TouchableOpacity>
             </View>
           </View>

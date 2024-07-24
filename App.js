@@ -62,7 +62,6 @@ export default function App() {
       if (I18nManager.isRTL !== isRTL) {
         I18nManager.forceRTL(isRTL);
         I18nManager.allowRTL(isRTL);
-        // RNRestart.Restart();
       }
 
       if (appIsLoaded) {
