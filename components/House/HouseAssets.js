@@ -3,16 +3,18 @@ import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Text } from "react-native-paper";
 import { ListItem } from "react-native-elements";
 import { useTranslation } from "react-i18next";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { Color } from "../../constants/colors";
 import { useDarkMode } from "../../context/DarkModeContext";
+import { iconName } from "../../utils/features";
 
 const HouseAssets = (props) => {
   const { t } = useTranslation();
   const { isDarkMode } = useDarkMode();
 
   const handleShowAllPress = () => {
-    props.handleShowAllPress(apartmentContent);
+    props.handleShowAllPress();
   };
 
   // Extract the first six objects that are true
@@ -37,15 +39,23 @@ const HouseAssets = (props) => {
               key={i}
             >
               <ListItem.Content>
-                <ListItem.Title
-                  style={
-                    isDarkMode
-                      ? { color: Color.white }
-                      : { color: Color.darkTheme }
-                  }
-                >
-                  {l}
-                </ListItem.Title>
+                <View style={styles.rowContainer}>
+                  <MaterialCommunityIcons
+                    color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+                    name={iconName(l)}
+                    style={styles.rowIcon}
+                    size={24}
+                  />
+                  <ListItem.Title
+                    style={
+                      isDarkMode
+                        ? { color: Color.white }
+                        : { color: Color.darkTheme }
+                    }
+                  >
+                    {t(`houseAssets.${l}`)}
+                  </ListItem.Title>
+                </View>
               </ListItem.Content>
             </ListItem>
           ))}
@@ -66,15 +76,23 @@ const HouseAssets = (props) => {
               key={i}
             >
               <ListItem.Content>
-                <ListItem.Title
-                  style={
-                    isDarkMode
-                      ? { color: Color.white }
-                      : { color: Color.darkTheme }
-                  }
-                >
-                  {l}
-                </ListItem.Title>
+                <View style={styles.rowContainer}>
+                  <MaterialCommunityIcons
+                    color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+                    name={iconName(l)}
+                    style={styles.rowIcon}
+                    size={24}
+                  />
+                  <ListItem.Title
+                    style={
+                      isDarkMode
+                        ? { color: Color.white }
+                        : { color: Color.darkTheme }
+                    }
+                  >
+                    {t(`houseAssets.${l}`)}
+                  </ListItem.Title>
+                </View>
               </ListItem.Content>
             </ListItem>
           ))}
@@ -104,6 +122,14 @@ const styles = StyleSheet.create({
     lineHeight: 21,
     fontWeight: "bold",
     letterSpacing: 0.25,
+  },
+  rowContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginLeft: -10,
+  },
+  rowIcon: {
+    marginRight: 10,
   },
 });
 

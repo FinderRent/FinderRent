@@ -119,6 +119,12 @@
     "penthouse": "Пентхаус"
   },
 
+  "allCategories": "All Categories",
+  "landHouse": "Land House",
+  "housingUnit": "Housing Unit",
+  "tower": "Tower",
+  "penthouse": "Penthouse",
+
   "filterScreen": {
     "sortBy": "Сортировать по",
     "distance": "Расстояние",
@@ -154,6 +160,28 @@
   "thereAre": "Есть",
   "whatThisPlaceOffers": "Что предлагает это место",
   "showAll": "Показать все",
+
+  "houseAssets": {
+    "tv": "Телевизор",
+    "television": "Телевидение",
+    "beds": "Кровати",
+    "bed": "Кровать",
+    "wifi": "Вай-фай",
+    "wi-fi": "Вай-фай",
+    "wireless internet": "Беспроводной интернет",
+    "balcony": "Балкон",
+    "oven": "Духовка",
+    "microwave": "Микроволновая печь",
+    "couch": "Диван",
+    "coffeeTable": "Журнальный столик",
+    "waterHeater": "Водонагреватель",
+    "washer": "Стиральная машина",
+    "dryer": "Сушилка",
+    "iron": "Утюг",
+    "refrigirator": "Холодильник",
+    "fridge": "Холодильник",
+    "freezer": "Морозильная камера"
+  },
 
   "All Categories": "Все категории",
   "Land House": "Земельный участок",

@@ -4,8 +4,8 @@ import { View, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import { Text } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
-import * as Haptics from "expo-haptics";
 import { useTranslation } from "react-i18next";
+import * as Haptics from "expo-haptics";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
@@ -56,7 +56,7 @@ const ExploreHeader = ({ onCategoryChanged, categoryIndex, filtersValues }) => {
     if (categories[index].key === "allCategories") {
       onCategoryChanged(null);
     } else {
-      onCategoryChanged(t(`categories.${categories[index].key}`));
+      onCategoryChanged(t(`${categories[index].key}`));
     }
   };
 

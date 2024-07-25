@@ -119,6 +119,12 @@
     "penthouse": "بنتهاوس"
   },
 
+  "allCategories": "All Categories",
+  "landHouse": "Land House",
+  "housingUnit": "Housing Unit",
+  "tower": "Tower",
+  "penthouse": "Penthouse",
+
   "filterScreen": {
     "sortBy": "ترتيب حسب",
     "distance": "المسافة",
@@ -154,6 +160,28 @@
   "thereAre": "يوجد",
   "whatThisPlaceOffers": "ما يقدمه هذا المكان",
   "showAll": "عرض الكل",
+
+  "houseAssets": {
+    "tv": "تلفاز",
+    "television": "تلفزيون",
+    "beds": "أسرّة",
+    "bed": "سرير",
+    "wifi": "واي فاي",
+    "wi-fi": "واي فاي",
+    "wireless internet": "إنترنت لاسلكي",
+    "balcony": "شرفة",
+    "oven": "فرن",
+    "microwave": "ميكروويف",
+    "couch": "أريكة",
+    "coffeeTable": "طاولة القهوة",
+    "waterHeater": "سخان مياه",
+    "washer": "غسالة",
+    "dryer": "مجفف",
+    "iron": "مكواة",
+    "refrigirator": "ثلاجة",
+    "fridge": "ثلاجة",
+    "freezer": "مجمد"
+  },
 
   "All Categories": "جميع الفئات",
   "Land House": "منزل أرض",

@@ -119,6 +119,12 @@
     "penthouse": "פנטהאוז"
   },
 
+  "allCategories": "All Categories",
+  "landHouse": "Land House",
+  "housingUnit": "Housing Unit",
+  "tower": "Tower",
+  "penthouse": "Penthouse",
+
   "filterScreen": {
     "sortBy": "מיין לפי",
     "distance": "מרחק",
@@ -155,6 +161,28 @@
   "whatThisPlaceOffers": "מה המקום הזה מציע",
   "showAll": "הצג הכל",
 
+  "houseAssets": {
+    "tv": "טלוויזיה",
+    "television": "טלוויזיה",
+    "beds": "מיטות",
+    "bed": "מיטה",
+    "wifi": "ווייפיי",
+    "wi-fi": "ווי-פיי",
+    "wireless internet": "אינטרנט אלחוטי",
+    "balcony": "מרפסת",
+    "oven": "תנור",
+    "microwave": "מיקרוגל",
+    "couch": "ספה",
+    "coffeeTable": "שולחן קפה",
+    "waterHeater": "דוד מים",
+    "washer": "מכונת כביסה",
+    "dryer": "מייבש",
+    "iron": "מגהץ",
+    "refrigirator": "מקרר",
+    "fridge": "מקרר",
+    "freezer": "מקפיא"
+  },
+
   "All Categories": "כל הקטגוריות",
   "Land House": "בית קרקע",
   "Houseing Unit": "יחידת דיור",
@@ -177,7 +205,7 @@
   "Other": "אחר",
   "Favorites": "מועדפים",
   "Security": "אבטחה",
-  "Logout": "התנתקות",
+  "Logout": "התנתקת",
 
   "update_picture": "עדכן תמונה",
   "first_name": "שם פרטי",

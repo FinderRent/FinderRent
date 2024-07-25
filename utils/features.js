@@ -14,3 +14,29 @@ export const checkRtllanguages = (lang) => {
   const rtlLanguages = ["ar", "he", "fa", "ur"];
   return rtlLanguages.includes(lang);
 };
+
+export const iconName = (icon) => {
+  const iconMap = {
+    tv: "television",
+    television: "television",
+    beds: "bed",
+    bed: "bed",
+    wifi: "wifi",
+    "wi-fi": "wifi",
+    "wireless internet": "wifi",
+    balcony: "balcony",
+    oven: "toaster-oven",
+    microwave: "microwave",
+    couch: "sofa",
+    coffeeTable: "table-furniture",
+    waterHeater: "water-boiler",
+    washer: "washing-machine",
+    dryer: "tumble-dryer",
+    iron: "iron",
+    refrigirator: "fridge",
+    fridge: "fridge",
+    freezer: "fridge-bottom",
+  };
+
+  return iconMap[icon] || null;
+};

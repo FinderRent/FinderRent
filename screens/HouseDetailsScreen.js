@@ -231,7 +231,11 @@ const HouseDetailsScreen = ({ navigation, route }) => {
   const handleMapPress = () => {
     setMapPress(!mapPress);
   };
-  const handleShowAllPress = (apartmentContent) => {
+  const handleShowAllPress = () => {
+    const trueKeys = Object.keys(apartment.apartmentContent).filter(
+      (key) => apartment.apartmentContent[key]
+    );
+    const apartmentContent = trueKeys.filter((key) => key !== "_id");
     setApartmentContent(apartmentContent);
     setShowAll(!showAll);
   };

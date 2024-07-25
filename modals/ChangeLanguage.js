@@ -126,7 +126,7 @@ const ChangeLanguage = ({ showVisible }) => {
             <View style={styles.confirmation}>
               <TouchableOpacity
                 style={{ right: 30 }}
-                onPress={() => showVisible(false)}
+                onPress={() => setShowRestartModal(false)}
               >
                 <Text style={{ color: Color.Blue500 }}>{t("cancel")}</Text>
               </TouchableOpacity>

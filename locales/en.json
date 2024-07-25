@@ -119,6 +119,12 @@
     "penthouse": "Penthouse"
   },
 
+  "allCategories": "All Categories",
+  "landHouse": "Land House",
+  "housingUnit": "Housing Unit",
+  "tower": "Tower",
+  "penthouse": "Penthouse",
+
   "filterScreen": {
     "sortBy": "Sort By",
     "distance": "Distance",
@@ -154,6 +160,28 @@
   "thereAre": "There are",
   "whatThisPlaceOffers": "What This Place Offers",
   "showAll": "Show all",
+
+  "houseAssets": {
+    "tv": "TV",
+    "television": "Television",
+    "beds": "Beds",
+    "bed": "Bed",
+    "wifi": "WiFi",
+    "wi-fi": "Wi-Fi",
+    "wireless internet": "Wireless Internet",
+    "balcony": "Balcony",
+    "oven": "Oven",
+    "microwave": "Microwave",
+    "couch": "Couch",
+    "coffeeTable": "Coffee Table",
+    "waterHeater": "Water Heater",
+    "washer": "Washer",
+    "dryer": "Dryer",
+    "iron": "Iron",
+    "refrigirator": "Refrigerator",
+    "fridge": "Fridge",
+    "freezer": "Freezer"
+  },
 
   "All Categories": "All Categories",
   "Land House": "Land House",
