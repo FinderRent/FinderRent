@@ -16,6 +16,8 @@ import { useTranslation } from "react-i18next";
 import AwesomeAlert from "react-native-awesome-alerts";
 import moment from "moment";
 import "moment/locale/he";
+import "moment/locale/ru";
+import "moment/locale/ar";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
@@ -180,7 +182,9 @@ function ChatListScreen({ navigation }) {
             if (time.includes("in ")) {
               time = time.replace("in ", "");
             }
-
+            if (time.includes("בעוד")) {
+              time = time.replace("בעוד", "לפני");
+            }
             const otherUserId = chatData.members.find(
               (uid) => uid !== userData.id
             );

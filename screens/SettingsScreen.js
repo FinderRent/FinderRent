@@ -62,12 +62,28 @@ function SettingsScreen() {
   const [showLanguageModal, setShowLanguageModal] = useState(false);
 
   const [form, setForm] = useState({
-    language: i18next.language === "he" ? "עברית" : "English",
+    language: "",
     notifications: true,
   });
 
   useEffect(() => {
-    const newLang = i18next.language === "he" ? "עברית" : "English";
+    let newLang = "";
+
+    switch (i18next.language) {
+      case "en":
+        newLang = "English";
+        break;
+      case "he":
+        newLang = "עברית";
+        break;
+      case "ru":
+        newLang = "русский";
+        break;
+      case "ar":
+        newLang = "العربية";
+        break;
+    }
+
     setForm((prevForm) => ({
       ...prevForm,
       language: newLang,

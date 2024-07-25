@@ -1,0 +1,233 @@
+{
+  "aboutApp": {
+    "title": "حول تطبيقنا",
+    "welcome": "مرحبًا بك في تطبيقنا، الذي تم تطويره كجزء من مشروعنا النهائي في كلية SCE. مشروعنا المبتكر مصمم لإحداث ثورة في الطريقة التي يجد بها الطلاب الشقق للإيجار في المناطق الأكاديمية. تطبيقنا يعالج التحديات التي تواجه طرق البحث التقليدية عن الشقق، ويستبدل العملية المرهقة لفرز مجموعات الفيسبوك والشبكات الاجتماعية والقنوات القديمة الأخرى بحل عصري وفعال.",
+    "platform": "منصتنا مصممة خصيصًا للطلاب ومالكي الشقق بالقرب من المؤسسات الأكاديمية، حيث تقدم مركزًا مركزيًا حيث يمكن للطلاب الاتصال بسهولة بالمالكين. من خلال الاستفادة من تقنيات متقدمة مثل خدمات الموقع الجغرافي والتفضيلات الشخصية، يبسط تطبيقنا عملية البحث عن الشقق، مما يجعلها أسهل وأكثر بديهية.",
+    "features": {
+      "title": "الميزات الرئيسية:",
+      "centralized": "منصة مركزية: تجمع الطلاب والمالكين في مكان واحد مريح.",
+      "location": "خدمات الموقع الجغرافي: تساعدك في العثور على شقق بناءً على القرب من مؤسستك الأكاديمية.",
+      "preferences": "تفضيلات شخصية: تطابقك مع الممتلكات التي تلبي احتياجاتك وتفضيلاتك الخاصة.",
+      "interface": "واجهة مستخدم سهلة الاستخدام: تضمن تجربة بحث سلسة وممتعة.",
+      "experience": "تجربة مستخدم مريحة: تبسط عملية العثور على الشقة المثالية."
+    },
+    "mission": "مهمتنا هي خلق تجربة بحث سلسة وفعالة عن الشقق للطلاب، وتحويل عملية تقليدية مرهقة إلى رحلة خالية من المتاعب. انضم إلينا واكتشف طريقة أفضل للعثور على منزلك القادم بالقرب من مؤسستك الأكاديمية.",
+    "copyright": "جميع الحقوق محفوظة"
+  },
+
+  "home": "الصفحة الرئيسية",
+  "profile": "الملف الشخصي",
+  "chats": "الدردشات",
+  "settings": "الإعدادات",
+
+  "preferences": "التفضيلات",
+  "help": "مساعدة",
+  "language": "اللغة",
+  "theme": "السمة",
+  "allowNotifications": "السماح بالإشعارات",
+  "about": "حول",
+  "contactUs": "اتصل بنا",
+  "version": "الإصدار",
+
+  "language_change_message": "يحتاج التطبيق إلى إعادة التشغيل لتطبيق تغييرات اللغة.",
+  "cancel": "إلغاء",
+  "confirm": "تأكيد",
+
+  "choose_theme": "اختر السمة",
+  "system_default": "الافتراضي للنظام",
+  "bright": "ساطع",
+  "dark": "داكن",
+
+  "login": "تسجيل الدخول",
+  "email": "البريد الإلكتروني",
+  "password": "كلمة المرور",
+  "forgot_password": "هل نسيت كلمة المرور؟",
+  "no_account_register": "لا تمتلك حسابًا؟ سجل الآن",
+  "login_button": "تسجيل الدخول",
+  "logged_in_successfully": "تم تسجيل الدخول بنجاح",
+
+  "forgotPassword": {
+    "enterEmail": "يرجى إدخال بريد إلكتروني لاستلام رمز إعادة تعيين كلمة المرور",
+    "email": "البريد الإلكتروني",
+    "send": "إرسال",
+    "toast": {
+      "success": "تم إرسال رمز إعادة تعيين كلمة المرور إلى البريد الإلكتروني"
+    }
+  },
+  "signUp": {
+    "header": "التسجيل",
+    "firstName": "الاسم الأول",
+    "lastName": "الاسم الأخير",
+    "age": "العمر",
+    "gender": "الجنس",
+    "male": "ذكر",
+    "female": "أنثى",
+    "role": "الدور",
+    "landlord": "مالك",
+    "student": "طالب",
+    "academicInstitution": "المؤسسة الأكاديمية",
+    "searchAcademic": "بحث في المؤسسة الأكاديمية",
+    "department": "القسم",
+    "yearbook": "سنة التخرج",
+    "preparing": "تحضير",
+    "year1": "السنة 1",
+    "year2": "السنة 2",
+    "year3": "السنة 3",
+    "year4": "السنة 4",
+    "masterDegree": "درجة الماجستير",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "passwordConfirm": "تأكيد كلمة المرور",
+    "passwordError": "يجب أن تكون كلمة المرور على الأقل 8 أحرف طويلة",
+    "signUp": "تسجيل",
+    "back": "عودة",
+    "toast": {
+      "success": "تم التسجيل بنجاح!"
+    }
+  },
+
+  "signInPrompt": "سجل الدخول لرؤية موقعك",
+  "signInButton": "تسجيل الدخول",
+  "loginPrompt": "سجل الدخول لرؤية شاشة {{screenName}}.",
+
+  "contactUsPage": {
+    "title": "اتصل بنا لدعم الاستفسارات أو الملاحظات",
+    "firstName": "الاسم الأول",
+    "lastName": "الاسم الأخير",
+    "email": "البريد الإلكتروني",
+    "subject": "الموضوع",
+    "message": "الرسالة",
+    "successMessage": "تم إرسال رسالتك بنجاح",
+    "sendMessage": "إرسال رسالة"
+  },
+
+  "categories": {
+    "allCategories": "جميع الفئات",
+    "landHouse": "منزل أرض",
+    "housingUnit": "وحدة سكنية",
+    "tower": "برج",
+    "penthouse": "بنتهاوس"
+  },
+
+  "filterScreen": {
+    "sortBy": "ترتيب حسب",
+    "distance": "المسافة",
+    "apartmentType": "نوع الشقة",
+    "clearAll": "مسح الكل",
+    "apply": "تطبيق",
+    "selectNumberOfBedrooms": "اختر عدد غرف النوم",
+    "selectFloorNumber": "اختر رقم الطابق",
+    "selectHowManyRoommates": "اختر عدد الزملاء في السكن",
+    "distanceInKm": "المسافة بالكيلومترات",
+    "selectDistanceFromAcademy": "اختر المسافة من الأكاديمية",
+    "rooms": "الغرف",
+    "floor": "الطابق",
+    "roommates": "الزملاء في السكن",
+    "lowToHigh": "من المنخفض إلى المرتفع",
+    "highToLow": "من المرتفع إلى المنخفض",
+    "newToOld": "من الجديد إلى القديم",
+    "oldToNew": "من القديم إلى الجديد",
+    "remove": "إزالة",
+    "add": "إضافة",
+    "filters": "الفلاتر",
+    "apartmentFilters": "فلاتر الشقق",
+    "selectNumber": "اختر الأرقام",
+    "distanceFromAcademy": "المسافة من الأكاديمية",
+    "km": "كم"
+  },
+
+  "All Categories": "جميع الفئات",
+  "Land House": "منزل أرض",
+  "Houseing Unit": "وحدة سكنية",
+  "Tower": "برج",
+  "Penthouse": "بنتهاوس",
+  "lowToHigh": "من المنخفض إلى المرتفع",
+  "highToLow": "من المرتفع إلى المنخفض",
+  "newToOld": "من الجديد إلى القديم",
+  "oldToNew": "من القديم إلى الجديد",
+
+  "Logged Out Successfully": "تم تسجيل الخروج بنجاح",
+  "Profile": "الملف الشخصي",
+  "Student": "طالب",
+  "Not available": "غير متوفر",
+  "Personal Info": "المعلومات الشخصية",
+  "My Hobbies": "هواياتي",
+  "Add your hobbies": "أضف هواياتك",
+  "Fun Fact": "حقيقة ممتعة",
+  "Empty": "فارغ",
+  "Other": "أخرى",
+  "Favorites": "المفضلات",
+  "Security": "الأمان",
+  "Logout": "تسجيل الخروج",
+
+  "update_picture": "تحديث الصورة",
+  "first_name": "الاسم الأول",
+  "last_name": "الاسم الأخير",
+  "age": "العمر",
+  "phone": "الهاتف",
+  "academic_institution": "ابحث عن مؤسسة أكاديمية",
+  "department": "القسم",
+  "yearbook": "سنة التخرج",
+  "hobbies": "ما هي هواياتك؟",
+  "fun_fact": "أخبرنا بحقيقة ممتعة...",
+  "profile_success": "تم تحديث الملف الشخصي بنجاح!",
+  "update": "تحديث",
+  "back": "عودة",
+  "choose_profile_picture": "اختر صورتك الشخصية",
+  "delete_picture": "حذف الصورة",
+
+  "chooseFromGallery": "اختر من المعرض",
+  "takePicture": "التقط صورة",
+
+  "location": "الموقع",
+
+  "HouseList": {
+    "noResults": {
+      "noApartments": "لا توجد شقق {{category}}.",
+      "noApartmentsWithDistance": "لا توجد شقق {{category}} ضمن {{distance}} كم من الأكاديمية."
+    },
+    "header": "شقق ضمن {{distance}} كم من الأكاديمية",
+    "mapButton": "الخريطة"
+  },
+
+  "houseDetails": {
+    "city": "المدينة",
+    "street": "الشارع",
+    "distance": "{{distance}} كم بعيدًا عن {{academic}}",
+    "about": "حول",
+    "currentTenants": "المستأجرون الحاليون",
+    "loginToViewTenants": "سجل الدخول لرؤية المستأجرين",
+    "monthPerson": "شهريًا / شخص",
+    "interested": "مهتم"
+  },
+
+  "noResultsText": "لا توجد دردشات لعرضها.",
+  "send_message_to_start_conversation": "أرسل رسالة لبدء المحادثة",
+  "error_sending_message": "حدث خطأ في إرسال الرسالة، حاول مرة أخرى",
+  "send_image": "أرسل صورة",
+  "send": "إرسال",
+  "delete_message": "حذف الرسالة",
+  "yes": "نعم",
+  "no": "لا",
+  "send_message": "إرسال رسالة",
+  "message": "الرسالة",
+  "you": "أنت",
+  "copy_to_clipboard": "نسخ إلى الحافظة",
+  "reply": "رد",
+  "delete": "حذف",
+  "image": "صورة",
+
+  "noFavorites": "لا توجد شقق مفضلة.",
+
+  "academic": "الأكاديمية: ",
+  "funFact": "حقيقة ممتعة: ",
+  "socialLinksTitle": "تواصل معي",
+  "chatWithMe": "الدردشة معي",
+  "empty": "فارغ",
+
+  "changePassword": "تغيير كلمة المرور",
+  "enterCurrentPassword": "أدخل كلمة المرور الحالية:",
+  "enterNewPassword": "أدخل كلمة المرور الجديدة:",
+  "confirmPassword": "تأكيد كلمة المرور:",
+  "updatePassword": "تحديث كلمة المرور"
+}

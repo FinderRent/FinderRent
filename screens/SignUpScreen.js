@@ -20,6 +20,8 @@ import { useDarkMode } from "../context/DarkModeContext";
 import { UserContext } from "../context/UserContext";
 import { academicListEnglish } from "../data/academicEnglish";
 import { academicListHebrew } from "../data/academicHebrew";
+import { academicListRussian } from "../data/academicRussian";
+import { academicListArabic } from "../data/academicArabic";
 import Input from "../components/inputs/Input";
 import PasswordInput from "../components/inputs/PasswordInput";
 import DropDown from "../components/inputs/DropDown";
@@ -65,6 +67,18 @@ function SignUpScreen({ navigation }) {
         coordinates: item.coordinates,
       }));
       break;
+    case "ru":
+      listAcademic = academicListRussian.map((item) => ({
+        label: item.name,
+        value: item.id,
+        coordinates: item.coordinates,
+      }));
+    case "ar":
+      listAcademic = academicListArabic.map((item) => ({
+        label: item.name,
+        value: item.id,
+        coordinates: item.coordinates,
+      }));
   }
 
   // List of year options for DropDown component

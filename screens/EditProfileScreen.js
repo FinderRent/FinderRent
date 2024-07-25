@@ -24,6 +24,7 @@ import { UserContext, useUsers } from "../context/UserContext";
 import { useDarkMode } from "../context/DarkModeContext";
 import { academicListEnglish } from "../data/academicEnglish";
 import { academicListHebrew } from "../data/academicHebrew";
+import { academicListRussian } from "../data/academicRussian";
 import { Color } from "../constants/colors";
 import DropDown from "../components/inputs/DropDown";
 import Input from "../components/inputs/Input";
@@ -33,6 +34,7 @@ import ImagePicker from "../components/ImagePicker";
 import TakePhoto from "../components/TakePhoto";
 import ErrorMessage from "../components/ui/ErrorMessage";
 import updateUser from "../api/updateUser";
+import { academicListArabic } from "../data/academicArabic";
 
 function EditProfileScreen({ navigation }) {
   const { t, i18n } = useTranslation();
@@ -75,20 +77,19 @@ function EditProfileScreen({ navigation }) {
         coordinates: item.coordinates,
       }));
       break;
+    case "ru":
+      listAcademic = academicListRussian.map((item) => ({
+        label: item.name,
+        value: item.id,
+        coordinates: item.coordinates,
+      }));
+    case "ar":
+      listAcademic = academicListArabic.map((item) => ({
+        label: item.name,
+        value: item.id,
+        coordinates: item.coordinates,
+      }));
   }
-
-  // const listAcademic =
-  //   i18n.language === "en"
-  //     ? academicListEnglish.map((item) => ({
-  //         label: item.name,
-  //         value: item.id,
-  //         coordinates: item.coordinates,
-  //       }))
-  //     : academicListHebrew.map((item) => ({
-  //         label: item.name,
-  //         value: item.id,
-  //         coordinates: item.coordinates,
-  //       }));
 
   const listYear = [
     { label: t("signUp.preparing"), value: t("signUp.preparing") },

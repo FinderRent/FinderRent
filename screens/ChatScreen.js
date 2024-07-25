@@ -28,6 +28,8 @@ import * as ImagePickerFromGallery from "expo-image-picker";
 import AwesomeAlert from "react-native-awesome-alerts";
 import moment from "moment";
 import "moment/locale/he";
+import "moment/locale/ru";
+import "moment/locale/ar";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
@@ -126,10 +128,15 @@ function ChatScreen({ navigation, route }) {
     switch (i18n.language) {
       case "en":
         moment.locale("en");
-
         break;
       case "he":
         moment.locale("he");
+        break;
+      case "ru":
+        moment.locale("ru");
+        break;
+      case "ar":
+        moment.locale("ar");
         break;
     }
 

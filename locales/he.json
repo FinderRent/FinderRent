@@ -223,5 +223,11 @@
   "funFact": "עובדה מעניינת: ",
   "socialLinksTitle": "התחברו איתי",
   "chatWithMe": "שוחח איתי",
-  "empty": "אין"
+  "empty": "אין",
+
+  "changePassword": "שנה סיסמה",
+  "enterCurrentPassword": "הזן סיסמה נוכחית:",
+  "enterNewPassword": "הזן סיסמה חדשה:",
+  "confirmPassword": "אשר סיסמה:",
+  "updatePassword": "עדכן סיסמה"
 }

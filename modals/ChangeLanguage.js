@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -18,6 +18,7 @@ import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import i18next, { languageResources } from "../services/i18next";
 import languagesList from "../services/languagesList.json";
+import { checkRtllanguages } from "../utils/features";
 
 const ChangeLanguage = ({ showVisible }) => {
   const { isDarkMode } = useDarkMode();
@@ -28,16 +29,38 @@ const ChangeLanguage = ({ showVisible }) => {
   const [selectedLanguage, setSelectedLanguage] = useState(null);
   const [lng, setLng] = useState(i18next.language);
 
+  useEffect(() => {
+    const initializeLanguage = async () => {
+      const storedLanguage = await AsyncStorage.getItem("appLanguage");
+      if (storedLanguage) {
+        setLng(storedLanguage);
+      }
+    };
+    initializeLanguage();
+  }, []);
+
   const handleRestart = async () => {
+    // Change language and restart app
     i18next.changeLanguage(lng);
     setSelectedLanguage(lng);
+    await AsyncStorage.setItem("appLanguage", lng);
     await Updates.reloadAsync();
   };
 
-  const changeLng = async (lng) => {
-    setLng(lng);
-    await AsyncStorage.setItem("appLanguage", lng);
-    setShowRestartModal(true);
+  const changeLng = async (newLng) => {
+    const currentLangDirection = checkRtllanguages(lng);
+    const newLangDirection = checkRtllanguages(newLng);
+
+    // Update language and show restart modal only if direction changes
+    if (currentLangDirection !== newLangDirection) {
+      setLng(newLng);
+      setShowRestartModal(true);
+    } else {
+      await AsyncStorage.setItem("appLanguage", newLng);
+      i18next.changeLanguage(newLng);
+      setSelectedLanguage(newLng);
+      showVisible(false);
+    }
   };
 
   const handleCancel = () => {

@@ -26,7 +26,7 @@
   "theme": "Theme",
   "allowNotifications": "Allow Notifications",
   "about": "About",
-  "Page": "Contact Us",
+  "contactUs": "Contact Us",
   "version": "version",
 
   "language_change_message": "The app needs to restart to apply language changes.",
@@ -223,5 +223,11 @@
   "funFact": "Fun Fact: ",
   "socialLinksTitle": "Connect with me",
   "chatWithMe": "Chat With Me",
-  "empty": "Empty"
+  "empty": "Empty",
+
+  "changePassword": "Change Password",
+  "enterCurrentPassword": "Enter current password:",
+  "enterNewPassword": "Enter New Password:",
+  "confirmPassword": "Confirm Password:",
+  "updatePassword": "Update Password"
 }
