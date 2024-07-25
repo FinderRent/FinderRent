@@ -11,6 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ScrollView } from "react-native-gesture-handler";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { useNavigation } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
@@ -22,6 +23,7 @@ import Loader from "../components/ui/Loader";
 import ErrorMessage from "../components/ui/ErrorMessage";
 
 function StudentProfileScreen(props) {
+  const { t } = useTranslation();
   const { isDarkMode } = useDarkMode();
   const { userData } = useUsers();
 
@@ -66,6 +68,7 @@ function StudentProfileScreen(props) {
       },
     });
   }
+
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
       {isErrorUser && <ErrorMessage errorMessage={error} />}
@@ -98,7 +101,9 @@ function StudentProfileScreen(props) {
             size={35}
             color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
           />
-          <Text style={styles.funFactText}>Academic: {user?.academic}</Text>
+          <Text style={styles.funFactText}>
+            {t("academic")} {user?.academic || t("empty")}
+          </Text>
         </View>
         <View style={styles.detailsContainer}>
           <Icon
@@ -106,7 +111,9 @@ function StudentProfileScreen(props) {
             size={35}
             color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
           />
-          <Text style={styles.funFactText}>Department: {user?.department}</Text>
+          <Text style={styles.funFactText}>
+            {t("department")} {user?.department || t("empty")}
+          </Text>
         </View>
         <View style={styles.detailsContainer}>
           <Icon
@@ -114,7 +121,9 @@ function StudentProfileScreen(props) {
             size={35}
             color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
           />
-          <Text style={styles.funFactText}>Age: {user?.age}</Text>
+          <Text style={styles.funFactText}>
+            {t("age")} {user?.age || t("empty")}
+          </Text>
         </View>
         <View style={styles.detailsContainer}>
           <Icon
@@ -123,7 +132,7 @@ function StudentProfileScreen(props) {
             color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
           />
           <Text style={styles.funFactText}>
-            Hobbies: {user?.hobbies ? user?.hobbies : "Empty"}
+            {t("hobbies")} {user?.hobbies || t("empty")}
           </Text>
         </View>
         <View style={styles.detailsContainer}>
@@ -133,13 +142,13 @@ function StudentProfileScreen(props) {
             color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
           />
           <Text style={styles.funFactText}>
-            Fun Fact: {user?.funFact ? user?.funFact : "Empty"}
+            {t("funFact")} {user?.funFact || t("empty")}
           </Text>
         </View>
 
         {/* Social Links Section */}
         <View style={styles.socialLinksContainer}>
-          <Text style={styles.socialLinksTitle}>Connect with me</Text>
+          <Text style={styles.socialLinksTitle}>{t("socialLinksTitle")}</Text>
           <View style={styles.socialLinks}>
             <TouchableOpacity
               onPress={() =>
@@ -184,7 +193,7 @@ function StudentProfileScreen(props) {
               mode="contained"
               onPress={chatWithMe}
             >
-              {"Chat with me"}
+              {t("chatWithMe")}
             </Button>
           )}
         </Spacer>

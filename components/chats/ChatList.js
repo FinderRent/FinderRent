@@ -11,6 +11,7 @@ import { Text } from "react-native-paper";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 
 import { Color } from "../../constants/colors";
 import { useDarkMode } from "../../context/DarkModeContext";
@@ -20,8 +21,12 @@ import fetchChats from "../../api/chats/fetchChats";
 const { width } = Dimensions.get("window");
 
 function ChatList({ ouid, chatId, lastMessage, time, searchUser, deleteChat }) {
+  const { t } = useTranslation();
   const { isDarkMode } = useDarkMode();
   const navigation = useNavigation();
+
+  const translatedLastMessage =
+    lastMessage === "image" ? t("image") : lastMessage;
 
   const [selectedChatId, setSelectedChatId] = useState(false);
 
@@ -92,7 +97,7 @@ function ChatList({ ouid, chatId, lastMessage, time, searchUser, deleteChat }) {
 
           <View>
             <Text numberOfLines={1} style={styles.lastMessage}>
-              {lastMessage}
+              {translatedLastMessage}
             </Text>
 
             <Text numberOfLines={1} style={styles.time}>

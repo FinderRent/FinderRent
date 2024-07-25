@@ -15,6 +15,7 @@ import { DarkModeProvider } from "./context/DarkModeContext";
 import AuthStackScreens from "./navigation/AuthStackScreens";
 import FavoritesContextProvider from "./context/FavoritesContext";
 import i18next from "./services/i18next";
+import { checkRtllanguages } from "./utils/features";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -55,7 +56,7 @@ export default function App() {
 
   useEffect(() => {
     const changeLayoutDirection = async () => {
-      const isRTL = i18n.language === "he";
+      const isRTL = checkRtllanguages(i18n.language);
       I18nManager.forceRTL(isRTL);
       I18nManager.allowRTL(isRTL);
 

@@ -61,8 +61,7 @@ const HouseDetailsScreen = ({ navigation, route }) => {
 
   switch (i18n.language) {
     case "en":
-      templateMessage = `
-      Hello,
+      templateMessage = `Hello,
     
       I am interested in the apartment listed at:
     
@@ -76,8 +75,7 @@ const HouseDetailsScreen = ({ navigation, route }) => {
       `;
       break;
     case "he":
-      templateMessage = `
-שלום,
+      templateMessage = `שלום,
 
 אני מעוניין בדירה הרשומה בכתובת:
 

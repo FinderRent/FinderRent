@@ -1,17 +1,19 @@
 import { useLayoutEffect } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
+import { Platform } from "react-native";
+import { useTranslation } from "react-i18next";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import ChatListScreen from "../screens/ChatListScreen";
 import ChatScreen from "../screens/ChatScreen";
 import LoginScreen from "../screens/LoginScreen";
-import { Platform } from "react-native";
 
 const ChatStack = createNativeStackNavigator();
 
 function ChatStackScreen({ navigation, route }) {
+  const { t } = useTranslation();
   const { isDarkMode } = useDarkMode();
 
   const { isAuthenticated } = route.params;
@@ -56,7 +58,7 @@ function ChatStackScreen({ navigation, route }) {
         name="ChatListScreen"
         component={Screen}
         options={{
-          headerTitle: "Chats",
+          headerTitle: t("chats"),
           headerTitleAlign: "center",
           headerTintColor: isDarkMode ? Color.white : Color.darkTheme,
           headerTitleStyle: { fontFamily: "varelaRound" },

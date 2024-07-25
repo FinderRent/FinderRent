@@ -9,3 +9,8 @@ export const capitalizeWords = (string) => {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join(" ");
 };
+
+export const checkRtllanguages = (lang) => {
+  const rtlLanguages = ["ar", "he", "fa", "ur"];
+  return rtlLanguages.includes(lang);
+};

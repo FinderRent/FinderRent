@@ -23,13 +23,16 @@ import { Ionicons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { io } from "socket.io-client";
 import { launchCameraAsync } from "expo-image-picker";
+import { useTranslation } from "react-i18next";
 import * as ImagePickerFromGallery from "expo-image-picker";
 import AwesomeAlert from "react-native-awesome-alerts";
 import moment from "moment";
+import "moment/locale/he";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { useUsers } from "../context/UserContext";
+import { checkRtllanguages } from "../utils/features";
 import ChatScreenHeader from "../components/chats/ChatScreenHeader";
 import PageContainer from "../components/PageContainer";
 import Bubble from "../components/chats/Bubble";
@@ -42,12 +45,14 @@ import sendPushNotification from "../api/sendPushNotifications";
 import newChat from "../api/chats/newChat";
 
 function ChatScreen({ navigation, route }) {
+  const { t, i18n } = useTranslation();
   const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
   const { ouid, pushToken, image, title } = route?.params;
   const socket = useRef();
   const scrollRef = useAnimatedRef();
   let scrollOffset = null;
+  const isRTL = checkRtllanguages(i18n.language);
 
   const senderId = userData.id;
   const firstChat = route?.params?.firstChat;
@@ -108,10 +113,26 @@ function ChatScreen({ navigation, route }) {
   }
 
   useEffect(() => {
-    navigation.setOptions({
-      headerLeft: () => <ChatScreenHeader image={image} title={title} />,
-    });
-    moment.locale("en");
+    navigation.setOptions(
+      isRTL
+        ? {
+            headerRight: () => <ChatScreenHeader image={image} title={title} />,
+          }
+        : {
+            headerLeft: () => <ChatScreenHeader image={image} title={title} />,
+          }
+    );
+
+    switch (i18n.language) {
+      case "en":
+        moment.locale("en");
+
+        break;
+      case "he":
+        moment.locale("he");
+        break;
+    }
+
     // Function to run when the component unmounts
     return () => {
       navigation.reset({
@@ -276,7 +297,6 @@ function ChatScreen({ navigation, route }) {
       >
         <ImageBackground
           source={{ uri: getBackgroundImage(isDarkMode) }}
-          // style={styles.backgroundImage}
           style={
             isDarkMode
               ? {
@@ -291,7 +311,10 @@ function ChatScreen({ navigation, route }) {
         >
           <PageContainer style={{ backgroundColor: "transparent" }}>
             {!chatId && (
-              <Bubble text="Send message to start conversation" type="system" />
+              <Bubble
+                text={t("send_message_to_start_conversation")}
+                type="system"
+              />
             )}
             {chatId && (
               <FlatList
@@ -333,13 +356,13 @@ function ChatScreen({ navigation, route }) {
               />
             )}
             {isErrorAddMessages && (
-              <Bubble text="Error sending the message,try again" type="error" />
+              <Bubble text={t("error_sending_message")} type="error" />
             )}
           </PageContainer>
 
           {replyingTo && (
             <ReplyTo
-              name={replyingTo.senderId === senderId ? "You" : title}
+              name={replyingTo.senderId === senderId ? t("you") : title}
               text={replyingTo.messageText}
               onCancel={() => setReplyingTo(null)}
             />
@@ -362,7 +385,7 @@ function ChatScreen({ navigation, route }) {
                 : { ...styles.textbox }
             }
             selectionColor={Color.Blue500}
-            placeholder="Message"
+            placeholder={t("message")}
             placeholderTextColor={
               isDarkMode ? Color.defaultTheme : Color.darkTheme
             }
@@ -385,7 +408,12 @@ function ChatScreen({ navigation, route }) {
               style={styles.mediaButton}
               onPress={handelSendMessage}
             >
-              <Ionicons name="send" size={24} color={Color.Blue500} />
+              <Ionicons
+                name="send"
+                size={24}
+                color={Color.Blue500}
+                style={isRTL && { transform: [{ rotate: "180deg" }] }}
+              />
             </TouchableOpacity>
           )}
 
@@ -396,13 +424,13 @@ function ChatScreen({ navigation, route }) {
                 ? { backgroundColor: Color.darkTheme }
                 : { backgroundColor: Color.defaultTheme }
             }
-            title="Send Image"
+            title={t("send_image")}
             closeOnTouchOutside={true}
             closeOnHardwareBackPress={false}
             showCancelButton={true}
             showConfirmButton={true}
-            confirmText="Send"
-            cancelText="Cancel"
+            confirmText={t("send")}
+            cancelText={t("cancel")}
             confirmButtonColor={Color.Blue700}
             cancelButtonColor={
               isDarkMode ? Color.darkTheme : Color.defaultTheme
@@ -437,13 +465,13 @@ function ChatScreen({ navigation, route }) {
               ? { backgroundColor: Color.darkTheme }
               : { backgroundColor: Color.defaultTheme }
           }
-          title="Delete Message"
+          title={t("delete_message")}
           closeOnTouchOutside={true}
           closeOnHardwareBackPress={false}
           showCancelButton={true}
           showConfirmButton={true}
-          confirmText="Yes"
-          cancelText="No"
+          confirmText={t("yes")}
+          cancelText={t("no")}
           confirmButtonColor={Color.Blue700}
           cancelButtonColor={isDarkMode ? Color.darkTheme : Color.defaultTheme}
           cancelButtonTextStyle={{ color: Color.Blue500 }}
@@ -471,13 +499,13 @@ function ChatScreen({ navigation, route }) {
               ? { backgroundColor: Color.darkTheme }
               : { backgroundColor: Color.defaultTheme }
           }
-          title="Send Message"
+          title={t("send_message")}
           closeOnTouchOutside={true}
           closeOnHardwareBackPress={false}
           showCancelButton={true}
           showConfirmButton={true}
-          confirmText="Yes"
-          cancelText="No"
+          confirmText={t("yes")}
+          cancelText={t("no")}
           confirmButtonColor={Color.Blue700}
           cancelButtonColor={isDarkMode ? Color.darkTheme : Color.defaultTheme}
           cancelButtonTextStyle={{ color: Color.Blue500 }}
@@ -495,7 +523,7 @@ function ChatScreen({ navigation, route }) {
                     : { ...styles.templateTextbox }
                 }
                 selectionColor={Color.Blue500}
-                placeholder="Message"
+                placeholder={t("message")}
                 placeholderTextColor={
                   isDarkMode ? Color.defaultTheme : Color.darkTheme
                 }

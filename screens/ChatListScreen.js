@@ -15,6 +15,7 @@ import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { useTranslation } from "react-i18next";
 import AwesomeAlert from "react-native-awesome-alerts";
 import moment from "moment";
+import "moment/locale/he";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";

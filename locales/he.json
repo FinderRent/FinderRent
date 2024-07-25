@@ -16,7 +16,8 @@
   },
   "home": "בית",
   "profile": "פרופיל",
-  "chats": "צ'אט",
+  "chat": "צ'אט",
+  "chats": "צ'אטים",
   "settings": "הגדרות",
 
   "preferences": "העדפות",
@@ -200,5 +201,27 @@
     "interested": "מעוניין"
   },
 
-  "noResultsText": "אין צ'אטים להצגה."
+  "noResultsText": "אין צ'אטים להצגה.",
+  "send_message_to_start_conversation": "שלח הודעה כדי להתחיל שיחה",
+  "error_sending_message": "שגיאה בשליחת ההודעה, נסה שוב",
+  "send_image": "שלח תמונה",
+  "send": "שלח",
+  "delete_message": "מחק הודעה",
+  "yes": "כן",
+  "no": "לא",
+  "send_message": "שלח הודעה",
+  "message": "הודעה",
+  "you": "אתה",
+  "copy_to_clipboard": "העתק ללוח",
+  "reply": "השב",
+  "delete": "מחק",
+  "image": "תמונה",
+
+  "noFavorites": "אין דירות מועדפות.",
+
+  "academic": "אקדמיה: ",
+  "funFact": "עובדה מעניינת: ",
+  "socialLinksTitle": "התחברו איתי",
+  "chatWithMe": "שוחח איתי",
+  "empty": "אין"
 }

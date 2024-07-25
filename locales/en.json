@@ -201,5 +201,27 @@
     "interested": "Interested"
   },
 
-  "noResultsText": "No Chats To Display."
+  "noResultsText": "No Chats To Display.",
+  "send_message_to_start_conversation": "Send message to start conversation",
+  "error_sending_message": "Error sending the message, try again",
+  "send_image": "Send Image",
+  "send": "Send",
+  "delete_message": "Delete Message",
+  "yes": "Yes",
+  "no": "No",
+  "send_message": "Send Message",
+  "message": "Message",
+  "you": "You",
+  "copy_to_clipboard": "Copy to Clipboard",
+  "reply": "Reply",
+  "delete": "Delete",
+  "image": "image",
+
+  "noFavorites": "There's No Favorites Apartments.",
+
+  "academic": "Academic: ",
+  "funFact": "Fun Fact: ",
+  "socialLinksTitle": "Connect with me",
+  "chatWithMe": "Chat With Me",
+  "empty": "Empty"
 }

@@ -5,6 +5,7 @@ import { TouchableOpacity } from "@gorhom/bottom-sheet";
 import { ScrollView } from "react-native-gesture-handler";
 import { Card, Text } from "react-native-paper";
 import { Fontisto } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
@@ -15,6 +16,7 @@ import ErrorMessage from "../components/ui/ErrorMessage";
 import SwipeableRow from "../components/SwipeableRow";
 
 const FavoritesScreen = ({ navigation }) => {
+  const { t } = useTranslation();
   const { isDarkMode } = useDarkMode();
   const favoriteApartmentsCtx = useContext(FavoritesContext);
 
@@ -28,9 +30,7 @@ const FavoritesScreen = ({ navigation }) => {
           size={100}
           color={Color.buttomSheetDarkTheme}
         />
-        <Text style={styles.noResultsText}>
-          There's No Favorites Apartments.
-        </Text>
+        <Text style={styles.noResultsText}>{t("noFavorites")}</Text>
       </View>
     );
   }
