@@ -9,9 +9,9 @@ import { useDarkMode } from "../context/DarkModeContext";
 import SignInModal from "../modals/SignInModal";
 
 const SignInHeader = () => {
+  const { t } = useTranslation();
   const { isDarkMode } = useDarkMode();
   const [showSignInModal, setShowSignInModal] = useState(false);
-  const { t } = useTranslation();
 
   return (
     <>
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   midContainer: {
     paddingTop: 15,
     paddingHorizontal: 15,
-    marginRight: 5,
+    // marginRight: 5,
     flexDirection: "row",
     alignItems: "center",
   },

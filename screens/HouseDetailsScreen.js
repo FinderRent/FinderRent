@@ -88,6 +88,30 @@ const HouseDetailsScreen = ({ navigation, route }) => {
 תודה,
 `;
       break;
+    case "ru":
+      templateMessage = `Здравствуйте,
+
+      Я заинтересован в квартире, указанной по адресу:
+      
+      Адрес:
+      - Город: ${apartment?.address.city}
+      - Улица: ${apartment?.address.street}
+      - Номер квартиры: ${apartment?.address.apartmentNumber}
+      - Номер здания: ${apartment?.address.buildingNumber}
+      
+      Спасибо,`;
+    case "ar":
+      templateMessage = `مرحبًا،
+
+أنا مهتم بالشقة المدرجة على النحو التالي:
+
+العنوان:
+- المدينة: ${apartment?.address.city}
+- الشارع: ${apartment?.address.street}
+- رقم الشقة: ${apartment?.address.apartmentNumber}
+- رقم المبنى: ${apartment?.address.buildingNumber}
+
+شكرًا،`;
   }
 
   let chatId = null;

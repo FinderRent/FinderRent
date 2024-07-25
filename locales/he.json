@@ -54,6 +54,16 @@
       "success": "קוד לאיפוס סיסמה נשלח לאימייל"
     }
   },
+
+  "verificationCode": "קוד אימות",
+  "resendEmail": "שלח מייל מחדש",
+  "passwordConfirm": "אשר סיסמה",
+  "passwordError": "הסיסמה חייבת להכיל לפחות 6 תווים",
+  "reset": "אפס",
+  "emailSentSuccess": "קוד לאיפוס סיסמה נשלח למייל",
+  "emailSentError": "שגיאה בעת שליחת המייל",
+  "passwordChangedSuccess": "הסיסמה שונתה בהצלחה!",
+
   "signUp": {
     "header": "הירשם",
     "firstName": "שם פרטי",
@@ -136,6 +146,15 @@
     "km": "ק\"מ"
   },
 
+  "rooms": "חדרים",
+  "floor": "קומה",
+  "roommates": "שותפים",
+  "bestFor": "הכי מתאים ל",
+  "availableRooms": "חדרים זמינים",
+  "thereAre": "יש",
+  "whatThisPlaceOffers": "מה המקום הזה מציע",
+  "showAll": "הצג הכל",
+
   "All Categories": "כל הקטגוריות",
   "Land House": "בית קרקע",
   "Houseing Unit": "יחידת דיור",
@@ -153,7 +172,7 @@
   "Personal Info": "מידע אישי",
   "My Hobbies": "התחביבים שלי",
   "Add your hobbies": "הוסף את התחביבים שלך",
-  "Fun Fact": "עובדה כיפית",
+  "Fun Fact": "עובדה מעניינת",
   "Empty": "אין",
   "Other": "אחר",
   "Favorites": "מועדפים",
@@ -216,7 +235,10 @@
   "reply": "השב",
   "delete": "מחק",
   "image": "תמונה",
+  "deleteChat": "מחק צ'אט",
+  "deleteChats": "מחק צ'אטים",
 
+  "myFavorites": "המועדפים שלי",
   "noFavorites": "אין דירות מועדפות.",
 
   "academic": "אקדמיה: ",

@@ -29,7 +29,7 @@ import fetchChatsList from "../api/chats/fetchChatsList";
 import deleteChat from "../api/chats/deleteChat";
 
 function ChatListScreen({ navigation }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
   const tabBarHeight = useBottomTabBarHeight();
@@ -105,6 +105,20 @@ function ChatListScreen({ navigation }) {
         </View>
       ),
     });
+    switch (i18n.language) {
+      case "en":
+        moment.locale("en");
+        break;
+      case "he":
+        moment.locale("he");
+        break;
+      case "ru":
+        moment.locale("ru");
+        break;
+      case "ar":
+        moment.locale("ar");
+        break;
+    }
   }, [navigation, isDarkMode, selectedChatIds, alertDeleteChat]);
 
   useFocusEffect(
@@ -209,13 +223,15 @@ function ChatListScreen({ navigation }) {
             ? { backgroundColor: Color.buttomSheetDarkTheme }
             : { backgroundColor: Color.defaultTheme }
         }
-        title={selectedChatIds.length === 1 ? "Delete Chat" : "Delete Chats"}
+        title={
+          selectedChatIds.length === 1 ? t("deleteChat") : t("deleteChats")
+        }
         closeOnTouchOutside={true}
         closeOnHardwareBackPress={false}
         showCancelButton={true}
         showConfirmButton={true}
-        confirmText="Yes"
-        cancelText="No"
+        confirmText={t("yes")}
+        cancelText={t("no")}
         confirmButtonColor={isDarkMode ? Color.defaultTheme : Color.darkTheme}
         confirmButtonTextStyle={
           isDarkMode
@@ -235,7 +251,7 @@ function ChatListScreen({ navigation }) {
         onConfirmPressed={handleRemoveChat}
         onDismiss={() => setAlertDeleteChat(false)}
         customView={
-          <View style={{ marginTop: -5 }}>
+          <View>
             {isPendingDeleteChat && (
               <ActivityIndicator
                 style={{ marginTop: 10 }}

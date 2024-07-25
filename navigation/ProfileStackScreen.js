@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { View } from "react-native";
+import { useTranslation } from "react-i18next";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { Color } from "../constants/colors";
@@ -13,6 +14,7 @@ import FavoritesScreen from "../screens/FavoritesScreen";
 const ProfileStack = createNativeStackNavigator();
 
 function ProfileStackScreen({ navigation, route }) {
+  const { t } = useTranslation();
   const { isDarkMode } = useDarkMode();
 
   const { isAuthenticated } = route.params;
@@ -92,7 +94,7 @@ function ProfileStackScreen({ navigation, route }) {
         component={FavoritesScreen}
         options={{
           headerTintColor: isDarkMode ? Color.white : Color.darkTheme,
-          headerTitle: "My Favorites",
+          headerTitle: t("myFavorites"),
           headerTitleAlign: "center",
           headerTintColor: isDarkMode ? Color.white : Color.darkTheme,
           headerTitleStyle: { fontFamily: "varelaRound" },

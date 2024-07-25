@@ -1,30 +1,31 @@
 import React from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
-import { Button, Text } from "react-native-paper";
+import { Text } from "react-native-paper";
 import { ListItem } from "react-native-elements";
+import { useTranslation } from "react-i18next";
 
 import { Color } from "../../constants/colors";
 import { useDarkMode } from "../../context/DarkModeContext";
 
 const HouseAssets = (props) => {
+  const { t } = useTranslation();
   const { isDarkMode } = useDarkMode();
 
   const handleShowAllPress = () => {
     props.handleShowAllPress(apartmentContent);
   };
 
-  //extract the first six objects that are true
+  // Extract the first six objects that are true
   const trueKeys = Object.keys(props.apartmentContent).filter(
     (key) => props.apartmentContent[key]
   );
   const apartmentContent = trueKeys.slice(0, 6).filter((key) => key !== "_id");
-  // console.log(apartmentContent);
 
   return (
     <View style={styles.seperator}>
-      <Text style={styles.Header}>What This Place Offers</Text>
+      <Text style={styles.Header}>{t("whatThisPlaceOffers")}</Text>
       <View>
-        {/* if bigger than 6 items */}
+        {/* If more than 6 items */}
         {apartmentContent.length >= 6 &&
           apartmentContent.map((l, i) => (
             <ListItem
@@ -50,10 +51,10 @@ const HouseAssets = (props) => {
           ))}
         {apartmentContent.length >= 6 && (
           <TouchableOpacity style={styles.Button} onPress={handleShowAllPress}>
-            <Text style={styles.text}>Show all</Text>
+            <Text style={styles.text}>{t("showAll")}</Text>
           </TouchableOpacity>
         )}
-        {/* if shorter than 6 items */}
+        {/* If fewer than 6 items */}
         {apartmentContent.length < 6 &&
           apartmentContent.map((l, i) => (
             <ListItem
@@ -94,7 +95,6 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 32,
     borderRadius: 12,
-    // elevation: 3,
     borderWidth: 2,
     borderColor: "#ccc",
     marginVertical: 7,

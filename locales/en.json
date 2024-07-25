@@ -54,6 +54,16 @@
       "success": "Password reset code sent to email"
     }
   },
+
+  "verificationCode": "Verification Code",
+  "resendEmail": "Resend Email",
+  "passwordConfirm": "Password Confirm",
+  "passwordError": "Password must contain at least 6 characters",
+  "reset": "Reset",
+  "emailSentSuccess": "Password reset code sent to email",
+  "emailSentError": "Error while sending the email",
+  "passwordChangedSuccess": "Password changed successfully!",
+
   "signUp": {
     "header": "Sign Up",
     "firstName": "First Name",
@@ -136,6 +146,15 @@
     "km": "km"
   },
 
+  "rooms": "Rooms",
+  "floor": "Floor",
+  "roommates": "Roommates",
+  "bestFor": "Best For",
+  "availableRooms": "available Rooms",
+  "thereAre": "There are",
+  "whatThisPlaceOffers": "What This Place Offers",
+  "showAll": "Show all",
+
   "All Categories": "All Categories",
   "Land House": "Land House",
   "Houseing Unit": "Houseing Unit",
@@ -216,7 +235,10 @@
   "reply": "Reply",
   "delete": "Delete",
   "image": "image",
+  "deleteChat": "Delete Chat",
+  "deleteChats": "Delete Chats",
 
+  "myFavorites": "My Favorites",
   "noFavorites": "There's No Favorites Apartments.",
 
   "academic": "Academic: ",

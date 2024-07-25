@@ -54,6 +54,16 @@
       "success": "Код сброса пароля отправлен на электронную почту"
     }
   },
+
+  "verificationCode": "Код подтверждения",
+  "resendEmail": "Отправить повторно",
+  "passwordConfirm": "Подтверждение пароля",
+  "passwordError": "Пароль должен содержать не менее 6 символов",
+  "reset": "Сбросить",
+  "emailSentSuccess": "Код сброса пароля отправлен на электронную почту",
+  "emailSentError": "Ошибка при отправке электронного письма",
+  "passwordChangedSuccess": "Пароль успешно изменен!",
+
   "signUp": {
     "header": "Регистрация",
     "firstName": "Имя",
@@ -136,6 +146,15 @@
     "km": "км"
   },
 
+  "rooms": "Комнаты",
+  "floor": "Этаж",
+  "roommates": "Соседи по комнате",
+  "bestFor": "Лучше всего подходит для",
+  "availableRooms": "доступные комнаты",
+  "thereAre": "Есть",
+  "whatThisPlaceOffers": "Что предлагает это место",
+  "showAll": "Показать все",
+
   "All Categories": "Все категории",
   "Land House": "Земельный участок",
   "Houseing Unit": "Жилой блок",
@@ -216,12 +235,21 @@
   "reply": "Ответить",
   "delete": "Удалить",
   "image": "изображение",
+  "deleteChat": "Удалить чат",
+  "deleteChats": "Удалить чаты",
 
+  "myFavorites": "Мои избранные",
   "noFavorites": "Нет избранных квартир.",
 
   "academic": "Учебное заведение: ",
   "funFact": "Интересный факт: ",
   "socialLinksTitle": "Свяжитесь со мной",
   "chatWithMe": "Чат со мной",
-  "empty": "Пусто"
+  "empty": "Пусто",
+
+  "changePassword": "Сменить пароль",
+  "enterCurrentPassword": "Введите текущий пароль:",
+  "enterNewPassword": "Введите новый пароль:",
+  "confirmPassword": "Подтвердите пароль:",
+  "updatePassword": "Обновить пароль"
 }

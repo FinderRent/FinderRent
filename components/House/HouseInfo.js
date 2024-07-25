@@ -1,23 +1,25 @@
-import React from "react";
-import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
+import { useTranslation } from "react-i18next";
 
 const HouseInfo = (props) => {
+  const { t } = useTranslation();
+
   return (
     <View style={styles.container}>
       <View style={styles.innerInfo}>
         <Text style={styles.numberInfo}>{props.numberOfRooms}</Text>
-        <Text style={styles.headerInfo}>Rooms</Text>
+        <Text style={styles.headerInfo}>{t("rooms")}</Text>
       </View>
       <View style={styles.line}></View>
       <View style={styles.innerInfo}>
         <Text style={styles.numberInfo}>{props.floor}</Text>
-        <Text style={styles.headerInfo}>Floor</Text>
+        <Text style={styles.headerInfo}>{t("floor")}</Text>
       </View>
       <View style={styles.line}></View>
       <View style={styles.innerInfo}>
         <Text style={styles.numberInfo}>{props.totalCapacity}</Text>
-        <Text style={styles.headerInfo}>Roommates</Text>
+        <Text style={styles.headerInfo}>{t("roommates")}</Text>
       </View>
     </View>
   );

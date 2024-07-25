@@ -54,6 +54,16 @@
       "success": "تم إرسال رمز إعادة تعيين كلمة المرور إلى البريد الإلكتروني"
     }
   },
+
+  "verificationCode": "رمز التحقق",
+  "resendEmail": "إعادة إرسال البريد الإلكتروني",
+  "passwordConfirm": "تأكيد كلمة المرور",
+  "passwordError": "يجب أن تحتوي كلمة المرور على 6 أحرف على الأقل",
+  "reset": "إعادة تعيين",
+  "emailSentSuccess": "تم إرسال رمز إعادة تعيين كلمة المرور إلى البريد الإلكتروني",
+  "emailSentError": "خطأ أثناء إرسال البريد الإلكتروني",
+  "passwordChangedSuccess": "تم تغيير كلمة المرور بنجاح!",
+
   "signUp": {
     "header": "التسجيل",
     "firstName": "الاسم الأول",
@@ -136,6 +146,15 @@
     "km": "كم"
   },
 
+  "rooms": "الغرف",
+  "floor": "الطابق",
+  "roommates": "زملاء السكن",
+  "bestFor": "الأفضل لـ",
+  "availableRooms": "الغرف المتاحة",
+  "thereAre": "يوجد",
+  "whatThisPlaceOffers": "ما يقدمه هذا المكان",
+  "showAll": "عرض الكل",
+
   "All Categories": "جميع الفئات",
   "Land House": "منزل أرض",
   "Houseing Unit": "وحدة سكنية",
@@ -216,7 +235,10 @@
   "reply": "رد",
   "delete": "حذف",
   "image": "صورة",
+  "deleteChat": "حذف المحادثة",
+  "deleteChats": "حذف المحادثات",
 
+  "myFavorites": "مفضلاتي",
   "noFavorites": "لا توجد شقق مفضلة.",
 
   "academic": "الأكاديمية: ",

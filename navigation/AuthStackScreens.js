@@ -3,21 +3,19 @@ import {
   DarkTheme,
   DefaultTheme,
 } from "@react-navigation/native";
-import { I18nManager } from "react-native";
-
 import {
   MD3LightTheme,
   MD3DarkTheme,
   Provider as PaperProvider,
 } from "react-native-paper";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useTranslation } from "react-i18next";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import MainTabScreen from "./MainTabScreen";
 import SignUpScreen from "../screens/SignUpScreen";
 import ResetPasswordScreen from "../screens/ResetPasswordScreen";
-import { useTranslation } from "react-i18next";
 
 const AuthStack = createNativeStackNavigator();
 
@@ -57,7 +55,7 @@ const CustomPaperDefaultTheme = {
 
 function AuthStackScreens() {
   const { isDarkMode } = useDarkMode();
-  const { i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const theme = isDarkMode ? CustomDarkTheme : CustomDefaultTheme;
   const paperTheme = isDarkMode
@@ -68,7 +66,6 @@ function AuthStackScreens() {
     <NavigationContainer
       theme={{
         ...theme,
-        direction: i18n.language === "he" ? "rtl" : "ltr",
       }}
     >
       <PaperProvider theme={paperTheme}>

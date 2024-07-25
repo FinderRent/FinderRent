@@ -2,6 +2,7 @@ import { useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { useMutation } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import OTPInputView from "@twotalltotems/react-native-otp-input";
 import Toast from "react-native-toast-message";
 
@@ -15,6 +16,7 @@ import forgotPasswordEmail from "../api/emails/forgotPasswordEmail";
 import ErrorMessage from "../components/ui/ErrorMessage";
 
 function ResetPasswordScreen({ route }) {
+  const { t } = useTranslation();
   const { isDarkMode } = useDarkMode();
 
   const { email } = route.params;
@@ -34,7 +36,7 @@ function ResetPasswordScreen({ route }) {
     onSuccess: () => {
       Toast.show({
         type: "success",
-        text1: "Password changed successfully",
+        text1: t("passwordChangedSuccess"),
       });
     },
   });
@@ -47,13 +49,13 @@ function ResetPasswordScreen({ route }) {
     onSuccess: () => {
       Toast.show({
         type: "success",
-        text1: "Password reset code sent to email",
+        text1: t("emailSentSuccess"),
       });
     },
     onError: () => {
       Toast.show({
         type: "error",
-        text1: "Error while sending the email",
+        text1: t("emailSentError"),
       });
     },
   });
@@ -61,6 +63,7 @@ function ResetPasswordScreen({ route }) {
   const handleResetPassword = () => {
     mutateResetPassword({ otp, password, passwordConfirm });
   };
+
   const handleForgotPasswordEmail = () => {
     mutateForgotPasswordEmail({ email });
   };
@@ -69,7 +72,7 @@ function ResetPasswordScreen({ route }) {
     <View>
       <View style={styles.container}>
         <Text style={styles.text} variant="headlineSmall">
-          Verification Code
+          {t("verificationCode")}
         </Text>
         <OTPInputView
           style={styles.otp}
@@ -88,21 +91,21 @@ function ResetPasswordScreen({ route }) {
           onPress={handleForgotPasswordEmail}
           loading={isForgotPasswordEmailPanding}
         >
-          {!isForgotPasswordEmailPanding && "Resend Email"}
+          {!isForgotPasswordEmailPanding && t("resendEmail")}
         </Button>
 
         <Text style={styles.text} variant="headlineSmall">
-          Enter New Password
+          {t("enterNewPassword")}
         </Text>
       </View>
 
       <View style={styles.textInput}>
         <PasswordInput
           mode="outlined"
-          label="Password"
+          label={t("password")}
           onValueChange={(password) => setPassword(password)}
         />
-        {password.length > 0 && password.length < 6 && (
+        {password.length > 0 && password.length < 8 && (
           <Text
             style={
               isDarkMode
@@ -110,12 +113,12 @@ function ResetPasswordScreen({ route }) {
                 : { color: Color.errorText, paddingRight: 10 }
             }
           >
-            Password must contain at least 6 characters
+            {t("passwordError")}
           </Text>
         )}
         <PasswordInput
           mode="outlined"
-          label="Password Confirm"
+          label={t("passwordConfirm")}
           onValueChange={(passwordConfirm) =>
             setPasswordConfirm(passwordConfirm)
           }
@@ -135,14 +138,14 @@ function ResetPasswordScreen({ route }) {
           onPress={handleResetPassword}
           loading={isResetPasswordPending}
         >
-          {!isResetPasswordPending && "Reset"}
+          {!isResetPasswordPending && t("reset")}
         </Button>
       </Spacer>
       <TouchableOpacity
         style={{ marginHorizontal: 150 }}
         onPress={() => setShowSignInModal(true)}
       >
-        <Text style={{ textAlign: "center" }}>Login</Text>
+        <Text style={{ textAlign: "center" }}>{t("login")}</Text>
       </TouchableOpacity>
 
       {showSignInModal && (
