@@ -16,6 +16,12 @@ jest.mock("../../context/DarkModeContext", () => ({
   useDarkMode: jest.fn(),
 }));
 
+jest.mock("react-i18next", () => ({
+  useTranslation: () => ({
+    t: (key) => key,
+  }),
+}));
+
 describe("ImagePicker", () => {
   const onPickImageMock = jest.fn();
   const handleImageUploadMock = jest.fn();
@@ -38,7 +44,7 @@ describe("ImagePicker", () => {
       />
     );
 
-    fireEvent.press(getByText("Choose From Gallery"));
+    fireEvent.press(getByText("chooseFromGallery"));
 
     await waitFor(() => {
       expect(onPickImageMock).toHaveBeenCalledWith("test-uri");
@@ -58,7 +64,7 @@ describe("ImagePicker", () => {
       />
     );
 
-    fireEvent.press(getByText("Choose From Gallery"));
+    fireEvent.press(getByText("chooseFromGallery"));
 
     await waitFor(() => {
       expect(onPickImageMock).not.toHaveBeenCalled();

@@ -13,6 +13,12 @@ jest.mock("../../context/DarkModeContext", () => ({
   useDarkMode: jest.fn(),
 }));
 
+jest.mock("react-i18next", () => ({
+  useTranslation: () => ({
+    t: (key) => key,
+  }),
+}));
+
 describe("TakePhoto", () => {
   const onTakeImageMock = jest.fn();
 
@@ -29,7 +35,7 @@ describe("TakePhoto", () => {
 
     const { getByText } = render(<TakePhoto onTakeImage={onTakeImageMock} />);
 
-    fireEvent.press(getByText("Take Picture"));
+    fireEvent.press(getByText("takePicture"));
 
     await waitFor(() => {
       expect(onTakeImageMock).toHaveBeenCalledWith("test-uri");
@@ -44,7 +50,7 @@ describe("TakePhoto", () => {
 
     const { getByText } = render(<TakePhoto onTakeImage={onTakeImageMock} />);
 
-    fireEvent.press(getByText("Take Picture"));
+    fireEvent.press(getByText("takePicture"));
 
     await waitFor(() => {
       expect(onTakeImageMock).not.toHaveBeenCalled();
