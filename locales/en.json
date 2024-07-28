@@ -119,6 +119,14 @@
     "penthouse": "Penthouse"
   },
 
+  "categories2": {
+    "All Categories": "All Categories",
+    "Land House": "Land House",
+    "Houseing Unit": "Houseing Unit",
+    "Tower": "Tower",
+    "Penthouse": "Penthouse"
+  },
+
   "allCategories": "All Categories",
   "landHouse": "Land House",
   "housingUnit": "Housing Unit",

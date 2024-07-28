@@ -119,6 +119,14 @@
     "penthouse": "פנטהאוז"
   },
 
+  "categories2": {
+    "All Categories": "כל הקטגוריות",
+    "Land House": "בית קרקע",
+    "Housing Unit": "יחידת דיור",
+    "Tower": "מגדל",
+    "Penthouse": "פנטהאוז"
+  },
+
   "allCategories": "All Categories",
   "landHouse": "Land House",
   "housingUnit": "Housing Unit",
@@ -279,5 +287,8 @@
   "enterCurrentPassword": "הזן סיסמה נוכחית:",
   "enterNewPassword": "הזן סיסמה חדשה:",
   "confirmPassword": "אשר סיסמה:",
-  "updatePassword": "עדכן סיסמה"
+  "updatePassword": "עדכן סיסמה",
+
+  "Please provide email and password.": "אנא ספק אימייל וסיסמה.",
+  "Incorrect email or password.": "אימייל או סיסמה שגויים."
 }

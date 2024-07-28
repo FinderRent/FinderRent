@@ -119,6 +119,14 @@
     "penthouse": "Пентхаус"
   },
 
+  "categories2": {
+    "All Categories": "Все категории",
+    "Land House": "Земельный участок",
+    "Houseing Unit": "Жилой блок",
+    "Tower": "Башня",
+    "Penthouse": "Пентхаус"
+  },
+
   "allCategories": "All Categories",
   "landHouse": "Land House",
   "housingUnit": "Housing Unit",

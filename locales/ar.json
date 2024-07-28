@@ -119,6 +119,14 @@
     "penthouse": "بنتهاوس"
   },
 
+  "categories2": {
+    "All Categories": "جميع الفئات",
+    "Land House": "منزل أرض",
+    "Houseing Unit": "وحدة سكنية",
+    "Tower": "برج",
+    "Penthouse": "بنتهاوس"
+  },
+
   "allCategories": "All Categories",
   "landHouse": "Land House",
   "housingUnit": "Housing Unit",

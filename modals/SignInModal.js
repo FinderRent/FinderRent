@@ -147,7 +147,7 @@ function SignInModal({ showVisible }) {
                   onValueChange={(password) => setPassword(password)}
                 />
               </View>
-              {isError && <ErrorMessage errorMessage={error.message} />}
+              {isError && <ErrorMessage errorMessage={t(error.message)} />}
               <TouchableOpacity onPress={handleForgotPassword}>
                 <Text style={styles.textInput}>{t("forgot_password")}</Text>
               </TouchableOpacity>

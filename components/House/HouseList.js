@@ -54,7 +54,6 @@ function HouseList({
         coordinates,
       }),
   });
-
   const {
     data: distances,
     refetch: refetchDistance,
@@ -134,7 +133,9 @@ function HouseList({
           />
           {!token ? (
             <Text style={styles.noResultsText}>
-              {t("HouseList.noResults.noApartments", { category })}
+              {t("HouseList.noResults.noApartments", {
+                category: t(`categories2.${category}`),
+              })}
             </Text>
           ) : (
             <View>
@@ -143,7 +144,7 @@ function HouseList({
               </Text> */}
               <Text style={styles.noResultsText}>
                 {t("HouseList.noResults.noApartmentsWithDistance", {
-                  category,
+                  category: t(`categories2.${category}`),
                   distance,
                 })}
               </Text>
