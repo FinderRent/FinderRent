@@ -34,7 +34,7 @@ const LandlordHouseCard = ({ navigation, apartment }) => {
         >
           <View style={styles.imagesContainer}>
             <Image
-              source={{ uri: images[0] }}
+              source={{ uri: apartment.images.url }} // Use the first image in the array
               style={styles.image}
               resizeMode="cover"
             />

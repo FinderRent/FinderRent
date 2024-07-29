@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   StyleSheet,
   SafeAreaView,
@@ -6,48 +6,47 @@ import {
   View,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  I18nManager,
 } from "react-native";
 import { Switch, Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 
 import { version as app_version } from "../package.json";
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import ThemeModal from "../modals/ThemeModal";
+import i18next from "../services/i18next";
+import ChangeLanguage from "../modals/ChangeLanguage";
 
 const SECTIONS = [
   {
-    header: "Preferences",
+    header: "preferences",
     items: [
-      { id: "language", icon: "earth", label: "Language", type: "select" },
-      {
-        id: "theme",
-        icon: "theme-light-dark",
-        label: "Theme",
-        type: "link",
-      },
+      { id: "language", icon: "earth", label: "language", type: "select" },
+      { id: "theme", icon: "theme-light-dark", label: "theme", type: "link" },
       {
         id: "notifications",
         icon: "bell-outline",
-        label: "Allow Notifications",
+        label: "allowNotifications",
         type: "toggle",
       },
     ],
   },
   {
-    header: "Help",
+    header: "help",
     items: [
       {
         id: "about",
         icon: "information-outline",
-        label: "About",
+        label: "about",
         type: "link",
       },
       {
         id: "contact",
         icon: "email-outline",
-        label: "Contact Us",
+        label: "contactUs",
         type: "link",
       },
     ],
@@ -56,22 +55,45 @@ const SECTIONS = [
 
 function SettingsScreen() {
   const { isDarkMode, handleTheme, theme } = useDarkMode();
+  const { t } = useTranslation();
   const navigation = useNavigation();
 
   const [showThemeModal, setShowThemeModal] = useState(false);
-  // const [language, setLanguage] = useState("English");
-  // const [notifications, setNotifications] = useState(true);
+  const [showLanguageModal, setShowLanguageModal] = useState(false);
 
   const [form, setForm] = useState({
-    language: "English",
+    language: "",
     notifications: true,
   });
 
+  useEffect(() => {
+    let newLang = "";
+
+    switch (i18next.language) {
+      case "en":
+        newLang = "English";
+        break;
+      case "he":
+        newLang = "עברית";
+        break;
+      case "ru":
+        newLang = "русский";
+        break;
+      case "ar":
+        newLang = "العربية";
+        break;
+    }
+
+    setForm((prevForm) => ({
+      ...prevForm,
+      language: newLang,
+    }));
+  }, [i18next.language]);
+
   const handlePress = (id) => {
-    // switch statement to handle different ids
     switch (id) {
       case "language":
-        console.log("Language pressed");
+        setShowLanguageModal(true);
         break;
       case "about":
         navigation.navigate("AboutScreen");
@@ -81,6 +103,7 @@ function SettingsScreen() {
         break;
       case "theme":
         setShowThemeModal(true);
+        break;
       default:
         break;
     }
@@ -96,13 +119,13 @@ function SettingsScreen() {
     >
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.title}>Settings</Text>
+          <Text style={styles.title}>{t("settings")}</Text>
         </View>
 
         {SECTIONS.map(({ header, items }) => (
           <View style={styles.section} key={header}>
             <View style={styles.sectionHeader}>
-              <Text style={styles.sectionHeaderText}>{header}</Text>
+              <Text style={styles.sectionHeaderText}>{t(header)}</Text>
             </View>
             <View style={styles.sectionBody}>
               {items.map(({ id, label, icon, type, value }, index) => {
@@ -127,7 +150,7 @@ function SettingsScreen() {
                             style={styles.rowIcon}
                             size={22}
                           />
-                          <Text style={styles.rowLabel}>{label}</Text>
+                          <Text style={styles.rowLabel}>{t(label)}</Text>
                           <View style={styles.rowSpacer} />
                           <Switch
                             color={Color.Blue100}
@@ -150,7 +173,7 @@ function SettingsScreen() {
                             style={styles.rowIcon}
                             size={22}
                           />
-                          <Text style={styles.rowLabel}>{label}</Text>
+                          <Text style={styles.rowLabel}>{t(label)}</Text>
                           <View style={styles.rowSpacer} />
                           {type === "select" && (
                             <Text style={styles.rowValue}>{form[id]}</Text>
@@ -158,7 +181,11 @@ function SettingsScreen() {
                           {(type === "select" || type === "link") && (
                             <MaterialCommunityIcons
                               color={Color.extraGray}
-                              name="chevron-right"
+                              name={
+                                I18nManager.isRTL
+                                  ? "chevron-left"
+                                  : "chevron-right"
+                              }
                               size={22}
                             />
                           )}
@@ -178,16 +205,23 @@ function SettingsScreen() {
             appTheme={theme}
           />
         )}
+        {showLanguageModal && (
+          <ChangeLanguage
+            showVisible={(showVisible) => setShowLanguageModal(showVisible)}
+            // handleTheme={handleTheme}
+            // appTheme={theme}
+          />
+        )}
       </ScrollView>
       <View style={styles.footer}>
         <Text style={styles.name}>FindeRent</Text>
-        <Text style={styles.version}>version: {app_version}</Text>
+        <Text style={styles.version}>
+          {t("version")}: {app_version}
+        </Text>
       </View>
     </SafeAreaView>
   );
 }
-
-export default SettingsScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -272,3 +306,5 @@ const styles = StyleSheet.create({
     color: Color.extraGray,
   },
 });
+
+export default SettingsScreen;

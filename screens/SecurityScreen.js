@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { useMutation } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import Toast from "react-native-toast-message";
 
 import { Color } from "../constants/colors";
@@ -20,6 +21,7 @@ import ErrorMessage from "../components/ui/ErrorMessage";
 import changePassword from "../api/authentication/changePassword";
 
 function SecurityScreen() {
+  const { t } = useTranslation();
   const { userData } = useUsers();
   const token = userData.token;
 
@@ -57,11 +59,11 @@ function SecurityScreen() {
             keyboardVerticalOffset={100}
           >
             <Text style={styles.title} variant="headlineSmall">
-              Change Password
+              {t("changePassword")}
             </Text>
             <View style={{ marginTop: 25 }}>
               <Text style={styles.text} variant="titleMedium">
-                Enter current password:
+                {t("enterCurrentPassword")}
               </Text>
 
               <PasswordInput
@@ -73,7 +75,7 @@ function SecurityScreen() {
             </View>
             <View style={{ marginTop: 10 }}>
               <Text style={styles.text} variant="titleMedium">
-                Enter New Password:
+                {t("enterNewPassword")}
               </Text>
             </View>
             <PasswordInput
@@ -81,7 +83,7 @@ function SecurityScreen() {
               onValueChange={(password) => setPassword(password)}
             />
             <Text style={styles.text} variant="titleMedium">
-              Confirm Password:
+              {t("confirmPassword")}
             </Text>
             <PasswordInput
               mode="outlined"
@@ -100,10 +102,10 @@ function SecurityScreen() {
                 onPress={handleChangePassword}
                 loading={isPending}
               >
-                {!isPending && "Update Password    "}
+                {!isPending && t("updatePassword")}
               </Button>
             </Spacer>
-            <NavLink text="Back    " style={{ marginTop: -5, fontSize: 14 }} />
+            <NavLink text={t("back")} style={{ marginTop: -5, fontSize: 14 }} />
           </KeyboardAvoidingView>
         </ScrollView>
       </View>

@@ -1,8 +1,11 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
+import { useTranslation } from "react-i18next";
 
 const HouseRoommates = (props) => {
+  const { t } = useTranslation();
+
   return (
     <View style={styles.container}>
       <View style={styles.viewContainer}>
@@ -10,19 +13,19 @@ const HouseRoommates = (props) => {
           style={styles.roommatePhoto}
           source={require("../../assets/images/roommate.png")}
         /> */}
-        <Text style={styles.Text}>Best For</Text>
+        <Text style={styles.Text}>{t("bestFor")}</Text>
         <Text style={[styles.Text, styles.numberInfo]}>
           {props.totalCapacity}
         </Text>
-        <Text style={styles.Text}>Roommates</Text>
+        <Text style={styles.Text}>{t("roommates")}</Text>
       </View>
       <View style={styles.line}></View>
       <View style={styles.viewContainer}>
-        <Text style={styles.Text}>There are</Text>
+        <Text style={styles.Text}>{t("thereAre")}</Text>
         <Text style={[styles.Text, styles.numberInfo]}>
           {Math.max(0, props.totalCapacity - props.realTimeCapacity)}
         </Text>
-        <Text style={styles.Text}>available Rooms</Text>
+        <Text style={styles.Text}>{t("availableRooms")}</Text>
       </View>
     </View>
   );

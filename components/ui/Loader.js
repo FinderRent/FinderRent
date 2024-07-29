@@ -4,7 +4,12 @@ import { ActivityIndicator } from "react-native-paper";
 function Loader({ color, size }) {
   return (
     <View style={styles.container}>
-      <ActivityIndicator animating={true} color={color} size={size} />
+      <ActivityIndicator
+        testID="loader-activity-indicator"
+        animating={true}
+        color={color}
+        size={size}
+      />
     </View>
   );
 }

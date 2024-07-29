@@ -1,0 +1,294 @@
+{
+  "aboutApp": {
+    "title": "אודות האפליקציה שלנו",
+    "welcome": "ברוכים הבאים לאפליקציה שלנו, שפותחה כחלק מהפרויקט הסופי שלנו במכללת סמי שמעון. הפרויקט החדשני שלנו נועד לשנות את הדרך בה סטודנטים מוצאים דירות להשכרה באזורי לימודים. האפליקציה שלנו מטפלת באתגרים של שיטות החיפוש המסורתיות לדירות, ומחליפה את התהליך המייגע של חיפוש בקבוצות פייסבוק, רשתות חברתיות וערוצים מיושנים אחרים בפתרון מודרני ויעיל.",
+    "platform": "הפלטפורמה שלנו מותאמת במיוחד לסטודנטים ובעלי דירות ליד מוסדות אקדמיים, ומציעה מרכז ממוקד שבו סטודנטים יכולים להתחבר בקלות עם בעלי הדירות. באמצעות טכנולוגיות מתקדמות כמו שירותי מיקום גיאוגרפי והעדפות אישיות, האפליקציה שלנו מפשטת את תהליך חיפוש הדירות, והופכת אותו לקל ואינטואיטיבי יותר.",
+    "features": {
+      "title": "תכונות עיקריות:",
+      "centralized": "פלטפורמה מרכזית: מביאה יחד סטודנטים ובעלי דירות במקום נוח אחד.",
+      "location": "שירותי מיקום גיאוגרפי: עוזרים לך למצוא דירות בקרבת המוסד האקדמי שלך.",
+      "preferences": "העדפות אישיות: מתאימות לך נכסים העונים על הצרכים וההעדפות הספציפיות שלך.",
+      "interface": "ממשק ידידותי למשתמש: מבטיח חווית חיפוש חלקה ומהנה.",
+      "experience": "חווית משתמש נוחה: מפשטת את תהליך מציאת הדירה המושלמת."
+    },
+    "mission": "המשימה שלנו היא ליצור חווית חיפוש דירות חלקה ויעילה לסטודנטים, ולהפוך תהליך שלרוב הינו מלחיץ למסע ללא דאגות. הצטרפו אלינו וגלו דרך טובה יותר למצוא את הבית הבא שלכם בקרבת המוסד האקדמי שלכם.",
+    "copyright": "כל הזכויות שמורות"
+  },
+  "home": "בית",
+  "profile": "פרופיל",
+  "chat": "צ'אט",
+  "chats": "צ'אטים",
+  "settings": "הגדרות",
+
+  "preferences": "העדפות",
+  "help": "עזרה",
+  "language": "שפה",
+  "theme": "ערכת נושא",
+  "allowNotifications": "אפשר התראות",
+  "about": "אודות",
+  "contactUs": "צור קשר",
+  "version": "גרסה",
+
+  "language_change_message": "יש להפעיל מחדש את האפליקציה כדי להחיל את שינויי השפה.",
+  "cancel": "ביטול",
+  "confirm": "אשר",
+
+  "choose_theme": "בחר ערכת נושא",
+  "system_default": "ברירת מחדל מערכת",
+  "bright": "בהיר",
+  "dark": "כהה",
+
+  "login": "התחברות",
+  "email": "אימייל",
+  "password": "סיסמה",
+  "forgot_password": "שכחת סיסמה?",
+  "no_account_register": "אין לך חשבון? הירשם",
+  "login_button": "התחברות",
+  "logged_in_successfully": "התחברת בהצלחה",
+
+  "forgotPassword": {
+    "enterEmail": "נא להזין כתובת אימייל לקבלת קוד לאיפוס הסיסמה",
+    "email": "אימייל",
+    "send": "שלח",
+    "toast": {
+      "success": "קוד לאיפוס סיסמה נשלח לאימייל"
+    }
+  },
+
+  "verificationCode": "קוד אימות",
+  "resendEmail": "שלח מייל מחדש",
+  "passwordConfirm": "אשר סיסמה",
+  "passwordError": "הסיסמה חייבת להכיל לפחות 6 תווים",
+  "reset": "אפס",
+  "emailSentSuccess": "קוד לאיפוס סיסמה נשלח למייל",
+  "emailSentError": "שגיאה בעת שליחת המייל",
+  "passwordChangedSuccess": "הסיסמה שונתה בהצלחה!",
+
+  "signUp": {
+    "header": "הירשם",
+    "firstName": "שם פרטי",
+    "lastName": "שם משפחה",
+    "age": "גיל",
+    "gender": "מגדר",
+    "male": "זכר",
+    "female": "נקבה",
+    "role": "תפקיד",
+    "landlord": "בעל דירה",
+    "student": "סטודנט",
+    "academicInstitution": "מוסד אקדמי",
+    "searchAcademic": "חפש מוסד אקדמי",
+    "department": "מחלקה",
+    "yearbook": "שנה",
+    "preparing": "מכינה",
+    "year1": "שנה 1",
+    "year2": "שנה 2",
+    "year3": "שנה 3",
+    "year4": "שנה 4",
+    "masterDegree": "תואר שני",
+    "email": "אימייל",
+    "password": "סיסמה",
+    "passwordConfirm": "אשר סיסמה",
+    "passwordError": "הסיסמה חייבת להיות באורך של לפחות 8 תווים",
+    "signUp": "הרשם",
+    "back": "חזור",
+    "toast": {
+      "success": "הרשמה בוצעה בהצלחה!"
+    }
+  },
+  "signInPrompt": "התחבר כדי לראות את המיקום שלך",
+  "signInButton": "התחבר",
+
+  "loginPrompt": "התחבר כדי לראות את מסך ה{{screenName}}.",
+
+  "contactUsPage": {
+    "title": "צרו קשר לבקשות תמיכה או משוב",
+    "firstName": "שם פרטי",
+    "lastName": "שם משפחה",
+    "email": "אימייל",
+    "subject": "נושא",
+    "message": "הודעה",
+    "successMessage": "ההודעה שלך נשלחה בהצלחה",
+    "sendMessage": "שלח הודעה"
+  },
+
+  "categories": {
+    "allCategories": "כל הקטגוריות",
+    "landHouse": "בית קרקע",
+    "housingUnit": "יחידת דיור",
+    "tower": "מגדל",
+    "penthouse": "פנטהאוז"
+  },
+
+  "categories2": {
+    "All Categories": "כל הקטגוריות",
+    "Land House": "בית קרקע",
+    "Housing Unit": "יחידת דיור",
+    "Tower": "מגדל",
+    "Penthouse": "פנטהאוז"
+  },
+
+  "allCategories": "All Categories",
+  "landHouse": "Land House",
+  "housingUnit": "Housing Unit",
+  "tower": "Tower",
+  "penthouse": "Penthouse",
+
+  "filterScreen": {
+    "sortBy": "מיין לפי",
+    "distance": "מרחק",
+    "apartmentType": "סוג דירה",
+    "clearAll": "נקה הכל",
+    "apply": "החל",
+    "selectNumberOfBedrooms": "בחר מספר חדרי שינה",
+    "selectFloorNumber": "בחר מספר קומה",
+    "selectHowManyRoommates": "בחר כמה שותפים",
+    "distanceInKm": "מרחק בק\"מ",
+    "selectDistanceFromAcademy": "בחר מרחק מהאקדמיה",
+    "rooms": "חדרים",
+    "floor": "קומה",
+    "roommates": "שותפים",
+    "lowToHigh": "מנמוך לגבוה",
+    "highToLow": "מגבוה לנמוך",
+    "newToOld": "חדש לישן",
+    "oldToNew": "ישן לחדש",
+    "remove": "הסר",
+    "add": "הוסף",
+    "filters": "מסננים",
+    "apartmentFilters": "מסנני דירה",
+    "selectNumber": "בחר מספר",
+    "distanceFromAcademy": "מרחק מהאקדמיה",
+    "km": "ק\"מ"
+  },
+
+  "rooms": "חדרים",
+  "floor": "קומה",
+  "roommates": "שותפים",
+  "bestFor": "הכי מתאים ל",
+  "availableRooms": "חדרים זמינים",
+  "thereAre": "יש",
+  "whatThisPlaceOffers": "מה המקום הזה מציע",
+  "showAll": "הצג הכל",
+
+  "houseAssets": {
+    "tv": "טלוויזיה",
+    "television": "טלוויזיה",
+    "beds": "מיטות",
+    "bed": "מיטה",
+    "wifi": "ווייפיי",
+    "wi-fi": "ווי-פיי",
+    "wireless internet": "אינטרנט אלחוטי",
+    "balcony": "מרפסת",
+    "oven": "תנור",
+    "microwave": "מיקרוגל",
+    "couch": "ספה",
+    "coffeeTable": "שולחן קפה",
+    "waterHeater": "דוד מים",
+    "washer": "מכונת כביסה",
+    "dryer": "מייבש",
+    "iron": "מגהץ",
+    "refrigirator": "מקרר",
+    "fridge": "מקרר",
+    "freezer": "מקפיא"
+  },
+
+  "All Categories": "כל הקטגוריות",
+  "Land House": "בית קרקע",
+  "Houseing Unit": "יחידת דיור",
+  "Tower": "מגדל",
+  "Penthouse": "פנטהאוז",
+  "lowToHigh": "מנמוך לגבוה",
+  "highToLow": "מגבוה לנמוך",
+  "newToOld": "חדש לישן",
+  "oldToNew": "ישן לחדש",
+
+  "Logged Out Successfully": "התנתקת בהצלחה",
+  "Profile": "פרופיל",
+  "Student": "סטודנט",
+  "Not available": "לא זמין",
+  "Personal Info": "מידע אישי",
+  "My Hobbies": "התחביבים שלי",
+  "Add your hobbies": "הוסף את התחביבים שלך",
+  "Fun Fact": "עובדה מעניינת",
+  "Empty": "אין",
+  "Other": "אחר",
+  "Favorites": "מועדפים",
+  "Security": "אבטחה",
+  "Logout": "התנתקת",
+
+  "update_picture": "עדכן תמונה",
+  "first_name": "שם פרטי",
+  "last_name": "שם משפחה",
+  "age": "גיל",
+  "phone": "טלפון",
+  "academic_institution": "חפש מוסד אקדמי",
+  "department": "מחלקה",
+  "yearbook": "שנה",
+  "hobbies": "מה התחביבים שלך?",
+  "fun_fact": "ספר לנו עובדה מעניינת...",
+  "profile_success": "הפרופיל עודכן בהצלחה",
+  "update": "עדכן",
+  "back": "חזור",
+  "choose_profile_picture": "בחר תמונת פרופיל",
+  "delete_picture": "מחק תמונה",
+
+  "chooseFromGallery": "בחר מהגלרייה",
+  "takePicture": "צלם תמונה",
+
+  "location": "מיקום",
+
+  "HouseList": {
+    "noResults": {
+      "noApartments": "אין דירות {{category}}.",
+      "noApartmentsWithDistance": "אין דירות {{category}} במרחק של {{distance}} ק\"מ מהאקדמיה."
+    },
+    "header": "דירות במרחק של {{distance}} ק\"מ מהאקדמיה",
+    "mapButton": "מפה"
+  },
+
+  "houseDetails": {
+    "city": "עיר",
+    "street": "רחוב",
+    "distance": "במרחק {{distance}} ק\"מ מ{{academic}}",
+    "about": "אודות",
+    "currentTenants": "דיירים נוכחיים",
+    "loginToViewTenants": "התחבר לצפייה בדיירים",
+    "monthPerson": "חודש / אדם",
+    "interested": "מעוניין"
+  },
+
+  "noResultsText": "אין צ'אטים להצגה.",
+  "send_message_to_start_conversation": "שלח הודעה כדי להתחיל שיחה",
+  "error_sending_message": "שגיאה בשליחת ההודעה, נסה שוב",
+  "send_image": "שלח תמונה",
+  "send": "שלח",
+  "delete_message": "מחק הודעה",
+  "yes": "כן",
+  "no": "לא",
+  "send_message": "שלח הודעה",
+  "message": "הודעה",
+  "you": "אתה",
+  "copy_to_clipboard": "העתק ללוח",
+  "reply": "השב",
+  "delete": "מחק",
+  "image": "תמונה",
+  "deleteChat": "מחק צ'אט",
+  "deleteChats": "מחק צ'אטים",
+
+  "myFavorites": "המועדפים שלי",
+  "noFavorites": "אין דירות מועדפות.",
+
+  "academic": "אקדמיה: ",
+  "funFact": "עובדה מעניינת: ",
+  "socialLinksTitle": "התחברו איתי",
+  "chatWithMe": "שוחח איתי",
+  "empty": "אין",
+
+  "changePassword": "שנה סיסמה",
+  "enterCurrentPassword": "הזן סיסמה נוכחית:",
+  "enterNewPassword": "הזן סיסמה חדשה:",
+  "confirmPassword": "אשר סיסמה:",
+  "updatePassword": "עדכן סיסמה",
+
+  "Please provide email and password.": "אנא ספק אימייל וסיסמה.",
+  "Incorrect email or password.": "אימייל או סיסמה שגויים."
+}

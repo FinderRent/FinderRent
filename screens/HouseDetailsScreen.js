@@ -1,4 +1,4 @@
-import { useContext, useLayoutEffect, useState } from "react";
+import React, { useContext, useLayoutEffect, useState } from "react";
 import {
   Dimensions,
   StyleSheet,
@@ -16,9 +16,11 @@ import Animated, {
 } from "react-native-reanimated";
 import Carousel from "react-native-reanimated-carousel";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { Paragraph, Text } from "react-native-paper";
 import { useQuery } from "@tanstack/react-query";
 import { Ionicons } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
@@ -40,9 +42,10 @@ const IMG_HEIGHT = 300;
 const { width } = Dimensions.get("window");
 
 const HouseDetailsScreen = ({ navigation, route }) => {
-  const favoriteApartmentsCtx = useContext(FavoritesContext);
+  const { t, i18n } = useTranslation();
   const { isDarkMode } = useDarkMode();
   const { userData } = useUsers();
+  const favoriteApartmentsCtx = useContext(FavoritesContext);
 
   const { apartmentWithDistance: apartment } = route.params;
   const routes = navigation.getState()?.routes;
@@ -54,19 +57,62 @@ const HouseDetailsScreen = ({ navigation, route }) => {
   const city = capitalizeWords(apartment?.address.city);
   const street = capitalizeWords(apartment?.address.street);
 
-  const templateMessage = `
-  Hello,
+  let templateMessage = "";
 
-  I am interested in the apartment listed at:
+  switch (i18n.language) {
+    case "en":
+      templateMessage = `Hello,
+    
+      I am interested in the apartment listed at:
+    
+      Address:
+      - City: ${apartment?.address.city}
+      - Street: ${apartment?.address.street}
+      - Apartment Number: ${apartment?.address.apartmentNumber}
+      - Building Number: ${apartment?.address.buildingNumber}
+    
+       Thank you,
+      `;
+      break;
+    case "he":
+      templateMessage = `שלום,
 
-  Address:
-  - City: ${apartment?.address.city}
-  - Street: ${apartment?.address.street}
-  - Apartment Number: ${apartment?.address.apartmentNumber}
-  - Building Number: ${apartment?.address.buildingNumber}
+אני מעוניין בדירה הרשומה בכתובת:
 
-   Thank you,
-  `;
+כתובת:
+- עיר: ${apartment?.address.city}
+- רחוב: ${apartment?.address.street}
+- מספר דירה: ${apartment?.address.apartmentNumber}
+- מספר בניין: ${apartment?.address.buildingNumber}
+
+תודה,
+`;
+      break;
+    case "ru":
+      templateMessage = `Здравствуйте,
+
+      Я заинтересован в квартире, указанной по адресу:
+      
+      Адрес:
+      - Город: ${apartment?.address.city}
+      - Улица: ${apartment?.address.street}
+      - Номер квартиры: ${apartment?.address.apartmentNumber}
+      - Номер здания: ${apartment?.address.buildingNumber}
+      
+      Спасибо,`;
+    case "ar":
+      templateMessage = `مرحبًا،
+
+أنا مهتم بالشقة المدرجة على النحو التالي:
+
+العنوان:
+- المدينة: ${apartment?.address.city}
+- الشارع: ${apartment?.address.street}
+- رقم الشقة: ${apartment?.address.apartmentNumber}
+- رقم المبنى: ${apartment?.address.buildingNumber}
+
+شكرًا،`;
+  }
 
   let chatId = null;
   let firstChat = true;
@@ -185,7 +231,11 @@ const HouseDetailsScreen = ({ navigation, route }) => {
   const handleMapPress = () => {
     setMapPress(!mapPress);
   };
-  const handleShowAllPress = (apartmentContent) => {
+  const handleShowAllPress = () => {
+    const trueKeys = Object.keys(apartment.apartmentContent).filter(
+      (key) => apartment.apartmentContent[key]
+    );
+    const apartmentContent = trueKeys.filter((key) => key !== "_id");
     setApartmentContent(apartmentContent);
     setShowAll(!showAll);
   };
@@ -249,14 +299,17 @@ const HouseDetailsScreen = ({ navigation, route }) => {
           </Text>
           {userData.token && !prevRoute?.params?.favorite && (
             <Text style={styles.distance}>
-              {apartment?.distance}Km Away From {userData?.academic}
+              {t("houseDetails.distance", {
+                distance: apartment?.distance,
+                academic: userData?.academic,
+              })}
             </Text>
           )}
           <HouseRoommates
             totalCapacity={apartment.totalCapacity}
             realTimeCapacity={apartment.realTimeCapacity}
           />
-          <Text style={styles.about}>About</Text>
+          <Text style={styles.about}>{t("houseDetails.about")}</Text>
           <Paragraph>{apartment.about}</Paragraph>
           <HouseInfo
             numberOfRooms={apartment.numberOfRooms}
@@ -290,11 +343,35 @@ const HouseDetailsScreen = ({ navigation, route }) => {
           )}
           <Seperator />
           {apartment.tenants && (
-            <Text style={styles.about}>Current tenants</Text>
+            <Text style={styles.about}>{t("houseDetails.currentTenants")}</Text>
           )}
-          {apartment?.tenants?.map((tenant) => (
-            <RoommatesInfo key={tenant} tenant={tenant} />
-          ))}
+          {userData.token ? (
+            apartment?.tenants?.map((tenant) => (
+              <RoommatesInfo key={tenant} tenant={tenant} />
+            ))
+          ) : (
+            <TouchableWithoutFeedback
+              style={
+                isDarkMode
+                  ? {
+                      ...styles.customView,
+                      backgroundColor: Color.defaultTheme,
+                    }
+                  : styles.customView
+              }
+            >
+              <Text
+                style={
+                  isDarkMode
+                    ? { ...styles.customText, color: Color.darkTheme }
+                    : styles.customText
+                }
+              >
+                {t("houseDetails.loginToViewTenants")}
+              </Text>
+            </TouchableWithoutFeedback>
+          )}
+          <View style={{ height: tabBarHeight - 20 }}></View>
         </View>
       </Animated.ScrollView>
 
@@ -304,15 +381,17 @@ const HouseDetailsScreen = ({ navigation, route }) => {
       >
         <View style={styles.BottomTabView}>
           <View style={styles.PriceView}>
-            <Text style={styles.price}>{apartment.price}$</Text>
-            <Text style={styles.monthPerson}>Month / Person</Text>
+            <Text style={styles.price}>{apartment.price}₪</Text>
+            <Text style={styles.monthPerson}>
+              {t("houseDetails.monthPerson")}
+            </Text>
           </View>
           {userData?.token && !isLoading && !studentDataIsLoading && (
             <TouchableOpacity
               style={styles.ReserveBtn}
               onPress={interestedHandler}
             >
-              <Text style={styles.BtnText}>Interested</Text>
+              <Text style={styles.BtnText}>{t("houseDetails.interested")}</Text>
             </TouchableOpacity>
           )}
         </View>
@@ -334,7 +413,6 @@ const styles = StyleSheet.create({
   },
   city: {
     fontSize: 40,
-    // marginBottom: 5,
     fontWeight: "bold",
   },
   street: {
@@ -344,10 +422,22 @@ const styles = StyleSheet.create({
   },
   distance: {
     fontSize: 15,
-    // color: "#65B741",
   },
   about: {
     fontSize: 25,
+    fontWeight: "bold",
+  },
+  customView: {
+    marginTop: 25,
+    padding: 20,
+    backgroundColor: Color.darkTheme,
+    borderRadius: 20,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  customText: {
+    color: Color.defaultTheme,
+    fontSize: 18,
     fontWeight: "bold",
   },
   footerText: {

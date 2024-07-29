@@ -1,11 +1,13 @@
-import { StyleSheet, View } from 'react-native';
-import { launchCameraAsync } from 'expo-image-picker';
-import { Button } from 'react-native-paper';
+import { StyleSheet, View } from "react-native";
+import { launchCameraAsync } from "expo-image-picker";
+import { Button } from "react-native-paper";
+import { useTranslation } from "react-i18next";
 
-import { useDarkMode } from '../context/DarkModeContext';
-import { Color } from '../constants/colors';
+import { useDarkMode } from "../context/DarkModeContext";
+import { Color } from "../constants/colors";
 
 function TakePhoto({ onTakeImage }) {
+  const { t } = useTranslation();
   const { isDarkMode } = useDarkMode();
 
   async function takeImageHandler() {
@@ -31,7 +33,7 @@ function TakePhoto({ onTakeImage }) {
         mode="contained"
         onPress={takeImageHandler}
       >
-        Take Picture
+        {t("takePicture")}
       </Button>
     </View>
   );
@@ -41,8 +43,8 @@ export default TakePhoto;
 
 const styles = StyleSheet.create({
   image: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
   },
   button: {
     marginBottom: 15,

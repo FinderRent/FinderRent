@@ -29,7 +29,7 @@ function DarkModeProvider({ children }) {
           }
         }
       } catch (err) {
-        console.log(err);
+        // console.log(err);
       }
     };
 
@@ -43,7 +43,7 @@ function DarkModeProvider({ children }) {
       await AsyncStorage.setItem("darkMode", JSON.stringify(isDark));
       setIsDarkMode(isDark);
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
 
@@ -52,7 +52,7 @@ function DarkModeProvider({ children }) {
       await AsyncStorage.setItem("appTheme", JSON.stringify(theme));
       setTheme(theme);
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
     switch (theme) {
       case "SystemDefault":

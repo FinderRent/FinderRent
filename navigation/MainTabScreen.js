@@ -20,6 +20,7 @@ import LandlordHomeScreen from "../screens/LandlordHomeScreen";
 import ProfileStackScreen from "./ProfileStackScreen";
 import ChatStackScreen from "./ChatStackScreen";
 import SettingsStackScreen from "./SettingsStackScreen";
+import { useTranslation } from "react-i18next";
 
 const Tab = createBottomTabNavigator();
 
@@ -44,6 +45,7 @@ const CustomDefaultTheme = {
 function MainTabScreen() {
   const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
+  const { t } = useTranslation();
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const theme = isDarkMode ? CustomDarkTheme : CustomDefaultTheme;
@@ -129,7 +131,7 @@ function MainTabScreen() {
                           color: isDarkMode ? Color.white : Color.black,
                         }}
                       >
-                        Home
+                        {t("home")}
                       </Text>
                     </View>
                   ),
@@ -164,7 +166,7 @@ function MainTabScreen() {
                         color: isDarkMode ? Color.white : Color.black,
                       }}
                     >
-                      Profile
+                      {t("profile")}
                     </Text>
                   </View>
                 ),
@@ -198,7 +200,7 @@ function MainTabScreen() {
                         color: isDarkMode ? Color.white : Color.black,
                       }}
                     >
-                      Chats
+                      {t("chats")}
                     </Text>
                   </View>
                 ),
@@ -232,7 +234,7 @@ function MainTabScreen() {
                         color: isDarkMode ? Color.white : Color.black,
                       }}
                     >
-                      Settings
+                      {t("settings")}
                     </Text>
                   </View>
                 ),

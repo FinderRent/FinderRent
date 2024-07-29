@@ -1,47 +1,86 @@
-import * as Device from "expo-device";
-import * as Notifications from "expo-notifications";
-import Constants from "expo-constants";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   StyleSheet,
-  SafeAreaView,
-  FlatList,
-  Platform,
   TouchableOpacity,
   View,
-  Keyboard,
   Image,
   Linking,
+  Platform,
 } from "react-native";
-import { Text } from "react-native-paper";
+import { Button, Text } from "react-native-paper";
 import { useQuery } from "@tanstack/react-query";
-import { fetchUser } from "../utils/http";
 import { ScrollView } from "react-native-gesture-handler";
-import Loader from "../components/ui/Loader";
-import Icon from "react-native-vector-icons/Ionicons";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
+import { useNavigation } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
+
+import { Color } from "../constants/colors";
+import { useDarkMode } from "../context/DarkModeContext";
+import { useUsers } from "../context/UserContext";
+import { fetchUser } from "../utils/http";
+import Icon from "react-native-vector-icons/Ionicons";
+import Spacer from "../components/ui/Spacer";
+import Loader from "../components/ui/Loader";
+import ErrorMessage from "../components/ui/ErrorMessage";
 
 function StudentProfileScreen(props) {
-  const userID = props.route.params.tenant;
+  const { t } = useTranslation();
+  const { isDarkMode } = useDarkMode();
+  const { userData } = useUsers();
+
+  let chatId = null;
+  let firstChat = true;
+  const navigation = useNavigation();
+  const ouid = props.route.params.tenant;
   const tabBarHeight = useBottomTabBarHeight();
 
   const {
     data: user,
     isLoading: isLoadingUser,
     isError: isErrorUser,
-    status: statusUser,
+    error,
   } = useQuery({
-    queryKey: ["User", userID],
-    queryFn: () => fetchUser(userID),
+    queryKey: ["User", ouid],
+    queryFn: () => fetchUser(ouid),
   });
 
-  if (isLoadingUser) return <Loader />;
-  if (isErrorUser) return <Text>Error loading user</Text>;
+  // if (isLoadingUser) return <Loader />;
+
+  const { data: studentData, isLoading: studentDataIsLoading } = useQuery({
+    queryKey: ["chats", userData.id],
+    queryFn: () => getUser(userData.id),
+  });
+
+  const userChats = studentData?.data?.chats;
+  const foundObject = userChats?.find((chat) => chat?.userID === ouid);
+  chatId = foundObject?.chatID;
+
+  function chatWithMe() {
+    navigation.goBack();
+    navigation.navigate("ChatStackScreen", {
+      screen: "ChatScreen",
+      params: {
+        firstChat,
+        chatId,
+        ouid,
+        pushToken: user?.pushToken,
+        image: user?.avatar?.url,
+        title: `${user?.firstName} ${user?.lastName}`,
+      },
+    });
+  }
 
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
-      <View style={styles.container}>
-        <View style={styles.card}>
+      {isErrorUser && <ErrorMessage errorMessage={error} />}
+      <View
+        style={[styles.container, isDarkMode && { backgroundColor: "#505050" }]}
+      >
+        <View
+          style={[
+            styles.card,
+            isDarkMode && { backgroundColor: Color.buttomSheetDarkTheme },
+          ]}
+        >
           <View style={styles.imageContainer}>
             <Image
               source={{
@@ -57,33 +96,59 @@ function StudentProfileScreen(props) {
           </View>
         </View>
         <View style={styles.detailsContainer}>
-          <Icon name="school" size={35} />
-          <Text style={styles.funFactText}>Academic: {user?.academic}</Text>
-        </View>
-        <View style={styles.detailsContainer}>
-          <Icon name="today" size={35} />
-          <Text style={styles.funFactText}>Department: {user?.department}</Text>
-        </View>
-        <View style={styles.detailsContainer}>
-          <Icon name="body-sharp" size={35} />
-          <Text style={styles.funFactText}>Age: {user?.age}</Text>
-        </View>
-        <View style={styles.detailsContainer}>
-          <Icon name="game-controller-sharp" size={35} />
+          <Icon
+            name="school"
+            size={35}
+            color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+          />
           <Text style={styles.funFactText}>
-            Hobbies: {user?.hobbies ? user?.hobbies : "Empty"}
+            {t("academic")} {user?.academic || t("empty")}
           </Text>
         </View>
         <View style={styles.detailsContainer}>
-          <Icon name="beer" size={35} />
+          <Icon
+            name="today"
+            size={35}
+            color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+          />
           <Text style={styles.funFactText}>
-            Fun Fact: {user?.funFact ? user?.funFact : "Empty"}
+            {t("department")} {user?.department || t("empty")}
+          </Text>
+        </View>
+        <View style={styles.detailsContainer}>
+          <Icon
+            name="body-sharp"
+            size={35}
+            color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+          />
+          <Text style={styles.funFactText}>
+            {t("age")} {user?.age || t("empty")}
+          </Text>
+        </View>
+        <View style={styles.detailsContainer}>
+          <Icon
+            name="game-controller-sharp"
+            size={35}
+            color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+          />
+          <Text style={styles.funFactText}>
+            {t("hobbies")} {user?.hobbies || t("empty")}
+          </Text>
+        </View>
+        <View style={styles.detailsContainer}>
+          <Icon
+            name="beer"
+            size={35}
+            color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+          />
+          <Text style={styles.funFactText}>
+            {t("funFact")} {user?.funFact || t("empty")}
           </Text>
         </View>
 
         {/* Social Links Section */}
         <View style={styles.socialLinksContainer}>
-          <Text style={styles.socialLinksTitle}>Connect with me</Text>
+          <Text style={styles.socialLinksTitle}>{t("socialLinksTitle")}</Text>
           <View style={styles.socialLinks}>
             <TouchableOpacity
               onPress={() =>
@@ -114,6 +179,25 @@ function StudentProfileScreen(props) {
             </TouchableOpacity>
           </View>
         </View>
+
+        <Spacer>
+          {!isLoadingUser && !studentDataIsLoading && (
+            <Button
+              style={{ marginTop: 10, marginHorizontal: 15 }}
+              textColor={
+                isDarkMode ? Color.buttomSheetDarkTheme : Color.defaultTheme
+              }
+              buttonColor={
+                isDarkMode ? Color.defaultTheme : Color.buttomSheetDarkTheme
+              }
+              mode="contained"
+              onPress={chatWithMe}
+            >
+              {t("chatWithMe")}
+            </Button>
+          )}
+        </Spacer>
+
         <View style={[styles.footer, { height: tabBarHeight + 10 }]}></View>
       </View>
     </ScrollView>
@@ -135,7 +219,7 @@ const styles = StyleSheet.create({
   },
   card: {
     width: "90%",
-    aspectRatio: 1.2, // Ensures the card maintains a square shape
+    aspectRatio: 1.2,
     backgroundColor: "#FFFFFF",
     borderRadius: 20,
     shadowColor: "#000",
@@ -149,7 +233,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
-    marginTop: "20%", // Adjust as needed to control the spacing from the top
+    marginTop: Platform.OS === "android" ? "10%" : "20%",
     marginBottom: 10,
   },
   imageContainer: {
@@ -173,7 +257,7 @@ const styles = StyleSheet.create({
   },
   role: {
     fontSize: 16,
-    color: "#373A40",
+    // color: "#373A40",
   },
   detailsContainer: {
     flexDirection: "row",
@@ -186,7 +270,7 @@ const styles = StyleSheet.create({
   funFactText: {
     marginLeft: 10,
     fontSize: 20,
-    color: "#373A40",
+    // color: "#373A40",
     paddingRight: "12%",
   },
   socialLinksContainer: {
@@ -198,12 +282,15 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 20,
-    marginTop: 40,
+    marginTop: 20,
     textAlign: "center",
   },
   socialLinks: {
     flexDirection: "row",
     justifyContent: "space-evenly",
     width: "80%",
+  },
+  footer: {
+    width: "100%",
   },
 });

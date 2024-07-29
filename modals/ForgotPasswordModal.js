@@ -12,6 +12,7 @@ import {
 import { Button, Text } from "react-native-paper";
 import { useMutation } from "@tanstack/react-query";
 import Toast from "react-native-toast-message";
+import { useTranslation } from "react-i18next";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
@@ -22,6 +23,7 @@ import forgotPasswordEmail from "../api/emails/forgotPasswordEmail";
 function ForgotPasswordModal({ showVisible }) {
   const { isDarkMode } = useDarkMode();
   const navigation = useNavigation();
+  const { t } = useTranslation();
 
   const [forgotPasswordVisible, setForgotPasswordVisible] = useState(true);
   const [email, setEmail] = useState();
@@ -31,7 +33,7 @@ function ForgotPasswordModal({ showVisible }) {
     onSuccess: () => {
       Toast.show({
         type: "success",
-        text1: "Password reset code sent to email",
+        text1: t("forgotPassword.toast.success"),
       });
       navigation.navigate("ResetPasswordScreen", { email });
     },
@@ -72,7 +74,7 @@ function ForgotPasswordModal({ showVisible }) {
               }
             >
               <Text style={styles.modalText}>
-                Please enter an email to receive a password reset code
+                {t("forgotPassword.enterEmail")}
               </Text>
               <Pressable
                 onPress={() => handleCancel()}
@@ -85,7 +87,7 @@ function ForgotPasswordModal({ showVisible }) {
               </Pressable>
               <View style={styles.textInput}>
                 <Input
-                  label="Email"
+                  label={t("forgotPassword.email")}
                   keyboardType="email-address"
                   mode="outlined"
                   onValueChange={(selectedMail) => setEmail(selectedMail)}
@@ -101,7 +103,7 @@ function ForgotPasswordModal({ showVisible }) {
                 onPress={handleForgotPasswordEmail}
                 loading={isPending}
               >
-                {!isPending && "Send     "}
+                {!isPending && t("forgotPassword.send")}
               </Button>
             </View>
           </View>

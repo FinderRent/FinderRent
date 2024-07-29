@@ -7,7 +7,7 @@ function ErrorMessage({ errorMessage }) {
   const message = errorMessage ? errorMessage.replace(/^Error:\s*/i, "") : "";
 
   return (
-    <View style={styles.container}>
+    <View testID="error-message" style={styles.container}>
       <Text style={styles.text}>{message}</Text>
     </View>
   );

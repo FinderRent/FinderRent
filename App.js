@@ -5,13 +5,17 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { I18nManager } from "react-native";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MenuProvider } from "react-native-popup-menu";
+import { useTranslation } from "react-i18next";
 import Toast from "react-native-toast-message";
 import FlashMessage from "react-native-flash-message";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { UserContext, useUsers } from "./context/UserContext";
 import { DarkModeProvider } from "./context/DarkModeContext";
 import AuthStackScreens from "./navigation/AuthStackScreens";
 import FavoritesContextProvider from "./context/FavoritesContext";
+import i18next from "./services/i18next";
+import { checkRtllanguages } from "./utils/features";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -25,9 +29,7 @@ const queryClient = new QueryClient({
 });
 
 export default function App() {
-  I18nManager.forceRTL(false);
-  I18nManager.allowRTL(false);
-
+  const { i18n } = useTranslation();
   const [appIsLoaded, setAppIsLoaded] = useState(false);
 
   const {
@@ -53,7 +55,28 @@ export default function App() {
   } = useUsers();
 
   useEffect(() => {
+    const changeLayoutDirection = async () => {
+      const isRTL = checkRtllanguages(i18n.language);
+      I18nManager.forceRTL(isRTL);
+      I18nManager.allowRTL(isRTL);
+
+      if (appIsLoaded) {
+        await SplashScreen.hideAsync();
+      }
+    };
+
+    changeLayoutDirection();
+  }, [i18n.language, appIsLoaded]);
+
+  useEffect(() => {
     const prepare = async () => {
+      const loadLanguage = async () => {
+        const savedLanguage = await AsyncStorage.getItem("appLanguage");
+        if (savedLanguage) {
+          i18next.changeLanguage(savedLanguage);
+        }
+      };
+      loadLanguage();
       try {
         await Font.loadAsync({
           varelaRound: require("./assets/fonts/VarelaRound-Regular.ttf"),

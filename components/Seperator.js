@@ -1,12 +1,12 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 
-const seperator = () => {
-  return <View style={styles.seperator}></View>;
+const Separator = () => {
+  return <View style={styles.separator} testID="separator-view"></View>;
 };
 
 const styles = StyleSheet.create({
-  seperator: {
+  separator: {
     height: 2,
     width: "100%",
     backgroundColor: "#ddd",
@@ -14,4 +14,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default seperator;
+export default Separator;

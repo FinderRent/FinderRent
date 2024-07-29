@@ -1,12 +1,7 @@
-import * as Notifications from "expo-notifications";
-import * as Device from "expo-device";
-import Constants from "expo-constants";
-import { useContext, useEffect, useState } from "react";
-import { useIsFocused, useNavigation } from "@react-navigation/native";
+import React, { useContext, useEffect, useState } from "react";
 import {
   View,
   Image,
-  Alert,
   Modal,
   Pressable,
   StyleSheet,
@@ -18,6 +13,11 @@ import { Button, Text } from "react-native-paper";
 import { useMutation } from "@tanstack/react-query";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-toast-message";
+import * as Notifications from "expo-notifications";
+import * as Device from "expo-device";
+import Constants from "expo-constants";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
@@ -30,24 +30,20 @@ import ForgotPasswordModal from "./ForgotPasswordModal";
 
 function SignInModal({ showVisible }) {
   const auth = useContext(UserContext);
-
   const { isDarkMode } = useDarkMode();
   const navigation = useNavigation();
   const isFocused = useIsFocused();
+  const { t } = useTranslation();
 
   const [signInModalVisible, setSignInModalVisible] = useState(true);
   const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
-
   const [pushToken, setPushToken] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // store the expoPustToken in database to send notification
   useEffect(() => {
     async function storePushToken() {
-      if (!Device.isDevice) {
-        return;
-      }
+      if (!Device.isDevice) return;
       const token = await Notifications.getExpoPushTokenAsync({
         projectId: Constants.expoConfig.extra.eas.projectId,
       });
@@ -78,7 +74,7 @@ function SignInModal({ showVisible }) {
       auth.login(user.data.user, user.token);
       Toast.show({
         type: "success",
-        text1: "Logged In Successfully",
+        text1: t("logged_in_successfully"),
       });
       if (user.data.user.userType === "student") {
         navigation.navigate("HomeScreen");
@@ -113,9 +109,7 @@ function SignInModal({ showVisible }) {
         animationType="slide"
         transparent={true}
         visible={signInModalVisible}
-        onRequestClose={() => {
-          showVisible(!signInModalVisible);
-        }}
+        onRequestClose={() => showVisible(!signInModalVisible)}
       >
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -131,17 +125,16 @@ function SignInModal({ showVisible }) {
                   : styles.modalView.backgroundColor,
               }}
             >
-              <Text style={styles.modalText}>Login</Text>
-
+              <Text style={styles.modalText}>{t("login")}</Text>
               <Pressable
-                onPress={() => handleCancel()}
+                onPress={handleCancel}
                 style={{ position: "absolute", margin: 10 }}
               >
                 <Image source={require("../assets/images/close.png")} />
               </Pressable>
               <View style={styles.textInput}>
                 <Input
-                  label="Email"
+                  label={t("email")}
                   keyboardType="email-address"
                   mode="outlined"
                   color={Color.Blue700}
@@ -149,18 +142,15 @@ function SignInModal({ showVisible }) {
                 />
                 <PasswordInput
                   mode="outlined"
-                  label="Password"
+                  label={t("password")}
                   color={Color.Blue700}
                   onValueChange={(password) => setPassword(password)}
                 />
               </View>
-
-              {isError && <ErrorMessage errorMessage={error.message} />}
-
+              {isError && <ErrorMessage errorMessage={t(error.message)} />}
               <TouchableOpacity onPress={handleForgotPassword}>
-                <Text style={styles.textInput}>Forgot Password?</Text>
+                <Text style={styles.textInput}>{t("forgot_password")}</Text>
               </TouchableOpacity>
-
               {showForgotPasswordModal && (
                 <ForgotPasswordModal
                   showVisible={(showVisible) =>
@@ -168,13 +158,9 @@ function SignInModal({ showVisible }) {
                   }
                 />
               )}
-
               <TouchableOpacity onPress={handleRegister}>
-                <Text style={styles.textInput}>
-                  Doesn't have an account? Register
-                </Text>
+                <Text style={styles.textInput}>{t("no_account_register")}</Text>
               </TouchableOpacity>
-
               <Button
                 style={styles.button}
                 mode="contained"
@@ -182,7 +168,7 @@ function SignInModal({ showVisible }) {
                 loading={isPending}
                 textColor={Color.defaultTheme}
               >
-                {!isPending && "Login   "}
+                {!isPending && t("login_button")}
               </Button>
             </View>
           </View>

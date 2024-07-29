@@ -1,0 +1,291 @@
+{
+  "aboutApp": {
+    "title": "About Our Application",
+    "welcome": "Welcome to our application, developed as part of our final project at the SCE College. Our innovative project is designed to revolutionize the way students find apartments for rent in academic areas. Our application addresses the challenges of traditional apartment search methods, replacing the cumbersome process of sifting through Facebook groups, social networks, and other outdated channels with a modern, efficient solution.",
+    "platform": "Our platform is specifically tailored for students and apartment owners near academic institutions, offering a centralized hub where students can effortlessly connect with landlords. By leveraging advanced technologies such as geographic location services and personalized preferences, our application streamlines the apartment search process, making it easier and more intuitive.",
+    "features": {
+      "title": "Key Features:",
+      "centralized": "Centralized Platform: Bringing students and landlords together in one convenient place.",
+      "location": "Geographic Location Services: Helping you find apartments based on proximity to your academic institution.",
+      "preferences": "Personalized Preferences: Matching you with properties that meet your specific needs and preferences.",
+      "interface": "User-Friendly Interface: Ensuring a smooth and enjoyable search experience.",
+      "experience": "Comfortable User Experience: Simplifying the process of finding the perfect apartment."
+    },
+    "mission": "Our mission is to create a seamless and efficient apartment search experience for students, transforming a traditionally stressful process into a hassle-free journey. Join us and discover a better way to find your next home near your academic institution.",
+    "copyright": "All Rights Reserved"
+  },
+
+  "home": "Home",
+  "profile": "Profile",
+  "chats": "Chats",
+  "settings": "Settings",
+
+  "preferences": "Preferences",
+  "help": "Help",
+  "language": "Language",
+  "theme": "Theme",
+  "allowNotifications": "Allow Notifications",
+  "about": "About",
+  "contactUs": "Contact Us",
+  "version": "version",
+
+  "language_change_message": "The app needs to restart to apply language changes.",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+
+  "choose_theme": "Choose Theme",
+  "system_default": "System Default",
+  "bright": "Bright",
+  "dark": "Dark",
+
+  "login": "Login",
+  "email": "Email",
+  "password": "Password",
+  "forgot_password": "Forgot Password?",
+  "no_account_register": "Doesn't have an account? Register",
+  "login_button": "Login",
+  "logged_in_successfully": "Logged In Successfully",
+
+  "forgotPassword": {
+    "enterEmail": "Please enter an email to receive a password reset code",
+    "email": "Email",
+    "send": "Send",
+    "toast": {
+      "success": "Password reset code sent to email"
+    }
+  },
+
+  "verificationCode": "Verification Code",
+  "resendEmail": "Resend Email",
+  "passwordConfirm": "Password Confirm",
+  "passwordError": "Password must contain at least 6 characters",
+  "reset": "Reset",
+  "emailSentSuccess": "Password reset code sent to email",
+  "emailSentError": "Error while sending the email",
+  "passwordChangedSuccess": "Password changed successfully!",
+
+  "signUp": {
+    "header": "Sign Up",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "age": "Age",
+    "gender": "Gender",
+    "male": "Male",
+    "female": "Female",
+    "role": "Role",
+    "landlord": "Landlord",
+    "student": "Student",
+    "academicInstitution": "Academic Institution",
+    "searchAcademic": "Search Academic Institution",
+    "department": "Department",
+    "yearbook": "Yearbook",
+    "preparing": "Preparing",
+    "year1": "Year 1",
+    "year2": "Year 2",
+    "year3": "Year 3",
+    "year4": "Year 4",
+    "masterDegree": "Master's degree",
+    "email": "Email",
+    "password": "Password",
+    "passwordConfirm": "Confirm Password",
+    "passwordError": "Password must be at least 8 characters long",
+    "signUp": "Sign Up",
+    "back": "Back",
+    "toast": {
+      "success": "Successfully signed up!"
+    }
+  },
+
+  "signInPrompt": "Sign in to see your location",
+  "signInButton": "Sign In",
+  "loginPrompt": "Sign in to see the {{screenName}} screen.",
+
+  "contactUsPage": {
+    "title": "Reach Us Out for Support Inquiries or Feedback",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "subject": "Subject",
+    "message": "Message",
+    "successMessage": "Your message has been sent successfully",
+    "sendMessage": "Send Message"
+  },
+
+  "categories": {
+    "allCategories": "All Categories",
+    "landHouse": "Land House",
+    "housingUnit": "Housing Unit",
+    "tower": "Tower",
+    "penthouse": "Penthouse"
+  },
+
+  "categories2": {
+    "All Categories": "All Categories",
+    "Land House": "Land House",
+    "Houseing Unit": "Houseing Unit",
+    "Tower": "Tower",
+    "Penthouse": "Penthouse"
+  },
+
+  "allCategories": "All Categories",
+  "landHouse": "Land House",
+  "housingUnit": "Housing Unit",
+  "tower": "Tower",
+  "penthouse": "Penthouse",
+
+  "filterScreen": {
+    "sortBy": "Sort By",
+    "distance": "Distance",
+    "apartmentType": "Apartment Type",
+    "clearAll": "Clear All",
+    "apply": "Apply",
+    "selectNumberOfBedrooms": "Select number of bedrooms",
+    "selectFloorNumber": "Select floor number",
+    "selectHowManyRoommates": "Select how many roommates",
+    "distanceInKm": "Distance In Km",
+    "selectDistanceFromAcademy": "Select distance from academy",
+    "rooms": "Rooms",
+    "floor": "Floor",
+    "roommates": "Roommates",
+    "lowToHigh": "Low to High",
+    "highToLow": "High to Low",
+    "newToOld": "New to Old",
+    "oldToNew": "Old to New",
+    "remove": "Remove",
+    "add": "Add",
+    "filters": "Filters",
+    "apartmentFilters": "Apartment Filters",
+    "selectNumber": "Select Numbers",
+    "distanceFromAcademy": "Distance From Academy",
+    "km": "km"
+  },
+
+  "rooms": "Rooms",
+  "floor": "Floor",
+  "roommates": "Roommates",
+  "bestFor": "Best For",
+  "availableRooms": "available Rooms",
+  "thereAre": "There are",
+  "whatThisPlaceOffers": "What This Place Offers",
+  "showAll": "Show all",
+
+  "houseAssets": {
+    "tv": "TV",
+    "television": "Television",
+    "beds": "Beds",
+    "bed": "Bed",
+    "wifi": "WiFi",
+    "wi-fi": "Wi-Fi",
+    "wireless internet": "Wireless Internet",
+    "balcony": "Balcony",
+    "oven": "Oven",
+    "microwave": "Microwave",
+    "couch": "Couch",
+    "coffeeTable": "Coffee Table",
+    "waterHeater": "Water Heater",
+    "washer": "Washer",
+    "dryer": "Dryer",
+    "iron": "Iron",
+    "refrigirator": "Refrigerator",
+    "fridge": "Fridge",
+    "freezer": "Freezer"
+  },
+
+  "All Categories": "All Categories",
+  "Land House": "Land House",
+  "Houseing Unit": "Houseing Unit",
+  "Tower": "Tower",
+  "Penthouse": "Penthouse",
+  "lowToHigh": "Low to High",
+  "highToLow": "High to Low",
+  "newToOld": "New to Old",
+  "oldToNew": "Old to New",
+
+  "Logged Out Successfully": "Logged Out Successfully",
+  "Profile": "Profile",
+  "Student": "Student",
+  "Not available": "Not available",
+  "Personal Info": "Personal Info",
+  "My Hobbies": "My Hobbies",
+  "Add your hobbies": "Add your hobbies",
+  "Fun Fact": "Fun Fact",
+  "Empty": "Empty",
+  "Other": "Other",
+  "Favorites": "Favorites",
+  "Security": "Security",
+  "Logout": "Logout",
+
+  "update_picture": "Update Picture",
+  "first_name": "First Name",
+  "last_name": "Last Name",
+  "age": "Age",
+  "phone": "Phone",
+  "academic_institution": "Search For Academic Institution",
+  "department": "Department",
+  "yearbook": "Yearbook",
+  "hobbies": "What are your hobbies?",
+  "fun_fact": "Tell us a fun fact...",
+  "profile_success": "Profile successfully updated!",
+  "update": "Update",
+  "back": "Back",
+  "choose_profile_picture": "Choose Your Profile Picture",
+  "delete_picture": "Delete Picture",
+
+  "chooseFromGallery": "Choose From Gallery",
+  "takePicture": "Take Picture",
+
+  "location": "Location",
+
+  "HouseList": {
+    "noResults": {
+      "noApartments": "There's No {{category}} Apartments.",
+      "noApartmentsWithDistance": "No {{category}} apartments within {{distance}}km from the academy."
+    },
+    "header": "Apartments Within {{distance}}Km From Academy",
+    "mapButton": "Map"
+  },
+
+  "houseDetails": {
+    "city": "City",
+    "street": "Street",
+    "distance": "{{distance}} Km Away From {{academic}}",
+    "about": "About",
+    "currentTenants": "Current Tenants",
+    "loginToViewTenants": "Login To View Tenants",
+    "monthPerson": "Month / Person",
+    "interested": "Interested"
+  },
+
+  "noResultsText": "No Chats To Display.",
+  "send_message_to_start_conversation": "Send message to start conversation",
+  "error_sending_message": "Error sending the message, try again",
+  "send_image": "Send Image",
+  "send": "Send",
+  "delete_message": "Delete Message",
+  "yes": "Yes",
+  "no": "No",
+  "send_message": "Send Message",
+  "message": "Message",
+  "you": "You",
+  "copy_to_clipboard": "Copy to Clipboard",
+  "reply": "Reply",
+  "delete": "Delete",
+  "image": "image",
+  "deleteChat": "Delete Chat",
+  "deleteChats": "Delete Chats",
+
+  "myFavorites": "My Favorites",
+  "noFavorites": "There's No Favorites Apartments.",
+
+  "academic": "Academic: ",
+  "funFact": "Fun Fact: ",
+  "socialLinksTitle": "Connect with me",
+  "chatWithMe": "Chat With Me",
+  "empty": "Empty",
+
+  "changePassword": "Change Password",
+  "enterCurrentPassword": "Enter current password:",
+  "enterNewPassword": "Enter New Password:",
+  "confirmPassword": "Confirm Password:",
+  "updatePassword": "Update Password"
+}

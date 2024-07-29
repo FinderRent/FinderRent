@@ -98,7 +98,7 @@ const HouseCard = ({ navigation, apartment, userData }) => {
               <Text style={styles.distance}>{apartment.distance}Km</Text>
             )}
           </View>
-          <Text style={styles.price}>{apartment.price}$</Text>
+          <Text style={styles.price}>{apartment.price}₪</Text>
         </View>
       </TouchableOpacity>
     </View>

@@ -5,10 +5,14 @@ import { Ionicons } from "@expo/vector-icons";
 
 import { Color } from "../../constants/colors";
 import { useDarkMode } from "../../context/DarkModeContext";
+import { checkRtllanguages } from "../../utils/features";
+import { useTranslation } from "react-i18next";
 
 function ChatScreenHeader({ image, title }) {
+  const { i18n } = useTranslation();
   const { isDarkMode } = useDarkMode();
   const navigation = useNavigation();
+  const isRTL = checkRtllanguages(i18n.language);
 
   const handleNavigation = () => {
     navigation.reset({
@@ -32,7 +36,7 @@ function ChatScreenHeader({ image, title }) {
           onPress={handleNavigation}
         >
           <Ionicons
-            name="arrow-back"
+            name={isRTL ? "arrow-forward" : "arrow-back"}
             size={24}
             color={isDarkMode ? Color.white : Color.darkTheme}
           />

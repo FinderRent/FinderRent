@@ -8,13 +8,18 @@ import {
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { ListItem } from "react-native-elements";
+import { useTranslation } from "react-i18next";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { useDarkMode } from "../context/DarkModeContext";
 import { Color } from "../constants/colors";
 import { Text } from "react-native-paper";
+import { iconName } from "../utils/features";
 
 function HouseAssetsModal(props) {
+  const { t } = useTranslation();
   const { isDarkMode } = useDarkMode();
+
   const handleShowAllPress = () => {
     props.handleShowAllPress();
   };
@@ -29,7 +34,7 @@ function HouseAssetsModal(props) {
               : styles.modalContainer
           }
         >
-          <Text style={styles.Header}>What this place offers</Text>
+          <Text style={styles.Header}>{t("whatThisPlaceOffers")}</Text>
           <ScrollView>
             {props.apartmentContent.map((l, i) => (
               <ListItem
@@ -42,15 +47,23 @@ function HouseAssetsModal(props) {
                 bottomDivider
               >
                 <ListItem.Content>
-                  <ListItem.Title
-                    style={
-                      isDarkMode
-                        ? { color: Color.white }
-                        : { color: Color.darkTheme }
-                    }
-                  >
-                    {l}
-                  </ListItem.Title>
+                  <View style={styles.rowContainer}>
+                    <MaterialCommunityIcons
+                      color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+                      name={iconName(l)}
+                      style={styles.rowIcon}
+                      size={24}
+                    />
+                    <ListItem.Title
+                      style={
+                        isDarkMode
+                          ? { color: Color.white }
+                          : { color: Color.darkTheme }
+                      }
+                    >
+                      {t(`houseAssets.${l}`)}
+                    </ListItem.Title>
+                  </View>
                 </ListItem.Content>
               </ListItem>
             ))}
@@ -59,7 +72,7 @@ function HouseAssetsModal(props) {
             style={styles.closeButton}
             onPress={handleShowAllPress}
           >
-            <MaterialIcons name="close" size={24} color="#fff" />
+            <MaterialIcons name={t("close")} size={24} color="#fff" />
           </TouchableOpacity>
         </View>
       </View>
@@ -96,6 +109,14 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: "bold",
     marginBottom: 10,
+  },
+  rowContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginLeft: -10,
+  },
+  rowIcon: {
+    marginRight: 10,
   },
 });
 

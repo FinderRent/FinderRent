@@ -1,4 +1,4 @@
-export const academicList = [
+export const academicListEnglish = [
   {
     id: "Ariel University",
     name: "Ariel University",

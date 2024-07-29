@@ -4,6 +4,7 @@ import { View, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import { Text } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 import * as Haptics from "expo-haptics";
 
 import { Color } from "../constants/colors";
@@ -11,28 +12,29 @@ import { useDarkMode } from "../context/DarkModeContext";
 
 const categories = [
   {
-    name: "All Categories",
+    key: "allCategories",
     icon: "check-all",
   },
   {
-    name: "Land House",
+    key: "landHouse",
     icon: "home",
   },
   {
-    name: "Houseing Unit",
+    key: "housingUnit",
     icon: "home-city",
   },
   {
-    name: "Tower",
+    key: "tower",
     icon: "city",
   },
   {
-    name: "Penthouse",
+    key: "penthouse",
     icon: "city-variant",
   },
 ];
 
 const ExploreHeader = ({ onCategoryChanged, categoryIndex, filtersValues }) => {
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const { isDarkMode } = useDarkMode();
   const scrollRef = useRef(null);
@@ -51,10 +53,10 @@ const ExploreHeader = ({ onCategoryChanged, categoryIndex, filtersValues }) => {
       scrollRef.current?.scrollTo({ x: pageX - 16, y: 0, animated: true });
     });
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    if (categories[index].name === "All Categories") {
+    if (categories[index].key === "allCategories") {
       onCategoryChanged(null);
     } else {
-      onCategoryChanged(categories[index].name);
+      onCategoryChanged(t(`${categories[index].key}`));
     }
   };
 
@@ -117,7 +119,7 @@ const ExploreHeader = ({ onCategoryChanged, categoryIndex, filtersValues }) => {
                   : styles.categoryText
               }
             >
-              {item.name}
+              {t(`categories.${item.key}`)}
             </Text>
           </TouchableOpacity>
         ))}
@@ -141,18 +143,16 @@ const styles = StyleSheet.create({
   },
   categoryText: {
     fontSize: 14,
-    // fontFamily: "Merienda",
     color: Color.gray,
   },
   categoryTextActive: {
     fontSize: 15,
-    // fontFamily: "Merienda",
   },
   categoriesBtn: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    paddingBottom: 8,
+    paddingBottom: 1,
   },
   categoriesBtnActive: {
     flex: 1,
@@ -164,7 +164,6 @@ const styles = StyleSheet.create({
   },
   filterBtn: {
     marginLeft: -5,
-    // marginBottom: 10,
     padding: 10,
     borderWidth: 1,
     borderColor: Color.gray,

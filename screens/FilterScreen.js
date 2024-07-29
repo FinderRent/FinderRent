@@ -10,6 +10,7 @@ import { TouchableOpacity } from "@gorhom/bottom-sheet";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
+import { useTranslation } from "react-i18next";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
@@ -43,23 +44,25 @@ const categories = [
 ];
 
 const FilterScreen = ({ navigation, route }) => {
+  const { t } = useTranslation();
   const { userData } = useUsers();
+
   const filtersValues = route?.params;
 
   const moreFilters = [
     {
-      name: "Rooms",
-      text: "select number of bedrooms",
+      name: t("filterScreen.rooms"),
+      text: t("filterScreen.selectNumberOfBedrooms"),
       count: filtersValues?.numberOfRooms ?? 0,
     },
     {
-      name: "Floor",
-      text: "select floor number",
+      name: t("filterScreen.floor"),
+      text: t("filterScreen.selectFloorNumber"),
       count: filtersValues?.floor ?? 0,
     },
     {
-      name: "Roomates",
-      text: "select how many roomates",
+      name: t("filterScreen.roommates"),
+      text: t("filterScreen.selectHowManyRoommates"),
       count: filtersValues?.totalCapacity ?? 0,
     },
   ];
@@ -72,10 +75,10 @@ const FilterScreen = ({ navigation, route }) => {
   const [filters, setFilters] = useState(moreFilters);
 
   const sortBy = [
-    { label: "Low to High", value: "lowToHigh" },
-    { label: "High to Low", value: "HighToLow" },
-    { label: "New to Old", value: "NewToOld" },
-    { label: "Old to New ", value: "OldToNew" },
+    { label: t("filterScreen.lowToHigh"), value: "lowToHigh" },
+    { label: t("filterScreen.highToLow"), value: "HighToLow" },
+    { label: t("filterScreen.newToOld"), value: "NewToOld" },
+    { label: t("filterScreen.oldToNew"), value: "OldToNew" },
   ];
 
   const onClearAll = () => {
@@ -174,12 +177,14 @@ const FilterScreen = ({ navigation, route }) => {
             entering={FadeIn.duration(200)}
             exiting={FadeOut.duration(200)}
           >
-            <Text style={styles.previewText}>Sort By</Text>
-            <Text style={styles.previewdData}>{sortApartments}</Text>
+            <Text style={styles.previewText}>{t("filterScreen.sortBy")}</Text>
+            <Text style={styles.previewdData}>{t(sortApartments)}</Text>
           </AnimatedTouchableOpacity>
         )}
 
-        {openCard === 0 && <Text style={styles.cardHeader}>Sort By</Text>}
+        {openCard === 0 && (
+          <Text style={styles.cardHeader}>{t("filterScreen.sortBy")}</Text>
+        )}
         {openCard === 0 && (
           <Animated.View
             entering={FadeIn}
@@ -188,8 +193,8 @@ const FilterScreen = ({ navigation, route }) => {
           >
             <DropDown
               list={sortBy}
-              label={sortApartments || "SortBy"}
-              placeholder={sortApartments}
+              label={t(sortApartments) || t("filterScreen.sortBy")}
+              placeholder={t(sortApartments)}
               searchable={false}
               listMode="SCROLLVIEW"
               onValueChange={(sortBy) => setSort(sortBy)}
@@ -213,23 +218,29 @@ const FilterScreen = ({ navigation, route }) => {
               entering={FadeIn.duration(200)}
               exiting={FadeOut.duration(200)}
             >
-              <Text style={styles.previewText}>Distance</Text>
-              <Text style={styles.previewdData}>{distance}km</Text>
+              <Text style={styles.previewText}>
+                {t("filterScreen.distance")}
+              </Text>
+              <Text style={styles.previewdData}>
+                {distance} {t("filterScreen.km")}
+              </Text>
             </AnimatedTouchableOpacity>
           )}
 
           {openCard === 1 && (
-            <Text style={styles.cardHeader}>Distance From Academy</Text>
+            <Text style={styles.cardHeader}>
+              {t("filterScreen.distanceFromAcademy")}
+            </Text>
           )}
           {openCard === 1 && (
             <Animated.View style={styles.cardBody}>
               <View style={styles.filterItem}>
                 <View>
                   <Text style={{ fontWeight: "bold", fontSize: 16 }}>
-                    Distance In Km
+                    {t("filterScreen.distanceInKm")}
                   </Text>
                   <Text style={{ fontSize: 14, color: Color.extraGray }}>
-                    select distance from academy
+                    {t("filterScreen.selectDistanceFromAcademy")}
                   </Text>
                 </View>
 
@@ -269,7 +280,7 @@ const FilterScreen = ({ navigation, route }) => {
                       textAlign: "center",
                     }}
                   >
-                    {`${distance.toFixed(1)}km`}
+                    {`${distance.toFixed(1)} ${t("filterScreen.km")}`}
                   </Text>
                   <TouchableOpacity
                     onPress={() =>
@@ -302,15 +313,19 @@ const FilterScreen = ({ navigation, route }) => {
             entering={FadeIn.duration(200)}
             exiting={FadeOut.duration(200)}
           >
-            <Text style={styles.previewText}>Apartment Type</Text>
+            <Text style={styles.previewText}>
+              {t("filterScreen.apartmentType")}
+            </Text>
             <Text style={styles.previewdData}>
-              {categories[selectedType].name}
+              {t(`${categories[selectedType].name}`)}
             </Text>
           </AnimatedTouchableOpacity>
         )}
 
         {openCard === 2 && (
-          <Text style={styles.cardHeader}>Apartment Type</Text>
+          <Text style={styles.cardHeader}>
+            {t("filterScreen.apartmentType")}
+          </Text>
         )}
         {openCard === 2 && (
           <Animated.View
@@ -351,7 +366,7 @@ const FilterScreen = ({ navigation, route }) => {
                         : styles.categoryText
                     }
                   >
-                    {item.name}
+                    {t(`${item.name}`)}
                   </Text>
                 </TouchableOpacity>
               ))}
@@ -374,13 +389,17 @@ const FilterScreen = ({ navigation, route }) => {
             entering={FadeIn.duration(200)}
             exiting={FadeOut.duration(200)}
           >
-            <Text style={styles.previewText}>Fillters</Text>
-            <Text style={styles.previewdData}>Select numbers</Text>
+            <Text style={styles.previewText}>{t("filterScreen.filters")}</Text>
+            <Text style={styles.previewdData}>
+              {t("filterScreen.selectNumber")}
+            </Text>
           </AnimatedTouchableOpacity>
         )}
 
         {openCard === 3 && (
-          <Text style={styles.cardHeader}>Apartment Filters</Text>
+          <Text style={styles.cardHeader}>
+            {t("filterScreen.apartmentFilters")}
+          </Text>
         )}
         {openCard === 3 && (
           <Animated.View style={styles.cardBody}>
@@ -489,7 +508,7 @@ const FilterScreen = ({ navigation, route }) => {
                 textDecorationLine: "underline",
               }}
             >
-              Clear all
+              {t("filterScreen.clearAll")}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -507,7 +526,7 @@ const FilterScreen = ({ navigation, route }) => {
                   : styles.btnText
               }
             >
-              Apply
+              {t("filterScreen.apply")}
             </Text>
           </TouchableOpacity>
         </View>

@@ -7,6 +7,7 @@ import {
 } from "react-native";
 import { Text } from "react-native-paper";
 import { Menu, MenuTrigger, MenuOptions } from "react-native-popup-menu";
+import { useTranslation } from "react-i18next";
 import uuid from "react-native-uuid";
 import * as Clipboard from "expo-clipboard";
 
@@ -26,6 +27,7 @@ function Bubble({
   imageUrl,
   setDeleteMessage,
 }) {
+  const { t } = useTranslation();
   const { isDarkMode } = useDarkMode();
 
   const bubbleStyle = { ...styles.container };
@@ -102,7 +104,7 @@ function Bubble({
               type="reply"
               text={replyingTo.messageText}
               imageUrl={replyingTo?.image?.url}
-              name={replyingTo.senderId === senderId ? "You" : title}
+              name={replyingTo.senderId === senderId ? t("you") : title}
             />
           )}
 
@@ -124,18 +126,18 @@ function Bubble({
               }}
             >
               <MenuItem
-                text="Copy to Clipboard"
+                text={t("copy_to_clipboard")}
                 icon={"copy"}
                 onSelect={() => copyToClipboard(text)}
               />
               <MenuItem
-                text="Repley"
+                text={t("reply")}
                 icon="arrow-left-circle"
                 onSelect={setReply}
               />
               {type === "myMessage" && (
                 <MenuItem
-                  text="Delete"
+                  text={t("delete")}
                   icon="trash"
                   onSelect={setDeleteMessage}
                 />

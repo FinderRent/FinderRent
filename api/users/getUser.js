@@ -14,7 +14,7 @@ async function getUser(ouid) {
 
     return responseData;
   } catch (err) {
-    throw new Error(err);
+    throw new Error(err.response.data.message);
   }
 }
 

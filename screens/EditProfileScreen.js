@@ -16,12 +16,15 @@ import {
 import { Button, Text, TextInput } from "react-native-paper";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useMutation } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import Toast from "react-native-toast-message";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { UserContext, useUsers } from "../context/UserContext";
 import { useDarkMode } from "../context/DarkModeContext";
-import { academicList } from "../data/academicEnglish";
+import { academicListEnglish } from "../data/academicEnglish";
+import { academicListHebrew } from "../data/academicHebrew";
+import { academicListRussian } from "../data/academicRussian";
 import { Color } from "../constants/colors";
 import DropDown from "../components/inputs/DropDown";
 import Input from "../components/inputs/Input";
@@ -31,12 +34,15 @@ import ImagePicker from "../components/ImagePicker";
 import TakePhoto from "../components/TakePhoto";
 import ErrorMessage from "../components/ui/ErrorMessage";
 import updateUser from "../api/updateUser";
+import { academicListArabic } from "../data/academicArabic";
 
 function EditProfileScreen({ navigation }) {
+  const { t, i18n } = useTranslation();
   const { isDarkMode } = useDarkMode();
   const { userData } = useUsers();
   const auth = useContext(UserContext);
 
+  let listAcademic = null;
   const { token } = userData;
   const [userType, setUserType] = useState(userData.userType);
   const [avatar, setAvatar] = useState(userData.avatar?.url);
@@ -56,19 +62,42 @@ function EditProfileScreen({ navigation }) {
   const url =
     "https://res.cloudinary.com/dtkpp77xw/image/upload/v1701189732/default_nk5c5h.png";
 
-  const listAcademic = academicList.map((item) => ({
-    label: item.name,
-    value: item.id,
-    coordinates: item.coordinates,
-  }));
+  switch (i18n.language) {
+    case "en":
+      listAcademic = academicListEnglish.map((item) => ({
+        label: item.name,
+        value: item.id,
+        coordinates: item.coordinates,
+      }));
+      break;
+    case "he":
+      listAcademic = academicListHebrew.map((item) => ({
+        label: item.name,
+        value: item.id,
+        coordinates: item.coordinates,
+      }));
+      break;
+    case "ru":
+      listAcademic = academicListRussian.map((item) => ({
+        label: item.name,
+        value: item.id,
+        coordinates: item.coordinates,
+      }));
+    case "ar":
+      listAcademic = academicListArabic.map((item) => ({
+        label: item.name,
+        value: item.id,
+        coordinates: item.coordinates,
+      }));
+  }
 
   const listYear = [
-    { label: "Preparing", value: "Preparing" },
-    { label: "Year 1", value: "Year 1" },
-    { label: "Year 2", value: "Year 2" },
-    { label: "Year 3", value: "Year 3" },
-    { label: "Year 4", value: "Year 4" },
-    { label: "Master's degree", value: "Master's degree" },
+    { label: t("signUp.preparing"), value: t("signUp.preparing") },
+    { label: t("signUp.year1"), value: t("signUp.year1") },
+    { label: t("signUp.year2"), value: t("signUp.year2") },
+    { label: t("signUp.year3"), value: t("signUp.year3") },
+    { label: t("signUp.year4"), value: t("signUp.year4") },
+    { label: t("signUp.masterDegree"), value: t("signUp.masterDegree") },
   ];
 
   useEffect(() => {
@@ -119,7 +148,7 @@ function EditProfileScreen({ navigation }) {
       auth.login(user.data.updatedUser, token);
       Toast.show({
         type: "success",
-        text1: "Profile successfully updated",
+        text1: t("profile_success"),
       });
       navigation.goBack();
     },
@@ -210,7 +239,7 @@ function EditProfileScreen({ navigation }) {
                   />
                 </View>
               </ImageBackground>
-              <Text style={{ marginBottom: 30 }}>Update Picture</Text>
+              <Text style={{ marginBottom: 30 }}>{t("update_picture")}</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -218,7 +247,7 @@ function EditProfileScreen({ navigation }) {
         <View style={styles.inputsRow}>
           <Input
             style={styles.textInput}
-            label={firstName ? "" : "First Name"}
+            label={firstName ? "" : t("first_name")}
             value={firstName}
             left={<TextInput.Icon icon={"account-outline"} />}
             mode="outlined"
@@ -226,7 +255,7 @@ function EditProfileScreen({ navigation }) {
           />
           <Input
             style={styles.textInput}
-            label={lastName ? "" : "Last Name"}
+            label={lastName ? "" : t("last_name")}
             value={lastName}
             left={<TextInput.Icon icon={"account-outline"} />}
             mode="outlined"
@@ -235,7 +264,7 @@ function EditProfileScreen({ navigation }) {
         </View>
         <Input
           style={styles.textInput}
-          label={age ? "" : "Age"}
+          label={age ? "" : t("age")}
           value={age}
           left={<TextInput.Icon icon={"calendar-account-outline"} />}
           mode="outlined"
@@ -246,7 +275,7 @@ function EditProfileScreen({ navigation }) {
         {userType === "landlord" && (
           <Input
             style={styles.textInput}
-            label={phone ? "" : "phone"}
+            label={phone ? "" : t("phone")}
             value={phone}
             left={<TextInput.Icon icon={"phone-outline"} />}
             mode="outlined"
@@ -262,7 +291,7 @@ function EditProfileScreen({ navigation }) {
                 label={academic}
                 listMode="MODAL"
                 searchable={true}
-                searchPlaceholder="Search For Academic Institution"
+                searchPlaceholder={t("academic_institution")}
                 onValueChange={(selectedAcademic) =>
                   setAcademic(selectedAcademic)
                 }
@@ -273,7 +302,7 @@ function EditProfileScreen({ navigation }) {
               <View style={styles.inputsRow}>
                 <Input
                   style={styles.textInput}
-                  label={department ? "" : "Department"}
+                  label={department ? "" : t("department")}
                   value={department}
                   left={<TextInput.Icon icon={"school-outline"} />}
                   mode="outlined"
@@ -297,7 +326,7 @@ function EditProfileScreen({ navigation }) {
 
         <View style={styles.textInput}>
           <Input
-            label={email ? "" : "Email"}
+            label={email ? "" : t("email")}
             value={email}
             left={<TextInput.Icon icon={"email-outline"} />}
             mode="outlined"
@@ -308,7 +337,7 @@ function EditProfileScreen({ navigation }) {
 
         <View style={styles.textInput}>
           <Input
-            label={hobbies ? "" : "what your hobbies?"}
+            label={hobbies ? "" : t("hobbies")}
             value={hobbies ? hobbies : ""}
             left={<TextInput.Icon icon={"controller-classic"} />}
             mode="outlined"
@@ -317,7 +346,7 @@ function EditProfileScreen({ navigation }) {
         </View>
         <View style={styles.textInput}>
           <Input
-            label={funFact ? "" : "tell us fun fact..."}
+            label={funFact ? "" : t("fun_fact")}
             value={funFact ? funFact : ""}
             left={<TextInput.Icon icon={"beer"} />}
             mode="outlined"
@@ -339,10 +368,10 @@ function EditProfileScreen({ navigation }) {
             onPress={handleUpdateUser}
             loading={isPending}
           >
-            {!isPending && "Update    "}
+            {!isPending && t("update")}
           </Button>
         </Spacer>
-        <NavLink text="Back    " style={{ marginTop: -5, fontSize: 14 }} />
+        <NavLink text={t("back")} style={{ marginTop: -5, fontSize: 14 }} />
         <View style={{ marginTop: 65 }}></View>
 
         <BottomSheetModal
@@ -361,9 +390,9 @@ function EditProfileScreen({ navigation }) {
           onDismiss={() => setIsBottomSheetOpen(false)}
         >
           <View style={styles.sheetContainer}>
-            <Text style={styles.panelTitle}>Update Picture</Text>
+            <Text style={styles.panelTitle}>{t("update_picture")}</Text>
             <Text style={styles.panelSubtitle}>
-              Choose Your Profile Picture
+              {t("choose_profile_picture")}
             </Text>
 
             <ImagePicker onPickImage={(image) => setAvatar(image)} />
@@ -380,7 +409,7 @@ function EditProfileScreen({ navigation }) {
               mode="contained"
               onPress={() => setAvatar(url)}
             >
-              Delete Picture
+              {t("delete_picture")}
             </Button>
 
             <Button
@@ -391,7 +420,7 @@ function EditProfileScreen({ navigation }) {
                 isDarkMode ? Color.defaultTheme : Color.buttomSheetDarkTheme
               }
             >
-              Cancel
+              {t("cancel")}
             </Button>
           </View>
         </BottomSheetModal>

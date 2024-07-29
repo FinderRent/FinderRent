@@ -84,7 +84,7 @@ export async function fetchAllstudents(filter) {
         params.userType = filter.userType;
       }
 
-      const response = await axios.get(BACKEND_URL + "/students", { params });
+      const response = await axios.get(BACKEND_URL + "/users", { params });
 
       const responseData = response.data.data;
 
