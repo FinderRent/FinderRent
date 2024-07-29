@@ -11,8 +11,9 @@ import {
 } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { useMutation } from "@tanstack/react-query";
-import Toast from "react-native-toast-message";
 import { useTranslation } from "react-i18next";
+import { Fontisto } from "@expo/vector-icons";
+import Toast from "react-native-toast-message";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
@@ -21,9 +22,9 @@ import ErrorMessage from "../components/ui/ErrorMessage";
 import forgotPasswordEmail from "../api/emails/forgotPasswordEmail";
 
 function ForgotPasswordModal({ showVisible }) {
+  const { t } = useTranslation();
   const { isDarkMode } = useDarkMode();
   const navigation = useNavigation();
-  const { t } = useTranslation();
 
   const [forgotPasswordVisible, setForgotPasswordVisible] = useState(true);
   const [email, setEmail] = useState();
@@ -73,16 +74,22 @@ function ForgotPasswordModal({ showVisible }) {
                   : styles.modalView
               }
             >
-              <Text style={styles.modalText}>
+              <Text
+                style={[
+                  styles.modalText,
+                  isDarkMode && { color: Color.defaultTheme },
+                ]}
+              >
                 {t("forgotPassword.enterEmail")}
               </Text>
               <Pressable
                 onPress={() => handleCancel()}
-                style={{ position: "absolute", margin: 12 }}
+                style={{ position: "absolute", margin: 15 }}
               >
-                <Image
-                  source={require("../assets/images/close.png")}
-                  style={{ height: 25, width: 25 }}
+                <Fontisto
+                  name="close-a"
+                  size={28}
+                  color={isDarkMode ? "white" : "black"}
                 />
               </Pressable>
               <View style={styles.textInput}>
@@ -90,6 +97,7 @@ function ForgotPasswordModal({ showVisible }) {
                   label={t("forgotPassword.email")}
                   keyboardType="email-address"
                   mode="outlined"
+                  color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
                   onValueChange={(selectedMail) => setEmail(selectedMail)}
                 />
               </View>
@@ -97,11 +105,14 @@ function ForgotPasswordModal({ showVisible }) {
               {isError && <ErrorMessage errorMessage={error.message} />}
 
               <Button
-                style={styles.button}
+                style={[
+                  styles.button,
+                  isDarkMode && { backgroundColor: Color.defaultTheme },
+                ]}
                 mode="contained"
-                textColor={Color.defaultTheme}
                 onPress={handleForgotPasswordEmail}
                 loading={isPending}
+                textColor={isDarkMode ? Color.darkTheme : Color.defaultTheme}
               >
                 {!isPending && t("forgotPassword.send")}
               </Button>
@@ -139,18 +150,19 @@ const styles = StyleSheet.create({
     marginTop: 15,
     textAlign: "center",
     fontSize: 13,
-    color: Color.Blue700,
+    color: Color.darkTheme,
     // fontFamily: "OrbitronMedium",
   },
   textInput: {
     fontSize: 15,
-    margin: 5,
+    // marginHorizontal: 5,
+    margin: 2,
     justifyContent: "center",
-    color: "#2196F3",
+    color: Color.darkTheme,
   },
   button: {
     elevation: 2,
     marginVertical: 5,
-    backgroundColor: Color.Blue700,
+    backgroundColor: Color.darkTheme,
   },
 });

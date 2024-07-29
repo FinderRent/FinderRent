@@ -11,13 +11,14 @@ import {
 } from "react-native";
 import { Button, Text } from "react-native-paper";
 import { useMutation } from "@tanstack/react-query";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import Toast from "react-native-toast-message";
-import * as Notifications from "expo-notifications";
-import * as Device from "expo-device";
-import Constants from "expo-constants";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
+import { Fontisto } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Toast from "react-native-toast-message";
+import Constants from "expo-constants";
+import * as Notifications from "expo-notifications";
+import * as Device from "expo-device";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
@@ -30,10 +31,10 @@ import ForgotPasswordModal from "./ForgotPasswordModal";
 
 function SignInModal({ showVisible }) {
   const auth = useContext(UserContext);
+  const { t } = useTranslation();
   const { isDarkMode } = useDarkMode();
   const navigation = useNavigation();
   const isFocused = useIsFocused();
-  const { t } = useTranslation();
 
   const [signInModalVisible, setSignInModalVisible] = useState(true);
   const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
@@ -125,31 +126,55 @@ function SignInModal({ showVisible }) {
                   : styles.modalView.backgroundColor,
               }}
             >
-              <Text style={styles.modalText}>{t("login")}</Text>
-              <Pressable
-                onPress={handleCancel}
-                style={{ position: "absolute", margin: 10 }}
+              <Text
+                style={[
+                  styles.modalText,
+                  isDarkMode && { color: Color.defaultTheme },
+                ]}
               >
-                <Image source={require("../assets/images/close.png")} />
+                {t("login")}
+              </Text>
+
+              <Pressable
+                onPress={() => handleCancel()}
+                style={{ position: "absolute", margin: 15 }}
+              >
+                <Fontisto
+                  name="close-a"
+                  size={28}
+                  color={isDarkMode ? "white" : "black"}
+                />
               </Pressable>
-              <View style={styles.textInput}>
+              <View
+                style={[
+                  styles.textInput,
+                  isDarkMode && { color: Color.defaultTheme },
+                ]}
+              >
                 <Input
                   label={t("email")}
                   keyboardType="email-address"
                   mode="outlined"
-                  color={Color.Blue700}
+                  color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
                   onValueChange={(selectedMail) => setEmail(selectedMail)}
                 />
                 <PasswordInput
                   mode="outlined"
                   label={t("password")}
-                  color={Color.Blue700}
+                  color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
                   onValueChange={(password) => setPassword(password)}
                 />
               </View>
               {isError && <ErrorMessage errorMessage={t(error.message)} />}
               <TouchableOpacity onPress={handleForgotPassword}>
-                <Text style={styles.textInput}>{t("forgot_password")}</Text>
+                <Text
+                  style={[
+                    styles.textInput,
+                    isDarkMode && { color: Color.defaultTheme },
+                  ]}
+                >
+                  {t("forgot_password")}
+                </Text>
               </TouchableOpacity>
               {showForgotPasswordModal && (
                 <ForgotPasswordModal
@@ -159,14 +184,24 @@ function SignInModal({ showVisible }) {
                 />
               )}
               <TouchableOpacity onPress={handleRegister}>
-                <Text style={styles.textInput}>{t("no_account_register")}</Text>
+                <Text
+                  style={[
+                    styles.textInput,
+                    isDarkMode && { color: Color.defaultTheme },
+                  ]}
+                >
+                  {t("no_account_register")}
+                </Text>
               </TouchableOpacity>
               <Button
-                style={styles.button}
+                style={[
+                  styles.button,
+                  isDarkMode && { backgroundColor: Color.defaultTheme },
+                ]}
                 mode="contained"
                 onPress={handleLogin}
                 loading={isPending}
-                textColor={Color.defaultTheme}
+                textColor={isDarkMode ? Color.darkTheme : Color.defaultTheme}
               >
                 {!isPending && t("login_button")}
               </Button>
@@ -199,24 +234,24 @@ const styles = StyleSheet.create({
   },
   button: {
     borderRadius: 20,
-    padding: 5,
+    padding: 4,
     elevation: 2,
-    marginVertical: 10,
-    backgroundColor: Color.Blue700,
+    marginVertical: 5,
+    backgroundColor: Color.darkTheme,
   },
   modalText: {
-    marginBottom: 0,
-    marginTop: 15,
+    marginTop: 10,
     textAlign: "center",
     fontSize: 44,
-    color: Color.Blue700,
+    color: Color.darkTheme,
     fontWeight: "bold",
   },
   textInput: {
     fontSize: 15,
-    margin: 5,
+    marginHorizontal: 5,
+    margin: 2,
     justifyContent: "center",
-    color: Color.Blue700,
+    color: Color.darkTheme,
   },
   textRow: {
     flex: 1,

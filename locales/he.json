@@ -43,7 +43,7 @@
   "password": "סיסמה",
   "forgot_password": "שכחת סיסמה?",
   "no_account_register": "אין לך חשבון? הירשם",
-  "login_button": "התחברות",
+  "login_button": "התחבר",
   "logged_in_successfully": "התחברת בהצלחה",
 
   "forgotPassword": {
@@ -213,7 +213,7 @@
   "Other": "אחר",
   "Favorites": "מועדפים",
   "Security": "אבטחה",
-  "Logout": "התנתקת",
+  "Logout": "התנתק",
 
   "update_picture": "עדכן תמונה",
   "first_name": "שם פרטי",
