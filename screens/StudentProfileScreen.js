@@ -19,7 +19,6 @@ import { useUsers } from "../context/UserContext";
 import { fetchUser } from "../utils/http";
 import Icon from "react-native-vector-icons/Ionicons";
 import Spacer from "../components/ui/Spacer";
-import Loader from "../components/ui/Loader";
 import ErrorMessage from "../components/ui/ErrorMessage";
 
 function StudentProfileScreen(props) {
@@ -92,7 +91,7 @@ function StudentProfileScreen(props) {
           </View>
           <View style={styles.contentContainer}>
             <Text style={styles.name}>{user?.firstName}</Text>
-            <Text style={styles.role}>Student</Text>
+            <Text style={styles.role}>{t("student")}</Text>
           </View>
         </View>
         <View style={styles.detailsContainer}>
@@ -102,7 +101,8 @@ function StudentProfileScreen(props) {
             color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
           />
           <Text style={styles.funFactText}>
-            {t("academic")} {user?.academic || t("empty")}
+            <Text style={{ fontWeight: "bold" }}>{t("academic")}</Text>{" "}
+            {user?.academic || t("empty")}
           </Text>
         </View>
         <View style={styles.detailsContainer}>
@@ -112,7 +112,8 @@ function StudentProfileScreen(props) {
             color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
           />
           <Text style={styles.funFactText}>
-            {t("department")} {user?.department || t("empty")}
+            <Text style={{ fontWeight: "bold" }}>{t("department")}</Text>{" "}
+            {user?.department || t("empty")}
           </Text>
         </View>
         <View style={styles.detailsContainer}>
@@ -122,7 +123,8 @@ function StudentProfileScreen(props) {
             color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
           />
           <Text style={styles.funFactText}>
-            {t("age")} {user?.age || t("empty")}
+            <Text style={{ fontWeight: "bold" }}>{t("age")}</Text>{" "}
+            {user?.age || t("empty")}
           </Text>
         </View>
         <View style={styles.detailsContainer}>
@@ -132,7 +134,8 @@ function StudentProfileScreen(props) {
             color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
           />
           <Text style={styles.funFactText}>
-            {t("hobbies")} {user?.hobbies || t("empty")}
+            <Text style={{ fontWeight: "bold" }}>{t("myHobbies")}</Text>{" "}
+            {user?.hobbies || t("empty")}
           </Text>
         </View>
         <View style={styles.detailsContainer}>
@@ -142,7 +145,8 @@ function StudentProfileScreen(props) {
             color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
           />
           <Text style={styles.funFactText}>
-            {t("funFact")} {user?.funFact || t("empty")}
+            <Text style={{ fontWeight: "bold" }}>{t("funFact")}</Text>{" "}
+            {user?.funFact || t("empty")}
           </Text>
         </View>
 
@@ -262,9 +266,9 @@ const styles = StyleSheet.create({
   detailsContainer: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "flex-start",
     width: "100%",
     marginTop: 20,
+    paddingRight: 50,
     paddingHorizontal: 20,
   },
   funFactText: {
