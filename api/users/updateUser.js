@@ -22,11 +22,15 @@ async function updateUser({
     formData.append("firstName", firstName);
     formData.append("lastName", lastName);
     formData.append("age", age);
-    formData.append("academic", academic);
-    formData.append("coordinates", JSON.stringify(coordinates));
-    formData.append("department", department);
-    formData.append("yearbook", yearbook);
+
     formData.append("email", email);
+
+    if (userType === "student") {
+      formData.append("coordinates", JSON.stringify(coordinates));
+      formData.append("academic", academic);
+      formData.append("department", department);
+      formData.append("yearbook", yearbook);
+    }
 
     if (hobbies) {
       formData.append("hobbies", hobbies);
@@ -52,6 +56,7 @@ async function updateUser({
     }
     const response = await axios.patch(
       `https://finder-rent-backend.vercel.app/api/v1/users/updateMe`,
+      // ` http://192.168.1.214:3000/api/v1/users/updateMe`,
       formData,
       {
         headers: {

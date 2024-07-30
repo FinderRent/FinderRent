@@ -345,7 +345,7 @@ function SignUpScreen({ navigation }) {
               }
             />
 
-            {isError && <ErrorMessage errorMessage={error.message} />}
+            {isError && <ErrorMessage errorMessage={t(error.message)} />}
 
             <Button
               style={{ marginTop: 10 }}

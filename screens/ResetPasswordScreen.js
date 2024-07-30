@@ -126,7 +126,7 @@ function ResetPasswordScreen({ route }) {
       </View>
 
       {isResetPasswordError && (
-        <ErrorMessage errorMessage={resetPasswordError.message} />
+        <ErrorMessage errorMessage={t(resetPasswordError.message)} />
       )}
 
       <Spacer>

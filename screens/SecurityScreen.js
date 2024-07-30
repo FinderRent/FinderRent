@@ -91,7 +91,7 @@ function SecurityScreen() {
                 setPasswordConfirm(passwordConfirm)
               }
             />
-            {isError && <ErrorMessage errorMessage={error.message} />}
+            {isError && <ErrorMessage errorMessage={t(error.message)} />}
 
             <Spacer>
               <Button

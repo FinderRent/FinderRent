@@ -100,7 +100,14 @@ function ChatList({ ouid, chatId, lastMessage, time, searchUser, deleteChat }) {
               {translatedLastMessage}
             </Text>
 
-            <Text numberOfLines={1} style={styles.time}>
+            <Text
+              numberOfLines={1}
+              style={
+                isDarkMode
+                  ? { ...styles.time, color: Color.defaultTheme }
+                  : styles.time
+              }
+            >
               {time}
             </Text>
             <Ionicons
@@ -128,7 +135,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   selectedContainer: {
-    backgroundColor: Color.Brown300,
+    backgroundColor: Color.Brown400,
   },
   textContainer: {
     marginLeft: 10,
@@ -144,7 +151,7 @@ const styles = StyleSheet.create({
   },
   time: {
     fontSize: 10,
-    color: Color.Brown500,
+    color: Color.darkTheme,
   },
   type: {
     left: width < 370 ? "280%" : "330%",

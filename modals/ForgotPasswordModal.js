@@ -102,7 +102,7 @@ function ForgotPasswordModal({ showVisible }) {
                 />
               </View>
 
-              {isError && <ErrorMessage errorMessage={error.message} />}
+              {isError && <ErrorMessage errorMessage={t(error.message)} />}
 
               <Button
                 style={[

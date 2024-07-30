@@ -25,6 +25,7 @@ import { useDarkMode } from "../context/DarkModeContext";
 import { academicListEnglish } from "../data/academicEnglish";
 import { academicListHebrew } from "../data/academicHebrew";
 import { academicListRussian } from "../data/academicRussian";
+import { academicListArabic } from "../data/academicArabic";
 import { Color } from "../constants/colors";
 import DropDown from "../components/inputs/DropDown";
 import Input from "../components/inputs/Input";
@@ -33,8 +34,7 @@ import NavLink from "../components/ui/NavLink";
 import ImagePicker from "../components/ImagePicker";
 import TakePhoto from "../components/TakePhoto";
 import ErrorMessage from "../components/ui/ErrorMessage";
-import updateUser from "../api/updateUser";
-import { academicListArabic } from "../data/academicArabic";
+import updateUser from "../api/users/updateUser";
 
 function EditProfileScreen({ navigation }) {
   const { t, i18n } = useTranslation();
