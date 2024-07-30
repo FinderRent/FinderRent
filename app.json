@@ -21,7 +21,6 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "googleServicesFile": "./finderent-firebase-adminsdk-ebt6l-9435f6f578.json",
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyDYInyCvJ1WQjqJohhMx2OnxioXWAvy39s"
