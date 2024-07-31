@@ -22,6 +22,7 @@ import { academicListEnglish } from "../data/academicEnglish";
 import { academicListHebrew } from "../data/academicHebrew";
 import { academicListRussian } from "../data/academicRussian";
 import { academicListArabic } from "../data/academicArabic";
+import { fetchInstitutions } from "../data/academicApi";
 import Input from "../components/inputs/Input";
 import PasswordInput from "../components/inputs/PasswordInput";
 import DropDown from "../components/inputs/DropDown";
@@ -29,20 +30,23 @@ import NavLink from "../components/ui/NavLink";
 import Spacer from "../components/ui/Spacer";
 import signUp from "../api/authentication/signUp";
 import ErrorMessage from "../components/ui/ErrorMessage";
+import SelectCountry from "../components/inputs/SelectCountry";
 
 function SignUpScreen({ navigation }) {
   const { t, i18n } = useTranslation();
   const { isDarkMode } = useDarkMode();
   const auth = useContext(UserContext);
 
-  // State variables for form inputs
-  let listAcademic = null;
+  let listAcademicIsrael = null;
+  const [institutions, setInstitutions] = useState([]);
   const [pushToken, setPushToken] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [age, setAge] = useState("");
-  const [academic, setAcademic] = useState("");
+  const [country, setCountry] = useState("");
+  const [academic, setAcademic] = useState("Israel");
   const [coordinates, setCoordinates] = useState("");
+  const [address, setaddress] = useState("");
   const [department, setDepartment] = useState("");
   const [yearbook, setYearbook] = useState("");
   const [gender, setGender] = useState("");
@@ -51,30 +55,29 @@ function SignUpScreen({ navigation }) {
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
 
-  // Mapping academic list for DropDown component
   switch (i18n.language) {
     case "en":
-      listAcademic = academicListEnglish.map((item) => ({
+      listAcademicIsrael = academicListEnglish.map((item) => ({
         label: item.name,
         value: item.id,
         coordinates: item.coordinates,
       }));
       break;
     case "he":
-      listAcademic = academicListHebrew.map((item) => ({
+      listAcademicIsrael = academicListHebrew.map((item) => ({
         label: item.name,
         value: item.id,
         coordinates: item.coordinates,
       }));
       break;
     case "ru":
-      listAcademic = academicListRussian.map((item) => ({
+      listAcademicIsrael = academicListRussian.map((item) => ({
         label: item.name,
         value: item.id,
         coordinates: item.coordinates,
       }));
     case "ar":
-      listAcademic = academicListArabic.map((item) => ({
+      listAcademicIsrael = academicListArabic.map((item) => ({
         label: item.name,
         value: item.id,
         coordinates: item.coordinates,
@@ -129,10 +132,32 @@ function SignUpScreen({ navigation }) {
     }
   };
 
+  // const listAcademic = institutions?.map((item) => ({
+  //   label: item.name,
+  //   value: item.name,
+  //   coordinates: item.coordinates,
+  //   address: item.address,
+  // }));
+
   useEffect(() => {
-    const index = listAcademic.findIndex((item) => item.value === academic);
+    // const getInstitutions = async () => {
+    //   const institutions = await fetchInstitutions(country, "en");
+    //   setInstitutions(institutions);
+    // };
+    // getInstitutions();
+    // Mapping academic list for DropDown component
+  }, [country]);
+
+  // console.log(institutions.length);
+
+  // console.log(listAcademicIsrael);
+
+  useEffect(() => {
+    const index = listAcademicIsrael.findIndex(
+      (item) => item.value === academic
+    );
     if (index !== -1) {
-      setCoordinates(listAcademic[index].coordinates);
+      setCoordinates(listAcademicIsrael[index].coordinates);
     }
   }, [academic]);
 
@@ -182,7 +207,11 @@ function SignUpScreen({ navigation }) {
             </Text>
           </View>
 
-          {/* Input fields for name and age */}
+          <SelectCountry
+            country={country}
+            onCountryChange={(selectedCountry) => setCountry(selectedCountry)}
+          />
+
           <View style={styles.inputsRow}>
             <Input
               style={styles.textInput}
@@ -268,11 +297,11 @@ function SignUpScreen({ navigation }) {
           </View>
 
           {/* DropDown component for selecting academic institution */}
-          {userType === "student" && ( // If the user is a student, then the dropdown is visible
+          {userType === "student" && (
             <View>
               <View>
                 <DropDown
-                  list={listAcademic}
+                  list={listAcademicIsrael}
                   label={t("signUp.academicInstitution")}
                   placeholder={academic}
                   listMode="MODAL"

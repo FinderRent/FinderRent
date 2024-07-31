@@ -66,6 +66,8 @@
 
   "signUp": {
     "header": "הירשם",
+    "selectCountry": "בחר מדינה",
+    "searchYourCountry": "חפש את המדינה שלך",
     "firstName": "שם פרטי",
     "lastName": "שם משפחה",
     "age": "גיל",
@@ -94,6 +96,9 @@
       "success": "הרשמה בוצעה בהצלחה!"
     }
   },
+
+  "Israel": "ישראל",
+
   "signInPrompt": "התחבר כדי לראות את המיקום שלך",
   "signInButton": "התחבר",
 

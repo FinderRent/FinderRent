@@ -66,6 +66,8 @@
 
   "signUp": {
     "header": "Sign Up",
+    "selectCountry": "Select Country",
+    "searchYourCountry": "Search Your Country",
     "firstName": "First Name",
     "lastName": "Last Name",
     "age": "Age",
@@ -95,6 +97,8 @@
       "success": "Successfully signed up!"
     }
   },
+
+  "Israel": "Israel",
 
   "signInPrompt": "Sign in to see your location",
   "signInButton": "Sign In",

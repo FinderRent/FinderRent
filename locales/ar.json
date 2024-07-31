@@ -66,6 +66,8 @@
 
   "signUp": {
     "header": "التسجيل",
+    "selectCountry": "اختر البلد",
+    "searchYourCountry": "اختر البلد",
     "firstName": "الاسم الأول",
     "lastName": "الاسم الأخير",
     "age": "العمر",
@@ -95,6 +97,8 @@
       "success": "تم التسجيل بنجاح!"
     }
   },
+
+  "Israel": "إسرائيل",
 
   "signInPrompt": "سجل الدخول لرؤية موقعك",
   "signInButton": "تسجيل الدخول",

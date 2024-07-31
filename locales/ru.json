@@ -66,6 +66,8 @@
 
   "signUp": {
     "header": "Регистрация",
+    "selectCountry": "Выберите страну",
+    "searchYourCountry": "Выберите страну",
     "firstName": "Имя",
     "lastName": "Фамилия",
     "age": "Возраст",
@@ -95,6 +97,8 @@
       "success": "Регистрация прошла успешно!"
     }
   },
+
+  "Israel": "Израиль",
 
   "signInPrompt": "Войдите, чтобы увидеть ваше местоположение",
   "signInButton": "Войти",
