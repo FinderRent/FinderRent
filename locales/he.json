@@ -79,6 +79,7 @@
     "student": "סטודנט",
     "academicInstitution": "מוסד אקדמי",
     "searchAcademic": "חפש מוסד אקדמי",
+    "department": "מחלקה",
     "yearbook": "שנה",
     "preparing": "מכינה",
     "year1": "שנה 1",
@@ -287,9 +288,9 @@
   "empty": "אין",
 
   "changePassword": "שנה סיסמה",
-  "enterCurrentPassword": "הזן סיסמה נוכחית:",
-  "enterNewPassword": "הזן סיסמה חדשה:",
-  "confirmPassword": "אשר סיסמה:",
+  "enterCurrentPassword": "הזן סיסמה נוכחית",
+  "enterNewPassword": "הזן סיסמה חדשה",
+  "confirmPassword": "אשר סיסמה",
   "updatePassword": "עדכן סיסמה",
 
   "student": "סטודנט",

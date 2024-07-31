@@ -288,8 +288,8 @@
   "empty": "فارغ",
 
   "changePassword": "تغيير كلمة المرور",
-  "enterCurrentPassword": "أدخل كلمة المرور الحالية:",
-  "enterNewPassword": "أدخل كلمة المرور الجديدة:",
+  "enterCurrentPassword": "أدخل كلمة المرور الحالية",
+  "enterNewPassword": "أدخل كلمة المرور الجديدة",
   "confirmPassword": "تأكيد كلمة المرور:",
   "updatePassword": "تحديث كلمة المرور"
 }

@@ -18,10 +18,8 @@ import Toast from "react-native-toast-message";
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { UserContext } from "../context/UserContext";
-import { academicListEnglish } from "../data/academicEnglish";
-import { academicListHebrew } from "../data/academicHebrew";
-import { academicListRussian } from "../data/academicRussian";
-import { academicListArabic } from "../data/academicArabic";
+import { getAcademicList } from "../data/getAcademicList";
+import { getYearList } from "../data/getListYear";
 import { fetchInstitutions } from "../data/academicApi";
 import Input from "../components/inputs/Input";
 import PasswordInput from "../components/inputs/PasswordInput";
@@ -31,14 +29,20 @@ import Spacer from "../components/ui/Spacer";
 import signUp from "../api/authentication/signUp";
 import ErrorMessage from "../components/ui/ErrorMessage";
 import SelectCountry from "../components/inputs/SelectCountry";
+import Loader from "../components/ui/Loader";
 
 function SignUpScreen({ navigation }) {
   const { t, i18n } = useTranslation();
   const { isDarkMode } = useDarkMode();
   const auth = useContext(UserContext);
 
-  let listAcademicIsrael = null;
+  const listAcademicIsrael = getAcademicList(i18n.language);
+  const listYear = getYearList();
+
   const [institutions, setInstitutions] = useState([]);
+  const [listAcademic, setListAcademic] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
   const [pushToken, setPushToken] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -46,7 +50,6 @@ function SignUpScreen({ navigation }) {
   const [country, setCountry] = useState("");
   const [academic, setAcademic] = useState("Israel");
   const [coordinates, setCoordinates] = useState("");
-  const [address, setaddress] = useState("");
   const [department, setDepartment] = useState("");
   const [yearbook, setYearbook] = useState("");
   const [gender, setGender] = useState("");
@@ -54,45 +57,6 @@ function SignUpScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
-
-  switch (i18n.language) {
-    case "en":
-      listAcademicIsrael = academicListEnglish.map((item) => ({
-        label: item.name,
-        value: item.id,
-        coordinates: item.coordinates,
-      }));
-      break;
-    case "he":
-      listAcademicIsrael = academicListHebrew.map((item) => ({
-        label: item.name,
-        value: item.id,
-        coordinates: item.coordinates,
-      }));
-      break;
-    case "ru":
-      listAcademicIsrael = academicListRussian.map((item) => ({
-        label: item.name,
-        value: item.id,
-        coordinates: item.coordinates,
-      }));
-    case "ar":
-      listAcademicIsrael = academicListArabic.map((item) => ({
-        label: item.name,
-        value: item.id,
-        coordinates: item.coordinates,
-      }));
-  }
-
-  // List of year options for DropDown component
-  const listYear = [
-    { label: t("signUp.preparing"), value: t("signUp.preparing") },
-    { label: t("signUp.year1"), value: t("signUp.year1") },
-    { label: t("signUp.year2"), value: t("signUp.year2") },
-    { label: t("signUp.year3"), value: t("signUp.year3") },
-    { label: t("signUp.year4"), value: t("signUp.year4") },
-    { label: t("signUp.masterDegree"), value: t("signUp.masterDegree") },
-  ];
 
   const userData = {
     pushToken,
@@ -132,25 +96,30 @@ function SignUpScreen({ navigation }) {
     }
   };
 
-  // const listAcademic = institutions?.map((item) => ({
-  //   label: item.name,
-  //   value: item.name,
-  //   coordinates: item.coordinates,
-  //   address: item.address,
-  // }));
-
   useEffect(() => {
-    // const getInstitutions = async () => {
-    //   const institutions = await fetchInstitutions(country, "en");
-    //   setInstitutions(institutions);
-    // };
-    // getInstitutions();
-    // Mapping academic list for DropDown component
+    const getInstitutions = async () => {
+      setIsLoading(true);
+      setUserType("");
+      let str = country;
+      let result = str.replace(/\s/g, "");
+      if (country) {
+        const institutions = await fetchInstitutions(result, "en");
+        setInstitutions(institutions);
+      }
+      setIsLoading(false);
+    };
+    getInstitutions();
   }, [country]);
 
-  // console.log(institutions.length);
-
-  // console.log(listAcademicIsrael);
+  useEffect(() => {
+    const updatedListAcademic = institutions.map((item) => ({
+      label: item.name,
+      value: item.name,
+      coordinates: item.coordinates,
+      address: item.address,
+    }));
+    setListAcademic(updatedListAcademic);
+  }, [institutions]);
 
   useEffect(() => {
     const index = listAcademicIsrael.findIndex(
@@ -211,7 +180,9 @@ function SignUpScreen({ navigation }) {
             country={country}
             onCountryChange={(selectedCountry) => setCountry(selectedCountry)}
           />
-
+          <View style={{ marginTop: 10 }}>
+            {isLoading && <Loader color={Color.Blue700} size={16} />}
+          </View>
           <View style={styles.inputsRow}>
             <Input
               style={styles.textInput}
@@ -300,17 +271,31 @@ function SignUpScreen({ navigation }) {
           {userType === "student" && (
             <View>
               <View>
-                <DropDown
-                  list={listAcademicIsrael}
-                  label={t("signUp.academicInstitution")}
-                  placeholder={academic}
-                  listMode="MODAL"
-                  searchable={true}
-                  onValueChange={(selectedAcademic) =>
-                    setAcademic(selectedAcademic)
-                  }
-                  searchPlaceholder={t("signUp.searchAcademic")}
-                />
+                {t("Israel") === country ? (
+                  <DropDown
+                    list={listAcademicIsrael}
+                    label={t("signUp.academicInstitution")}
+                    placeholder={academic}
+                    listMode="MODAL"
+                    searchable={true}
+                    onValueChange={(selectedAcademic) =>
+                      setAcademic(selectedAcademic)
+                    }
+                    searchPlaceholder={t("signUp.searchAcademic")}
+                  />
+                ) : (
+                  <DropDown
+                    list={listAcademic}
+                    label={t("signUp.academicInstitution")}
+                    placeholder={academic}
+                    listMode="MODAL"
+                    searchable={true}
+                    onValueChange={(selectedAcademic) =>
+                      setAcademic(selectedAcademic)
+                    }
+                    searchPlaceholder={t("signUp.searchAcademic")}
+                  />
+                )}
               </View>
 
               {/* Input fields for department and yearbook */}

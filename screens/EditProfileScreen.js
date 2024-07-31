@@ -21,12 +21,10 @@ import Toast from "react-native-toast-message";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { UserContext, useUsers } from "../context/UserContext";
-import { useDarkMode } from "../context/DarkModeContext";
-import { academicListEnglish } from "../data/academicEnglish";
-import { academicListHebrew } from "../data/academicHebrew";
-import { academicListRussian } from "../data/academicRussian";
-import { academicListArabic } from "../data/academicArabic";
 import { Color } from "../constants/colors";
+import { useDarkMode } from "../context/DarkModeContext";
+import { getAcademicList } from "../data/getAcademicList";
+import { getYearList } from "../data/getListYear";
 import DropDown from "../components/inputs/DropDown";
 import Input from "../components/inputs/Input";
 import Spacer from "../components/ui/Spacer";
@@ -42,7 +40,9 @@ function EditProfileScreen({ navigation }) {
   const { userData } = useUsers();
   const auth = useContext(UserContext);
 
-  let listAcademic = null;
+  const listAcademicIsrael = getAcademicList(i18n.language);
+  const listYear = getYearList();
+
   const { token } = userData;
   const [userType, setUserType] = useState(userData.userType);
   const [avatar, setAvatar] = useState(userData.avatar?.url);
@@ -62,52 +62,16 @@ function EditProfileScreen({ navigation }) {
   const url =
     "https://res.cloudinary.com/dtkpp77xw/image/upload/v1701189732/default_nk5c5h.png";
 
-  switch (i18n.language) {
-    case "en":
-      listAcademic = academicListEnglish.map((item) => ({
-        label: item.name,
-        value: item.id,
-        coordinates: item.coordinates,
-      }));
-      break;
-    case "he":
-      listAcademic = academicListHebrew.map((item) => ({
-        label: item.name,
-        value: item.id,
-        coordinates: item.coordinates,
-      }));
-      break;
-    case "ru":
-      listAcademic = academicListRussian.map((item) => ({
-        label: item.name,
-        value: item.id,
-        coordinates: item.coordinates,
-      }));
-    case "ar":
-      listAcademic = academicListArabic.map((item) => ({
-        label: item.name,
-        value: item.id,
-        coordinates: item.coordinates,
-      }));
-  }
-
-  const listYear = [
-    { label: t("signUp.preparing"), value: t("signUp.preparing") },
-    { label: t("signUp.year1"), value: t("signUp.year1") },
-    { label: t("signUp.year2"), value: t("signUp.year2") },
-    { label: t("signUp.year3"), value: t("signUp.year3") },
-    { label: t("signUp.year4"), value: t("signUp.year4") },
-    { label: t("signUp.masterDegree"), value: t("signUp.masterDegree") },
-  ];
-
   useEffect(() => {
     if (avatar !== userData.avatar?.url) {
       handlePresentModalClose();
     }
 
-    const index = listAcademic.findIndex((item) => item.value === academic);
+    const index = listAcademicIsrael.findIndex(
+      (item) => item.value === academic
+    );
     if (index !== -1) {
-      setCoordinates(listAcademic[index].coordinates);
+      setCoordinates(listAcademicIsrael[index].coordinates);
     }
   }, [avatar, academic, coordinates]);
 
@@ -287,7 +251,7 @@ function EditProfileScreen({ navigation }) {
           <View>
             <View>
               <DropDown
-                list={listAcademic}
+                list={listAcademicIsrael}
                 label={academic}
                 listMode="MODAL"
                 searchable={true}

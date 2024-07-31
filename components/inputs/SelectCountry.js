@@ -31,13 +31,15 @@ const SelectCountry = ({ country, onCountryChange }) => {
         style={{
           backgroundColor: isDarkMode ? Color.darkTheme : Color.white,
           borderColor: isDarkMode ? Color.extraGray : Color.darkTheme,
-          padding: 10,
+          padding: 12,
           paddingHorizontal: 40,
           borderRadius: 5,
           borderWidth: 1,
         }}
       >
-        <Text style={{ color: isDarkMode ? Color.white : Color.darkTheme }}>
+        <Text
+          style={{ color: isDarkMode ? Color.defaultTheme : Color.darkTheme }}
+        >
           {countryName || t("signUp.selectCountry")}
         </Text>
       </TouchableOpacity>
@@ -66,6 +68,7 @@ const SelectCountry = ({ country, onCountryChange }) => {
             backgroundColor: isDarkMode
               ? Color.buttomSheetDarkTheme
               : Color.white,
+            color: isDarkMode ? Color.defaultTheme : Color.darkTheme,
           },
           countryButtonStyles: {
             backgroundColor: isDarkMode

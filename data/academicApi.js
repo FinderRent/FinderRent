@@ -6,7 +6,6 @@ const apiKey = "AIzaSyDYInyCvJ1WQjqJohhMx2OnxioXWAvy39s";
 const baseUrl = "https://maps.googleapis.com/maps/api/place/textsearch/json";
 
 export const fetchInstitutions = async (country, language) => {
-  console.log(country);
   let results = [];
   let nextPageToken = null;
   let firstRequest = true;
@@ -34,17 +33,23 @@ export const fetchInstitutions = async (country, language) => {
     }
   } while (nextPageToken);
 
-  return results.map((institution) => ({
-    name: institution.name,
-    address: institution.formatted_address,
-    photo: institution.photos
-      ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${institution.photos[0].photo_reference}&key=${apiKey}`
-      : null,
-    coordinates: {
-      lat: institution.geometry.location.lat,
-      lng: institution.geometry.location.lng,
-    },
-  }));
+  return results.reduce((uniqueResults, institution) => {
+    if (!uniqueResults.some((result) => result.name === institution.name)) {
+      uniqueResults.push({
+        name: institution.name,
+        id: institution.place_id,
+        address: institution.formatted_address,
+        photo: institution.photos
+          ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${institution.photos[0].photo_reference}&key=${apiKey}`
+          : null,
+        coordinates: {
+          lat: institution.geometry.location.lat,
+          lng: institution.geometry.location.lng,
+        },
+      });
+    }
+    return uniqueResults;
+  }, []);
 };
 
 const AcademicApi = () => {

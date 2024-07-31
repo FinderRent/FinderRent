@@ -288,8 +288,8 @@
   "empty": "Пусто",
 
   "changePassword": "Сменить пароль",
-  "enterCurrentPassword": "Введите текущий пароль:",
-  "enterNewPassword": "Введите новый пароль:",
+  "enterCurrentPassword": "Введите текущий пароль",
+  "enterNewPassword": "Введите новый пароль",
   "confirmPassword": "Подтвердите пароль:",
   "updatePassword": "Обновить пароль"
 }
