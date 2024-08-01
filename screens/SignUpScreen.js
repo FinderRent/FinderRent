@@ -63,6 +63,7 @@ function SignUpScreen({ navigation }) {
     userType,
     firstName,
     lastName,
+    country,
     age,
     academic,
     coordinates,
@@ -209,7 +210,6 @@ function SignUpScreen({ navigation }) {
                 setFirstName(selectedFirstName)
               }
             />
-
             <Input
               style={styles.textInput}
               label={t("signUp.lastName")}
@@ -375,9 +375,7 @@ function SignUpScreen({ navigation }) {
                 setPasswordConfirm(passwordConfirm)
               }
             />
-
             {isError && <ErrorMessage errorMessage={t(error.message)} />}
-
             <Button
               style={{ marginTop: 10 }}
               buttonColor={Color.Blue700}

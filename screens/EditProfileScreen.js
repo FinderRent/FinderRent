@@ -25,6 +25,7 @@ import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { getAcademicList } from "../data/getAcademicList";
 import { getYearList } from "../data/getListYear";
+import { fetchInstitutions } from "../data/academicApi";
 import DropDown from "../components/inputs/DropDown";
 import Input from "../components/inputs/Input";
 import Spacer from "../components/ui/Spacer";
@@ -33,6 +34,8 @@ import ImagePicker from "../components/ImagePicker";
 import TakePhoto from "../components/TakePhoto";
 import ErrorMessage from "../components/ui/ErrorMessage";
 import updateUser from "../api/users/updateUser";
+import Loader from "../components/ui/Loader";
+import SelectCountry from "../components/inputs/SelectCountry";
 
 function EditProfileScreen({ navigation }) {
   const { t, i18n } = useTranslation();
@@ -43,11 +46,15 @@ function EditProfileScreen({ navigation }) {
   const listAcademicIsrael = getAcademicList(i18n.language);
   const listYear = getYearList();
 
-  const { token } = userData;
-  const [userType, setUserType] = useState(userData.userType);
+  const { token, userType } = userData;
+  const [institutions, setInstitutions] = useState([]);
+  const [listAcademic, setListAcademic] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
   const [avatar, setAvatar] = useState(userData.avatar?.url);
   const [firstName, setFirstName] = useState(userData.firstName);
   const [lastName, setLastName] = useState(userData.lastName);
+  const [country, setCountry] = useState(userData.country);
   const [age, setAge] = useState(userData.age);
   const [phone, setPhone] = useState(userData.phone);
   const [academic, setAcademic] = useState(userData.academic);
@@ -66,14 +73,49 @@ function EditProfileScreen({ navigation }) {
     if (avatar !== userData.avatar?.url) {
       handlePresentModalClose();
     }
+  }, [avatar]);
 
+  useEffect(() => {
+    if (userData.userType === "student") {
+      const getInstitutions = async () => {
+        setIsLoading(true);
+        let str = country;
+        let result = str.replace(/\s/g, "");
+        if (country) {
+          const institutions = await fetchInstitutions(result, "en");
+          setInstitutions(institutions);
+        }
+        setIsLoading(false);
+      };
+      getInstitutions();
+    }
+  }, [country]);
+
+  useEffect(() => {
+    const updatedListAcademic = institutions.map((item) => ({
+      label: item.name,
+      value: item.name,
+      coordinates: item.coordinates,
+      address: item.address,
+    }));
+    setListAcademic(updatedListAcademic);
+  }, [institutions]);
+
+  useEffect(() => {
     const index = listAcademicIsrael.findIndex(
       (item) => item.value === academic
     );
     if (index !== -1) {
       setCoordinates(listAcademicIsrael[index].coordinates);
     }
-  }, [avatar, academic, coordinates]);
+
+    if (t("Israel") !== country) {
+      const index1 = listAcademic.findIndex((item) => item.value === academic);
+      if (index1 !== -1) {
+        setCoordinates(listAcademic[index1].coordinates);
+      }
+    }
+  }, [academic, institutions]);
 
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: ({
@@ -81,6 +123,7 @@ function EditProfileScreen({ navigation }) {
       avatar,
       firstName,
       lastName,
+      country,
       age,
       phone,
       academic,
@@ -97,6 +140,7 @@ function EditProfileScreen({ navigation }) {
         avatar,
         firstName,
         lastName,
+        country,
         age,
         phone,
         academic,
@@ -127,6 +171,7 @@ function EditProfileScreen({ navigation }) {
       avatar,
       firstName,
       lastName,
+      country,
       age,
       phone,
       academic,
@@ -207,7 +252,12 @@ function EditProfileScreen({ navigation }) {
             </View>
           </TouchableOpacity>
         </View>
-
+        {userData.userType === "student" && (
+          <SelectCountry
+            country={country}
+            onCountryChange={(selectedCountry) => setCountry(selectedCountry)}
+          />
+        )}
         <View style={styles.inputsRow}>
           <Input
             style={styles.textInput}
@@ -236,7 +286,7 @@ function EditProfileScreen({ navigation }) {
           maxLength={2}
           onValueChange={(selectedAge) => setAge(selectedAge)}
         />
-        {userType === "landlord" && (
+        {userData.userType === "landlord" && (
           <Input
             style={styles.textInput}
             label={phone ? "" : t("phone")}
@@ -247,19 +297,51 @@ function EditProfileScreen({ navigation }) {
             onValueChange={(selectedPhone) => setPhone(selectedPhone)}
           />
         )}
-        {userType === "student" && (
+        {userData.userType === "student" && (
           <View>
             <View>
-              <DropDown
-                list={listAcademicIsrael}
-                label={academic}
-                listMode="MODAL"
-                searchable={true}
-                searchPlaceholder={t("academic_institution")}
-                onValueChange={(selectedAcademic) =>
-                  setAcademic(selectedAcademic)
-                }
-              />
+              {isLoading ? (
+                <View
+                  style={{
+                    marginTop: 10,
+                    alignItems: "center",
+                  }}
+                >
+                  <Loader
+                    color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+                    size={16}
+                  />
+                  <Text
+                    style={{
+                      color: isDarkMode ? Color.defaultTheme : Color.darkTheme,
+                    }}
+                  >
+                    {t("signUp.loadingInstitution")}
+                  </Text>
+                </View>
+              ) : t("Israel") === country ? (
+                <DropDown
+                  list={listAcademicIsrael}
+                  label={academic}
+                  listMode="MODAL"
+                  searchable={true}
+                  searchPlaceholder={t("academic_institution")}
+                  onValueChange={(selectedAcademic) =>
+                    setAcademic(selectedAcademic)
+                  }
+                />
+              ) : (
+                <DropDown
+                  list={listAcademic}
+                  label={academic}
+                  listMode="MODAL"
+                  searchable={true}
+                  searchPlaceholder={t("academic_institution")}
+                  onValueChange={(selectedAcademic) =>
+                    setAcademic(selectedAcademic)
+                  }
+                />
+              )}
             </View>
 
             <View>
@@ -299,24 +381,29 @@ function EditProfileScreen({ navigation }) {
           />
         </View>
 
-        <View style={styles.textInput}>
-          <Input
-            label={hobbies ? "" : t("hobbies")}
-            value={hobbies ? hobbies : ""}
-            left={<TextInput.Icon icon={"controller-classic"} />}
-            mode="outlined"
-            onValueChange={(selectedHobbies) => setHobbies(selectedHobbies)}
-          />
-        </View>
-        <View style={styles.textInput}>
-          <Input
-            label={funFact ? "" : t("fun_fact")}
-            value={funFact ? funFact : ""}
-            left={<TextInput.Icon icon={"beer"} />}
-            mode="outlined"
-            onValueChange={(selectedFunFact) => setFunFact(selectedFunFact)}
-          />
-        </View>
+        {userData.userType === "student" && (
+          <View>
+            <View style={styles.textInput}>
+              <Input
+                label={hobbies ? "" : t("hobbies")}
+                value={hobbies ? hobbies : ""}
+                left={<TextInput.Icon icon={"controller-classic"} />}
+                mode="outlined"
+                onValueChange={(selectedHobbies) => setHobbies(selectedHobbies)}
+              />
+            </View>
+            <View style={styles.textInput}>
+              <Input
+                label={funFact ? "" : t("fun_fact")}
+                value={funFact ? funFact : ""}
+                left={<TextInput.Icon icon={"beer"} />}
+                mode="outlined"
+                onValueChange={(selectedFunFact) => setFunFact(selectedFunFact)}
+              />
+            </View>
+          </View>
+        )}
+
         {isError && <ErrorMessage errorMessage={error.message} />}
 
         <Spacer>

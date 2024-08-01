@@ -21,6 +21,7 @@ function useUsers() {
   const [id, setId] = useState(null);
   const [firstName, setFirstName] = useState(null);
   const [lastName, setLastName] = useState(null);
+  const [country, setCountry] = useState(null);
   const [age, setAge] = useState(null);
   const [phone, setPhone] = useState(null);
   const [academic, setAcademic] = useState(null);
@@ -43,6 +44,7 @@ function useUsers() {
         userType,
         firstName,
         lastName,
+        country,
         age,
         academic,
         coordinates,
@@ -62,6 +64,7 @@ function useUsers() {
       setId(_id);
       setFirstName(firstName);
       setLastName(lastName);
+      setCountry(country);
       setAge(age);
       setPhone(phone);
       setAcademic(academic);
@@ -102,6 +105,7 @@ function useUsers() {
       setId(null);
       setFirstName(null);
       setLastName(null);
+      setCountry(null);
       setAge(null);
       setPhone(null);
       setAcademic(null);
@@ -155,6 +159,7 @@ function useUsers() {
     id,
     firstName,
     lastName,
+    country,
     age,
     phone,
     gender,

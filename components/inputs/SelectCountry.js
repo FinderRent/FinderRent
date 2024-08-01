@@ -7,13 +7,13 @@ import { useTranslation } from "react-i18next";
 import { Color } from "../../constants/colors";
 import { useDarkMode } from "../../context/DarkModeContext";
 
-const SelectCountry = ({ onCountryChange }) => {
+const SelectCountry = ({ country, onCountryChange }) => {
   const { t, i18n } = useTranslation();
   const { isDarkMode } = useDarkMode();
 
   const lang = i18n.language;
   const [show, setShow] = useState(false);
-  const [countryName, setCountryName] = useState("");
+  const [countryName, setCountryName] = useState(country);
 
   const handleCountrySelect = (item) => {
     const selectedCountry = item.name[lang] || item.name.en;

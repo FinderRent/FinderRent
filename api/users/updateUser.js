@@ -5,6 +5,7 @@ async function updateUser({
   avatar,
   firstName,
   lastName,
+  country,
   age,
   phone,
   academic,
@@ -21,8 +22,8 @@ async function updateUser({
     formData.append("userType", userType);
     formData.append("firstName", firstName);
     formData.append("lastName", lastName);
+    formData.append("country", country);
     formData.append("age", age);
-
     formData.append("email", email);
 
     if (userType === "student") {

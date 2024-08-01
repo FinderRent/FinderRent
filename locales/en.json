@@ -58,7 +58,7 @@
   "verificationCode": "Verification Code",
   "resendEmail": "Resend Email",
   "passwordConfirm": "Password Confirm",
-  "passwordError": "Password must contain at least 6 characters",
+  "passwordError": "Password must contain at least 8 characters",
   "reset": "Reset",
   "emailSentSuccess": "Password reset code sent to email",
   "emailSentError": "Error while sending the email",
