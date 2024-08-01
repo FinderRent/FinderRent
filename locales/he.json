@@ -68,6 +68,7 @@
     "header": "הירשם",
     "selectCountry": "בחר מדינה",
     "searchYourCountry": "חפש את המדינה שלך",
+    "loadingInstitution": "טוען מוסדות...",
     "firstName": "שם פרטי",
     "lastName": "שם משפחה",
     "age": "גיל",
@@ -125,7 +126,7 @@
   },
 
   "categories2": {
-    "All Categories": "כל הקטגוריות",
+    "undefined": "",
     "Land House": "בית קרקע",
     "Housing Unit": "יחידת דיור",
     "Tower": "מגדל",

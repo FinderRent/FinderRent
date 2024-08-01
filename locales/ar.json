@@ -68,6 +68,7 @@
     "header": "التسجيل",
     "selectCountry": "اختر البلد",
     "searchYourCountry": "اختر البلد",
+    "loadingInstitution": "جارٍ تحميل المؤسسات...",
     "firstName": "الاسم الأول",
     "lastName": "الاسم الأخير",
     "age": "العمر",
@@ -124,7 +125,7 @@
   },
 
   "categories2": {
-    "All Categories": "جميع الفئات",
+    "undefined": "",
     "Land House": "منزل أرض",
     "Houseing Unit": "وحدة سكنية",
     "Tower": "برج",

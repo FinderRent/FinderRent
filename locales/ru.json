@@ -68,6 +68,7 @@
     "header": "Регистрация",
     "selectCountry": "Выберите страну",
     "searchYourCountry": "Выберите страну",
+    "loadingInstitution": "Загрузка учреждений...",
     "firstName": "Имя",
     "lastName": "Фамилия",
     "age": "Возраст",
@@ -124,7 +125,7 @@
   },
 
   "categories2": {
-    "All Categories": "Все категории",
+    "undefined": "",
     "Land House": "Земельный участок",
     "Houseing Unit": "Жилой блок",
     "Tower": "Башня",

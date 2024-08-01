@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { Color } from "../../constants/colors";
 import { useDarkMode } from "../../context/DarkModeContext";
 
-const SelectCountry = ({ country, onCountryChange }) => {
+const SelectCountry = ({ onCountryChange }) => {
   const { t, i18n } = useTranslation();
   const { isDarkMode } = useDarkMode();
 
@@ -74,6 +74,7 @@ const SelectCountry = ({ country, onCountryChange }) => {
             backgroundColor: isDarkMode
               ? Color.buttomSheetDarkTheme
               : Color.white,
+            height: 60,
           },
           dialCode: {
             color: isDarkMode ? Color.buttomSheetDarkTheme : Color.white,

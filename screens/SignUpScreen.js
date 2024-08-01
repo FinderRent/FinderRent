@@ -48,7 +48,7 @@ function SignUpScreen({ navigation }) {
   const [lastName, setLastName] = useState("");
   const [age, setAge] = useState("");
   const [country, setCountry] = useState("");
-  const [academic, setAcademic] = useState("Israel");
+  const [academic, setAcademic] = useState("");
   const [coordinates, setCoordinates] = useState("");
   const [department, setDepartment] = useState("");
   const [yearbook, setYearbook] = useState("");
@@ -128,7 +128,14 @@ function SignUpScreen({ navigation }) {
     if (index !== -1) {
       setCoordinates(listAcademicIsrael[index].coordinates);
     }
-  }, [academic]);
+
+    if (t("Israel") !== country) {
+      const index1 = listAcademic.findIndex((item) => item.value === academic);
+      if (index1 !== -1) {
+        setCoordinates(listAcademic[index1].coordinates);
+      }
+    }
+  }, [academic, institutions]);
 
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: (userData) => signUp(userData),
@@ -180,8 +187,18 @@ function SignUpScreen({ navigation }) {
             country={country}
             onCountryChange={(selectedCountry) => setCountry(selectedCountry)}
           />
-          <View style={{ marginTop: 10 }}>
+          <View
+            style={{
+              marginTop: 10,
+              alignItems: "center",
+            }}
+          >
             {isLoading && <Loader color={Color.Blue700} size={16} />}
+            {isLoading && (
+              <Text style={{ color: Color.Blue700 }}>
+                {t("signUp.loadingInstitution")}
+              </Text>
+            )}
           </View>
           <View style={styles.inputsRow}>
             <Input

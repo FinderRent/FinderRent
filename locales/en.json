@@ -68,6 +68,7 @@
     "header": "Sign Up",
     "selectCountry": "Select Country",
     "searchYourCountry": "Search Your Country",
+    "loadingInstitution": "Loading Institutions...",
     "firstName": "First Name",
     "lastName": "Last Name",
     "age": "Age",
@@ -124,7 +125,7 @@
   },
 
   "categories2": {
-    "All Categories": "All Categories",
+    "undefined": "",
     "Land House": "Land House",
     "Houseing Unit": "Houseing Unit",
     "Tower": "Tower",

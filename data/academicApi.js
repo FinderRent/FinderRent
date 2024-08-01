@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, FlatList, Image, StyleSheet } from "react-native";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import { View, Text, FlatList, Image, StyleSheet } from "react-native";
+
+import { addSpaceBeforeUppercase } from "../utils/features";
 
 const apiKey = "AIzaSyDYInyCvJ1WQjqJohhMx2OnxioXWAvy39s";
 const baseUrl = "https://maps.googleapis.com/maps/api/place/textsearch/json";
@@ -9,6 +11,7 @@ export const fetchInstitutions = async (country, language) => {
   let results = [];
   let nextPageToken = null;
   let firstRequest = true;
+  const countryWithSpace = addSpaceBeforeUppercase(country);
 
   do {
     const url = firstRequest
@@ -34,7 +37,10 @@ export const fetchInstitutions = async (country, language) => {
   } while (nextPageToken);
 
   return results.reduce((uniqueResults, institution) => {
-    if (!uniqueResults.some((result) => result.name === institution.name)) {
+    if (
+      !uniqueResults.some((result) => result.name === institution.name) &&
+      institution.name !== countryWithSpace
+    ) {
       uniqueResults.push({
         name: institution.name,
         id: institution.place_id,

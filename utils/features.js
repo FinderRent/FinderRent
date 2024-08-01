@@ -10,6 +10,10 @@ export const capitalizeWords = (string) => {
     .join(" ");
 };
 
+export const addSpaceBeforeUppercase = (str) => {
+  return str.replace(/([A-Z])/g, " $1").trim();
+};
+
 export const checkRtllanguages = (lang) => {
   const rtlLanguages = ["ar", "he", "fa", "ur"];
   return rtlLanguages.includes(lang);
