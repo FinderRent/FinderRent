@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TouchableOpacity, View, StyleSheet } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { Text } from "react-native-paper";
 import { CountryPicker } from "react-native-country-codes-picker";
 import { useTranslation } from "react-i18next";
@@ -47,7 +47,7 @@ const SelectCountry = ({ country, onCountryChange }) => {
       <CountryPicker
         show={show}
         lang={lang}
-        searchMessage={t("signUp.searchYourCountry")}
+        inputPlaceholder={t("signUp.searchYourCountry")}
         pickerButtonOnPress={handleCountrySelect}
         onBackdropPress={() => setShow(false)}
         style={{
@@ -56,7 +56,7 @@ const SelectCountry = ({ country, onCountryChange }) => {
             backgroundColor: isDarkMode ? Color.darkTheme : Color.defaultTheme,
           },
           line: {
-            backgroundColor: Color.Blue100,
+            backgroundColor: Color.Blue700,
           },
           countryButtonStyles: {
             backgroundColor: isDarkMode ? Color.darkTheme : Color.defaultTheme,

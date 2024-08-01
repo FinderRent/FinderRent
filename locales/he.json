@@ -213,7 +213,7 @@
   "Not available": "לא זמין",
   "Personal Info": "מידע אישי",
   "My Hobbies": "התחביבים שלי:",
-  "Add your hobbies": "הוסף את התחביבים שלך",
+  "addYourHobbies": "הוסף את התחביבים שלך",
   "Fun Fact": "עובדה מעניינת",
   "Empty": "אין",
   "Other": "אחר",
@@ -305,5 +305,6 @@
   "There is no user with that email address": "אין משתמש עם כתובת האימייל הזו.",
   "Expired or invalid verification code": "פג תוקף או קוד אימות לא חוקי",
   "New password must be entered": "יש להזין סיסמה חדשה.",
-  "Your current password is incorrect": "הסיסמה הנוכחית שלך שגויה."
+  "Your current password is incorrect": "הסיסמה הנוכחית שלך שגויה.",
+  "The email entered already exists": "המייל שהוזן כבר קיים."
 }

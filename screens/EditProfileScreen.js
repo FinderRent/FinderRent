@@ -261,6 +261,7 @@ function EditProfileScreen({ navigation }) {
         <View style={styles.inputsRow}>
           <Input
             style={styles.textInput}
+            color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
             label={firstName ? "" : t("first_name")}
             value={firstName}
             left={<TextInput.Icon icon={"account-outline"} />}
@@ -269,6 +270,7 @@ function EditProfileScreen({ navigation }) {
           />
           <Input
             style={styles.textInput}
+            color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
             label={lastName ? "" : t("last_name")}
             value={lastName}
             left={<TextInput.Icon icon={"account-outline"} />}
@@ -278,6 +280,7 @@ function EditProfileScreen({ navigation }) {
         </View>
         <Input
           style={styles.textInput}
+          color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
           label={age ? "" : t("age")}
           value={age}
           left={<TextInput.Icon icon={"calendar-account-outline"} />}
@@ -289,6 +292,7 @@ function EditProfileScreen({ navigation }) {
         {userData.userType === "landlord" && (
           <Input
             style={styles.textInput}
+            color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
             label={phone ? "" : t("phone")}
             value={phone}
             left={<TextInput.Icon icon={"phone-outline"} />}
@@ -348,6 +352,7 @@ function EditProfileScreen({ navigation }) {
               <View style={styles.inputsRow}>
                 <Input
                   style={styles.textInput}
+                  color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
                   label={department ? "" : t("department")}
                   value={department}
                   left={<TextInput.Icon icon={"school-outline"} />}
@@ -373,6 +378,7 @@ function EditProfileScreen({ navigation }) {
         <View style={styles.textInput}>
           <Input
             label={email ? "" : t("email")}
+            color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
             value={email}
             left={<TextInput.Icon icon={"email-outline"} />}
             mode="outlined"
@@ -385,7 +391,8 @@ function EditProfileScreen({ navigation }) {
           <View>
             <View style={styles.textInput}>
               <Input
-                label={hobbies ? "" : t("hobbies")}
+                label={hobbies ? "" : t("addYourHobbies")}
+                color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
                 value={hobbies ? hobbies : ""}
                 left={<TextInput.Icon icon={"controller-classic"} />}
                 mode="outlined"
@@ -395,6 +402,7 @@ function EditProfileScreen({ navigation }) {
             <View style={styles.textInput}>
               <Input
                 label={funFact ? "" : t("fun_fact")}
+                color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
                 value={funFact ? funFact : ""}
                 left={<TextInput.Icon icon={"beer"} />}
                 mode="outlined"
@@ -404,7 +412,7 @@ function EditProfileScreen({ navigation }) {
           </View>
         )}
 
-        {isError && <ErrorMessage errorMessage={error.message} />}
+        {isError && <ErrorMessage errorMessage={t(error.message)} />}
 
         <Spacer>
           <Button

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { View, SafeAreaView, StyleSheet, ImageBackground } from "react-native";
 import { Title, Text, TouchableRipple } from "react-native-paper";
 import { useIsFocused } from "@react-navigation/native";
@@ -9,7 +9,6 @@ import Toast from "react-native-toast-message";
 
 import { Color } from "../constants/colors";
 import { UserContext, useUsers } from "../context/UserContext";
-import { fetchInstitutions } from "../data/academicApi";
 
 const ProfileScreen = ({ navigation }) => {
   const { t } = useTranslation();
