@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   paragraph: {
     fontFamily: "Merienda",
     fontSize: 14,
-    textAlign: "justify",
+    textAlign: "left",
   },
   subtitle: {
     fontFamily: "OrbitronMedium",
