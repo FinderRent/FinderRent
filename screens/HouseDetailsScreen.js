@@ -1,4 +1,4 @@
-import React, { useContext, useLayoutEffect, useState } from "react";
+import { useContext, useLayoutEffect, useState } from "react";
 import {
   Dimensions,
   StyleSheet,
@@ -25,7 +25,7 @@ import { useTranslation } from "react-i18next";
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { FavoritesContext } from "../context/FavoritesContext";
-import { capitalizeWords } from "../utils/features";
+import { capitalizeWords, generateTemplateMessage } from "../utils/features";
 import { useUsers } from "../context/UserContext";
 import HouseAssetsModal from "../modals/HouseAssetsModal";
 import MapModal from "../modals/MapModal";
@@ -56,63 +56,10 @@ const HouseDetailsScreen = ({ navigation, route }) => {
 
   const city = capitalizeWords(apartment?.address.city);
   const street = capitalizeWords(apartment?.address.street);
-
-  let templateMessage = "";
-
-  switch (i18n.language) {
-    case "en":
-      templateMessage = `Hello,
-    
-      I am interested in the apartment listed at:
-    
-      Address:
-      - City: ${apartment?.address.city}
-      - Street: ${apartment?.address.street}
-      - Apartment Number: ${apartment?.address.apartmentNumber}
-      - Building Number: ${apartment?.address.buildingNumber}
-    
-       Thank you,
-      `;
-      break;
-    case "he":
-      templateMessage = `שלום,
-
-אני מעוניין בדירה הרשומה בכתובת:
-
-כתובת:
-- עיר: ${apartment?.address.city}
-- רחוב: ${apartment?.address.street}
-- מספר דירה: ${apartment?.address.apartmentNumber}
-- מספר בניין: ${apartment?.address.buildingNumber}
-
-תודה,
-`;
-      break;
-    case "ru":
-      templateMessage = `Здравствуйте,
-
-      Я заинтересован в квартире, указанной по адресу:
-      
-      Адрес:
-      - Город: ${apartment?.address.city}
-      - Улица: ${apartment?.address.street}
-      - Номер квартиры: ${apartment?.address.apartmentNumber}
-      - Номер здания: ${apartment?.address.buildingNumber}
-      
-      Спасибо,`;
-    case "ar":
-      templateMessage = `مرحبًا،
-
-أنا مهتم بالشقة المدرجة على النحو التالي:
-
-العنوان:
-- المدينة: ${apartment?.address.city}
-- الشارع: ${apartment?.address.street}
-- رقم الشقة: ${apartment?.address.apartmentNumber}
-- رقم المبنى: ${apartment?.address.buildingNumber}
-
-شكرًا،`;
-  }
+  const templateMessage = generateTemplateMessage(
+    i18n.language,
+    apartment?.address
+  );
 
   let chatId = null;
   let firstChat = true;

@@ -53,9 +53,9 @@ function ChatScreen({ navigation, route }) {
   const { ouid, pushToken, image, title } = route?.params;
   const socket = useRef();
   const scrollRef = useAnimatedRef();
-  let scrollOffset = null;
   const isRTL = checkRtllanguages(i18n.language);
 
+  let scrollOffset = null;
   const senderId = userData.id;
   const firstChat = route?.params?.firstChat;
   const fullName = `${userData.firstName} ${userData.lastName}`;
@@ -74,6 +74,15 @@ function ChatScreen({ navigation, route }) {
     show: false,
     messageId: "",
   });
+
+  const [height, setHeight] = useState(40);
+
+  const handleContentSizeChange = useCallback((event) => {
+    setHeight(
+      Math.max(40, Math.min(100, event.nativeEvent.contentSize.height))
+    );
+  }, []);
+
   const message = {
     senderId,
     messageText,
@@ -376,7 +385,9 @@ function ChatScreen({ navigation, route }) {
           )}
         </ImageBackground>
 
-        <View style={styles.inputContainer}>
+        <View
+          style={[styles.inputContainer, { height: Math.max(55, height + 15) }]}
+        >
           <TouchableOpacity
             style={styles.mediaButton}
             onPress={pickedImageHandler}
@@ -385,12 +396,13 @@ function ChatScreen({ navigation, route }) {
           </TouchableOpacity>
 
           <TextInput
+            multiline
             autoCapitalize="none"
-            style={
-              isDarkMode
-                ? { ...styles.textbox, color: Color.white }
-                : { ...styles.textbox }
-            }
+            style={[
+              styles.textbox,
+              isDarkMode ? { color: Color.white } : {},
+              { height: height },
+            ]}
             selectionColor={Color.Blue500}
             placeholder={t("message")}
             placeholderTextColor={
@@ -398,6 +410,7 @@ function ChatScreen({ navigation, route }) {
             }
             value={messageText}
             onChangeText={(text) => setMessageText(text)}
+            onContentSizeChange={handleContentSizeChange}
             onSubmitEditing={handelSendMessage}
           />
 
@@ -595,17 +608,20 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingVertical: 7,
     paddingHorizontal: 10,
-    height: 55,
+    alignItems: "center",
   },
   textbox: {
     flex: 1,
     fontSize: 16,
     fontFamily: "varelaRound",
     borderWidth: 1,
-    borderRadius: 50,
+    borderRadius: 25,
     marginHorizontal: 5,
     paddingHorizontal: 15,
+    paddingTop: 10,
+    paddingBottom: 10,
     borderColor: Color.Blue500,
+    maxHeight: 100, // Set a maximum height
   },
   templateTextbox: {
     fontSize: 16,
