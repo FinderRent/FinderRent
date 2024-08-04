@@ -282,6 +282,11 @@
   "myFavorites": "Мои избранные",
   "noFavorites": "Нет избранных квартир.",
 
+  "address": "Адрес",
+  "numOfRooms": "Комнаты",
+  "capacity": "Вместимость",
+  "price": "Цена",
+
   "academic": "Учебное заведение: ",
   "funFact": "Интересный факт: ",
   "socialLinksTitle": "Свяжитесь со мной",

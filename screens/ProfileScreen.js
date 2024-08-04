@@ -122,7 +122,7 @@ const ProfileScreen = ({ navigation }) => {
               <Icon name="controller-classic" color={Color.icon} size={20} />
               <Text style={styles.text}>
                 {t("My Hobbies")}{" "}
-                {userData.hobbies ? userData.hobbies : t("Add your hobbies")}
+                {userData.hobbies ? userData.hobbies : t("addYourHobbies")}
               </Text>
             </View>
 

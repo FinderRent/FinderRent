@@ -282,6 +282,11 @@
   "myFavorites": "مفضلاتي",
   "noFavorites": "لا توجد شقق مفضلة.",
 
+  "address": "العنوان",
+  "numOfRooms": "الغرف",
+  "capacity": "السعة",
+  "price": "السعر",
+
   "academic": "الأكاديمية: ",
   "funFact": "حقيقة ممتعة: ",
   "socialLinksTitle": "تواصل معي",

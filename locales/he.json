@@ -282,6 +282,11 @@
   "myFavorites": "המועדפים שלי",
   "noFavorites": "אין דירות מועדפות.",
 
+  "address": "כתובת",
+  "numOfRooms": "חדרים",
+  "capacity": "קיבולת",
+  "price": "מחיר",
+
   "academic": "אקדמיה:",
   "funFact": "עובדה מעניינת:",
   "socialLinksTitle": "התחברו איתי",

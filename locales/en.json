@@ -282,6 +282,11 @@
   "myFavorites": "My Favorites",
   "noFavorites": "There's No Favorites Apartments.",
 
+  "address": "Address",
+  "numOfRooms": "Rooms",
+  "capacity": "Capacity",
+  "price": "Price",
+
   "academic": "Academic:",
   "funFact": "Fun Fact:",
   "socialLinksTitle": "Connect with me",

@@ -95,21 +95,25 @@ const FavoritesScreen = ({ navigation }) => {
                   source={{
                     uri:
                       apartment?.images?.[0] ||
-                      "https://img.mako.co.il/2018/11/07/Wellcome_Realter_Beer_Sheva_18_3_g.jpg",
+                      "https://uploads.homeless.co.il/sale/202205/nvFile4211510.JPG",
                   }}
                 />
                 <Card.Content style={styles.cardContent}>
                   <Text style={{ fontWeight: "bold" }} variant="bodyLarge">
                     {apartment?.apartmentType}
                   </Text>
-                  <Text>Address: {apartment?.address?.street}</Text>
-                  <Text>Rooms: {apartment?.numberOfRooms}</Text>
                   <Text>
-                    Capacity: {apartment?.realTimeCapacity}/
+                    {t("address")}: {apartment?.address?.street}
+                  </Text>
+                  <Text>
+                    {t("numOfRooms")}: {apartment?.numberOfRooms}
+                  </Text>
+                  <Text>
+                    {t("capacity")}: {apartment?.realTimeCapacity}/
                     {apartment?.totalCapacity}
                   </Text>
                   <Text style={{ fontWeight: "bold" }} variant="bodyMedium">
-                    Price: ${apartment?.price}
+                    {t("price")}: ${apartment?.price}
                   </Text>
                 </Card.Content>
               </View>
