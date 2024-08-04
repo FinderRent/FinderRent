@@ -1,5 +1,8 @@
-import { StyleSheet, View } from "react-native";
-import { launchCameraAsync } from "expo-image-picker";
+import { StyleSheet, View, Platform } from "react-native";
+import {
+  launchCameraAsync,
+  requestCameraPermissionsAsync,
+} from "expo-image-picker";
 import { Button } from "react-native-paper";
 import { useTranslation } from "react-i18next";
 
@@ -11,6 +14,14 @@ function TakePhoto({ onTakeImage }) {
   const { isDarkMode } = useDarkMode();
 
   async function takeImageHandler() {
+    if (Platform.OS === "ios") {
+      const { status } = await requestCameraPermissionsAsync();
+      if (status !== "granted") {
+        alert(t("cameraPermissionError"));
+        return;
+      }
+    }
+
     const image = await launchCameraAsync({
       allowsEditing: true,
       aspect: [4, 3],

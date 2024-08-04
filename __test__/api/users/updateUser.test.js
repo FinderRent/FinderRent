@@ -1,5 +1,5 @@
 import axios from "axios";
-import updateUser from "../../../api/updateUser";
+import updateUser from "../../../api/users/updateUser";
 
 // Mock Axios for testing
 jest.mock("axios");
@@ -18,6 +18,7 @@ describe("updateUser function", () => {
     mockFormData.append("firstName", "John");
     mockFormData.append("lastName", "Doe");
     mockFormData.append("age", "25");
+    mockFormData.append("country", "Israel");
     mockFormData.append("academic", "academic College");
     mockFormData.append(
       "coordinates",
@@ -36,6 +37,7 @@ describe("updateUser function", () => {
       firstName: "John",
       lastName: "Doe",
       age: "27",
+      country: "Israel",
       academic: "Sami Shamoon College of Engineering - Beer Sheva",
       coordinates: { lat: 31.2516416588409, lng: 34.78916604217377 },
       department: "software",
