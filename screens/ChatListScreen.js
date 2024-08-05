@@ -196,8 +196,8 @@ function ChatListScreen({ navigation }) {
             if (time.includes("in ")) {
               time = time.replace("in ", "");
             }
-            if (time.includes("בעוד")) {
-              time = time.replace("בעוד", "לפני");
+            if (time.includes("בעוד ")) {
+              time = time.replace("בעוד ", "לפני");
             }
             const otherUserId = chatData.members.find(
               (uid) => uid !== userData.id

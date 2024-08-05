@@ -34,7 +34,7 @@ import "moment/locale/ar";
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { useUsers } from "../context/UserContext";
-import { checkRtllanguages } from "../utils/features";
+import { checkRtllanguages, fullName } from "../utils/features";
 import ChatScreenHeader from "../components/chats/ChatScreenHeader";
 import PageContainer from "../components/PageContainer";
 import Bubble from "../components/chats/Bubble";
@@ -58,7 +58,8 @@ function ChatScreen({ navigation, route }) {
   let scrollOffset = null;
   const senderId = userData.id;
   const firstChat = route?.params?.firstChat;
-  const fullName = `${userData.firstName} ${userData.lastName}`;
+  const fullUserName = fullName(userData?.firstName, userData?.lastName);
+
   const [messages, setMessages] = useState([]);
   const [messageText, setMessageText] = useState("");
   const [templateMessage, setTemplateMessage] = useState(
@@ -74,7 +75,6 @@ function ChatScreen({ navigation, route }) {
     show: false,
     messageId: "",
   });
-
   const [height, setHeight] = useState(40);
 
   const handleContentSizeChange = useCallback((event) => {
@@ -93,7 +93,7 @@ function ChatScreen({ navigation, route }) {
   const pushData = {
     chatId,
     image: userData?.avatar?.url,
-    title: fullName,
+    title: fullUserName,
     pushToken: userData.pushToken,
     ouid: senderId,
   };
@@ -261,7 +261,12 @@ function ChatScreen({ navigation, route }) {
       handleUpdateChat({ messageText, chatId });
       handleAddMessages(message);
     }
-    sendPushNotification(pushToken, message.messageText, fullName, pushData);
+    sendPushNotification(
+      pushToken,
+      message.messageText,
+      fullUserName,
+      pushData
+    );
   }, [messageText, tempImageUri, chatId]);
 
   const handleSendTemplateMessage = useCallback(() => {
@@ -274,7 +279,7 @@ function ChatScreen({ navigation, route }) {
         messageText: templateMessage,
       });
     }
-    sendPushNotification(pushToken, templateMessage, fullName, pushData);
+    sendPushNotification(pushToken, templateMessage, fullUserName, pushData);
   }, [messageText, tempImageUri, chatId, templateMessage]);
 
   const handleDeleteMessage = useCallback(() => {

@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Color } from "../../constants/colors";
 import { useDarkMode } from "../../context/DarkModeContext";
 import { fetchUser } from "../../utils/http";
+import { fullName } from "../../utils/features";
 import ErrorMessage from "../ui/ErrorMessage";
 import Loader from "../ui/Loader";
 
@@ -23,16 +24,8 @@ const RoommatesInfo = ({ tenant }) => {
     queryFn: () => fetchUser(tenant),
   });
 
-  // if (isLoadingUser) {
-  //   return (
-  //     <View style={{ margin: 20 }}>
-  //       <Loader
-  //         color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
-  //         size={18}
-  //       />
-  //     </View>
-  //   );
-  // }
+  const firstName = user?.firstName || "";
+  const lastName = user?.lastName || "";
 
   if (isErrorUser) return <ErrorMessage errorMessage={errorUser} />;
 
@@ -45,11 +38,15 @@ const RoommatesInfo = ({ tenant }) => {
         ]}
       >
         <TouchableOpacity
-          style={styles.cardContainer}
+          style={[
+            styles.cardContainer,
+            isLoadingUser && styles.disabledCardContainer,
+          ]}
           key={tenant}
           onPress={() =>
             navigation.navigate("StudentProfileScreen", { tenant })
           }
+          disabled={isLoadingUser}
         >
           <Image
             source={{
@@ -59,11 +56,17 @@ const RoommatesInfo = ({ tenant }) => {
             resizeMode="cover"
           />
           <View style={styles.detailsContainer}>
-            <Text style={styles.userName}>
-              {user?.firstName} {user?.lastName}
-            </Text>
+            <Text style={styles.userName}>{fullName(firstName, lastName)}</Text>
           </View>
         </TouchableOpacity>
+        {isLoadingUser && (
+          <View style={styles.loaderContainer}>
+            <Loader
+              color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+              size={18}
+            />
+          </View>
+        )}
       </View>
     </View>
   );
@@ -87,6 +90,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 10,
   },
+  disabledCardContainer: {
+    opacity: 0.5,
+  },
   detailsContainer: {
     marginLeft: 15,
   },
@@ -98,6 +104,12 @@ const styles = StyleSheet.create({
   userName: {
     fontSize: 20,
     fontWeight: "bold",
+  },
+  loaderContainer: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: [{ translateX: -9 }, { translateY: -9 }],
   },
 });
 

@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 
 import { Color } from "../../constants/colors";
 import { useDarkMode } from "../../context/DarkModeContext";
+import { fullName } from "../../utils/features";
 import ErrorMessage from "../ui/ErrorMessage";
 import fetchChats from "../../api/chats/fetchChats";
 import FullScreenImageModal from "../../modals/FullScreenImageModal";
@@ -45,9 +46,11 @@ function ChatList({ ouid, chatId, lastMessage, time, searchUser, deleteChat }) {
     return <ErrorMessage errorMessage={error.message} />;
   }
 
-  const fullName =
-    `${data?.data?.firstName} ${data?.data?.lastName}`.toLowerCase();
-  const isChatVisible = fullName.includes(searchUser.toLowerCase());
+  const firstName = data?.data?.firstName || "";
+  const lastName = data?.data?.lastName || "";
+
+  const fullUserName = fullName(firstName, lastName).toLowerCase();
+  const isChatVisible = fullUserName.includes(searchUser.toLowerCase());
 
   if (!isChatVisible) {
     return null;
@@ -70,7 +73,7 @@ function ChatList({ ouid, chatId, lastMessage, time, searchUser, deleteChat }) {
             ouid,
             pushToken: data?.data?.pushToken,
             image: data?.data?.avatar?.url,
-            title: `${data?.data?.firstName} ${data?.data?.lastName}`,
+            title: fullName(firstName, lastName),
           })
         }
       >
@@ -101,7 +104,7 @@ function ChatList({ ouid, chatId, lastMessage, time, searchUser, deleteChat }) {
           </TouchableOpacity>
           <View style={styles.textContainer}>
             <Text numberOfLines={1} style={styles.title}>
-              {data?.data?.firstName} {data?.data?.lastName}
+              {fullName(firstName, lastName)}
             </Text>
 
             <View>

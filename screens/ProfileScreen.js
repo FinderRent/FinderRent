@@ -9,6 +9,7 @@ import Toast from "react-native-toast-message";
 
 import { Color } from "../constants/colors";
 import { UserContext, useUsers } from "../context/UserContext";
+import { fullName } from "../utils/features";
 
 const ProfileScreen = ({ navigation }) => {
   const { t } = useTranslation();
@@ -19,6 +20,9 @@ const ProfileScreen = ({ navigation }) => {
   const userType =
     userData?.userType?.charAt(0).toUpperCase() +
     userData?.userType?.slice(1).toLowerCase();
+
+  const firstName = userData?.firstName || "";
+  const lastName = userData?.lastName || "";
 
   useEffect(() => {
     navigation.setOptions({
@@ -56,9 +60,7 @@ const ProfileScreen = ({ navigation }) => {
             }}
           />
           <View>
-            <Title style={styles.title}>
-              {userData?.firstName} {userData?.lastName}
-            </Title>
+            <Title style={styles.title}>{fullName(firstName, lastName)}</Title>
           </View>
         </View>
       </View>
