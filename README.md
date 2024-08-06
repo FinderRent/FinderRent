@@ -24,6 +24,9 @@ This mobile app platform, developed as my final project at SCE College, connects
 - **Version Control:** GitHub
 - **Other:** JSON Web Token (JWT), Cloudniary
 
+  ![1](https://github.com/user-attachments/assets/abb52f1e-605f-4111-bd19-dba60b2a21a7)
+
+
 
 
 
