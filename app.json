@@ -11,7 +11,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "userInterfaceStyle": "automatic"
@@ -21,13 +23,11 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "config": {
-        "googleMaps": {
-          "apiKey": "AIzaSyDYInyCvJ1WQjqJohhMx2OnxioXWAvy39s"
-        }
-      },
-      "permissions": ["android.permission.RECORD_AUDIO"],
-      "package": "com.maorsa.finderrent"
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.maorsa.finderrent",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -54,6 +54,12 @@
       "eas": {
         "projectId": "5feb1ace-9d86-4523-b963-d9f8e0a06e36"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/5feb1ace-9d86-4523-b963-d9f8e0a06e36"
     }
   }
 }
