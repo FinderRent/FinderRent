@@ -1,6 +1,7 @@
 import {
   capitalizeWords,
   checkRtllanguages,
+  fullName,
   iconName,
 } from "../../utils/features";
 
@@ -40,6 +41,21 @@ describe("checkRtllanguages function", () => {
     expect(checkRtllanguages(null)).toEqual(false);
     expect(checkRtllanguages(undefined)).toEqual(false);
     expect(checkRtllanguages("jp")).toEqual(false); // non-RTL language
+  });
+});
+
+describe("fullName", () => {
+  test("returns the full name with trimmed first and last names", () => {
+    expect(fullName(" John ", " Doe ")).toBe("John Doe");
+    expect(fullName("Jane", "Doe")).toBe("Jane Doe");
+  });
+
+  test("handles empty first name", () => {
+    expect(fullName("", "Doe")).toBe(" Doe");
+  });
+
+  test("handles empty last name", () => {
+    expect(fullName("John", "")).toBe("John ");
   });
 });
 
