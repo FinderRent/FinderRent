@@ -22,15 +22,3 @@ This mobile app platform, developed as my final project at SCE College, connects
 - **Other:** JSON Web Token (JWT), Cloudinary
 
 ## App Screenshots
-
-### Student Profile and Chat
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/aee5d686-65a4-4ebb-a495-af6b3b29dfaa" width="400" alt="Student Profile">
-  <img src="https://github.com/user-attachments/assets/2a82023c-1ce5-43ec-8714-9b8b99abf5fa" width="400" alt="Chat">
-</p>
-
-### Home Screen and House Details
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/f9e14aa2-0fbe-404c-9163-da918029387b" width="400" alt="Home Screen">
-  <img src="https://github.com/user-attachments/assets/d23d5e7b-1457-4406-801d-9b2c4d021747" width="400" alt="House Details">
-</p>
