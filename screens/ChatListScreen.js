@@ -205,6 +205,7 @@ function ChatListScreen({ navigation }) {
 
             return (
               <ChatList
+                selectedChatIds={selectedChatIds}
                 ouid={otherUserId}
                 chatId={chatId}
                 lastMessage={lastMessage}

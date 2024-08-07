@@ -22,7 +22,15 @@ import FullScreenImageModal from "../../modals/FullScreenImageModal";
 
 const { width } = Dimensions.get("window");
 
-function ChatList({ ouid, chatId, lastMessage, time, searchUser, deleteChat }) {
+function ChatList({
+  ouid,
+  chatId,
+  lastMessage,
+  time,
+  searchUser,
+  deleteChat,
+  selectedChatIds,
+}) {
   const { t } = useTranslation();
   const { isDarkMode } = useDarkMode();
   const navigation = useNavigation();
@@ -56,6 +64,21 @@ function ChatList({ ouid, chatId, lastMessage, time, searchUser, deleteChat }) {
     return null;
   }
 
+  const handleChatAction = () => {
+    if (selectedChatIds.length > 0) {
+      setSelectedChatId(!selectedChatId);
+      deleteChat(chatId);
+    } else {
+      navigation.push("ChatScreen", {
+        chatId,
+        ouid,
+        pushToken: data?.data?.pushToken,
+        image: data?.data?.avatar?.url,
+        title: fullName(data?.data?.firstName, data?.data?.lastName),
+      });
+    }
+  };
+
   const handleImagePress = () => {
     setIsModalVisible(true);
   };
@@ -67,15 +90,7 @@ function ChatList({ ouid, chatId, lastMessage, time, searchUser, deleteChat }) {
           setSelectedChatId(!selectedChatId);
           deleteChat(chatId);
         }}
-        onPress={() =>
-          navigation.push("ChatScreen", {
-            chatId,
-            ouid,
-            pushToken: data?.data?.pushToken,
-            image: data?.data?.avatar?.url,
-            title: fullName(firstName, lastName),
-          })
-        }
+        onPress={handleChatAction}
       >
         <View
           style={[styles.container, selectedChatId && styles.selectedContainer]}
