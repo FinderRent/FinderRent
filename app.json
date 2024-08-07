@@ -2,7 +2,7 @@
   "expo": {
     "name": "FindeRent",
     "slug": "finderrent",
-    "version": "0.9.6",
+    "version": "0.9.7",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -20,6 +20,11 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
+      },
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDYInyCvJ1WQjqJohhMx2OnxioXWAvy39s"
+        }
       },
       "permissions": ["android.permission.RECORD_AUDIO"],
       "package": "com.maorsa.finderrent"
