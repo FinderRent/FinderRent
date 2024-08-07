@@ -11,9 +11,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "userInterfaceStyle": "automatic"
@@ -23,11 +21,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": [
-        "android.permission.RECORD_AUDIO"
-      ],
-      "package": "com.maorsa.finderrent",
-      "googleServicesFile": "./google-services.json"
+      "permissions": ["android.permission.RECORD_AUDIO"],
+      "package": "com.maorsa.finderrent"
     },
     "web": {
       "favicon": "./assets/favicon.png"
