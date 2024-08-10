@@ -1,15 +1,21 @@
+import React from "react";
 import { View, StyleSheet, ImageBackground } from "react-native";
 import { Text } from "react-native-paper";
+import { useTranslation } from "react-i18next";
 
 import { Color } from "../constants/colors";
 import { useUsers } from "../context/UserContext";
 
 const LandlordHeader = () => {
   const { userData } = useUsers();
+  const { t } = useTranslation();
+
   return (
     <View style={styles.profileLocationView}>
       <View style={styles.midContainer}>
-        <Text style={styles.Name}>Hello, {userData.firstName}</Text>
+        <Text style={styles.Name}>
+          {t("hello")}, {userData.firstName}
+        </Text>
       </View>
 
       <View style={styles.midContainer}>
