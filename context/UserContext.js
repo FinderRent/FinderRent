@@ -32,6 +32,7 @@ function useUsers() {
   const [funFact, setFunFact] = useState(null);
   const [email, setEmail] = useState(null);
   const [avatar, setAvatar] = useState(null);
+  const [socialNetworks, setSocialNetworks] = useState(null);
 
   // Function to login the user and save data to AsyncStorage
   const login = useCallback((data, token) => {
@@ -54,6 +55,7 @@ function useUsers() {
         funFact,
         email,
         avatar,
+        socialNetworks,
       } = data;
 
       setToken(token);
@@ -73,6 +75,7 @@ function useUsers() {
       setFunFact(funFact);
       setEmail(email);
       setAvatar(avatar);
+      setSocialNetworks(socialNetworks);
 
       try {
         // Save user data to AsyncStorage
@@ -113,6 +116,7 @@ function useUsers() {
       setFunFact(null);
       setEmail(null);
       setAvatar(null);
+      setSocialNetworks(null);
     };
 
     removeData();
@@ -166,6 +170,7 @@ function useUsers() {
     funFact,
     email,
     avatar,
+    socialNetworks,
   };
 }
 

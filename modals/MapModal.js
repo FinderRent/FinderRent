@@ -1,6 +1,16 @@
-import { View, StyleSheet, TouchableOpacity, Modal } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Modal,
+  Platform,
+} from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import MapView, {
+  Marker,
+  PROVIDER_GOOGLE,
+  PROVIDER_DEFAULT,
+} from "react-native-maps";
 
 function MapModal(props) {
   const handleMapPress = () => {
@@ -16,7 +26,9 @@ function MapModal(props) {
       <View style={styles.modalBackground}>
         <View style={styles.modalContainer}>
           <MapView
-            provider={PROVIDER_GOOGLE}
+            provider={
+              Platform.OS === "ios" ? PROVIDER_DEFAULT : PROVIDER_GOOGLE
+            }
             initialRegion={{
               latitude: props?.coordinates?.latitude,
               longitude: props?.coordinates?.longitude,

@@ -287,5 +287,8 @@
   "enterCurrentPassword": "Введите текущий пароль:",
   "enterNewPassword": "Введите новый пароль:",
   "confirmPassword": "Подтвердите пароль:",
-  "updatePassword": "Обновить пароль"
+  "updatePassword": "Обновить пароль",
+
+  "hello": "Здравствуйте",
+  "yourProperties": ""
 }

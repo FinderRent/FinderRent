@@ -4,7 +4,7 @@ import { Text } from "react-native-paper";
 import { Marker } from "react-native-maps";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { PROVIDER_GOOGLE } from "react-native-maps";
+import { PROVIDER_GOOGLE, PROVIDER_DEFAULT } from "react-native-maps";
 import MapView from "react-native-map-clustering";
 
 import { Color } from "../../constants/colors";
@@ -142,7 +142,7 @@ const ListingsMap = memo(({ navigation, listings, coordinates }) => {
   return (
     <View style={styles.container}>
       <MapView
-        provider={PROVIDER_GOOGLE}
+        provider={Platform.OS === "ios" ? PROVIDER_DEFAULT : PROVIDER_GOOGLE}
         ref={mapRef}
         animationEnabled={false}
         style={styles.map}
