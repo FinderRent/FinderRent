@@ -111,7 +111,7 @@ function EditProfileScreen({ navigation }) {
       setCoordinates(listAcademicIsrael[index].coordinates);
     }
 
-    if (t("Israel") !== country) {
+    if (t("Israel") !== t(`${country}`)) {
       const index1 = listAcademic.findIndex((item) => item.value === academic);
       if (index1 !== -1) {
         setCoordinates(listAcademic[index1].coordinates);
@@ -325,7 +325,7 @@ function EditProfileScreen({ navigation }) {
                     {t("signUp.loadingInstitution")}
                   </Text>
                 </View>
-              ) : t("Israel") === country ? (
+              ) : t("Israel") === t(`${country}`) ? (
                 <DropDown
                   list={listAcademicIsrael}
                   label={academic}
