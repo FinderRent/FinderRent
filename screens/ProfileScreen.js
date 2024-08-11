@@ -10,12 +10,13 @@ import Toast from "react-native-toast-message";
 import { Color } from "../constants/colors";
 import { UserContext, useUsers } from "../context/UserContext";
 import { fullName } from "../utils/features";
+import { ScrollView } from "react-native-gesture-handler";
 
 const ProfileScreen = ({ navigation }) => {
   const { t } = useTranslation();
   const auth = useContext(UserContext);
 
-  const { userData } = useUsers();
+  const { userData, socialNetworks } = useUsers();
   const isFocused = useIsFocused();
   const userType =
     userData?.userType?.charAt(0).toUpperCase() +
@@ -29,7 +30,6 @@ const ProfileScreen = ({ navigation }) => {
       headerShown: true,
     });
   }, [isFocused]);
-
   async function logoutHandler(auth, navigation) {
     try {
       await AsyncStorage.removeItem("token");
@@ -43,131 +43,179 @@ const ProfileScreen = ({ navigation }) => {
       console.log(err);
     }
   }
-
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.userInfoSection}>
-        <View style={styles.avatar}>
-          <ImageBackground
-            style={{ height: 100, width: 100 }}
-            imageStyle={{
-              borderRadius: 50,
-              borderWidth: 0.5,
-              borderColor: Color.gray,
-            }}
-            source={{
-              uri: userData?.avatar?.url,
-            }}
-          />
-          <View>
-            <Title style={styles.title}>{fullName(firstName, lastName)}</Title>
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.info}>
-        <Text style={styles.infoTitle}>
-          {t(userType)} {t("Profile")}
-        </Text>
-      </View>
-
-      {userData.userType === "student" ? (
+      <ScrollView style={styles.ScrollView}>
         <View style={styles.userInfoSection}>
-          <View style={styles.row}>
-            <Icon
-              name="map-marker-radius-outline"
-              color={Color.icon}
-              size={20}
+          <View style={styles.avatar}>
+            <ImageBackground
+              style={{ height: 100, width: 100 }}
+              imageStyle={{
+                borderRadius: 50,
+                borderWidth: 0.5,
+                borderColor: Color.gray,
+              }}
+              source={{
+                uri: userData?.avatar?.url,
+              }}
             />
-            <Text style={styles.text}>{userData.academic}</Text>
-          </View>
-
-          <View style={styles.row}>
-            <Icon name="school-outline" color={Color.icon} size={20} />
-            <Text style={styles.text}>{userData.department}</Text>
-          </View>
-
-          <View style={styles.row}>
-            <Icon name="calendar-blank-outline" color={Color.icon} size={20} />
-            <Text style={styles.text}>{userData.yearbook}</Text>
-          </View>
-
-          <View style={styles.row}>
-            <Icon name="email-outline" color={Color.icon} size={20} />
-            <Text style={styles.text}>{userData.email}</Text>
+            <View>
+              <Title style={styles.title}>
+                {userData?.firstName} {userData?.lastName}
+              </Title>
+            </View>
           </View>
         </View>
-      ) : (
-        <View style={styles.userInfoSection}>
-          <View style={styles.row}>
-            <Icon name="phone-outline" color={Color.icon} size={20} />
-            <Text style={styles.text}>
-              {userData.phone ? userData.phone : t("Not available")}
-            </Text>
-          </View>
 
-          <View style={styles.row}>
-            <Icon name="email-outline" color={Color.icon} size={20} />
-            <Text style={styles.text}>{userData.email}</Text>
-          </View>
+        <View style={styles.info}>
+          <Text style={styles.infoTitle}>
+            {t(userType)} {t("Profile")}
+          </Text>
         </View>
-      )}
 
-      {userData.userType === "student" && (
-        <View>
-          <View style={styles.info}>
-            <Text style={styles.infoTitle}>{t("Personal Info")}</Text>
-          </View>
-
+        {userData.userType === "student" ? (
           <View style={styles.userInfoSection}>
             <View style={styles.row}>
-              <Icon name="controller-classic" color={Color.icon} size={20} />
+              <Icon
+                name="map-marker-radius-outline"
+                color={Color.icon}
+                size={20}
+              />
+              <Text style={styles.text}>{userData.academic}</Text>
+            </View>
+
+            <View style={styles.row}>
+              <Icon name="school-outline" color={Color.icon} size={20} />
+              <Text style={styles.text}>{userData.department}</Text>
+            </View>
+
+            <View style={styles.row}>
+              <Icon
+                name="calendar-blank-outline"
+                color={Color.icon}
+                size={20}
+              />
+              <Text style={styles.text}>{userData.yearbook}</Text>
+            </View>
+
+            <View style={styles.row}>
+              <Icon name="email-outline" color={Color.icon} size={20} />
+              <Text style={styles.text}>{userData.email}</Text>
+            </View>
+          </View>
+        ) : (
+          <View style={styles.userInfoSection}>
+            <View style={styles.row}>
+              <Icon name="phone-outline" color={Color.icon} size={20} />
               <Text style={styles.text}>
-                {t("My Hobbies")}{" "}
-                {userData.hobbies ? userData.hobbies : t("addYourHobbies")}
+                {userData.phone ? userData.phone : t("Not available")}
               </Text>
             </View>
 
             <View style={styles.row}>
-              <Icon name="beer" color={Color.icon} size={20} />
-              <Text style={styles.text}>
-                {t("Fun Fact")}:{" "}
-                {userData.funFact ? userData.funFact : t("Empty")}
-              </Text>
+              <Icon name="email-outline" color={Color.icon} size={20} />
+              <Text style={styles.text}>{userData.email}</Text>
             </View>
           </View>
-        </View>
-      )}
-
-      <View style={styles.info}>
-        <Text style={styles.infoTitle}>{t("Other")}</Text>
-      </View>
-
-      <View style={styles.menuWrapper}>
-        {userData?.userType === "student" && (
-          <TouchableRipple
-            onPress={() => navigation.navigate("FavoritesScreen")}
-          >
-            <View style={styles.menuItem}>
-              <Icon name="heart-outline" color={Color.icon} size={25} />
-              <Text style={styles.menuItemText}>{t("Favorites")}</Text>
-            </View>
-          </TouchableRipple>
         )}
 
-        <TouchableRipple onPress={() => navigation.navigate("SecurityScreen")}>
-          <View style={styles.menuItem}>
-            <Icon name="shield-lock-outline" color={Color.icon} size={25} />
-            <Text style={styles.menuItemText}>{t("Security")}</Text>
+        {userData.userType === "student" && (
+          <View>
+            <View style={styles.info}>
+              <Text style={styles.infoTitle}>{t("Personal Info")}</Text>
+            </View>
+
+            <View style={styles.userInfoSection}>
+              <View style={styles.row}>
+                <Icon name="controller-classic" color={Color.icon} size={20} />
+                <Text style={styles.text}>
+                  {t("My Hobbies")}{" "}
+                  {userData.hobbies ? userData.hobbies : t("addYourHobbies")}
+                </Text>
+              </View>
+
+              <View style={styles.row}>
+                <Icon name="beer" color={Color.icon} size={20} />
+                <Text style={styles.text}>
+                  {t("Fun Fact")}:{" "}
+                  {userData.funFact ? userData.funFact : t("Empty")}
+                </Text>
+              </View>
+            </View>
           </View>
-        </TouchableRipple>
-        <TouchableRipple onPress={() => logoutHandler(auth, navigation)}>
-          <View style={styles.menuItem}>
-            <Icon name="logout-variant" color={Color.icon} size={25} />
-            <Text style={styles.menuItemText}>{t("Logout")}</Text>
+        )}
+
+        {userData.userType === "student" && socialNetworks && (
+          <View>
+            <View style={styles.info}>
+              <Text style={styles.infoTitle}>{t("socialNetworks")}</Text>
+            </View>
+
+            <View style={styles.userInfoSection}>
+              <View style={styles.row}>
+                <Icon name="instagram" color={Color.icon} size={20} />
+                <Text style={styles.text}>
+                  {t("instagram")}:{" "}
+                  {socialNetworks.instagram
+                    ? socialNetworks.instagram
+                    : t("Add your profile link")}
+                </Text>
+              </View>
+
+              <View style={styles.row}>
+                <Icon name="facebook" color={Color.icon} size={20} />
+                <Text style={styles.text}>
+                  {t("facebook")}:{" "}
+                  {socialNetworks.facebook
+                    ? socialNetworks.facebook
+                    : t("Add your profile link")}
+                </Text>
+              </View>
+              <View style={styles.row}>
+                <Icon name="linkedin" color={Color.icon} size={20} />
+                <Text style={styles.text}>
+                  {t("linkedin")}:{" "}
+                  {socialNetworks.linkedin
+                    ? socialNetworks.linkedin
+                    : t("Add your profile link")}
+                </Text>
+              </View>
+            </View>
           </View>
-        </TouchableRipple>
-      </View>
+        )}
+
+        <View style={styles.info}>
+          <Text style={styles.infoTitle}>{t("Other")}</Text>
+        </View>
+
+        <View style={styles.menuWrapper}>
+          {userData?.userType === "student" && (
+            <TouchableRipple
+              onPress={() => navigation.navigate("FavoritesScreen")}
+            >
+              <View style={styles.menuItem}>
+                <Icon name="heart-outline" color={Color.icon} size={25} />
+                <Text style={styles.menuItemText}>{t("Favorites")}</Text>
+              </View>
+            </TouchableRipple>
+          )}
+
+          <TouchableRipple
+            onPress={() => navigation.navigate("SecurityScreen")}
+          >
+            <View style={styles.menuItem}>
+              <Icon name="shield-lock-outline" color={Color.icon} size={25} />
+              <Text style={styles.menuItemText}>{t("Security")}</Text>
+            </View>
+          </TouchableRipple>
+          <TouchableRipple onPress={() => logoutHandler(auth, navigation)}>
+            <View style={styles.menuItem}>
+              <Icon name="logout-variant" color={Color.icon} size={25} />
+              <Text style={styles.menuItemText}>{t("Logout")}</Text>
+            </View>
+          </TouchableRipple>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -218,6 +266,7 @@ const styles = StyleSheet.create({
 
   menuWrapper: {
     marginTop: -10,
+    marginBottom: "4%",
   },
   menuItem: {
     flexDirection: "row",
@@ -230,5 +279,8 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: 16,
     fontFamily: "varelaRound",
+  },
+  ScrollView: {
+    marginBottom: "10%",
   },
 });

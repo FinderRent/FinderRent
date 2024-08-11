@@ -20,6 +20,7 @@ import AddApartmentButton from "../components/ui/AddApartmentButton";
 import AddApartmentScreen from "./AddApartmentScreen";
 import Loader from "../components/ui/Loader";
 import ErrorMessage from "../components/ui/ErrorMessage";
+import { useTranslation } from "react-i18next";
 
 async function registerForPushNotificationsAsync() {
   let token;
@@ -53,6 +54,8 @@ async function registerForPushNotificationsAsync() {
   }
 }
 function LandlordHomeScreen({ navigation }) {
+  const { t } = useTranslation();
+
   const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
   const tabBarHeight = useBottomTabBarHeight();
@@ -170,11 +173,12 @@ function LandlordHomeScreen({ navigation }) {
     >
       <StatusBar style={isDarkMode ? "light" : "dark"} />
       {token ? <LandlordHeader /> : <SignInHeader />}
-      <Text style={styles.PropertiesHeader}>Your properties</Text>
+      <Text style={styles.PropertiesHeader}>{t("yourProperties")}</Text>
       {isFetchingApartments ? (
         <Loader color={isDarkMode ? Color.defaultTheme : Color.darkTheme} />
       ) : (
         <FlatList
+          style={styles.FlatList}
           data={apartments?.apartments}
           keyExtractor={(item) => item._id}
           renderItem={renderApartmentCard}
@@ -208,7 +212,7 @@ const styles = StyleSheet.create({
   PropertiesHeader: {
     fontSize: 30,
     fontWeight: "bold",
-    marginHorizontal: "5%",
+    marginHorizontal: "4%",
   },
   sheetContainer: {
     elevation: 4,
@@ -223,5 +227,8 @@ const styles = StyleSheet.create({
   addApartmentButton: {
     bottom: Platform.OS === "ios" ? "22%" : "13%",
     right: "15%",
+  },
+  FlatList: {
+    marginBottom: "20%",
   },
 });

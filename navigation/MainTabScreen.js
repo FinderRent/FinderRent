@@ -105,7 +105,7 @@ function MainTabScreen() {
                           color: isDarkMode ? Color.white : Color.black,
                         }}
                       >
-                        Home
+                        {t("home")}
                       </Text>
                     </View>
                   ),

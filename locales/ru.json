@@ -176,6 +176,7 @@
   "whatThisPlaceOffers": "Что предлагает это место",
   "showAll": "Показать все",
 
+  "selectOption": "Выберите опцию",
   "houseAssets": {
     "tv": "Телевизор",
     "television": "Телевидение",
@@ -299,5 +300,8 @@
   "enterCurrentPassword": "Введите текущий пароль",
   "enterNewPassword": "Введите новый пароль",
   "confirmPassword": "Подтвердите пароль:",
-  "updatePassword": "Обновить пароль"
+  "updatePassword": "Обновить пароль",
+
+  "hello": "Здравствуйте",
+  "yourProperties": ""
 }

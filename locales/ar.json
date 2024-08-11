@@ -176,6 +176,7 @@
   "whatThisPlaceOffers": "ما يقدمه هذا المكان",
   "showAll": "عرض الكل",
 
+  "selectOption": "اختر خيارًا",
   "houseAssets": {
     "tv": "تلفاز",
     "television": "تلفزيون",
@@ -299,5 +300,7 @@
   "enterCurrentPassword": "أدخل كلمة المرور الحالية",
   "enterNewPassword": "أدخل كلمة المرور الجديدة",
   "confirmPassword": "تأكيد كلمة المرور:",
-  "updatePassword": "تحديث كلمة المرور"
+  "updatePassword": "تحديث كلمة المرور",
+
+  "hello": "مرحبا"
 }

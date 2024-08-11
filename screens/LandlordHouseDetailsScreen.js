@@ -28,11 +28,13 @@ import HouseRoommates from "../components/House/HouseRoommates";
 import Seperator from "../components/Seperator";
 import HouseAssets from "../components/House/HouseAssets";
 import RoommatesInfo from "../components/House/RoommatesInfo";
+import { useTranslation } from "react-i18next";
 
 const IMG_HEIGHT = 300;
 const { width } = Dimensions.get("window");
 
 const LandlordHouseDetailsScreen = ({ navigation, route }) => {
+  const { t } = useTranslation();
   const { isDarkMode } = useDarkMode();
   const { userData } = useUsers();
 
@@ -47,7 +49,7 @@ const LandlordHouseDetailsScreen = ({ navigation, route }) => {
 
   let images = [];
   if (apartment.images) {
-    images = [apartment.images.url];
+    images = apartment.images;
   } else {
     images = [
       "https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/home-improvement/wp-content/uploads/2022/07/download-23.jpg",
@@ -122,7 +124,11 @@ const LandlordHouseDetailsScreen = ({ navigation, route }) => {
   const handleMapPress = () => {
     setMapPress(!mapPress);
   };
-  const handleShowAllPress = (apartmentContent) => {
+  const handleShowAllPress = () => {
+    const trueKeys = Object.keys(apartment.apartmentContent).filter(
+      (key) => apartment.apartmentContent[key]
+    );
+    const apartmentContent = trueKeys.filter((key) => key !== "_id");
     setApartmentContent(apartmentContent);
     setShowAll(!showAll);
   };
@@ -179,14 +185,12 @@ const LandlordHouseDetailsScreen = ({ navigation, route }) => {
             {apartment?.address?.street} {apartment?.address?.buildingNumber}/
             {apartment?.address?.apartmentNumber}
           </Text>
-          <Text style={styles.distance}>
-            {apartment?.distanceFromAcademy} kilometers away from SCE College
-          </Text>
+
           <HouseRoommates
             totalCapacity={apartment?.totalCapacity}
             realTimeCapacity={apartment?.realTimeCapacity}
           />
-          <Text style={styles.about}>About</Text>
+          <Text style={styles.about}>{t("about")}</Text>
           <Paragraph>{apartment?.about}</Paragraph>
           <HouseInfo
             numberOfRooms={apartment?.numberOfRooms}
@@ -212,7 +216,7 @@ const LandlordHouseDetailsScreen = ({ navigation, route }) => {
           )}
           <Seperator />
           {apartment.tenants.length > 0 && (
-            <Text style={styles.about}>Current tenants</Text>
+            <Text style={styles.about}>{t("currentTenants")}</Text>
           )}
           {apartment?.tenants?.map((tenant) => (
             <TouchableOpacity

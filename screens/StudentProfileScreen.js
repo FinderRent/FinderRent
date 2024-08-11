@@ -151,38 +151,42 @@ function StudentProfileScreen(props) {
         </View>
 
         {/* Social Links Section */}
-        <View style={styles.socialLinksContainer}>
-          <Text style={styles.socialLinksTitle}>{t("socialLinksTitle")}</Text>
-          <View style={styles.socialLinks}>
-            <TouchableOpacity
-              onPress={() =>
-                Linking.openURL(
-                  "https://www.facebook.com/amir.fukman.1?mibextid=LQQJ4d"
-                )
-              }
-            >
-              <Icon name="logo-facebook" size={35} color="#3b5998" />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() =>
-                Linking.openURL(
-                  "https://www.instagram.com/amir_fukman?igsh=MWhlamhxcm0zcmk1MQ%3D%3D&utm_source=qr"
-                )
-              }
-            >
-              <Icon name="logo-instagram" size={35} color="#C13584" />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() =>
-                Linking.openURL(
-                  "https://www.linkedin.com/in/amir-fukman-9093b019a/"
-                )
-              }
-            >
-              <Icon name="logo-linkedin" size={35} color="#0A66C2" />
-            </TouchableOpacity>
+        {(user.socialNetworks?.instagram ||
+          user.socialNetworks?.facebook ||
+          user.socialNetworks?.linkedin) && (
+          <View style={styles.socialLinksContainer}>
+            <Text style={styles.socialLinksTitle}>{t("socialLinksTitle")}</Text>
+            <View style={styles.socialLinks}>
+              {user.socialNetworks?.facebook && (
+                <TouchableOpacity
+                  onPress={() =>
+                    Linking.openURL("https://" + user.socialNetworks.facebook)
+                  }
+                >
+                  <Icon name="logo-facebook" size={35} color="#3b5998" />
+                </TouchableOpacity>
+              )}
+              {user.socialNetworks?.instagram && (
+                <TouchableOpacity
+                  onPress={() =>
+                    Linking.openURL("https://" + user.socialNetworks.instagram)
+                  }
+                >
+                  <Icon name="logo-instagram" size={35} color="#C13584" />
+                </TouchableOpacity>
+              )}
+              {user.socialNetworks?.linkedin && (
+                <TouchableOpacity
+                  onPress={() =>
+                    Linking.openURL("https://" + user.socialNetworks.linkedin)
+                  }
+                >
+                  <Icon name="logo-linkedin" size={35} color="#0A66C2" />
+                </TouchableOpacity>
+              )}
+            </View>
           </View>
-        </View>
+        )}
 
         <Spacer>
           {!isLoadingUser && !studentDataIsLoading && (

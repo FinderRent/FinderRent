@@ -18,9 +18,10 @@ import { addApartment, fetchAllstudents } from "../utils/http";
 import DropDown from "../components/inputs/DropDown";
 import Input from "../components/inputs/Input";
 import ErrorMessage from "../components/ui/ErrorMessage";
-import ImagePicker from "../components/ImagePicker";
-
+import ImagePickerMulti from "../components/ImagePickerMulti";
+import { useTranslation } from "react-i18next";
 function AddApartmentScreen(props) {
+  const { t } = useTranslation();
   const { isDarkMode } = useDarkMode();
 
   const { userData } = useUsers();
@@ -44,31 +45,33 @@ function AddApartmentScreen(props) {
   });
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [focusedInput, setFocusedInput] = useState(null);
-  const [apartmentImage, setApartmentImage] = useState("");
-  const [publicImageURL, setPublicImageURL] = useState("");
+  // const [apartmentImage, setApartmentImage] = useState("");
+  // const [publicImageURL, setPublicImageURL] = useState("");
+  const [apartmentImages, setApartmentImages] = useState([]);
+  // const [publicImageURLs, setPublicImageURLs] = useState([]);
   const [loading, setLoading] = useState(false);
   const apartmentTypeList = [
-    { label: "Land House", value: "Land House" },
-    { label: "Housing Unit", value: "Housing Unit" },
-    { label: "Tower", value: "Tower" },
-    { label: "Penthouse", value: "Penthouse" },
+    { label: t("landHouse"), value: "Land House" },
+    { label: t("housingUnit"), value: "Housing Unit" },
+    { label: t("tower"), value: "Tower" },
+    { label: t("penthouse"), value: "Penthouse" },
   ];
 
   const houseAssets = [
-    { key: "TV", value: "TV" },
-    { key: "Balcony", value: "Balcony" },
-    { key: "Beds", value: "Beds" },
-    { key: "Wifi", value: "Wifi" },
-    { key: "Oven", value: "Oven" },
-    { key: "Microwave", value: "Microwave" },
-    { key: "Couch", value: "Couch" },
-    { key: "Coffee Table", value: "Coffee Table" },
-    { key: "Water Heater", value: "Water Heater" },
-    { key: "Washer", value: "Washer" },
-    { key: "Dryer", value: "Dryer" },
-    { key: "Iron", value: "Iron" },
-    { key: "Refrigirator", value: "Refrigirator" },
-    { key: "freezer", value: "freezer" },
+    { key: "TV", value: t("tv") },
+    { key: "Balcony", value: t("balcony") },
+    { key: "Beds", value: t("beds") },
+    { key: "Wifi", value: t("wifi") },
+    { key: "Oven", value: t("oven") },
+    { key: "Microwave", value: t("microwave") },
+    { key: "Couch", value: t("couch") },
+    { key: "Coffee Table", value: t("coffeeTable") },
+    { key: "Water Heater", value: t("waterHeater") },
+    { key: "Washer", value: t("washer") },
+    { key: "Dryer", value: t("dryer") },
+    { key: "Iron", value: t("iron") },
+    { key: "Refrigirator", value: t("refrigirator") },
+    { key: "freezer", value: t("freezer") },
   ];
 
   const keyboardVerticalOffset = Platform.OS === "ios" ? 10 : 0;
@@ -185,11 +188,8 @@ function AddApartmentScreen(props) {
     return apartmentContent;
   }
 
-  ///------------------------
   // const handleImageUpload = async (image) => {
-  //   console.log("image:", image);
-  //   setApartmentImage(image);
-  //   console.log("Attempting to read file:", image);
+  //   console.log("upload image...");
 
   //   // Check if the file exists
   //   const fileInfo = await FileSystem.getInfoAsync(image);
@@ -208,69 +208,81 @@ function AddApartmentScreen(props) {
   //   data.append("cloud_name", "finderent");
   //   data.append("folder", "Apartments");
 
-  //   await fetch("https://api.cloudinary.com/v1_1/finderent/image/upload", {
-  //     method: "post",
-  //     headers: {
-  //       "Content-Type": "multipart/form-data",
-  //     },
-  //     body: data,
-  //   })
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       console.log(data.url);
-  //       setPublicImageURL(data.url);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error uploading image: ", error);
-  //     });
-  //   image = "";
+  //   try {
+  //     const response = await fetch(
+  //       "https://api.cloudinary.com/v1_1/finderent/image/upload",
+  //       {
+  //         method: "post",
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //         },
+  //         body: data,
+  //       }
+  //     );
+
+  //     const result = await response.json();
+  //     console.log("image upload: ", result.url);
+  //     setPublicImageURL(result.url);
+  //     return result.url; // Return the image URL
+  //   } catch (error) {
+  //     console.error("Error uploading image: ", error);
+  //     throw new Error("Failed to upload image");
+  //   }
   // };
-  const handleImageUpload = async (image) => {
-    console.log("upload image...");
 
-    // Check if the file exists
-    const fileInfo = await FileSystem.getInfoAsync(image);
-    if (!fileInfo.exists) {
-      throw new Error(`File does not exist at path: ${image}`);
+  const handleImageUpload = async (images) => {
+    console.log("upload images...");
+
+    const imageUrls = [];
+
+    for (const image of images) {
+      // Check if the file exists
+      const fileInfo = await FileSystem.getInfoAsync(image);
+      if (!fileInfo.exists) {
+        throw new Error(`File does not exist at path: ${image}`);
+      }
+
+      // Convert the image to base64 format
+      const base64Image = await FileSystem.readAsStringAsync(image, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+
+      const data = new FormData();
+      data.append("file", `data:image/jpeg;base64,${base64Image}`);
+      data.append("upload_preset", "FindeRent");
+      data.append("cloud_name", "finderent");
+      data.append("folder", "Apartments");
+
+      try {
+        const response = await fetch(
+          "https://api.cloudinary.com/v1_1/finderent/image/upload",
+          {
+            method: "post",
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+            body: data,
+          }
+        );
+
+        const result = await response.json();
+        console.log("image upload: ", result.url);
+        imageUrls.push(result.url); // Add the image URL to the array
+      } catch (error) {
+        console.error("Error uploading image: ", error);
+        throw new Error("Failed to upload image");
+      }
     }
 
-    // Convert the image to base64 format
-    const base64Image = await FileSystem.readAsStringAsync(image, {
-      encoding: FileSystem.EncodingType.Base64,
-    });
-
-    const data = new FormData();
-    data.append("file", `data:image/jpeg;base64,${base64Image}`);
-    data.append("upload_preset", "FindeRent");
-    data.append("cloud_name", "finderent");
-    data.append("folder", "Apartments");
-
-    try {
-      const response = await fetch(
-        "https://api.cloudinary.com/v1_1/finderent/image/upload",
-        {
-          method: "post",
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          body: data,
-        }
-      );
-
-      const result = await response.json();
-      console.log("image upload: ", result.url);
-      setPublicImageURL(result.url);
-      return result.url; // Return the image URL
-    } catch (error) {
-      console.error("Error uploading image: ", error);
-      throw new Error("Failed to upload image");
-    }
+    return imageUrls; // Return the array of image URLs
   };
-
   ///------------------------
 
-  const localUri = apartmentImage;
-  const filename = localUri.split("/").pop();
+  // const localUri = apartmentImage;
+  // const filename = localUri.split("/").pop();
+
+  // const localUris = apartmentImages;
+  // const filenames = localUris.map((uri) => uri.split("/").pop());
 
   // ///------------------------
   //object to send to the backend
@@ -298,10 +310,11 @@ function AddApartmentScreen(props) {
     floor: floor !== "" ? parseInt(floor) : undefined,
     owner: userData.id,
     apartmentType,
-    images: {
-      public_id: publicImageURL,
-      url: publicImageURL,
-    },
+    // images: {
+    //   public_id: publicImageURL,
+    //   url: publicImageURL,
+    // },
+    images: [],
   };
   const resetForm = () => {
     setCountry("");
@@ -321,7 +334,7 @@ function AddApartmentScreen(props) {
       latitude: "",
       longitude: "",
     });
-    setPublicImageURL("");
+    setApartmentImages([]);
   };
 
   const bottomSheetRef = useRef(null);
@@ -355,37 +368,42 @@ function AddApartmentScreen(props) {
     },
   });
 
-  const handleAddApartment = async () => {
-    const imageUrl = await handleImageUpload(apartmentImage);
-    const updatedApartmentData = {
-      ...apartmentData,
-      images: {
-        public_id: imageUrl,
-        url: imageUrl,
-      },
-    };
-    mutate(updatedApartmentData);
-  };
-
-  // const handleButtonPress = async () => {
-  //   try {
-  //     const data = await addApartment(apartmentData);
-  //     showMessage({
-  //       message: "Success",
-  //       description: "Apartment added successfully!",
-  //       type: "success",
-  //     });
-  //     resetForm();
-  //     props.handleAddButtonPress();
-  //     // props.handleAddButtonPress();
-  //   } catch (error) {
-  //     showMessage({
-  //       message: "Error",
-  //       description: "Failed to add apartment.",
-  //       type: "danger",
-  //     });
-  //   }
+  // const handleAddApartment = async () => {
+  //   const imageUrl = await handleImageUpload(apartmentImage);
+  //   const updatedApartmentData = {
+  //     ...apartmentData,
+  //     images: {
+  //       public_id: imageUrl,
+  //       url: imageUrl,
+  //     },
+  //   };
+  //   mutate(updatedApartmentData);
   // };
+  const handleAddApartment = async () => {
+    try {
+      setLoading(true);
+      const imageUrls = await handleImageUpload(apartmentImages); // Upload multiple images
+
+      // Ensure imageUrls is an array (in case handleImageUpload returns a comma-separated string)
+      const imageUrlsArray =
+        typeof imageUrls === "string" ? imageUrls.split(",") : imageUrls;
+
+      const updatedApartmentData = {
+        ...apartmentData,
+        images: imageUrlsArray, // Assign the array of URLs directly to the images field
+      };
+
+      console.log(updatedApartmentData);
+      mutate(updatedApartmentData); // Send the updated apartment data to the database
+      setLoading(false);
+    } catch (error) {
+      console.error(
+        "Error uploading images or updating apartment data: ",
+        error
+      );
+      setLoading(false);
+    }
+  };
 
   const {
     data: students,
@@ -435,21 +453,21 @@ function AddApartmentScreen(props) {
           keyboardOpeningTime={0}
         >
           <View style={styles.container}>
-            <Text style={styles.mainHeader}>Add Your Apartment</Text>
+            <Text style={styles.mainHeader}>{t("addYourApartment")}</Text>
             <View>
               <View>
-                <Text style={styles.subHeader}>Address</Text>
+                <Text style={styles.subHeader}>{t("address")}</Text>
                 <View style={styles.line}>
                   <Input
                     mode="outlined"
-                    label="Country"
+                    label={t("country")}
                     value={country}
                     onValueChange={(country) => setCountry(country)}
                     style={styles.input}
                   />
                   <Input
                     mode="outlined"
-                    label="City"
+                    label={t("city")}
                     value={city}
                     onValueChange={(city) => setCity(city)}
                     onFocus={() => handleFocus("city")}
@@ -460,7 +478,7 @@ function AddApartmentScreen(props) {
                 <View style={styles.line}>
                   <Input
                     mode="outlined"
-                    label="Street"
+                    label={t("street")}
                     value={street}
                     onValueChange={(street) => setStreet(street)}
                     onFocus={() => handleFocus("street")}
@@ -470,7 +488,7 @@ function AddApartmentScreen(props) {
                   <Input
                     keyboardType="numeric"
                     mode="outlined"
-                    label="Building Number"
+                    label={t("buildingNumber")}
                     value={buildingNumber}
                     onValueChange={(buildingNumber) =>
                       setBuildingNumber(buildingNumber)
@@ -484,7 +502,7 @@ function AddApartmentScreen(props) {
                   <Input
                     keyboardType="numeric"
                     mode="outlined"
-                    label="Apartment Number"
+                    label={t("apartmentNumber")}
                     value={apartmentNumber}
                     onValueChange={(apartmentNumber) =>
                       setApartmentNumber(apartmentNumber)
@@ -494,7 +512,7 @@ function AddApartmentScreen(props) {
                   <Input
                     keyboardType="numeric"
                     mode="outlined"
-                    label="Floor"
+                    label={t("floor")}
                     value={floor}
                     onValueChange={(floor) => setFloor(floor)}
                     style={styles.input}
@@ -508,13 +526,13 @@ function AddApartmentScreen(props) {
                   focusedInput !== "buildingNumber" && (
                     <View>
                       <Text style={styles.subHeader}>
-                        Check Apartment Coordinates
+                        {t("checkApartmentCoordinates")}
                       </Text>
                       <View style={styles.line}>
                         <Input
                           keyboardType="numeric"
                           mode="outlined"
-                          label="latitude"
+                          label={t("latitude")}
                           value={coordinates.latitude}
                           onValueChange={(latitude) =>
                             setCoordinates((prev) => ({ ...prev, latitude }))
@@ -524,7 +542,7 @@ function AddApartmentScreen(props) {
                         <Input
                           keyboardType="numeric"
                           mode="outlined"
-                          label="longitude"
+                          label={t("longitude")}
                           value={coordinates.longitude}
                           onValueChange={(longitude) =>
                             setCoordinates((prev) => ({ ...prev, longitude }))
@@ -536,12 +554,12 @@ function AddApartmentScreen(props) {
                   )}
               </View>
               <View>
-                <Text style={styles.subHeader}>General Details</Text>
+                <Text style={styles.subHeader}>{t("generalDetails")}</Text>
                 <View style={styles.line}>
                   <Input
                     keyboardType="numeric"
                     mode="outlined"
-                    label="Number Of Rooms"
+                    label={t("numberOfRooms")}
                     value={rooms}
                     onValueChange={(rooms) => setRooms(rooms)}
                     style={styles.input}
@@ -549,7 +567,7 @@ function AddApartmentScreen(props) {
                   <Input
                     keyboardType="numeric"
                     mode="outlined"
-                    label="Monthly Rent"
+                    label={t("monthlyRent")}
                     value={price}
                     onValueChange={(price) => setPrice(price)}
                     style={styles.input}
@@ -559,7 +577,7 @@ function AddApartmentScreen(props) {
                   <Input
                     keyboardType="numeric"
                     mode="outlined"
-                    label="Total Capacity"
+                    label={t("totalCapacity")}
                     value={totalCapacity}
                     onValueChange={(totalCapacity) =>
                       setTotalCapacity(totalCapacity)
@@ -569,7 +587,7 @@ function AddApartmentScreen(props) {
                   <Input
                     keyboardType="numeric"
                     mode="outlined"
-                    label="Real Time Capacity"
+                    label={t("RealTimeCapacity")}
                     value={realTimeCapacity}
                     onValueChange={(realTimeCapacity) =>
                       setRealTimeCapacity(realTimeCapacity)
@@ -579,13 +597,13 @@ function AddApartmentScreen(props) {
                 </View>
               </View>
               <View>
-                <Text style={styles.subHeader}>Type</Text>
+                <Text style={styles.subHeader}>{t("type")}</Text>
                 <View>
                   <DropDown
                     style={styles.DropDown}
                     dropDownDirection="TOP" // This will force the dropdown to always open to the top
                     list={apartmentTypeList}
-                    label="House Type"
+                    label={t("houseType")}
                     placeholder={apartmentType}
                     searchable={false}
                     listMode="SCROLLVIEW"
@@ -596,7 +614,7 @@ function AddApartmentScreen(props) {
                 </View>
               </View>
               <View>
-                <Text style={styles.subHeader}>House Assets</Text>
+                <Text style={styles.subHeader}>{t("houseAssetsHeader")}</Text>
                 <View style={styles.MultipleSelectList}>
                   <MultipleSelectList
                     inputStyles={{
@@ -615,14 +633,15 @@ function AddApartmentScreen(props) {
                       setSelected(val);
                     }}
                     data={houseAssets}
-                    save="value"
-                    label="House Assets"
+                    save="key"
+                    label={t("selectHouseAssets")}
+                    placeholder={t("selectOption")}
                   />
                 </View>
               </View>
 
               <View>
-                <Text style={styles.subHeader}>Pick Your Tenants</Text>
+                <Text style={styles.subHeader}>{t("pickYourTenants")}</Text>
                 <View style={styles.MultipleSelectList}>
                   <MultipleSelectList
                     inputStyles={{
@@ -642,12 +661,13 @@ function AddApartmentScreen(props) {
                     }}
                     data={tenantOptions}
                     save="key"
-                    label="Tenants"
+                    label={t("tenants")}
+                    placeholder={t("selectOption")}
                   />
                 </View>
               </View>
               <View>
-                <Text style={styles.subHeader}>About</Text>
+                <Text style={styles.subHeader}>{t("about")}</Text>
                 <View style={styles.paragraphContainer}>
                   <TextInput
                     id="paragraph"
@@ -659,7 +679,7 @@ function AddApartmentScreen(props) {
                           }
                         : styles.paragraphInput
                     }
-                    placeholder="Describe your apartment"
+                    placeholder={t("describeYourApartment")}
                     multiline={true}
                     numberOfLines={4}
                     onChangeText={(about) => setAbout(about)}
@@ -672,28 +692,18 @@ function AddApartmentScreen(props) {
               </View>
               <View>
                 <Text style={[styles.subHeader, { marginBottom: 10 }]}>
-                  Add Photos
+                  {t("addPictures")}
                 </Text>
-                {/* <ImagePicker
-              onPickImage={(image) => setApartmentImage(image)}
-              // handleImageUpload={(image) => handleImageUpload(image)}
-            /> */}
-                <ImagePicker
-                  onPickImage={(image) => setApartmentImage(image)}
-                />
+
+                <View style={styles.images}>
+                  <ImagePickerMulti
+                    apartmentImages={apartmentImages}
+                    setApartmentImages={setApartmentImages}
+                  />
+                </View>
               </View>
               <Divider bold={true} style={{ margin: 5 }} />
-              {/* <View>
-                {!loading && (
-                  <TouchableOpacity
-                    onPress={handleButtonPress}
-                    style={styles.button}
-                  >
-                    <Text style={styles.buttonText}>Add</Text>
-                  </TouchableOpacity>
-                )}
-                {loading && <Loader />}
-              </View> */}
+
               {isError && <ErrorMessage errorMessage={error.message} />}
               <Button
                 style={{ marginTop: 10 }}
@@ -701,9 +711,9 @@ function AddApartmentScreen(props) {
                 textColor={Color.defaultTheme}
                 mode="contained"
                 onPress={handleAddApartment}
-                loading={isPending}
+                loading={loading}
               >
-                {!isPending && "Add"}
+                {!loading && t("add")}
               </Button>
             </View>
           </View>
@@ -773,5 +783,10 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 20,
     fontWeight: "bold",
+  },
+  images: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

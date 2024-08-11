@@ -15,8 +15,11 @@ import Input from "../components/inputs/Input";
 import DropDown from "../components/inputs/DropDown";
 import ErrorMessage from "../components/ui/ErrorMessage";
 import NavLink from "../components/ui/NavLink";
+import { useTranslation } from "react-i18next";
 
 function EditApartmentScreen({ route, navigation }) {
+  const { t } = useTranslation();
+
   const { isDarkMode } = useDarkMode();
 
   const { apartment } = route.params;
@@ -56,26 +59,27 @@ function EditApartmentScreen({ route, navigation }) {
   const [focusedInput, setFocusedInput] = useState(null);
 
   const apartmentTypeList = [
-    { label: "Land House", value: "Land House" },
-    { label: "Housing Unit", value: "Housing Unit" },
-    { label: "Tower", value: "Tower" },
-    { label: "Penthouse", value: "Penthouse" },
+    { label: t("landHouse"), value: "Land House" },
+    { label: t("housingUnit"), value: "Housing Unit" },
+    { label: t("tower"), value: "Tower" },
+    { label: t("penthouse"), value: "Penthouse" },
   ];
+
   const houseAssets = [
-    { key: "TV", value: "TV" },
-    { key: "Balcony", value: "Balcony" },
-    { key: "Beds", value: "Beds" },
-    { key: "Wifi", value: "Wifi" },
-    { key: "Oven", value: "Oven" },
-    { key: "Microwave", value: "Microwave" },
-    { key: "Couch", value: "Couch" },
-    { key: "Coffee Table", value: "Coffee Table" },
-    { key: "Water Heater", value: "Water Heater" },
-    { key: "Washer", value: "Washer" },
-    { key: "Dryer", value: "Dryer" },
-    { key: "Iron", value: "Iron" },
-    { key: "Refrigirator", value: "Refrigirator" },
-    { key: "freezer", value: "freezer" },
+    { key: "TV", value: t("tv") },
+    { key: "Balcony", value: t("balcony") },
+    { key: "Beds", value: t("beds") },
+    { key: "Wifi", value: t("wifi") },
+    { key: "Oven", value: t("oven") },
+    { key: "Microwave", value: t("microwave") },
+    { key: "Couch", value: t("couch") },
+    { key: "Coffee Table", value: t("coffeeTable") },
+    { key: "Water Heater", value: t("waterHeater") },
+    { key: "Washer", value: t("washer") },
+    { key: "Dryer", value: t("dryer") },
+    { key: "Iron", value: t("iron") },
+    { key: "Refrigirator", value: t("refrigirator") },
+    { key: "freezer", value: t("freezer") },
   ];
 
   useEffect(() => {
@@ -249,14 +253,14 @@ function EditApartmentScreen({ route, navigation }) {
       keyboardOpeningTime={0}
     >
       <View style={styles.container}>
-        <Text style={styles.mainHeader}>Edit Your Apartment</Text>
+        <Text style={styles.mainHeader}>{t("editYourApartment")}</Text>
         <View>
           <View>
-            <Text style={styles.subHeader}>Address</Text>
+            <Text style={styles.subHeader}>{t("address")}</Text>
             <View style={styles.line}>
               <Input
                 mode="outlined"
-                label="Country"
+                label={t("country")}
                 defaultValue={country}
                 value={country}
                 onValueChange={(country) => setCountry(country)}
@@ -264,7 +268,7 @@ function EditApartmentScreen({ route, navigation }) {
               />
               <Input
                 mode="outlined"
-                label="City"
+                label={t("city")}
                 value={city}
                 onValueChange={(city) => setCity(city)}
                 style={styles.input}
@@ -273,7 +277,7 @@ function EditApartmentScreen({ route, navigation }) {
             <View style={styles.line}>
               <Input
                 mode="outlined"
-                label="Street"
+                label={t("street")}
                 value={street}
                 onValueChange={(street) => setStreet(street)}
                 style={styles.input}
@@ -281,7 +285,7 @@ function EditApartmentScreen({ route, navigation }) {
               <Input
                 keyboardType="numeric"
                 mode="outlined"
-                label="Building Number"
+                label={t("buildingNumber")}
                 value={buildingNumber}
                 onValueChange={(buildingNumber) =>
                   setBuildingNumber(buildingNumber)
@@ -293,7 +297,7 @@ function EditApartmentScreen({ route, navigation }) {
               <Input
                 keyboardType="numeric"
                 mode="outlined"
-                label="Apartment Number"
+                label={t("apartmentNumber")}
                 value={apartmentNumber}
                 onValueChange={(apartmentNumber) =>
                   setApartmentNumber(apartmentNumber)
@@ -303,19 +307,21 @@ function EditApartmentScreen({ route, navigation }) {
               <Input
                 keyboardType="numeric"
                 mode="outlined"
-                label="Floor"
+                label={t("floor")}
                 value={floor}
                 onValueChange={(floor) => setFloor(floor)}
                 style={styles.input}
               />
             </View>
             <View>
-              <Text style={styles.subHeader}>Apartment Coordinates</Text>
+              <Text style={styles.subHeader}>
+                {t("checkApartmentCoordinates")}
+              </Text>
               <View style={styles.line}>
                 <Input
                   keyboardType="numeric"
                   mode="outlined"
-                  label="latitude"
+                  label={t("latitude")}
                   value={coordinates.latitude}
                   onValueChange={(latitude) =>
                     setCoordinates((prev) => ({ ...prev, latitude }))
@@ -325,7 +331,7 @@ function EditApartmentScreen({ route, navigation }) {
                 <Input
                   keyboardType="numeric"
                   mode="outlined"
-                  label="longitude"
+                  label={t("longitude")}
                   value={coordinates.longitude}
                   onValueChange={(longitude) =>
                     setCoordinates((prev) => ({ ...prev, longitude }))
@@ -336,12 +342,12 @@ function EditApartmentScreen({ route, navigation }) {
             </View>
           </View>
           <View>
-            <Text style={styles.subHeader}>General Details</Text>
+            <Text style={styles.subHeader}>{t("generalDetails")}</Text>
             <View style={styles.line}>
               <Input
                 keyboardType="numeric"
                 mode="outlined"
-                label="Number Of Rooms"
+                label={t("numberOfRooms")}
                 value={rooms}
                 onValueChange={(rooms) => setRooms(rooms)}
                 style={styles.input}
@@ -349,7 +355,7 @@ function EditApartmentScreen({ route, navigation }) {
               <Input
                 keyboardType="numeric"
                 mode="outlined"
-                label="Monthly Rent"
+                label={t("monthlyRent")}
                 value={price}
                 onValueChange={(price) => setPrice(price)}
                 style={styles.input}
@@ -359,7 +365,7 @@ function EditApartmentScreen({ route, navigation }) {
               <Input
                 keyboardType="numeric"
                 mode="outlined"
-                label="Total Capacity"
+                label={t("totalCapacity")}
                 value={totalCapacity}
                 onValueChange={(totalCapacity) =>
                   setTotalCapacity(totalCapacity)
@@ -369,7 +375,7 @@ function EditApartmentScreen({ route, navigation }) {
               <Input
                 keyboardType="numeric"
                 mode="outlined"
-                label="Real Time Capacity"
+                label={t("RealTimeCapacity")}
                 value={realTimeCapacity}
                 onValueChange={(realTimeCapacity) =>
                   setRealTimeCapacity(realTimeCapacity)
@@ -379,13 +385,13 @@ function EditApartmentScreen({ route, navigation }) {
             </View>
           </View>
           <View>
-            <Text style={styles.subHeader}>Type</Text>
+            <Text style={styles.subHeader}>{t("type")}</Text>
             <View>
               <DropDown
                 style={styles.DropDown}
                 dropDownDirection="TOP"
                 list={apartmentTypeList}
-                label="House Type"
+                label={t("houseType")}
                 placeholder={apartmentType}
                 searchable={false}
                 listMode="SCROLLVIEW"
@@ -396,7 +402,7 @@ function EditApartmentScreen({ route, navigation }) {
             </View>
           </View>
           <View>
-            <Text style={styles.subHeader}>House Assets</Text>
+            <Text style={styles.subHeader}>{t("houseAssetsHeader")}</Text>
             <View style={styles.MultipleSelectList}>
               <MultipleSelectList
                 inputStyles={{
@@ -415,14 +421,14 @@ function EditApartmentScreen({ route, navigation }) {
                   setSelected(selected);
                 }}
                 data={houseAssets}
-                save="value"
-                label="House Assets"
+                save="key"
+                label={t("selectHouseAssets")}
               />
             </View>
           </View>
 
           <View>
-            <Text style={styles.subHeader}>About</Text>
+            <Text style={styles.subHeader}>{t("about")}</Text>
             <View style={styles.paragraphContainer}>
               <Input
                 id="paragraph"
@@ -438,9 +444,7 @@ function EditApartmentScreen({ route, navigation }) {
               />
             </View>
           </View>
-          <View>
-            <Text style={styles.subHeader}>Photos</Text>
-          </View>
+
           <Divider bold={true} style={{ margin: 5 }} />
           {isError && <ErrorMessage errorMessage={error.message} />}
           <Button
@@ -451,9 +455,9 @@ function EditApartmentScreen({ route, navigation }) {
             onPress={handleEditApartment}
             loading={isPending}
           >
-            {!isPending && "Done"}
+            {!isPending && t("done")}
           </Button>
-          <NavLink text="Back" style={{ fontSize: 14 }} />
+          <NavLink text={t("back")} style={{ fontSize: 14 }} />
           {/* <View>
             <TouchableOpacity
               onPress={handleEditApartment}
@@ -484,6 +488,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     margin: 10,
+    marginTop: Platform.OS === "ios" ? "15%" : 10,
   },
   subHeader: {
     fontSize: 20,

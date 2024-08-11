@@ -40,7 +40,7 @@ import SelectCountry from "../components/inputs/SelectCountry";
 function EditProfileScreen({ navigation }) {
   const { t, i18n } = useTranslation();
   const { isDarkMode } = useDarkMode();
-  const { userData } = useUsers();
+  const { userData, socialNetworks } = useUsers();
   const auth = useContext(UserContext);
 
   const listAcademicIsrael = getAcademicList(i18n.language);
@@ -65,6 +65,8 @@ function EditProfileScreen({ navigation }) {
   const [funFact, setFunFact] = useState(userData.funFact);
   const [email, setEmail] = useState(userData.email);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
+  const [studentSocialNetworks, setStudentSocialNetworks] =
+    useState(socialNetworks);
 
   const url =
     "https://res.cloudinary.com/dtkpp77xw/image/upload/v1701189732/default_nk5c5h.png";
@@ -199,7 +201,7 @@ function EditProfileScreen({ navigation }) {
   }, []);
 
   return (
-    <ScrollView>
+    <ScrollView style={styles.ScrollView}>
       <View
         style={
           isBottomSheetOpen
@@ -412,6 +414,34 @@ function EditProfileScreen({ navigation }) {
           </View>
         )}
 
+        {/* <View style={styles.textInput}>
+          <Input
+            label={hobbies ? "" : t("instagram")}
+            value={hobbies ? hobbies : ""}
+            left={<TextInput.Icon icon={"controller-classic"} />}
+            mode="outlined"
+            onValueChange={(selectedHobbies) => setHobbies(selectedHobbies)}
+          />
+        </View>
+        <View style={styles.textInput}>
+          <Input
+            label={funFact ? "" : t("fun_fact")}
+            value={funFact ? funFact : ""}
+            left={<TextInput.Icon icon={"beer"} />}
+            mode="outlined"
+            onValueChange={(selectedFunFact) => setFunFact(selectedFunFact)}
+          />
+        </View>
+        <View style={styles.textInput}>
+          <Input
+            label={funFact ? "" : t("fun_fact")}
+            value={funFact ? funFact : ""}
+            left={<TextInput.Icon icon={"beer"} />}
+            mode="outlined"
+            onValueChange={(selectedFunFact) => setFunFact(selectedFunFact)}
+          />
+        </View> */}
+
         {isError && <ErrorMessage errorMessage={t(error.message)} />}
 
         <Spacer>
@@ -524,5 +554,8 @@ const styles = StyleSheet.create({
   },
   button: {
     marginBottom: 15,
+  },
+  ScrollView: {
+    marginBottom: "5%",
   },
 });
