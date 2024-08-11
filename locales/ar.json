@@ -126,6 +126,8 @@
 
   "categories2": {
     "undefined": "",
+    "null": "",
+    "": "",
     "Land House": "منزل أرض",
     "Houseing Unit": "وحدة سكنية",
     "Tower": "برج",

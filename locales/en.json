@@ -126,6 +126,8 @@
 
   "categories2": {
     "undefined": "",
+    "null": "",
+    "": "",
     "Land House": "Land House",
     "Houseing Unit": "Houseing Unit",
     "Tower": "Tower",

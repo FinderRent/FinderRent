@@ -126,6 +126,8 @@
 
   "categories2": {
     "undefined": "",
+    "null": "",
+    "": "",
     "Land House": "Земельный участок",
     "Houseing Unit": "Жилой блок",
     "Tower": "Башня",

@@ -127,6 +127,8 @@
 
   "categories2": {
     "undefined": "",
+    "null": "",
+    "": "",
     "Land House": "בית קרקע",
     "Housing Unit": "יחידת דיור",
     "Tower": "מגדל",
