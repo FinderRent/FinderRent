@@ -102,8 +102,10 @@ function SignUpScreen({ navigation }) {
       setIsLoading(true);
       setUserType("");
       let str = country;
+      let lang = "en";
       let result = str.replace(/\s/g, "");
       if (country) {
+        if (i18n.language === "he") lang = "he";
         const institutions = await fetchInstitutions(result, "en");
         setInstitutions(institutions);
       }
@@ -130,7 +132,7 @@ function SignUpScreen({ navigation }) {
       setCoordinates(listAcademicIsrael[index].coordinates);
     }
 
-    if (t("Israel") !== country) {
+    if (t("Israel") !== t(`${country}`)) {
       const index1 = listAcademic.findIndex((item) => item.value === academic);
       if (index1 !== -1) {
         setCoordinates(listAcademic[index1].coordinates);
@@ -288,7 +290,7 @@ function SignUpScreen({ navigation }) {
           {userType === "student" && (
             <View>
               <View>
-                {t("Israel") === country ? (
+                {t("Israel") === t(`${country}`) ? (
                   <DropDown
                     list={listAcademicIsrael}
                     label={t("signUp.academicInstitution")}

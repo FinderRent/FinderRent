@@ -8,15 +8,16 @@ import { Color } from "../../constants/colors";
 import { useDarkMode } from "../../context/DarkModeContext";
 
 const SelectCountry = ({ country, onCountryChange }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { isDarkMode } = useDarkMode();
 
-  const lang = i18n.language;
+  // const lang = i18n.language;
   const [show, setShow] = useState(false);
   const [countryName, setCountryName] = useState(country);
 
   const handleCountrySelect = (item) => {
-    const selectedCountry = item.name[lang] || item.name.en;
+    // const selectedCountry = item.name[lang] || item.name.en;
+    const selectedCountry = item.name.en;
     setCountryName(selectedCountry);
     setShow(false);
     if (onCountryChange) {
@@ -46,7 +47,7 @@ const SelectCountry = ({ country, onCountryChange }) => {
 
       <CountryPicker
         show={show}
-        lang={lang}
+        lang={"en"}
         inputPlaceholder={t("signUp.searchYourCountry")}
         pickerButtonOnPress={handleCountrySelect}
         onBackdropPress={() => setShow(false)}
