@@ -355,6 +355,8 @@
   "errorMessage": "שגיאה בהעלאת תמונות או בעדכון פרטי הדירה",
   "houseAssetsHeader": "תכולת הדירה",
   "currentTenants": "דיירים נוכחיים",
+  "search": "חפש",
+
   "Permission to access media library is required!": "נדרשת הרשאה לגישה לספריית התמונות במכשיר הטלפון",
   "Permission to access camera is required!": "נדרשת הרשאה לגישה למצלמת הטלפון",
   "Pick Images from Gallery": "בחר מהגלרייה",

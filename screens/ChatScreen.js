@@ -358,6 +358,10 @@ function ChatScreen({ navigation, route }) {
                     time = time.replace("in ", "");
                   }
 
+                  if (time.includes("בעוד")) {
+                    time = time.replace("בעוד", "לפני");
+                  }
+
                   return (
                     <Bubble
                       senderId={senderId}

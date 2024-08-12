@@ -5,11 +5,12 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { MultipleSelectList } from "react-native-dropdown-select-list";
 import { showMessage } from "react-native-flash-message";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import * as FileSystem from "expo-file-system";
-import Loader from "../components/ui/Loader";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import Geocoder from "react-native-geocoding";
 import Toast from "react-native-toast-message";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
@@ -19,7 +20,7 @@ import DropDown from "../components/inputs/DropDown";
 import Input from "../components/inputs/Input";
 import ErrorMessage from "../components/ui/ErrorMessage";
 import ImagePickerMulti from "../components/ImagePickerMulti";
-import { useTranslation } from "react-i18next";
+
 function AddApartmentScreen(props) {
   const { t } = useTranslation();
   const { isDarkMode } = useDarkMode();
@@ -459,6 +460,7 @@ function AddApartmentScreen(props) {
                 <Text style={styles.subHeader}>{t("address")}</Text>
                 <View style={styles.line}>
                   <Input
+                    color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
                     mode="outlined"
                     label={t("country")}
                     value={country}
@@ -466,6 +468,7 @@ function AddApartmentScreen(props) {
                     style={styles.input}
                   />
                   <Input
+                    color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
                     mode="outlined"
                     label={t("city")}
                     value={city}
@@ -477,6 +480,7 @@ function AddApartmentScreen(props) {
                 </View>
                 <View style={styles.line}>
                   <Input
+                    color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
                     mode="outlined"
                     label={t("street")}
                     value={street}
@@ -486,6 +490,7 @@ function AddApartmentScreen(props) {
                     style={styles.input}
                   />
                   <Input
+                    color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
                     keyboardType="numeric"
                     mode="outlined"
                     label={t("buildingNumber")}
@@ -500,6 +505,7 @@ function AddApartmentScreen(props) {
                 </View>
                 <View style={styles.line}>
                   <Input
+                    color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
                     keyboardType="numeric"
                     mode="outlined"
                     label={t("apartmentNumber")}
@@ -510,6 +516,7 @@ function AddApartmentScreen(props) {
                     style={styles.input}
                   />
                   <Input
+                    color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
                     keyboardType="numeric"
                     mode="outlined"
                     label={t("floor")}
@@ -530,6 +537,9 @@ function AddApartmentScreen(props) {
                       </Text>
                       <View style={styles.line}>
                         <Input
+                          color={
+                            isDarkMode ? Color.defaultTheme : Color.darkTheme
+                          }
                           keyboardType="numeric"
                           mode="outlined"
                           label={t("latitude")}
@@ -540,6 +550,9 @@ function AddApartmentScreen(props) {
                           style={styles.input}
                         />
                         <Input
+                          color={
+                            isDarkMode ? Color.defaultTheme : Color.darkTheme
+                          }
                           keyboardType="numeric"
                           mode="outlined"
                           label={t("longitude")}
@@ -557,6 +570,7 @@ function AddApartmentScreen(props) {
                 <Text style={styles.subHeader}>{t("generalDetails")}</Text>
                 <View style={styles.line}>
                   <Input
+                    color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
                     keyboardType="numeric"
                     mode="outlined"
                     label={t("numberOfRooms")}
@@ -565,6 +579,7 @@ function AddApartmentScreen(props) {
                     style={styles.input}
                   />
                   <Input
+                    color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
                     keyboardType="numeric"
                     mode="outlined"
                     label={t("monthlyRent")}
@@ -575,6 +590,7 @@ function AddApartmentScreen(props) {
                 </View>
                 <View style={styles.line}>
                   <Input
+                    color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
                     keyboardType="numeric"
                     mode="outlined"
                     label={t("totalCapacity")}
@@ -585,6 +601,7 @@ function AddApartmentScreen(props) {
                     style={styles.input}
                   />
                   <Input
+                    color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
                     keyboardType="numeric"
                     mode="outlined"
                     label={t("RealTimeCapacity")}
@@ -636,6 +653,20 @@ function AddApartmentScreen(props) {
                     save="key"
                     label={t("selectHouseAssets")}
                     placeholder={t("selectOption")}
+                    checkBoxStyles={{
+                      backgroundColor: isDarkMode
+                        ? Color.defaultTheme
+                        : Color.darkTheme,
+                    }}
+                    arrowicon={
+                      <Icon
+                        name="arrow-drop-down"
+                        size={20}
+                        color={
+                          isDarkMode ? Color.defaultTheme : Color.darkTheme
+                        }
+                      />
+                    }
                   />
                 </View>
               </View>
@@ -653,8 +684,15 @@ function AddApartmentScreen(props) {
                     labelStyles={{
                       color: isDarkMode ? Color.defaultTheme : Color.darkTheme,
                     }}
+                    dropdownItemStyles={{
+                      color: isDarkMode ? Color.defaultTheme : Color.darkTheme,
+                    }}
+                    dropdownStyles={{
+                      color: isDarkMode ? Color.defaultTheme : Color.darkTheme,
+                    }}
+                    searchPlaceholder={t("search")}
                     dropdownShown={false}
-                    maxHeight={700}
+                    maxHeight={400}
                     search={true}
                     setSelected={(val) => {
                       setSelectTenants(val);
@@ -663,6 +701,39 @@ function AddApartmentScreen(props) {
                     save="key"
                     label={t("tenants")}
                     placeholder={t("selectOption")}
+                    checkBoxStyles={{
+                      backgroundColor: isDarkMode
+                        ? Color.defaultTheme
+                        : Color.darkTheme,
+                    }}
+                    searchicon={
+                      <Icon
+                        name="search"
+                        size={18}
+                        color={
+                          isDarkMode ? Color.defaultTheme : Color.darkTheme
+                        }
+                        style={{ paddingLeft: 5 }}
+                      />
+                    }
+                    arrowicon={
+                      <Icon
+                        name="arrow-drop-down"
+                        size={20}
+                        color={
+                          isDarkMode ? Color.defaultTheme : Color.darkTheme
+                        }
+                      />
+                    }
+                    closeicon={
+                      <Icon
+                        name="close"
+                        size={20}
+                        color={
+                          isDarkMode ? Color.defaultTheme : Color.darkTheme
+                        }
+                      />
+                    }
                   />
                 </View>
               </View>
@@ -687,6 +758,12 @@ function AddApartmentScreen(props) {
                     textAlignVertical="top"
                     onFocus={() => handleFocus("about")}
                     onBlur={handleBlur}
+                    activeUnderlineColor={
+                      isDarkMode ? Color.defaultTheme : Color.darkTheme
+                    }
+                    activeOutlineColor={
+                      isDarkMode ? Color.defaultTheme : Color.darkTheme
+                    }
                   />
                 </View>
               </View>
@@ -702,13 +779,21 @@ function AddApartmentScreen(props) {
                   />
                 </View>
               </View>
-              <Divider bold={true} style={{ margin: 5 }} />
+              <Divider
+                bold={true}
+                style={{
+                  margin: 5,
+                  backgroundColor: isDarkMode
+                    ? Color.defaultTheme
+                    : Color.darkTheme,
+                }}
+              />
 
               {isError && <ErrorMessage errorMessage={error.message} />}
               <Button
                 style={{ marginTop: 10 }}
-                buttonColor={"#74E291"}
-                textColor={Color.defaultTheme}
+                buttonColor={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+                textColor={isDarkMode ? Color.darkTheme : Color.defaultTheme}
                 mode="contained"
                 onPress={handleAddApartment}
                 loading={loading}

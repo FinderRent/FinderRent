@@ -80,7 +80,12 @@ const ExploreHeader = ({ onCategoryChanged, categoryIndex, filtersValues }) => {
       >
         <TouchableOpacity
           style={styles.filterBtn}
-          onPress={() => navigation.navigate("FilterScreen", filtersValues)}
+          onPress={() =>
+            setTimeout(
+              () => navigation.navigate("FilterScreen", filtersValues),
+              0
+            )
+          }
         >
           <Ionicons
             name="options-outline"

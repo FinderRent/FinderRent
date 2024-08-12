@@ -331,6 +331,8 @@
   "errorMessage": "Error uploading images or updating apartment data",
   "houseAssetsHeader": "House Assets",
   "currentTenants": "Current Tenants",
+  "search": "search",
+
   "student": "Student",
   "selectHouseAssets": "Select House Assets",
   "Permission to access media library is required!": "Permission to access media library is required!",
