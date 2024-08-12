@@ -11,8 +11,12 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import { useTranslation } from "react-i18next";
 
+import { Color } from "../constants/colors";
+import { useDarkMode } from "../context/DarkModeContext";
+
 const ImagePickerMulti = ({ apartmentImages, setApartmentImages }) => {
   const { t } = useTranslation();
+  const { isDarkMode } = useDarkMode();
 
   const requestPermission = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -69,42 +73,82 @@ const ImagePickerMulti = ({ apartmentImages, setApartmentImages }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.button} onPress={pickImages}>
-        <Text style={styles.buttonText}>{t("Pick Images from Gallery")}</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={takePhoto}>
-        <Text style={styles.buttonText}>{t("Take Photo")}</Text>
-      </TouchableOpacity>
-      <ScrollView horizontal style={styles.scrollView}>
-        {apartmentImages.map((uri, index) => (
-          <View key={index} style={styles.imageContainer}>
-            <Image source={{ uri }} style={styles.image} />
-            <TouchableOpacity
-              style={styles.removeButton}
-              onPress={() => removeImage(uri)}
-            >
-              <Text style={styles.removeButtonText}>X</Text>
-            </TouchableOpacity>
-          </View>
-        ))}
-      </ScrollView>
-    </View>
+    <>
+      <View style={styles.container}>
+        <TouchableOpacity
+          style={
+            isDarkMode
+              ? { ...styles.button, backgroundColor: Color.defaultTheme }
+              : styles.button
+          }
+          onPress={pickImages}
+        >
+          <Text
+            style={
+              isDarkMode
+                ? { ...styles.buttonText, color: "black" }
+                : styles.buttonText
+            }
+          >
+            {t("Pick Images from Gallery")}
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={
+            isDarkMode
+              ? { ...styles.button, backgroundColor: Color.defaultTheme }
+              : styles.button
+          }
+          onPress={takePhoto}
+        >
+          <Text
+            style={
+              isDarkMode
+                ? { ...styles.buttonText, color: "black" }
+                : styles.buttonText
+            }
+          >
+            {t("Take Photo")}
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      <View>
+        <ScrollView horizontal style={styles.scrollView}>
+          {apartmentImages.map((uri, index) => (
+            <View key={index} style={styles.imageContainer}>
+              <Image source={{ uri }} style={styles.image} />
+              <TouchableOpacity
+                style={styles.removeButton}
+                onPress={() => removeImage(uri)}
+              >
+                <Text style={styles.removeButtonText}>X</Text>
+              </TouchableOpacity>
+            </View>
+          ))}
+        </ScrollView>
+      </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
+    paddingHorizontal: 20,
   },
   button: {
-    backgroundColor: "gray",
+    backgroundColor: Color.darkTheme,
     borderRadius: 20,
+    marginTop: 30,
+    marginBottom: -15,
     paddingVertical: 10,
     paddingHorizontal: 20,
-    marginVertical: 10,
+    marginHorizontal: 10,
   },
   buttonText: {
     color: "white",
@@ -117,6 +161,8 @@ const styles = StyleSheet.create({
   imageContainer: {
     position: "relative",
     marginRight: 10,
+    marginTop: 30,
+    marginBottom: -20,
   },
   image: {
     width: 100,
@@ -124,7 +170,7 @@ const styles = StyleSheet.create({
   },
   removeButton: {
     position: "absolute",
-    top: "50%",
+    top: "35%",
     left: "50%",
     transform: [{ translateX: 15 }, { translateY: -15 }],
     backgroundColor: "rgba(128, 128, 128, 0.7)", // Slightly gray and transparent
