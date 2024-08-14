@@ -2,6 +2,14 @@ import { StyleSheet, ScrollView, Platform, View } from "react-native";
 import { Text } from "react-native-paper";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { useTranslation } from "react-i18next";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  interpolate,
+  withDelay,
+} from "react-native-reanimated";
+import { useEffect } from "react";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
@@ -10,6 +18,31 @@ const AboutScreen = () => {
   const { isDarkMode } = useDarkMode();
   const tabBarHeight = useBottomTabBarHeight();
   const { t } = useTranslation();
+
+  // Animation values
+  const fadeIn = useSharedValue(0);
+  const slideUp = useSharedValue(30);
+  const scaleFooter = useSharedValue(1);
+
+  // Animation effects
+  useEffect(() => {
+    fadeIn.value = withTiming(1, { duration: 1000 });
+    slideUp.value = withDelay(500, withTiming(0, { duration: 1000 }));
+  }, []);
+
+  // Animated styles
+  const animatedTitleStyle = useAnimatedStyle(() => ({
+    opacity: fadeIn.value,
+    transform: [{ translateY: slideUp.value }],
+  }));
+
+  const animatedTextStyle = useAnimatedStyle(() => ({
+    opacity: fadeIn.value,
+  }));
+
+  const animatedFooterStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scaleFooter.value }],
+  }));
 
   return (
     <ScrollView
@@ -20,31 +53,94 @@ const AboutScreen = () => {
         backgroundColor: isDarkMode ? Color.darkTheme : Color.white,
         padding: 15,
       }}
+      onScroll={(event) => {
+        const offsetY = event.nativeEvent.contentOffset.y;
+        scaleFooter.value = interpolate(offsetY, [0, 150], [1, 1.2]);
+      }}
+      scrollEventThrottle={16}
     >
-      <View style={styles.line}></View>
-      <Text style={styles.title}>{t("aboutApp.title")}</Text>
-      <View style={styles.line}></View>
+      <Animated.View style={[styles.line, animatedTextStyle]}></Animated.View>
+      <Animated.Text style={[styles.title, animatedTitleStyle]}>
+        {t("aboutApp.title")}
+      </Animated.Text>
+      <Animated.View style={[styles.line, animatedTextStyle]}></Animated.View>
 
-      <Text style={styles.paragraph}>{t("aboutApp.welcome")}</Text>
-      <Text style={styles.paragraph}>{t("aboutApp.platform")}</Text>
-      <Text style={styles.subtitle}>{t("aboutApp.features.title")}</Text>
-      <Text style={styles.bulletPoint}>
+      <Animated.Text
+        style={[
+          styles.paragraph,
+          animatedTextStyle,
+          isDarkMode && { color: Color.defaultTheme },
+        ]}
+      >
+        {t("aboutApp.welcome")}
+      </Animated.Text>
+      <Animated.Text
+        style={[
+          styles.paragraph,
+          animatedTextStyle,
+          isDarkMode && { color: Color.defaultTheme },
+        ]}
+      >
+        {t("aboutApp.platform")}
+      </Animated.Text>
+      <Animated.Text style={[styles.subtitle, animatedTextStyle]}>
+        {t("aboutApp.features.title")}
+      </Animated.Text>
+      <Animated.Text
+        style={[
+          styles.bulletPoint,
+          animatedTextStyle,
+          isDarkMode && { color: Color.defaultTheme },
+        ]}
+      >
         • {t("aboutApp.features.centralized")}
-      </Text>
-      <Text style={styles.bulletPoint}>
+      </Animated.Text>
+      <Animated.Text
+        style={[
+          styles.bulletPoint,
+          animatedTextStyle,
+          isDarkMode && { color: Color.defaultTheme },
+        ]}
+      >
         • {t("aboutApp.features.location")}
-      </Text>
-      <Text style={styles.bulletPoint}>
+      </Animated.Text>
+      <Animated.Text
+        style={[
+          styles.bulletPoint,
+          animatedTextStyle,
+          isDarkMode && { color: Color.defaultTheme },
+        ]}
+      >
         • {t("aboutApp.features.preferences")}
-      </Text>
-      <Text style={styles.bulletPoint}>
+      </Animated.Text>
+      <Animated.Text
+        style={[
+          styles.bulletPoint,
+          animatedTextStyle,
+          isDarkMode && { color: Color.defaultTheme },
+        ]}
+      >
         • {t("aboutApp.features.interface")}
-      </Text>
-      <Text style={styles.bulletPoint}>
+      </Animated.Text>
+      <Animated.Text
+        style={[
+          styles.bulletPoint,
+          animatedTextStyle,
+          isDarkMode && { color: Color.defaultTheme },
+        ]}
+      >
         • {t("aboutApp.features.experience")}
-      </Text>
-      <Text style={styles.paragraph}>{t("aboutApp.mission")}</Text>
-      <View style={styles.footer}>
+      </Animated.Text>
+      <Animated.Text
+        style={[
+          styles.paragraph,
+          animatedTextStyle,
+          isDarkMode && { color: Color.defaultTheme },
+        ]}
+      >
+        {t("aboutApp.mission")}
+      </Animated.Text>
+      <Animated.View style={[styles.footer, animatedFooterStyle]}>
         <Text style={styles.footerText}>
           {/* Built with a lot of work and love by Amir Fukman and Maor Saadia. */}
         </Text>
@@ -59,7 +155,7 @@ const AboutScreen = () => {
         >
           {new Date().getFullYear()} &copy; {t("aboutApp.copyright")}
         </Text>
-      </View>
+      </Animated.View>
     </ScrollView>
   );
 };
@@ -81,6 +177,7 @@ const styles = StyleSheet.create({
     fontFamily: "Merienda",
     fontSize: 14,
     textAlign: "left",
+    marginVertical: 5,
   },
   subtitle: {
     fontFamily: "OrbitronMedium",
@@ -100,6 +197,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 2,
     borderColor: Color.Brown500,
     alignItems: "center",
+    marginBottom: 10,
   },
   footerText: {
     fontSize: 16,

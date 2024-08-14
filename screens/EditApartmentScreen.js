@@ -319,7 +319,7 @@ function EditApartmentScreen({ route, navigation }) {
 
   let tenants = [];
   if (!isLoading) {
-    students.users.forEach((student) => {
+    students?.users?.forEach((student) => {
       tenants.push([
         fullName(student.firstName, student.lastName),
         student._id,
