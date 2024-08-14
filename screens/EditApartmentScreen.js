@@ -64,7 +64,7 @@ function EditApartmentScreen({ route, navigation }) {
     { label: t("tower"), value: "Tower" },
     { label: t("penthouse"), value: "Penthouse" },
   ];
-  console.log(apartmentImages);
+
   const houseAssets = [
     { key: "TV", value: t("tv") },
     { key: "Balcony", value: t("balcony") },

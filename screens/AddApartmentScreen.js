@@ -784,7 +784,7 @@ function AddApartmentScreen(props) {
                 }}
               />
 
-              {isError && <ErrorMessage errorMessage={error.message} />}
+              {isError && <ErrorMessage errorMessage={t(error.message)} />}
               <Button
                 style={{ marginTop: 10 }}
                 buttonColor={isDarkMode ? Color.defaultTheme : Color.darkTheme}

@@ -1,13 +1,20 @@
-import { View, StyleSheet, ImageBackground } from "react-native";
+import {
+  View,
+  StyleSheet,
+  ImageBackground,
+  TouchableOpacity,
+} from "react-native";
 import { Text } from "react-native-paper";
 import { useTranslation } from "react-i18next";
 
 import { Color } from "../constants/colors";
 import { useUsers } from "../context/UserContext";
+import { useNavigation } from "@react-navigation/native";
 
 const ProfileLocation = () => {
   const { t } = useTranslation();
   const { userData } = useUsers();
+  const navigation = useNavigation();
   let academic = userData.academic;
 
   if (userData?.academic?.length > 18) {
@@ -22,6 +29,7 @@ const ProfileLocation = () => {
             uri: "https://res.cloudinary.com/finderent/image/upload/v1719761526/placeholder_eyilhp.png",
           }}
         />
+
         <View>
           <Text style={styles.location}>{t("location")}</Text>
           <Text style={styles.locationName}>
@@ -30,7 +38,10 @@ const ProfileLocation = () => {
         </View>
       </View>
 
-      <View style={styles.midContainer}>
+      <TouchableOpacity
+        style={styles.midContainer}
+        onPress={() => navigation.navigate("ProfileStackScreen")}
+      >
         <ImageBackground
           style={{ height: 60, width: 60 }}
           imageStyle={styles.profileImage}
@@ -38,7 +49,7 @@ const ProfileLocation = () => {
             uri: userData.avatar?.url,
           }}
         />
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -68,7 +79,7 @@ const styles = StyleSheet.create({
     borderColor: Color.gray,
   },
   midContainer: {
-    padding: 5,
+    padding: 7,
     marginRight: 5,
     flexDirection: "row",
     alignItems: "center",

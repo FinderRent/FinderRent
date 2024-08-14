@@ -69,11 +69,6 @@ const HouseDetailsScreen = ({ navigation, route }) => {
   const [showAll, setShowAll] = useState(false);
 
   const [apartmentContent, setApartmentContent] = useState([]);
-  const images = [
-    "https://img.mako.co.il/2018/11/07/Wellcome_Realter_Beer_Sheva_18_3_g.jpg",
-    "https://uploads.homeless.co.il/sale/202205/nvFile4211510.JPG",
-    "https://images2.madlan.co.il/t:nonce:v=2/projects/%D7%9E%D7%AA%D7%97%D7%9D%20%D7%A7%D7%95%D7%A4%D7%AA%20%D7%97%D7%95%D7%9C%D7%99%D7%9D%20-%20%D7%A2%D7%96%D7%A8%D7%99%D7%90%D7%9C%D7%99/48950_br_group_pic_950x650_3-683b75f9-b8f5-427d-8f29-cad7d8865ff4.jpg",
-  ];
   const apartmentIsFavorite = favoriteApartmentsCtx.ids.includes(apartment._id);
 
   useLayoutEffect(() => {
@@ -227,7 +222,7 @@ const HouseDetailsScreen = ({ navigation, route }) => {
               width={width}
               height={width}
               autoPlay={false}
-              data={images}
+              data={apartment.images}
               scrollAnimationDuration={1000}
               renderItem={({ item }) => (
                 <View style={styles.container}>

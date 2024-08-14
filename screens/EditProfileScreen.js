@@ -67,7 +67,6 @@ function EditProfileScreen({ navigation }) {
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [studentSocialNetworks, setStudentSocialNetworks] =
     useState(socialNetworks);
-
   const url =
     "https://res.cloudinary.com/dtkpp77xw/image/upload/v1701189732/default_nk5c5h.png";
 

@@ -345,5 +345,21 @@
   "instagram": "Instagram",
   "Add your profile link": "Add your profile link",
   "facebook": "Facebook",
-  "linkedin": "Linkedin"
+  "linkedin": "Linkedin",
+
+  "Field floor is required.": "Field floor is required.",
+  "Field numberOfRooms is required.": "Field numberOfRooms is required.",
+  "Field price is required.": "Field price is required.",
+  "Field totalCapacity is required.": "Field totalCapacity is required.",
+  "Field realTimeCapacity is required.": "Field realTimeCapacity is required.",
+  "Field apartmentType is required.": "Field apartmentType is required.",
+  "Field about is required.": "Field about is required.",
+
+  "Field street is required in address.": "Field street is required in address.",
+  "Field city is required in address.": "Field city is required in address.",
+  "Field country is required in address.": "Field country is required in address.",
+  "Field buildingNumber is required in address.": "Field buildingNumber is required in address.",
+  "Field apartmentNumber is required in address.": "Field apartmentNumber is required in address.",
+  "Field coordinates.latitude is required in address.": "Field coordinates.latitude is required in address.",
+  "Field coordinates.longitude is required in address.": "Field coordinates.longitude is required in address."
 }

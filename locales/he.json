@@ -235,6 +235,7 @@
   "Logged Out Successfully": "התנתקת בהצלחה",
   "Profile": "פרופיל",
   "Student": "סטודנט",
+  "Landlord": "משכיר דירה",
   "Not available": "לא זמין",
   "Personal Info": "מידע אישי",
   "My Hobbies": "התחביבים שלי:",
@@ -379,5 +380,21 @@
   "New password must be entered": "יש להזין סיסמה חדשה.",
   "Your current password is incorrect": "הסיסמה הנוכחית שלך שגויה.",
   "The email entered already exists": "המייל שהוזן כבר קיים.",
-  "Please provide email and password.": "אנא ספק אימייל וסיסמה."
+  "Please provide email and password.": "אנא ספק אימייל וסיסמה.",
+
+  "Field floor is required.": "שדה קומה נדרש.",
+  "Field numberOfRooms is required.": "שדה מספר חדרים נדרש.",
+  "Field price is required.": "שדה מחיר נדרש.",
+  "Field totalCapacity is required.": "שדה תפוסה כוללת נדרש.",
+  "Field realTimeCapacity is required.": "שדה תפוסה בזמן אמת נדרש.",
+  "Field apartmentType is required.": "שדה סוג בית נדרש.",
+  "Field about is required.": "שדה אודות נדרש.",
+
+  "Field street is required in address.": "שדה רחוב נדרש בכתובת",
+  "Field city is required in address.": "שדה עיר נדרש בכתובת",
+  "Field country is required in address.": "שדה ארץ נדרש בכתובת",
+  "Field buildingNumber is required in address.": "שדה מספר בניין נדרש בכתובת",
+  "Field apartmentNumber is required in address.": "שדה מספר דירה נדרש בכתובת",
+  "Field coordinates.latitude is required in address.": "שדה קו אופק נדרש בכתובת",
+  "Field coordinates.longitude is required in address.": "שדה קו אנכי נדרש בכתובת"
 }
