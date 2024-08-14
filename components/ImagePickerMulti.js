@@ -3,13 +3,13 @@ import {
   View,
   StyleSheet,
   Alert,
-  ScrollView,
   Image,
   TouchableOpacity,
   Text,
 } from "react-native";
-import * as ImagePicker from "expo-image-picker";
+import { ScrollView } from "react-native-gesture-handler";
 import { useTranslation } from "react-i18next";
+import * as ImagePicker from "expo-image-picker";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
@@ -115,7 +115,11 @@ const ImagePickerMulti = ({ apartmentImages, setApartmentImages }) => {
       </View>
 
       <View>
-        <ScrollView horizontal style={styles.scrollView}>
+        <ScrollView
+          horizontal
+          style={styles.scrollView}
+          nestedScrollEnabled={true}
+        >
           {apartmentImages.map((uri, index) => (
             <View key={index} style={styles.imageContainer}>
               <Image source={{ uri }} style={styles.image} />
@@ -170,7 +174,7 @@ const styles = StyleSheet.create({
   },
   removeButton: {
     position: "absolute",
-    top: "35%",
+    top: "33%",
     left: "50%",
     transform: [{ translateX: 15 }, { translateY: -15 }],
     backgroundColor: "rgba(128, 128, 128, 0.7)", // Slightly gray and transparent

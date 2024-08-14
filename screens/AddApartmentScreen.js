@@ -46,11 +46,13 @@ function AddApartmentScreen(props) {
   });
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [focusedInput, setFocusedInput] = useState(null);
+  const [apartmentImages, setApartmentImages] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   // const [apartmentImage, setApartmentImage] = useState("");
   // const [publicImageURL, setPublicImageURL] = useState("");
-  const [apartmentImages, setApartmentImages] = useState([]);
   // const [publicImageURLs, setPublicImageURLs] = useState([]);
-  const [loading, setLoading] = useState(false);
+
   const apartmentTypeList = [
     { label: t("landHouse"), value: "Land House" },
     { label: t("housingUnit"), value: "Housing Unit" },
@@ -306,7 +308,7 @@ function AddApartmentScreen(props) {
     numberOfRooms: rooms !== "" ? parseInt(rooms) : undefined,
     apartmentContent: createApartmentContent(selected),
     tenants: selectTenants,
-    rating: 5,
+    // rating: 5,
     price: price !== "" ? parseInt(price) : undefined,
     floor: floor !== "" ? parseInt(floor) : undefined,
     owner: userData.id,
@@ -406,11 +408,7 @@ function AddApartmentScreen(props) {
     }
   };
 
-  const {
-    data: students,
-    isLoading,
-    refetch,
-  } = useQuery({
+  const { data: students, isLoading } = useQuery({
     queryKey: ["students"],
     queryFn: () =>
       fetchAllstudents({
@@ -445,7 +443,7 @@ function AddApartmentScreen(props) {
           : { backgroundColor: Color.darkTheme }
       }
     >
-      <BottomSheetScrollView>
+      <BottomSheetScrollView nestedScrollEnabled={true}>
         <KeyboardAwareScrollView
           contentContainerStyle={styles.scrollViewContent}
           keyboardShouldPersistTaps="handled"
@@ -654,9 +652,7 @@ function AddApartmentScreen(props) {
                     label={t("selectHouseAssets")}
                     placeholder={t("selectOption")}
                     checkBoxStyles={{
-                      backgroundColor: isDarkMode
-                        ? Color.defaultTheme
-                        : Color.darkTheme,
+                      backgroundColor: Color.defaultTheme,
                     }}
                     arrowicon={
                       <Icon
@@ -702,9 +698,7 @@ function AddApartmentScreen(props) {
                     label={t("tenants")}
                     placeholder={t("selectOption")}
                     checkBoxStyles={{
-                      backgroundColor: isDarkMode
-                        ? Color.defaultTheme
-                        : Color.darkTheme,
+                      backgroundColor: Color.defaultTheme,
                     }}
                     searchicon={
                       <Icon
@@ -737,6 +731,7 @@ function AddApartmentScreen(props) {
                   />
                 </View>
               </View>
+
               <View>
                 <Text style={styles.subHeader}>{t("about")}</Text>
                 <View style={styles.paragraphContainer}>
@@ -856,7 +851,7 @@ const styles = StyleSheet.create({
     backgroundColor: Color.white,
   },
   button: {
-    backgroundColor: "#74E291",
+    // backgroundColor: "#74E291",
     borderRadius: 5,
     padding: 10,
     alignItems: "center",

@@ -1,32 +1,30 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, View, Keyboard, Platform } from "react-native";
-import { Text, Divider, Button } from "react-native-paper";
+import { Text, Divider, Button, TextInput } from "react-native-paper";
 import { MultipleSelectList } from "react-native-dropdown-select-list";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { showMessage } from "react-native-flash-message";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import Toast from "react-native-toast-message";
+import Icon from "react-native-vector-icons/MaterialIcons";
+import * as FileSystem from "expo-file-system";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { updateEditedApartment } from "../utils/http";
 import { useUsers } from "../context/UserContext";
+import { fullName } from "../utils/features";
 import Input from "../components/inputs/Input";
 import DropDown from "../components/inputs/DropDown";
 import ErrorMessage from "../components/ui/ErrorMessage";
 import NavLink from "../components/ui/NavLink";
-import { useTranslation } from "react-i18next";
+import ImagePickerMulti from "../components/ImagePickerMulti";
 
 function EditApartmentScreen({ route, navigation }) {
   const { t } = useTranslation();
-
   const { isDarkMode } = useDarkMode();
-
   const { apartment } = route.params;
-
-  const selectedFeatures = Object.keys(apartment.apartmentContent).filter(
-    (key) => apartment.apartmentContent[key] === true
-  );
 
   const { userData } = useUsers();
   const [country, setCountry] = useState(apartment?.address.country);
@@ -51,10 +49,12 @@ function EditApartmentScreen({ route, navigation }) {
   const [realTimeCapacity, setRealTimeCapacity] = useState(
     apartment?.realTimeCapacity.toString()
   );
-
   const [apartmentType, setApartmentType] = useState(apartment?.apartmentType);
   const [selected, setSelected] = useState([]); ///need to do
   const [about, setAbout] = useState(apartment?.about);
+  const [apartmentImages, setApartmentImages] = useState(apartment?.images);
+  const [selectTenants, setSelectTenants] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [focusedInput, setFocusedInput] = useState(null);
 
@@ -64,7 +64,7 @@ function EditApartmentScreen({ route, navigation }) {
     { label: t("tower"), value: "Tower" },
     { label: t("penthouse"), value: "Penthouse" },
   ];
-
+  console.log(apartmentImages);
   const houseAssets = [
     { key: "TV", value: t("tv") },
     { key: "Balcony", value: t("balcony") },
@@ -81,6 +81,25 @@ function EditApartmentScreen({ route, navigation }) {
     { key: "Refrigirator", value: t("refrigirator") },
     { key: "freezer", value: t("freezer") },
   ];
+
+  // const selectedFeatures = Object.keys(apartment.apartmentContent).filter(
+  //   (key) => apartment.apartmentContent[key] === true
+  // );
+
+  // const findHouseAsset = (feature) => {
+  //   return houseAssets?.find(
+  //     (asset) => asset.key.toLowerCase() === feature.toLowerCase()
+  //   );
+  // };
+
+  // const defaultOptions = selectedFeatures
+  //   .map((feature) => {
+  //     const asset = findHouseAsset(feature);
+  //     return asset ? { key: asset.key, value: asset.value } : null;
+  //   })
+  //   .filter(Boolean);
+
+  // console.log(defaultOptions);
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -183,19 +202,18 @@ function EditApartmentScreen({ route, navigation }) {
         apartmentNumber !== "" ? parseInt(apartmentNumber) : undefined,
       coordinates,
     },
-    distanceFromAcademy: 20,
     totalCapacity: totalCapacity !== "" ? parseInt(totalCapacity) : undefined,
     realTimeCapacity:
       realTimeCapacity !== "" ? parseInt(realTimeCapacity) : undefined,
     about,
     numberOfRooms: rooms !== "" ? parseInt(rooms) : undefined,
     apartmentContent: createApartmentContent(selected),
-    rating: 5,
+    tenants: selectTenants,
     price: price !== "" ? parseInt(price) : undefined,
-    // images: [5],
     floor: floor !== "" ? parseInt(floor) : undefined,
     owner: userData.id,
     apartmentType,
+    apartmentImages,
   };
 
   const { mutate, isPending, isError, error } = useMutation({
@@ -221,34 +239,104 @@ function EditApartmentScreen({ route, navigation }) {
     },
   });
 
-  const handleEditApartment = () => {
-    mutate(apartmentData);
+  const handleImageUpload = async (images) => {
+    const imageUrls = [];
+
+    for (const image of images) {
+      // Check if the file exists
+      const fileInfo = await FileSystem.getInfoAsync(image);
+      if (!fileInfo.exists) {
+        throw new Error(`File does not exist at path: ${image}`);
+      }
+
+      // Convert the image to base64 format
+      const base64Image = await FileSystem.readAsStringAsync(image, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+
+      const data = new FormData();
+      data.append("file", `data:image/jpeg;base64,${base64Image}`);
+      data.append("upload_preset", "FindeRent");
+      data.append("cloud_name", "finderent");
+      data.append("folder", "Apartments");
+
+      try {
+        const response = await fetch(
+          "https://api.cloudinary.com/v1_1/finderent/image/upload",
+          {
+            method: "post",
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+            body: data,
+          }
+        );
+
+        const result = await response.json();
+        console.log("image upload: ", result.url);
+        imageUrls.push(result.url); // Add the image URL to the array
+      } catch (error) {
+        console.error("Error uploading image: ", error);
+        throw new Error("Failed to upload image");
+      }
+    }
+
+    return imageUrls; // Return the array of image URLs
   };
 
-  // const handleButtonPress = async () => {
-  //   try {
-  //     const data = await updateEditedApartment(apartmentData);
-  //     showMessage({
-  //       message: "Success",
-  //       description: "Apartment edited successfully!",
-  //       type: "success",
-  //     });
-  //     navigation.goBack();
-  //     navigation.goBack();
-  //   } catch (error) {
-  //     showMessage({
-  //       message: "Error",
-  //       description: "Failed to edit apartment",
-  //       type: "danger",
-  //     });
-  //   }
-  // };
+  const handleEditApartment = async () => {
+    try {
+      setLoading(true);
+      const imageUrls = await handleImageUpload(apartmentImages);
+
+      const imageUrlsArray =
+        typeof imageUrls === "string" ? imageUrls.split(",") : imageUrls;
+
+      const updatedApartmentData = {
+        ...apartmentData,
+        images: imageUrlsArray,
+      };
+
+      console.log(updatedApartmentData);
+      mutate(apartmentData);
+      setLoading(false);
+    } catch (error) {
+      console.error(
+        "Error uploading images or updating apartment data: ",
+        error
+      );
+      setLoading(false);
+    }
+  };
+
+  const { data: students, isLoading } = useQuery({
+    queryKey: ["students"],
+    queryFn: () =>
+      fetchAllstudents({
+        userType: "student",
+      }),
+  });
+
+  let tenants = [];
+  if (!isLoading) {
+    students.users.forEach((student) => {
+      tenants.push([
+        fullName(student.firstName, student.lastName),
+        student._id,
+      ]);
+    });
+  }
+
+  // Transform tenants array to an array of objects with label and value
+  const tenantOptions = tenants.map(([key, id]) => ({
+    key: id,
+    value: key,
+  }));
 
   return (
     <KeyboardAwareScrollView
       contentContainerStyle={styles.scrollViewContent}
       keyboardShouldPersistTaps="handled"
-      // enableOnAndroid={true}
       extraScrollHeight={50}
       keyboardOpeningTime={0}
     >
@@ -417,12 +505,82 @@ function EditApartmentScreen({ route, navigation }) {
                 dropdownShown={false}
                 maxHeight={700}
                 search={false}
-                setSelected={(selected) => {
-                  setSelected(selected);
+                setSelected={(val) => {
+                  setSelected(val);
                 }}
                 data={houseAssets}
                 save="key"
                 label={t("selectHouseAssets")}
+                placeholder={t("selectOption")}
+                checkBoxStyles={{
+                  backgroundColor: Color.defaultTheme,
+                }}
+                arrowicon={
+                  <Icon
+                    name="arrow-drop-down"
+                    size={20}
+                    color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+                  />
+                }
+              />
+            </View>
+          </View>
+
+          <View>
+            <Text style={styles.subHeader}>{t("pickYourTenants")}</Text>
+            <View style={styles.MultipleSelectList}>
+              <MultipleSelectList
+                inputStyles={{
+                  color: isDarkMode ? Color.defaultTheme : Color.darkTheme,
+                }}
+                dropdownTextStyles={{
+                  color: isDarkMode ? Color.defaultTheme : Color.darkTheme,
+                }}
+                labelStyles={{
+                  color: isDarkMode ? Color.defaultTheme : Color.darkTheme,
+                }}
+                dropdownItemStyles={{
+                  color: isDarkMode ? Color.defaultTheme : Color.darkTheme,
+                }}
+                dropdownStyles={{
+                  color: isDarkMode ? Color.defaultTheme : Color.darkTheme,
+                }}
+                searchPlaceholder={t("search")}
+                dropdownShown={false}
+                maxHeight={150}
+                search={true}
+                setSelected={(val) => {
+                  setSelectTenants(val);
+                }}
+                data={tenantOptions}
+                save="key"
+                label={t("tenants")}
+                placeholder={t("selectOption")}
+                checkBoxStyles={{
+                  backgroundColor: Color.defaultTheme,
+                }}
+                searchicon={
+                  <Icon
+                    name="search"
+                    size={18}
+                    color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+                    style={{ paddingLeft: 5 }}
+                  />
+                }
+                arrowicon={
+                  <Icon
+                    name="arrow-drop-down"
+                    size={20}
+                    color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+                  />
+                }
+                closeicon={
+                  <Icon
+                    name="close"
+                    size={20}
+                    color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+                  />
+                }
               />
             </View>
           </View>
@@ -430,10 +588,17 @@ function EditApartmentScreen({ route, navigation }) {
           <View>
             <Text style={styles.subHeader}>{t("about")}</Text>
             <View style={styles.paragraphContainer}>
-              <Input
+              <TextInput
                 id="paragraph"
-                style={styles.paragraphInput}
-                placeholder="Describe your apartment"
+                style={
+                  isDarkMode
+                    ? {
+                        ...styles.paragraphInput,
+                        backgroundColor: Color.darkTheme,
+                      }
+                    : styles.paragraphInput
+                }
+                placeholder={t("describeYourApartment")}
                 multiline={true}
                 numberOfLines={4}
                 onValueChange={(about) => setAbout(about)}
@@ -441,31 +606,35 @@ function EditApartmentScreen({ route, navigation }) {
                 textAlignVertical="top"
                 onFocus={() => handleFocus("about")}
                 onBlur={handleBlur}
+                activeUnderlineColor={
+                  isDarkMode ? Color.defaultTheme : Color.darkTheme
+                }
+                activeOutlineColor={
+                  isDarkMode ? Color.defaultTheme : Color.darkTheme
+                }
               />
             </View>
           </View>
 
+          <View style={styles.images}>
+            <ImagePickerMulti
+              apartmentImages={apartmentImages}
+              setApartmentImages={setApartmentImages}
+            />
+          </View>
           <Divider bold={true} style={{ margin: 5 }} />
           {isError && <ErrorMessage errorMessage={error.message} />}
           <Button
             style={{ marginTop: 10 }}
-            buttonColor={"#74E291"}
-            textColor={Color.defaultTheme}
+            buttonColor={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+            textColor={isDarkMode ? Color.darkTheme : Color.defaultTheme}
             mode="contained"
             onPress={handleEditApartment}
-            loading={isPending}
+            loading={loading || isPending}
           >
-            {!isPending && t("done")}
+            {!loading && t("done")}
           </Button>
           <NavLink text={t("back")} style={{ fontSize: 14 }} />
-          {/* <View>
-            <TouchableOpacity
-              onPress={handleEditApartment}
-              style={styles.button}
-            >
-              <Text style={styles.buttonText}>Done</Text>
-            </TouchableOpacity>
-          </View> */}
         </View>
       </View>
     </KeyboardAwareScrollView>
@@ -488,7 +657,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     margin: 10,
-    marginTop: Platform.OS === "ios" ? "15%" : 10,
+    marginTop: "15%",
   },
   subHeader: {
     fontSize: 20,
@@ -517,12 +686,12 @@ const styles = StyleSheet.create({
     // height: 150,
     borderColor: "gray",
     borderWidth: 1,
-    padding: 10,
     borderRadius: 5,
     margin: 5,
+    backgroundColor: Color.white,
   },
   button: {
-    backgroundColor: "#74E291",
+    // backgroundColor: "#74E291",
     borderRadius: 5,
     padding: 10,
     alignItems: "center",
@@ -534,5 +703,10 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 20,
     fontWeight: "bold",
+  },
+  images: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
