@@ -75,6 +75,8 @@ function ChatList({
         pushToken: data?.data?.pushToken,
         image: data?.data?.avatar?.url,
         title: fullName(data?.data?.firstName, data?.data?.lastName),
+        userType: data?.data?.userType,
+        userInfo: data?.data,
       });
     }
   };
@@ -154,8 +156,11 @@ function ChatList({
       <FullScreenImageModal
         visible={isModalVisible}
         userData={data?.data}
+        image={data?.data?.avatar?.url}
+        userType={data?.data.userType}
         onClose={() => setIsModalVisible(false)}
         onChatPress={handleChatAction}
+        showIcon={true}
       />
     </>
   );

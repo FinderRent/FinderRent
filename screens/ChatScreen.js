@@ -50,7 +50,7 @@ function ChatScreen({ navigation, route }) {
   const { t, i18n } = useTranslation();
   const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
-  const { ouid, pushToken, image, title } = route?.params;
+  const { ouid, pushToken, image, title, userType, userInfo } = route?.params;
   const socket = useRef();
   const scrollRef = useAnimatedRef();
   const isRTL = checkRtllanguages(i18n.language);
@@ -127,10 +127,24 @@ function ChatScreen({ navigation, route }) {
     navigation.setOptions(
       isRTL
         ? {
-            headerRight: () => <ChatScreenHeader image={image} title={title} />,
+            headerRight: () => (
+              <ChatScreenHeader
+                image={image}
+                title={title}
+                userType={userType}
+                userInfo={userInfo}
+              />
+            ),
           }
         : {
-            headerLeft: () => <ChatScreenHeader image={image} title={title} />,
+            headerLeft: () => (
+              <ChatScreenHeader
+                image={image}
+                title={title}
+                userType={userType}
+                userInfo={userInfo}
+              />
+            ),
           }
     );
 

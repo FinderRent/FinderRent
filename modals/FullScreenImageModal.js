@@ -13,7 +13,15 @@ import { useNavigation } from "@react-navigation/native";
 import { useDarkMode } from "../context/DarkModeContext";
 import { Color } from "../constants/colors";
 
-function FullScreenImageModal({ visible, userData, onClose, onChatPress }) {
+function FullScreenImageModal({
+  visible,
+  userData,
+  onClose,
+  onChatPress,
+  image,
+  showIcon,
+  userType,
+}) {
   const { isDarkMode } = useDarkMode();
   const navigation = useNavigation();
 
@@ -38,22 +46,25 @@ function FullScreenImageModal({ visible, userData, onClose, onChatPress }) {
               }
             >
               <Image
-                source={{ uri: userData?.avatar?.url }}
+                source={{ uri: image }}
                 style={styles.fullScreenImage}
                 resizeMode="stretch"
               />
               <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                  onPress={onChatPress}
-                  style={styles.iconButton}
-                >
-                  <MaterialCommunityIcons
-                    name="message-text-outline"
-                    size={24}
-                    color={isDarkMode ? "white" : "black"}
-                  />
-                </TouchableOpacity>
-                {userData?.userType === "student" && (
+                {showIcon === true && (
+                  <TouchableOpacity
+                    onPress={onChatPress}
+                    style={styles.iconButton}
+                  >
+                    <MaterialCommunityIcons
+                      name="message-text-outline"
+                      size={24}
+                      color={isDarkMode ? "white" : "black"}
+                    />
+                  </TouchableOpacity>
+                )}
+
+                {userType === "student" && (
                   <TouchableOpacity
                     onPress={() =>
                       navigation.navigate("StudentProfileScreen", {

@@ -10,7 +10,7 @@ import { checkRtllanguages } from "../../utils/features";
 import { useTranslation } from "react-i18next";
 import FullScreenImageModal from "../../modals/FullScreenImageModal";
 
-function ChatScreenHeader({ image, title }) {
+function ChatScreenHeader({ image, title, userType, userInfo }) {
   const { i18n } = useTranslation();
   const { isDarkMode } = useDarkMode();
   const navigation = useNavigation();
@@ -73,8 +73,11 @@ function ChatScreenHeader({ image, title }) {
       </Text>
       <FullScreenImageModal
         visible={isModalVisible}
-        imageUri={image}
+        image={image}
         onClose={() => setIsModalVisible(false)}
+        showIcon={false}
+        userType={userType}
+        userData={userInfo}
       />
     </View>
   );
