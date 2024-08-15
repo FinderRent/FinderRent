@@ -19,30 +19,29 @@ import { useUsers } from "../context/UserContext";
 import { fetchUser } from "../utils/http";
 import Icon from "react-native-vector-icons/Ionicons";
 import Spacer from "../components/ui/Spacer";
-import ErrorMessage from "../components/ui/ErrorMessage";
 
 function StudentProfileScreen(props) {
   const { t } = useTranslation();
   const { isDarkMode } = useDarkMode();
   const { userData } = useUsers();
 
-  let chatId = null;
-  let firstChat = true;
   const navigation = useNavigation();
-  const ouid = props.route.params.tenant;
   const tabBarHeight = useBottomTabBarHeight();
 
-  const {
-    data: user,
-    isLoading: isLoadingUser,
-    isError: isErrorUser,
-    error,
-  } = useQuery({
+  const routes = navigation.getState()?.routes;
+  const prevRoute = routes[routes.length - 1];
+
+  // console.log(prevRoute.params.chatList);
+
+  let chatId = null;
+  let firstChat = true;
+  const ouid = props.route?.params?.tenant;
+  const userInfo = props.route?.params?.userData;
+
+  const { data: user, isLoading: isLoadingUser } = useQuery({
     queryKey: ["User", ouid],
     queryFn: () => fetchUser(ouid),
   });
-
-  // if (isLoadingUser) return <Loader />;
 
   const { data: studentData, isLoading: studentDataIsLoading } = useQuery({
     queryKey: ["chats", userData.id],
@@ -70,7 +69,7 @@ function StudentProfileScreen(props) {
 
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
-      {isErrorUser && <ErrorMessage errorMessage={error} />}
+      {/* {isErrorUser && <ErrorMessage errorMessage={error} />} */}
       <View
         style={[styles.container, isDarkMode && { backgroundColor: "#505050" }]}
       >
@@ -83,14 +82,16 @@ function StudentProfileScreen(props) {
           <View style={styles.imageContainer}>
             <Image
               source={{
-                uri: user?.avatar?.url,
+                uri: user?.avatar?.url ?? userInfo?.avatar?.url,
               }}
               style={styles.image}
               resizeMode="cover"
             />
           </View>
           <View style={styles.contentContainer}>
-            <Text style={styles.name}>{user?.firstName}</Text>
+            <Text style={styles.name}>
+              {user?.firstName ?? userInfo?.firstName}
+            </Text>
             <Text style={styles.role}>{t("student")}</Text>
           </View>
         </View>
@@ -101,8 +102,8 @@ function StudentProfileScreen(props) {
             color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
           />
           <Text style={styles.funFactText}>
-            <Text style={{ fontWeight: "bold" }}>{t("academic")}</Text>{" "}
-            {user?.academic || t("empty")}
+            <Text style={{ fontWeight: "bold" }}>{t("academic")}</Text>
+            {user?.academic ?? userInfo?.academic ?? t("empty")}
           </Text>
         </View>
         <View style={styles.detailsContainer}>
@@ -113,7 +114,7 @@ function StudentProfileScreen(props) {
           />
           <Text style={styles.funFactText}>
             <Text style={{ fontWeight: "bold" }}>{t("department")}</Text>{" "}
-            {user?.department || t("empty")}
+            {user?.department ?? userInfo?.department ?? t("empty")}
           </Text>
         </View>
         <View style={styles.detailsContainer}>
@@ -124,7 +125,7 @@ function StudentProfileScreen(props) {
           />
           <Text style={styles.funFactText}>
             <Text style={{ fontWeight: "bold" }}>{t("age")}</Text>{" "}
-            {user?.age || t("empty")}
+            {user?.age ?? userInfo?.age ?? t("empty")}
           </Text>
         </View>
         <View style={styles.detailsContainer}>
@@ -135,7 +136,7 @@ function StudentProfileScreen(props) {
           />
           <Text style={styles.funFactText}>
             <Text style={{ fontWeight: "bold" }}>{t("myHobbies")}</Text>{" "}
-            {user?.hobbies || t("empty")}
+            {user?.hobbies ?? userInfo?.hobbies ?? t("empty")}
           </Text>
         </View>
         <View style={styles.detailsContainer}>
@@ -146,39 +147,41 @@ function StudentProfileScreen(props) {
           />
           <Text style={styles.funFactText}>
             <Text style={{ fontWeight: "bold" }}>{t("funFact")}</Text>{" "}
-            {user?.funFact || t("empty")}
+            {user?.funFact ?? userInfo?.funFact ?? t("empty")}
           </Text>
         </View>
 
         {/* Social Links Section */}
-        {(user.socialNetworks?.instagram ||
-          user.socialNetworks?.facebook ||
-          user.socialNetworks?.linkedin) && (
-          <View style={styles.socialLinksContainer}>
-            <Text style={styles.socialLinksTitle}>{t("socialLinksTitle")}</Text>
-            <View style={styles.socialLinks}>
-              {user.socialNetworks?.facebook && (
+        {(user?.socialNetworks?.instagram ||
+          user?.socialNetworks?.facebook ||
+          user?.socialNetworks?.linkedin) && (
+          <View style={styles?.socialLinksContainer}>
+            <Text style={styles?.socialLinksTitle}>
+              {t("socialLinksTitle")}
+            </Text>
+            <View style={styles?.socialLinks}>
+              {user?.socialNetworks?.facebook && (
                 <TouchableOpacity
                   onPress={() =>
-                    Linking.openURL("https://" + user.socialNetworks.facebook)
+                    Linking.openURL("https://" + user?.socialNetworks.facebook)
                   }
                 >
                   <Icon name="logo-facebook" size={35} color="#3b5998" />
                 </TouchableOpacity>
               )}
-              {user.socialNetworks?.instagram && (
+              {user?.socialNetworks?.instagram && (
                 <TouchableOpacity
                   onPress={() =>
-                    Linking.openURL("https://" + user.socialNetworks.instagram)
+                    Linking.openURL("https://" + user?.socialNetworks.instagram)
                   }
                 >
                   <Icon name="logo-instagram" size={35} color="#C13584" />
                 </TouchableOpacity>
               )}
-              {user.socialNetworks?.linkedin && (
+              {user?.socialNetworks?.linkedin && (
                 <TouchableOpacity
                   onPress={() =>
-                    Linking.openURL("https://" + user.socialNetworks.linkedin)
+                    Linking.openURL("https://" + user?.socialNetworks.linkedin)
                   }
                 >
                   <Icon name="logo-linkedin" size={35} color="#0A66C2" />
@@ -189,21 +192,23 @@ function StudentProfileScreen(props) {
         )}
 
         <Spacer>
-          {!isLoadingUser && !studentDataIsLoading && (
-            <Button
-              style={{ marginTop: 10, marginHorizontal: 15 }}
-              textColor={
-                isDarkMode ? Color.buttomSheetDarkTheme : Color.defaultTheme
-              }
-              buttonColor={
-                isDarkMode ? Color.defaultTheme : Color.buttomSheetDarkTheme
-              }
-              mode="contained"
-              onPress={chatWithMe}
-            >
-              {t("chatWithMe")}
-            </Button>
-          )}
+          {!isLoadingUser &&
+            !studentDataIsLoading &&
+            !prevRoute?.params?.chatList && (
+              <Button
+                style={{ marginTop: 10, marginHorizontal: 15 }}
+                textColor={
+                  isDarkMode ? Color.buttomSheetDarkTheme : Color.defaultTheme
+                }
+                buttonColor={
+                  isDarkMode ? Color.defaultTheme : Color.buttomSheetDarkTheme
+                }
+                mode="contained"
+                onPress={chatWithMe}
+              >
+                {t("chatWithMe")}
+              </Button>
+            )}
         </Spacer>
 
         <View style={[styles.footer, { height: tabBarHeight + 10 }]}></View>

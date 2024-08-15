@@ -1,14 +1,22 @@
+import React from "react";
 import {
   Modal,
   View,
   Image,
   TouchableWithoutFeedback,
   StyleSheet,
+  TouchableOpacity,
 } from "react-native";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { useNavigation } from "@react-navigation/native";
 
 import { useDarkMode } from "../context/DarkModeContext";
+import { Color } from "../constants/colors";
 
-function FullScreenImageModal({ visible, imageUri, onClose }) {
+function FullScreenImageModal({ visible, userData, onClose, onChatPress }) {
+  const { isDarkMode } = useDarkMode();
+  const navigation = useNavigation();
+
   return (
     <Modal
       onRequestClose={onClose}
@@ -19,12 +27,50 @@ function FullScreenImageModal({ visible, imageUri, onClose }) {
       <TouchableWithoutFeedback onPress={onClose}>
         <View style={styles.modalOverlay}>
           <TouchableWithoutFeedback>
-            <View style={styles.modalContainer}>
+            <View
+              style={
+                isDarkMode
+                  ? {
+                      ...styles.modalContainer,
+                      backgroundColor: Color.buttomSheetDarkTheme,
+                    }
+                  : styles.modalContainer
+              }
+            >
               <Image
-                source={{ uri: imageUri }}
+                source={{ uri: userData?.avatar?.url }}
                 style={styles.fullScreenImage}
-                resizeMode="contain"
+                resizeMode="stretch"
               />
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity
+                  onPress={onChatPress}
+                  style={styles.iconButton}
+                >
+                  <MaterialCommunityIcons
+                    name="message-text-outline"
+                    size={24}
+                    color={isDarkMode ? "white" : "black"}
+                  />
+                </TouchableOpacity>
+                {userData?.userType === "student" && (
+                  <TouchableOpacity
+                    onPress={() =>
+                      navigation.navigate("StudentProfileScreen", {
+                        userData,
+                        chatList: true,
+                      })
+                    }
+                    style={styles.iconButton}
+                  >
+                    <MaterialCommunityIcons
+                      name="information-outline"
+                      size={24}
+                      color={isDarkMode ? "white" : "black"}
+                    />
+                  </TouchableOpacity>
+                )}
+              </View>
             </View>
           </TouchableWithoutFeedback>
         </View>
@@ -41,14 +87,30 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalContainer: {
-    width: "80%",
-    height: 400,
+    width: 300,
+    height: 270,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: Color.white,
+    marginBottom: 50,
   },
   fullScreenImage: {
     width: "100%",
     height: "100%",
+    bottom: 50,
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    position: "absolute",
+    bottom: 20,
+    justifyContent: "center",
+    width: "100%",
+  },
+  iconButton: {
+    marginHorizontal: 40,
+    padding: 10,
+    borderRadius: 50,
+    marginBottom: -17,
   },
 });
 

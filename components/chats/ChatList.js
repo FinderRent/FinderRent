@@ -153,8 +153,9 @@ function ChatList({
       </TouchableNativeFeedback>
       <FullScreenImageModal
         visible={isModalVisible}
-        imageUri={data?.data?.avatar.url}
+        userData={data?.data}
         onClose={() => setIsModalVisible(false)}
+        onChatPress={handleChatAction}
       />
     </>
   );
