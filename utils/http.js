@@ -75,7 +75,56 @@ export async function getDistances(coordinates) {
   }
 }
 
-////////
+export async function addApartment(apartment) {
+  try {
+    const response = await axios.post(BACKEND_URL + `/apartments`, apartment, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const responseData = response.data.data;
+
+    if (response.status !== 201) {
+      throw new Error(responseData.message);
+    }
+
+    return responseData;
+  } catch (err) {
+    throw new Error(err.response.data.message);
+  }
+}
+
+export async function updateEditedApartment(apartment) {
+  try {
+    const response = await axios.patch(BACKEND_URL + `/apartments`, apartment);
+    return response.data.data;
+  } catch (error) {
+    console.error("Error editing apartment:", error);
+    throw error;
+  }
+}
+
+export async function deleteApartment(apartmentId) {
+  try {
+    const response = await axios.delete(
+      BACKEND_URL + `/apartments/${apartmentId}`
+    );
+
+    const responseData = response.data;
+
+    if (response.status !== 204) {
+      throw new Error(responseData.message);
+    }
+
+    return responseData;
+  } catch (err) {
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    }
+    throw new Error(err.message);
+  }
+}
+
 export async function fetchAllstudents(filter) {
   try {
     const params = {};
@@ -104,6 +153,7 @@ export async function fetchUser(userID) {
   return response.data.data;
 }
 
+//////
 export async function addFavourite(apartmentID, userID) {
   const dataForApartment = {
     userID: userID,
@@ -155,33 +205,4 @@ export async function checkIfFavourite(apartmentID, userID) {
     BACKEND_URL + `/apartments/${apartmentID}/${userID}`
   );
   return response.data.data;
-}
-
-export async function addApartment(apartment) {
-  try {
-    const response = await axios.post(BACKEND_URL + `/apartments`, apartment, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const responseData = response.data.data;
-
-    if (response.status !== 201) {
-      throw new Error(responseData.message);
-    }
-
-    return responseData;
-  } catch (err) {
-    throw new Error(err.response.data.message);
-  }
-}
-
-export async function updateEditedApartment(apartment) {
-  try {
-    const response = await axios.patch(BACKEND_URL + `/apartments`, apartment);
-    return response.data.data;
-  } catch (error) {
-    console.error("Error editing apartment:", error);
-    throw error;
-  }
 }
