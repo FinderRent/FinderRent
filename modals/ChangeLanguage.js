@@ -28,6 +28,7 @@ const ChangeLanguage = ({ showVisible }) => {
   const [showRestartModal, setShowRestartModal] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(null);
   const [lng, setLng] = useState(i18next.language);
+  const [newLng, setNewLng] = useState();
 
   useEffect(() => {
     const initializeLanguage = async () => {
@@ -41,9 +42,9 @@ const ChangeLanguage = ({ showVisible }) => {
 
   const handleRestart = async () => {
     // Change language and restart app
-    i18next.changeLanguage(lng);
-    setSelectedLanguage(lng);
-    await AsyncStorage.setItem("appLanguage", lng);
+    i18next.changeLanguage(newLng);
+    setSelectedLanguage(newLng);
+    await AsyncStorage.setItem("appLanguage", newLng);
     await Updates.reloadAsync();
   };
 
@@ -53,8 +54,8 @@ const ChangeLanguage = ({ showVisible }) => {
 
     // Update language and show restart modal only if direction changes
     if (currentLangDirection !== newLangDirection) {
-      setLng(newLng);
       setShowRestartModal(true);
+      setNewLng(newLng);
     } else {
       await AsyncStorage.setItem("appLanguage", newLng);
       i18next.changeLanguage(newLng);
@@ -69,11 +70,7 @@ const ChangeLanguage = ({ showVisible }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Modal
-        visible={visible}
-        onRequestClose={() => setVisible(false)}
-        transparent={true}
-      >
+      <Modal visible={visible} onRequestClose={handleCancel} transparent={true}>
         <View
           style={
             isDarkMode
