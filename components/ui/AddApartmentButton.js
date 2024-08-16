@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     borderRadius: 60 / 2,
     alignItems: "center",
     shadowRadius: 10,
-    shadowColor: Color.extraGray,
+    shadowColor: Color.Blue500,
     shadowOpacity: 0.3,
     shadowOffset: { height: 10 },
     justifyContent: "center",
