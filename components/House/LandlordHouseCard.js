@@ -82,19 +82,21 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     overflow: "hidden",
     backgroundColor: Color.defaultTheme,
-    borderColor: Color.red500,
+    borderColor: Color.extraGray,
     // borderRightWidth: 3,
     borderBottomWidth: 3,
     // borderTopWidth: 3,
   },
   contentContainer: {
     flexDirection: "row",
-    height: 120,
+    height: 100,
+    alignItems: "center",
   },
   image: {
-    width: 120,
-    height: 120,
-    marginLeft: -2,
+    width: 80,
+    height: 80,
+    marginRight: 10,
+    marginLeft: 10,
   },
   detailsContainer: {
     flex: 1,
@@ -105,11 +107,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   city: {
-    fontSize: 19,
+    fontSize: 18,
     fontWeight: "bold",
   },
   street: {
-    fontSize: 14,
+    fontSize: 13,
     color: Color.extraGray,
   },
   infoContainer: {
@@ -118,7 +120,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   price: {
-    fontSize: 19,
+    fontSize: 17,
     fontWeight: "bold",
     // color: Color.green100,
   },
@@ -131,7 +133,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   infoText: {
-    fontSize: 12,
+    fontSize: 11,
     color: Color.extraGray,
     marginLeft: 4,
   },

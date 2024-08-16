@@ -7,7 +7,11 @@ import {
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 
+import { Color } from "../../constants/colors";
+import { useDarkMode } from "../../context/DarkModeContext";
+
 const AddApartmentButton = (props) => {
+  const { isDarkMode } = useDarkMode();
   const animation = useRef(new Animated.Value(0)).current;
   const [open, setOpen] = useState(props.isOpen);
 
@@ -46,7 +50,11 @@ const AddApartmentButton = (props) => {
     <View style={[styles.container, props.style]}>
       <TouchableWithoutFeedback onPress={handleAddButtonPress}>
         <Animated.View style={[styles.button, styles.menu, rotation]}>
-          <AntDesign name="plus" size={24} color="#FFF" />
+          <AntDesign
+            name="plus"
+            size={24}
+            color={isDarkMode ? Color.defaultTheme : Color.defaultTheme}
+          />
         </Animated.View>
       </TouchableWithoutFeedback>
     </View>
@@ -65,13 +73,13 @@ const styles = StyleSheet.create({
     borderRadius: 60 / 2,
     alignItems: "center",
     shadowRadius: 10,
-    shadowColor: "#F02A4B",
+    shadowColor: Color.extraGray,
     shadowOpacity: 0.3,
     shadowOffset: { height: 10 },
     justifyContent: "center",
   },
   menu: {
-    backgroundColor: "#F02A4B",
+    backgroundColor: Color.icon,
   },
 });
 

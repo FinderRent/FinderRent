@@ -21,9 +21,9 @@ const LandlordHeader = () => {
 
   return (
     <LinearGradient
-      colors={[isDarkMode ? Color.darkTheme : Color.defaultTheme, "#F02A4B"]}
-      start={{ x: -0.5, y: 0 }}
-      end={{ x: isDarkMode ? 1.3 : 1, y: 0 }}
+      colors={[Color.defaultTheme, Color.darkTheme]}
+      start={{ x: isDarkMode ? -1 : -0.5, y: 0 }}
+      end={{ x: 1, y: -2 }}
       style={styles.container}
     >
       <View style={styles.contentContainer}>

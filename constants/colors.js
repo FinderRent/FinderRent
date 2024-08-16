@@ -6,8 +6,9 @@ export const Color = {
   defaultTheme: "#f6f6f6",
 
   icon: "#777777",
-  gray: "#bdc3c7",
   extraGray: "#a7a7a7",
+  gray: "#bdc3c7",
+  gray500: "#36454F",
 
   green100: "#17B169",
 
