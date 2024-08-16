@@ -15,7 +15,10 @@ const LandlordHouseCard = ({ navigation, apartment }) => {
     <Card
       style={[
         styles.card,
-        isDarkMode && { backgroundColor: Color.buttomSheetDarkTheme },
+        isDarkMode && {
+          backgroundColor: Color.buttomSheetDarkTheme,
+          borderColor: Color.Blue500,
+        },
       ]}
     >
       <TouchableOpacity
@@ -82,7 +85,7 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     overflow: "hidden",
     backgroundColor: Color.defaultTheme,
-    borderColor: Color.extraGray,
+    borderColor: Color.Blue100,
     // borderRightWidth: 3,
     borderBottomWidth: 3,
     // borderTopWidth: 3,
@@ -95,7 +98,7 @@ const styles = StyleSheet.create({
   image: {
     width: 80,
     height: 80,
-    marginRight: 10,
+    marginRight: 2,
     marginLeft: 10,
   },
   detailsContainer: {

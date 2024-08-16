@@ -16,6 +16,7 @@ import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { useUsers } from "../context/UserContext";
 import { addApartment, fetchAllstudents } from "../utils/http";
+import { fullName } from "../utils/features";
 import DropDown from "../components/inputs/DropDown";
 import Input from "../components/inputs/Input";
 import ErrorMessage from "../components/ui/ErrorMessage";
@@ -419,7 +420,10 @@ function AddApartmentScreen(props) {
   let tenants = [];
   if (!isLoading) {
     students.users.forEach((student) => {
-      tenants.push([student.firstName + " " + student.lastName, student._id]);
+      tenants.push([
+        fullName(student.firstName, student.lastName),
+        student._id,
+      ]);
     });
   }
   // Transform tenants array to an array of objects with label and value

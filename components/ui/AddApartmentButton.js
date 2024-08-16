@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   menu: {
-    backgroundColor: Color.icon,
+    backgroundColor: Color.Blue500,
   },
 });
 

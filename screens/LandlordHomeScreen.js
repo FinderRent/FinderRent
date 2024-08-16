@@ -178,7 +178,7 @@ function LandlordHomeScreen({ navigation }) {
 
   const handleAddButtonPress = () => {
     setAddButtonPress((prevState) => !prevState);
-    refetch();
+    // refetch();
   };
 
   const handleIsOpen = () => {
@@ -193,7 +193,7 @@ function LandlordHomeScreen({ navigation }) {
   const renderApartmentCard = ({ item: apartment }) => {
     return (
       <SwipeableRow
-        color={Color.red500}
+        color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
         key={apartment._id}
         onDelete={() => handleDelete(apartment._id)}
       >

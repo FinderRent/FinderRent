@@ -1,14 +1,8 @@
 import React from "react";
-import {
-  View,
-  StyleSheet,
-  ImageBackground,
-  TouchableOpacity,
-} from "react-native";
+import { View, StyleSheet } from "react-native";
 import { Text, Avatar } from "react-native-paper";
 import { useTranslation } from "react-i18next";
 import { LinearGradient } from "expo-linear-gradient";
-import Ionicons from "@expo/vector-icons/Ionicons";
 
 import { Color } from "../constants/colors";
 import { useUsers } from "../context/UserContext";
@@ -21,8 +15,11 @@ const LandlordHeader = () => {
 
   return (
     <LinearGradient
-      colors={[Color.defaultTheme, Color.darkTheme]}
-      start={{ x: isDarkMode ? -1 : -0.5, y: 0 }}
+      colors={[
+        isDarkMode ? Color.darkTheme : Color.defaultTheme,
+        Color.Blue700,
+      ]}
+      start={{ x: -0.5, y: 0 }}
       end={{ x: 1, y: -2 }}
       style={styles.container}
     >
@@ -31,7 +28,6 @@ const LandlordHeader = () => {
           <Text style={styles.greeting}>
             {t("hello")},{" " + userData.firstName}
           </Text>
-          {/* <Text style={styles.name}>{userData.firstName}</Text> */}
           <Text style={styles.properties}>{t("yourProperties")}</Text>
         </View>
         <View style={styles.rightContainer}>
@@ -78,24 +74,11 @@ const styles = StyleSheet.create({
     fontSize: 34,
     fontWeight: "bold",
     color: Color.white,
-    // marginBottom: 10,
   },
   properties: {
     fontSize: 34,
     fontWeight: "bold",
     color: Color.white,
-    // marginBottom: 10,
-  },
-  button: {
-    backgroundColor: "rgba(255, 255, 255, 0.2)",
-    paddingHorizontal: 15,
-    paddingVertical: 8,
-    borderRadius: 20,
-    alignSelf: "flex-start",
-  },
-  buttonText: {
-    color: Color.white,
-    fontWeight: "600",
   },
   avatar: {
     borderColor: Color.white,
