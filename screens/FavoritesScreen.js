@@ -69,6 +69,7 @@ const FavoritesScreen = ({ navigation }) => {
     <ScrollView contentContainerStyle={styles.cardContainer}>
       {data.map((apartment, index) => (
         <SwipeableRow
+          color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
           key={index}
           onDelete={() => changeFavoriteStatusHandler(apartment._id)}
         >

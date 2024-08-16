@@ -6,7 +6,7 @@ import { FontAwesome6 } from "@expo/vector-icons";
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 
-const SwipeableRow = ({ children, onDelete }) => {
+const SwipeableRow = ({ children, onDelete, color }) => {
   const { isDarkMode } = useDarkMode();
   const swipeableRowRef = useRef(null);
 
@@ -69,12 +69,7 @@ const SwipeableRow = ({ children, onDelete }) => {
         flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
       }}
     >
-      {renderLeftAction(
-        "trash",
-        isDarkMode ? Color.defaultTheme : Color.darkTheme,
-        0,
-        progress
-      )}
+      {renderLeftAction("trash", color, 0, progress)}
     </View>
   );
 

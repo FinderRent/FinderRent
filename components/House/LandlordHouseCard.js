@@ -1,20 +1,18 @@
-import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
+import React from "react";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, Card } from "react-native-paper";
+import { useTranslation } from "react-i18next";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { useDarkMode } from "../../context/DarkModeContext";
 import { Color } from "../../constants/colors";
-import { Text } from "react-native-paper";
 
 const LandlordHouseCard = ({ navigation, apartment }) => {
   const { isDarkMode } = useDarkMode();
-
-  // const images = [
-  //   "https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/home-improvement/wp-content/uploads/2022/07/download-23.jpg",
-  //   "https://www.bhg.com/thmb/3Vf9GXp3T-adDlU6tKpTbb-AEyE=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/white-modern-house-curved-patio-archway-c0a4a3b3-aa51b24d14d0464ea15d36e05aa85ac9.jpg",
-  //   "https://thumbor.forbes.com/thumbor/fit-in/900x510/https://www.forbes.com/home-improvement/wp-content/uploads/2022/07/download-23.jpg",
-  // ];
+  const { t } = useTranslation();
 
   return (
-    <View
+    <Card
       style={[
         styles.card,
         isDarkMode && { backgroundColor: Color.buttomSheetDarkTheme },
@@ -26,89 +24,116 @@ const LandlordHouseCard = ({ navigation, apartment }) => {
           navigation.navigate("LandlordHouseDetailsScreen", { apartment })
         }
       >
-        <View
-          style={[
-            styles.cardContainer,
-            isDarkMode && { backgroundColor: Color.buttomSheetDarkTheme },
-          ]}
-        >
-          <View style={styles.imagesContainer}>
-            {/* <Image
-              source={{ uri: apartment.images.url }} // Use the first image in the array
-              style={styles.image}
-              resizeMode="cover"
-            /> */}
-            <Image
-              source={{ uri: apartment.images[0] }} // Use the first image in the array
-              style={styles.image}
-              resizeMode="cover"
-            />
-          </View>
-
+        <View style={styles.contentContainer}>
+          <Card.Cover
+            source={{ uri: apartment.images[0] }}
+            style={styles.image}
+          />
           <View style={styles.detailsContainer}>
             <View style={styles.addressContainer}>
               <Text style={styles.city}>{apartment.address.city}</Text>
-              <Text style={styles.street}>
+              <Text style={styles.street} numberOfLines={1}>
                 {apartment.address.street} {apartment.address.buildingNumber}/
                 {apartment.address.apartmentNumber}
               </Text>
             </View>
-            <Text style={styles.price}>{apartment.price}$</Text>
+            <View style={styles.infoContainer}>
+              <Text style={styles.price}>₪{apartment.price}</Text>
+              <View style={styles.typeAndRooms}>
+                <View style={styles.iconTextContainer}>
+                  <Icon
+                    name="home-variant-outline"
+                    size={16}
+                    color={Color.extraGray}
+                  />
+                  <Text style={styles.infoText}>
+                    {t(apartment?.apartmentType)}
+                  </Text>
+                </View>
+                <View style={styles.iconTextContainer}>
+                  <Icon name="door" size={16} color={Color.extraGray} />
+                  <Text style={styles.infoText}>
+                    {apartment?.numberOfRooms} {t("rooms")}
+                  </Text>
+                </View>
+                <View style={styles.iconTextContainer}>
+                  <Icon
+                    name="account-group-outline"
+                    size={16}
+                    color={Color.extraGray}
+                  />
+                  <Text style={styles.infoText}>
+                    {t("capacity")}: {apartment?.realTimeCapacity}/
+                    {apartment?.totalCapacity}
+                  </Text>
+                </View>
+              </View>
+            </View>
           </View>
         </View>
       </TouchableOpacity>
-    </View>
+    </Card>
   );
 };
 
 const styles = StyleSheet.create({
   card: {
-    position: "relative",
-    borderRadius: 12,
     margin: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 4,
-  },
-  cardContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#fff",
-    borderRadius: 12,
+    borderRadius: 14,
     overflow: "hidden",
+    backgroundColor: Color.defaultTheme,
+    borderColor: Color.red500,
+    // borderRightWidth: 3,
+    borderBottomWidth: 3,
+    // borderTopWidth: 3,
   },
-  detailsContainer: {
+  contentContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    padding: 15,
-    flex: 0.75,
-  },
-  imagesContainer: {
-    flex: 0.25,
+    height: 120,
   },
   image: {
+    width: 120,
+    height: 120,
+    marginLeft: -2,
+  },
+  detailsContainer: {
     flex: 1,
-    margin: "10%",
-    borderRadius: 5,
+    padding: 8,
+    justifyContent: "space-between",
   },
   addressContainer: {
     flex: 1,
   },
   city: {
-    fontSize: 20,
+    fontSize: 19,
     fontWeight: "bold",
-    marginBottom: 5,
   },
   street: {
-    fontSize: 15,
-    marginBottom: 5,
+    fontSize: 14,
+    color: Color.extraGray,
+  },
+  infoContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
   },
   price: {
-    fontSize: 20,
+    fontSize: 19,
     fontWeight: "bold",
-    color: "#65B741",
+    // color: Color.green100,
+  },
+  typeAndRooms: {
+    alignItems: "flex-end",
+  },
+  iconTextContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 2,
+  },
+  infoText: {
+    fontSize: 12,
+    color: Color.extraGray,
+    marginLeft: 4,
   },
 });
 

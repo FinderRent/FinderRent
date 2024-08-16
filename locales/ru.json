@@ -333,6 +333,7 @@
   "houseAssetsHeader": "Содержимое квартиры",
   "currentTenants": "Текущие арендаторы",
   "search": "Поиск",
+  "ApartmentAddedSuccessfully": "Квартира успешно добавлена!",
 
   "Permission to access media library is required!": "Требуется разрешение на доступ к медиатеке!",
   "Permission to access camera is required!": "Требуется разрешение на доступ к камере!",

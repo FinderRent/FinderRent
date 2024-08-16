@@ -154,14 +154,6 @@ function LandlordHomeScreen({ navigation }) {
     mutate(apartmentId);
   };
 
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     const fetched = async () => {
-  //       await refetch();
-  //     };
-  //     fetched();
-  //   }, [])
-
   useFocusEffect(
     useCallback(() => {
       if (!hasFetched) {
@@ -201,6 +193,7 @@ function LandlordHomeScreen({ navigation }) {
   const renderApartmentCard = ({ item: apartment }) => {
     return (
       <SwipeableRow
+        color={Color.red500}
         key={apartment._id}
         onDelete={() => handleDelete(apartment._id)}
       >
@@ -224,7 +217,8 @@ function LandlordHomeScreen({ navigation }) {
     >
       <StatusBar style={isDarkMode ? "light" : "dark"} />
       {token ? <LandlordHeader /> : <SignInHeader />}
-      <Text style={styles.PropertiesHeader}>{t("yourProperties")}</Text>
+      <View style={{ marginTop: 15 }}></View>
+      {/* <Text style={styles.PropertiesHeader}>{t("yourProperties")}</Text> */}
       {isFetchingApartments ? (
         <Loader color={isDarkMode ? Color.defaultTheme : Color.darkTheme} />
       ) : (
@@ -327,5 +321,27 @@ const styles = StyleSheet.create({
   },
   FlatList: {
     marginBottom: "20%",
+  },
+  cardContainer: {
+    padding: 10,
+  },
+  cardCover: {
+    width: 100,
+    height: 100,
+    margin: 10,
+  },
+  card: {
+    marginVertical: 10,
+    paddingRight: 10,
+  },
+  cardContent: {
+    marginLeft: -10,
+    margin: 5,
+  },
+  whiteTitle: {
+    color: Color.defaultTheme,
+  },
+  darkTitle: {
+    color: Color.darkTheme,
   },
 });

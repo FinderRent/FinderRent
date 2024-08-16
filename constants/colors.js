@@ -4,14 +4,20 @@ export const Color = {
   darkTheme: "#333333",
   buttomSheetDarkTheme: "#444444",
   defaultTheme: "#f6f6f6",
-  error: "#f8d7da",
-  error100: "#e07a82",
-  errorText: "#721c24",
+
   icon: "#777777",
   gray: "#bdc3c7",
   extraGray: "#a7a7a7",
 
   green100: "#17B169",
+
+  error: "#f8d7da",
+  error100: "#e07a82",
+  errorText: "#721c24",
+
+  red200: "#e7556d",
+  red500: "#F02A4B",
+  red800: "#bd0b29",
 
   Blue10: "#e6f7ff",
   Blue100: "#71c7ec",

@@ -353,13 +353,13 @@ function AddApartmentScreen(props) {
       if (Platform.OS === "ios") {
         showMessage({
           message: "Success",
-          description: "Apartment added successfully!",
+          description: t("ApartmentAddedSuccessfully"),
           type: "success",
         });
       } else {
         Toast.show({
           type: "success",
-          text1: "Apartment added successfully!",
+          text1: t("ApartmentAddedSuccessfully"),
         });
       }
 
