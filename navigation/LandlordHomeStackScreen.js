@@ -69,7 +69,10 @@ function LandlordHomeStackScreen({ navigation }) {
         name="StudentProfileScreen"
         component={StudentProfileScreen}
         options={{
-          headerTintColor: isDarkMode ? Color.white : Color.darkTheme,
+          headerShown: Platform.OS === "android" ? true : false,
+          headerStyle: {
+            backgroundColor: isDarkMode ? Color.darkTheme : Color.defaultTheme,
+          },
         }}
       />
       <LandlordHomeStack.Screen

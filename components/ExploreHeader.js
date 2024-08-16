@@ -5,11 +5,11 @@ import { Text, TouchableRipple } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
+import { debounce } from "lodash";
 import * as Haptics from "expo-haptics";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 const categories = [
   {
@@ -42,6 +42,10 @@ const ExploreHeader = ({ onCategoryChanged, categoryIndex, filtersValues }) => {
   const itemsRef = useRef([]);
 
   const [activeIndex, setActiveIndex] = useState(categoryIndex);
+
+  const debouncedNavigate = debounce((navigation, filtersValues) => {
+    navigation.navigate("FilterScreen", filtersValues);
+  }, 200);
 
   useEffect(() => {
     setActiveIndex(categoryIndex ?? 0);
@@ -83,7 +87,7 @@ const ExploreHeader = ({ onCategoryChanged, categoryIndex, filtersValues }) => {
           // background={Color.defaultTheme}
           borderless={true}
           style={styles.filterBtn}
-          onPress={() => navigation.push("FilterScreen", filtersValues)}
+          onPress={() => debouncedNavigate(navigation, filtersValues)}
         >
           <Ionicons
             name="options-outline"

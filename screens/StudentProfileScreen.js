@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   StyleSheet,
   TouchableOpacity,
@@ -19,6 +20,7 @@ import { useUsers } from "../context/UserContext";
 import { fetchUser } from "../utils/http";
 import Icon from "react-native-vector-icons/Ionicons";
 import Spacer from "../components/ui/Spacer";
+import Loader from "../components/ui/Loader";
 
 function StudentProfileScreen(props) {
   const { t } = useTranslation();
@@ -30,8 +32,6 @@ function StudentProfileScreen(props) {
 
   const routes = navigation.getState()?.routes;
   const prevRoute = routes[routes.length - 1];
-
-  // console.log(prevRoute.params.chatList);
 
   let chatId = null;
   let firstChat = true;
@@ -193,22 +193,24 @@ function StudentProfileScreen(props) {
 
         <Spacer>
           {!isLoadingUser &&
-            !studentDataIsLoading &&
-            !prevRoute?.params?.chatList && (
-              <Button
-                style={{ marginTop: 10, marginHorizontal: 15 }}
-                textColor={
-                  isDarkMode ? Color.buttomSheetDarkTheme : Color.defaultTheme
-                }
-                buttonColor={
-                  isDarkMode ? Color.defaultTheme : Color.buttomSheetDarkTheme
-                }
-                mode="contained"
-                onPress={chatWithMe}
-              >
-                {t("chatWithMe")}
-              </Button>
-            )}
+          !studentDataIsLoading &&
+          !prevRoute?.params?.chatList ? (
+            <Button
+              style={{ marginTop: 10, marginHorizontal: 15 }}
+              textColor={
+                isDarkMode ? Color.buttomSheetDarkTheme : Color.defaultTheme
+              }
+              buttonColor={
+                isDarkMode ? Color.defaultTheme : Color.buttomSheetDarkTheme
+              }
+              mode="contained"
+              onPress={chatWithMe}
+            >
+              {t("chatWithMe")}
+            </Button>
+          ) : (
+            <Loader color={isDarkMode ? Color.defaultTheme : Color.darkTheme} />
+          )}
         </Spacer>
 
         <View style={[styles.footer, { height: tabBarHeight + 10 }]}></View>

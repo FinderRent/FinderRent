@@ -9,6 +9,7 @@ import { useDarkMode } from "../context/DarkModeContext";
 import ChatListScreen from "../screens/ChatListScreen";
 import ChatScreen from "../screens/ChatScreen";
 import LoginScreen from "../screens/LoginScreen";
+import StudentProfileScreen from "../screens/StudentProfileScreen";
 
 const ChatStack = createNativeStackNavigator();
 
@@ -77,6 +78,17 @@ function ChatStackScreen({ navigation, route }) {
           headerTitle: "",
           headerTitleStyle: { fontFamily: "varelaRound" },
           headerBackVisible: false,
+        }}
+      />
+      <ChatStack.Screen
+        name="StudentProfileScreen"
+        component={StudentProfileScreen}
+        options={{
+          headerShown: Platform.OS === "android" ? true : false,
+          headerTitle: "",
+          headerStyle: {
+            backgroundColor: isDarkMode ? Color.darkTheme : Color.defaultTheme,
+          },
         }}
       />
     </ChatStack.Navigator>
