@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { View, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
-import { Text } from "react-native-paper";
+import { Text, TouchableRipple } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
@@ -9,6 +9,7 @@ import * as Haptics from "expo-haptics";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 const categories = [
   {
@@ -78,21 +79,18 @@ const ExploreHeader = ({ onCategoryChanged, categoryIndex, filtersValues }) => {
           paddingHorizontal: 16,
         }}
       >
-        <TouchableOpacity
+        <TouchableRipple
+          // background={Color.defaultTheme}
+          borderless={true}
           style={styles.filterBtn}
-          onPress={() =>
-            setTimeout(
-              () => navigation.navigate("FilterScreen", filtersValues),
-              0
-            )
-          }
+          onPress={() => navigation.push("FilterScreen", filtersValues)}
         >
           <Ionicons
             name="options-outline"
             size={22}
             color={isDarkMode ? "#fff" : "#000"}
           />
-        </TouchableOpacity>
+        </TouchableRipple>
         {categories.map((item, index) => (
           <TouchableOpacity
             ref={(el) => (itemsRef.current[index] = el)}

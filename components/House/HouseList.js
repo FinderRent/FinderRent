@@ -144,7 +144,7 @@ function HouseList({
               </Text> */}
               <Text style={styles.noResultsText}>
                 {t("HouseList.noResults.noApartmentsWithDistance", {
-                  category: t(`categories2.${category}`),
+                  category: category ? t(`${category}`) : "",
                   distance,
                 })}
               </Text>

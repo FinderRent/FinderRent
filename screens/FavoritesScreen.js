@@ -22,19 +22,6 @@ const FavoritesScreen = ({ navigation }) => {
 
   const favoriteApartment = favoriteApartmentsCtx?.ids;
 
-  if (favoriteApartment.length === 0) {
-    return (
-      <View style={styles.container}>
-        <Fontisto
-          name="favorite"
-          size={100}
-          color={Color.buttomSheetDarkTheme}
-        />
-        <Text style={styles.noResultsText}>{t("noFavorites")}</Text>
-      </View>
-    );
-  }
-
   const favoriteApartmentsQueries = useQueries({
     queries: favoriteApartment.map((id) => ({
       queryKey: ["favoriteApartment", id],
@@ -63,6 +50,19 @@ const FavoritesScreen = ({ navigation }) => {
 
   function changeFavoriteStatusHandler(id) {
     favoriteApartmentsCtx.removeFavorite(id);
+  }
+
+  if (favoriteApartment.length === 0) {
+    return (
+      <View style={styles.container}>
+        <Fontisto
+          name="favorite"
+          size={100}
+          color={Color.buttomSheetDarkTheme}
+        />
+        <Text style={styles.noResultsText}>{t("noFavorites")}</Text>
+      </View>
+    );
   }
 
   return (
@@ -101,7 +101,7 @@ const FavoritesScreen = ({ navigation }) => {
                 />
                 <Card.Content style={styles.cardContent}>
                   <Text style={{ fontWeight: "bold" }} variant="bodyLarge">
-                    {apartment?.apartmentType}
+                    {t(`categories2.${apartment?.apartmentType}`)}
                   </Text>
                   <Text>
                     {t("address")}: {apartment?.address?.street}
