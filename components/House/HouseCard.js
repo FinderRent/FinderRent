@@ -36,6 +36,8 @@ const HouseCard = ({ navigation, apartment, userData }) => {
   const city = capitalizeWords(apartment.address.city);
   const street = capitalizeWords(apartment.address.street);
 
+  console.log(apartment.images);
+
   return (
     <View
       style={
@@ -71,11 +73,20 @@ const HouseCard = ({ navigation, apartment, userData }) => {
             data={apartment.images}
             // scrollAnimationDuration={1000}
             onSnapToItem={(index) => setCurrentIndex(index)}
-            renderItem={({ item }) => (
-              <View style={styles.imageWrapper}>
-                <Image source={{ uri: item }} style={styles.image} />
-              </View>
-            )}
+            renderItem={({ item }) => {
+              const secureImageUrl = item.replace("http://", "https://");
+              return (
+                <View style={styles.imageWrapper}>
+                  <Image
+                    source={{ uri: secureImageUrl }}
+                    style={styles.image}
+                    onError={(e) =>
+                      console.log("Image load error:", e.nativeEvent.error)
+                    }
+                  />
+                </View>
+              );
+            }}
           />
           <Indicators images={apartment.images} currentIndex={currentIndex} />
         </Animated.View>

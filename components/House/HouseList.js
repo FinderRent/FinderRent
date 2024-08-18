@@ -134,7 +134,7 @@ function HouseList({
           {!token ? (
             <Text style={styles.noResultsText}>
               {t("HouseList.noResults.noApartments", {
-                category: t(`categories2.${category}`),
+                category: category ? t(`${category}`) : "",
               })}
             </Text>
           ) : (

@@ -10,7 +10,6 @@ import {
   View,
   ActivityIndicator,
 } from "react-native";
-import { Text } from "react-native-paper";
 import { StatusBar } from "expo-status-bar";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { useFocusEffect } from "@react-navigation/native";
@@ -178,7 +177,7 @@ function LandlordHomeScreen({ navigation }) {
 
   const handleAddButtonPress = () => {
     setAddButtonPress((prevState) => !prevState);
-    // refetch();
+    refetch();
   };
 
   const handleIsOpen = () => {

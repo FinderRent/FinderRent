@@ -271,7 +271,8 @@ function AddApartmentScreen(props) {
 
         const result = await response.json();
         console.log("image upload: ", result.url);
-        imageUrls.push(result.url); // Add the image URL to the array
+        const secureImageUrl = result.url.replace("http://", "https://");
+        imageUrls.push(secureImageUrl); // Add the image URL to the array
       } catch (error) {
         console.error("Error uploading image: ", error);
         throw new Error("Failed to upload image");

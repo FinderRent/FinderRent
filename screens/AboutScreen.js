@@ -1,4 +1,4 @@
-import { StyleSheet, ScrollView, Platform, View } from "react-native";
+import { StyleSheet, ScrollView, Platform } from "react-native";
 import { Text } from "react-native-paper";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { useTranslation } from "react-i18next";
@@ -16,12 +16,12 @@ import { useDarkMode } from "../context/DarkModeContext";
 
 const AboutScreen = () => {
   const { isDarkMode } = useDarkMode();
-  const tabBarHeight = useBottomTabBarHeight();
   const { t } = useTranslation();
+  const tabBarHeight = useBottomTabBarHeight();
 
   // Animation values
   const fadeIn = useSharedValue(0);
-  const slideUp = useSharedValue(30);
+  const slideUp = useSharedValue(5);
   const scaleFooter = useSharedValue(1);
 
   // Animation effects
