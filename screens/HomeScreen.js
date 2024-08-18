@@ -14,9 +14,10 @@ import { useUsers } from "../context/UserContext";
 import { fetchAllApartments } from "../utils/http";
 import ProfileLocation from "../components/ProfileLocation";
 import SignInHeader from "../components/SignInHeader";
-import ExploreHeader from "../components/ExploreHeader";
+// import ExploreHeader from "../components/ExploreHeader";
 import ListingsMap from "../components/Map/ListingsMap";
 import HouseList from "../components/House/HouseList";
+import ExploreHeader from "../components/Headers/ExploreHeader";
 
 // function to get Permissions for PushNotifications
 async function registerForPushNotificationsAsync() {

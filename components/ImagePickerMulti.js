@@ -13,9 +13,10 @@ import * as ImagePicker from "expo-image-picker";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
+import { checkRtllanguages } from "../utils/features";
 
 const ImagePickerMulti = ({ apartmentImages, setApartmentImages }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { isDarkMode } = useDarkMode();
 
   const requestPermission = async () => {
@@ -124,7 +125,10 @@ const ImagePickerMulti = ({ apartmentImages, setApartmentImages }) => {
             <View key={index} style={styles.imageContainer}>
               <Image source={{ uri }} style={styles.image} />
               <TouchableOpacity
-                style={styles.removeButton}
+                style={[
+                  styles.removeButton,
+                  !checkRtllanguages(i18n.language) && { left: "20%" },
+                ]}
                 onPress={() => removeImage(uri)}
               >
                 <Text style={styles.removeButtonText}>X</Text>

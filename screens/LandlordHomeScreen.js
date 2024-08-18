@@ -11,7 +11,6 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { useFocusEffect } from "@react-navigation/native";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
@@ -29,6 +28,7 @@ import AddApartmentScreen from "./AddApartmentScreen";
 import Loader from "../components/ui/Loader";
 import ErrorMessage from "../components/ui/ErrorMessage";
 import SwipeableRow from "../components/SwipeableRow";
+import NoApartments from "../components/House/NoApartments";
 
 async function registerForPushNotificationsAsync() {
   let token;
@@ -63,10 +63,8 @@ async function registerForPushNotificationsAsync() {
 }
 function LandlordHomeScreen({ navigation }) {
   const { t } = useTranslation();
-
   const { userData } = useUsers();
   const { isDarkMode } = useDarkMode();
-  const tabBarHeight = useBottomTabBarHeight();
 
   const token = userData.token;
   const owner = userData.id;
@@ -216,8 +214,9 @@ function LandlordHomeScreen({ navigation }) {
       <StatusBar style={isDarkMode ? "light" : "dark"} />
       {token ? <LandlordHeader /> : <SignInHeader />}
       <View style={{ marginTop: 15 }}></View>
+      {apartments?.apartments.length === 0 && <NoApartments />}
       {/* <Text style={styles.PropertiesHeader}>{t("yourProperties")}</Text> */}
-      {isFetchingApartments ? (
+      {apartments?.apartments.length > 0 && isFetchingApartments ? (
         <Loader color={isDarkMode ? Color.defaultTheme : Color.darkTheme} />
       ) : (
         <FlatList
@@ -314,7 +313,7 @@ const styles = StyleSheet.create({
     },
   },
   addApartmentButton: {
-    bottom: Platform.OS === "ios" ? "22%" : "18%",
+    bottom: Platform.OS === "ios" ? "22%" : "19%",
     right: "15%",
   },
   FlatList: {

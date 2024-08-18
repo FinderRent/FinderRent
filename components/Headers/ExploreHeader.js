@@ -8,8 +8,10 @@ import { useTranslation } from "react-i18next";
 import { debounce } from "lodash";
 import * as Haptics from "expo-haptics";
 
-import { Color } from "../constants/colors";
-import { useDarkMode } from "../context/DarkModeContext";
+// import { Color } from "../constants/colors";
+// import { useDarkMode } from "../context/DarkModeContext";
+import { Color } from "../../constants/colors";
+import { useDarkMode } from "../../context/DarkModeContext";
 
 const categories = [
   {
