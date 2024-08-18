@@ -66,7 +66,7 @@ const SwipeableRow = ({ children, onDelete, color }) => {
     <View
       style={{
         width: 150,
-        flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+        // flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
       }}
     >
       {renderLeftAction("trash", color, 0, progress)}

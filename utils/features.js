@@ -23,6 +23,13 @@ export const checkRtllanguages = (lang) => {
   return rtlLanguages.includes(lang);
 };
 
+export const ensureHttps = (url) => {
+  if (url.startsWith("http://")) {
+    return url.replace("http://", "https://");
+  }
+  return url;
+};
+
 export const generateTemplateMessage = (language, address) => {
   let templateMessage = "";
 

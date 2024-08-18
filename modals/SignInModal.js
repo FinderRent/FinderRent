@@ -28,10 +28,11 @@ import PasswordInput from "../components/inputs/PasswordInput";
 import login from "../api/authentication/login";
 import ErrorMessage from "../components/ui/ErrorMessage";
 import ForgotPasswordModal from "./ForgotPasswordModal";
+import { checkRtllanguages } from "../utils/features";
 
 function SignInModal({ showVisible }) {
   const auth = useContext(UserContext);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { isDarkMode } = useDarkMode();
   const navigation = useNavigation();
   const isFocused = useIsFocused();
@@ -157,6 +158,11 @@ function SignInModal({ showVisible }) {
                   mode="outlined"
                   color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
                   onValueChange={(selectedMail) => setEmail(selectedMail)}
+                  style={
+                    checkRtllanguages(i18n.language)
+                      ? { writingDirection: "rtl" }
+                      : { writingDirection: "ltr" }
+                  }
                 />
                 <PasswordInput
                   mode="outlined"

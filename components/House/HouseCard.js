@@ -14,7 +14,7 @@ import Carousel from "react-native-reanimated-carousel";
 import { Color } from "../../constants/colors";
 import { useDarkMode } from "../../context/DarkModeContext";
 import { FavoritesContext } from "../../context/FavoritesContext";
-import { capitalizeWords } from "../../utils/features";
+import { capitalizeWords, ensureHttps } from "../../utils/features";
 import Indicators from "./Indicators";
 
 const { width } = Dimensions.get("window");
@@ -35,8 +35,6 @@ const HouseCard = ({ navigation, apartment, userData }) => {
 
   const city = capitalizeWords(apartment.address.city);
   const street = capitalizeWords(apartment.address.street);
-
-  console.log(apartment.images);
 
   return (
     <View
@@ -74,16 +72,9 @@ const HouseCard = ({ navigation, apartment, userData }) => {
             // scrollAnimationDuration={1000}
             onSnapToItem={(index) => setCurrentIndex(index)}
             renderItem={({ item }) => {
-              const secureImageUrl = item.replace("http://", "https://");
               return (
                 <View style={styles.imageWrapper}>
-                  <Image
-                    source={{ uri: secureImageUrl }}
-                    style={styles.image}
-                    onError={(e) =>
-                      console.log("Image load error:", e.nativeEvent.error)
-                    }
-                  />
+                  <Image source={{ uri: item }} style={styles.image} />
                 </View>
               );
             }}

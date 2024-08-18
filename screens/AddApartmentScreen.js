@@ -16,7 +16,7 @@ import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { useUsers } from "../context/UserContext";
 import { addApartment, fetchAllstudents } from "../utils/http";
-import { fullName } from "../utils/features";
+import { ensureHttps, fullName } from "../utils/features";
 import DropDown from "../components/inputs/DropDown";
 import Input from "../components/inputs/Input";
 import ErrorMessage from "../components/ui/ErrorMessage";
@@ -192,48 +192,6 @@ function AddApartmentScreen(props) {
     return apartmentContent;
   }
 
-  // const handleImageUpload = async (image) => {
-  //   console.log("upload image...");
-
-  //   // Check if the file exists
-  //   const fileInfo = await FileSystem.getInfoAsync(image);
-  //   if (!fileInfo.exists) {
-  //     throw new Error(`File does not exist at path: ${image}`);
-  //   }
-
-  //   // Convert the image to base64 format
-  //   const base64Image = await FileSystem.readAsStringAsync(image, {
-  //     encoding: FileSystem.EncodingType.Base64,
-  //   });
-
-  //   const data = new FormData();
-  //   data.append("file", `data:image/jpeg;base64,${base64Image}`);
-  //   data.append("upload_preset", "FindeRent");
-  //   data.append("cloud_name", "finderent");
-  //   data.append("folder", "Apartments");
-
-  //   try {
-  //     const response = await fetch(
-  //       "https://api.cloudinary.com/v1_1/finderent/image/upload",
-  //       {
-  //         method: "post",
-  //         headers: {
-  //           "Content-Type": "multipart/form-data",
-  //         },
-  //         body: data,
-  //       }
-  //     );
-
-  //     const result = await response.json();
-  //     console.log("image upload: ", result.url);
-  //     setPublicImageURL(result.url);
-  //     return result.url; // Return the image URL
-  //   } catch (error) {
-  //     console.error("Error uploading image: ", error);
-  //     throw new Error("Failed to upload image");
-  //   }
-  // };
-
   const handleImageUpload = async (images) => {
     console.log("upload images...");
 
@@ -271,7 +229,7 @@ function AddApartmentScreen(props) {
 
         const result = await response.json();
         console.log("image upload: ", result.url);
-        const secureImageUrl = result.url.replace("http://", "https://");
+        const secureImageUrl = ensureHttps(result.url);
         imageUrls.push(secureImageUrl); // Add the image URL to the array
       } catch (error) {
         console.error("Error uploading image: ", error);
@@ -333,6 +291,7 @@ function AddApartmentScreen(props) {
     setTotalCapacity("");
     setRealTimeCapacity("");
     setApartmentType("");
+    setSelected([]);
     setAbout("");
     setSelected([]);
     setCoordinates({
@@ -340,12 +299,13 @@ function AddApartmentScreen(props) {
       longitude: "",
     });
     setApartmentImages([]);
+    setSelectTenants([]);
   };
 
   const bottomSheetRef = useRef(null);
 
   const snapPoints = useMemo(
-    () => (Platform.OS === "ios" ? ["14%", "90%"] : ["3%", "77%"]),
+    () => (Platform.OS === "ios" ? ["14%", "90%"] : ["10%", "77%"]),
     []
   );
 
@@ -816,7 +776,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: "5%",
   },
   scrollViewContent: {
-    paddingBottom: Platform.OS === "ios" ? 100 : 50,
+    paddingBottom: 100,
   },
   mainHeader: {
     fontSize: 30,

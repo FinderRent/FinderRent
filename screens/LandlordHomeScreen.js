@@ -210,7 +210,6 @@ function LandlordHomeScreen({ navigation }) {
       style={{
         flex: 1,
         paddingTop: Platform.OS === "ios" ? 0 : 35,
-        marginBottom: Platform.OS === "ios" ? 0 : tabBarHeight,
         backgroundColor: isDarkMode ? Color.darkTheme : Color.white,
       }}
     >
@@ -315,7 +314,7 @@ const styles = StyleSheet.create({
     },
   },
   addApartmentButton: {
-    bottom: Platform.OS === "ios" ? "22%" : "13%",
+    bottom: Platform.OS === "ios" ? "22%" : "18%",
     right: "15%",
   },
   FlatList: {
