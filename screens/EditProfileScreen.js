@@ -455,6 +455,7 @@ function EditProfileScreen({ navigation }) {
             mode="contained"
             onPress={handleUpdateUser}
             loading={isPending}
+            disabled={isPending}
           >
             {!isPending && t("update")}
           </Button>

@@ -137,6 +137,7 @@ function ResetPasswordScreen({ route }) {
           mode="contained"
           onPress={handleResetPassword}
           loading={isResetPasswordPending}
+          disabled={isResetPasswordPending}
         >
           {!isResetPasswordPending && t("reset")}
         </Button>

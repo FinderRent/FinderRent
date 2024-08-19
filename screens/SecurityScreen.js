@@ -101,6 +101,7 @@ function SecurityScreen() {
                 mode="contained"
                 onPress={handleChangePassword}
                 loading={isPending}
+                disabled={isPending}
               >
                 {!isPending && t("updatePassword")}
               </Button>

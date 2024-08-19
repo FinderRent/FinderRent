@@ -631,8 +631,9 @@ function EditApartmentScreen({ route, navigation }) {
             mode="contained"
             onPress={handleEditApartment}
             loading={loading || isPending}
+            disabled={loading || isPending}
           >
-            {!loading && t("done")}
+            {(!loading || !isPending) && t("done")}
           </Button>
           <NavLink text={t("back")} style={{ fontSize: 14 }} />
         </View>

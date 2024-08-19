@@ -385,6 +385,7 @@ function SignUpScreen({ navigation }) {
               mode="contained"
               onPress={handleSignUp}
               loading={isPending}
+              disabled={isPending}
             >
               {!isPending && t("signUp.signUp")}
             </Button>

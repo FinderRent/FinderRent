@@ -141,6 +141,7 @@ function ContactUsScreen({ navigation }) {
                 mode="contained-tonal"
                 onPress={handleContactUsEmail}
                 loading={isPending}
+                disabled={isPending}
               >
                 {!isPending && t("contactUsPage.sendMessage")}
               </Button>

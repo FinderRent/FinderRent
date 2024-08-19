@@ -112,6 +112,7 @@ function ForgotPasswordModal({ showVisible }) {
                 mode="contained"
                 onPress={handleForgotPasswordEmail}
                 loading={isPending}
+                disabled={isPending}
                 textColor={isDarkMode ? Color.darkTheme : Color.defaultTheme}
               >
                 {!isPending && t("forgotPassword.send")}

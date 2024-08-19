@@ -228,8 +228,8 @@ function AddApartmentScreen(props) {
         );
 
         const result = await response.json();
-        console.log("image upload: ", result.url);
         const secureImageUrl = ensureHttps(result.url);
+        console.log("image upload: ", secureImageUrl);
         imageUrls.push(secureImageUrl); // Add the image URL to the array
       } catch (error) {
         console.error("Error uploading image: ", error);
@@ -756,9 +756,10 @@ function AddApartmentScreen(props) {
                 textColor={isDarkMode ? Color.darkTheme : Color.defaultTheme}
                 mode="contained"
                 onPress={handleAddApartment}
-                loading={loading}
+                loading={loading || isPending}
+                disabled={loading || isPending}
               >
-                {!loading && t("add")}
+                {(!loading || !isPending) && t("add")}
               </Button>
             </View>
           </View>
