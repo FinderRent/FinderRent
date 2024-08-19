@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { View } from "react-native";
+import { Platform, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 import { Color } from "../constants/colors";
