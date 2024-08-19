@@ -4,7 +4,7 @@ import { Color } from "../../constants/colors";
 
 function ErrorMessage({ errorMessage }) {
   // Remove "Error:" from the beginning of the error message
-  const message = errorMessage ? errorMessage.replace(/^Error:\s*/i, "") : "";
+  const message = errorMessage?.replace(/^Error:\s*/i, "") || "";
 
   return (
     <View testID="error-message" style={styles.container}>

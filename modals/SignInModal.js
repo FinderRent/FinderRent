@@ -203,11 +203,12 @@ function SignInModal({ showVisible }) {
                 style={[
                   styles.button,
                   isDarkMode && { backgroundColor: Color.defaultTheme },
+                  isPending,
                 ]}
                 mode="contained"
                 onPress={handleLogin}
                 loading={isPending}
-                disabled={isPending}
+                // disabled={isPending}
                 textColor={isDarkMode ? Color.darkTheme : Color.defaultTheme}
               >
                 {!isPending && t("login_button")}
