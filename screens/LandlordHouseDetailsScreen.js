@@ -38,7 +38,7 @@ const LandlordHouseDetailsScreen = ({ navigation, route }) => {
   const { isDarkMode } = useDarkMode();
   const { userData } = useUsers();
 
-  const { apartment } = route.params;
+  const { apartment, setHasFetched } = route.params;
 
   const scrollRef = useAnimatedRef();
   const tabBarHeight = useBottomTabBarHeight();
@@ -119,7 +119,10 @@ const LandlordHouseDetailsScreen = ({ navigation, route }) => {
   }, [navigation, isDarkMode]);
 
   function handleEditPress() {
-    navigation.navigate("EditApartmentScreen", { apartment: apartment });
+    navigation.navigate("EditApartmentScreen", {
+      apartment: apartment,
+      setHasFetched,
+    });
   }
   const handleMapPress = () => {
     setMapPress(!mapPress);

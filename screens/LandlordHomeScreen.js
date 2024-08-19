@@ -198,6 +198,7 @@ function LandlordHomeScreen({ navigation }) {
           navigation={navigation}
           apartment={apartment}
           userData={userData}
+          setHasFetched={setHasFetched}
         />
       </SwipeableRow>
     );

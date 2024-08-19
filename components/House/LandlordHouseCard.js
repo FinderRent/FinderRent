@@ -7,7 +7,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { useDarkMode } from "../../context/DarkModeContext";
 import { Color } from "../../constants/colors";
 
-const LandlordHouseCard = ({ navigation, apartment }) => {
+const LandlordHouseCard = ({ navigation, apartment, setHasFetched }) => {
   const { isDarkMode } = useDarkMode();
   const { t } = useTranslation();
 
@@ -24,7 +24,10 @@ const LandlordHouseCard = ({ navigation, apartment }) => {
       <TouchableOpacity
         activeOpacity={0.7}
         onPress={() =>
-          navigation.navigate("LandlordHouseDetailsScreen", { apartment })
+          navigation.navigate("LandlordHouseDetailsScreen", {
+            apartment,
+            setHasFetched,
+          })
         }
       >
         <View style={styles.contentContainer}>

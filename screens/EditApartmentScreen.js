@@ -24,7 +24,7 @@ import ImagePickerMulti from "../components/ImagePickerMulti";
 function EditApartmentScreen({ route, navigation }) {
   const { t } = useTranslation();
   const { isDarkMode } = useDarkMode();
-  const { apartment } = route.params;
+  const { apartment, setHasFetched } = route.params;
 
   const { userData } = useUsers();
   const [country, setCountry] = useState(apartment?.address.country);
@@ -231,6 +231,7 @@ function EditApartmentScreen({ route, navigation }) {
           text1: "Apartment edited successfully!",
         });
       }
+      setHasFetched(false);
       navigation.goBack();
       navigation.goBack();
     },
@@ -239,28 +240,80 @@ function EditApartmentScreen({ route, navigation }) {
     },
   });
 
+  // const handleImageUpload = async (images) => {
+  //   const imageUrls = [];
+
+  //   for (const image of images) {
+  //     // Check if the file exists
+  //     const fileInfo = await FileSystem.getInfoAsync(image);
+  //     if (!fileInfo.exists) {
+  //       throw new Error(`File does not exist at path: ${image}`);
+  //     }
+
+  //     // Convert the image to base64 format
+  //     const base64Image = await FileSystem.readAsStringAsync(image, {
+  //       encoding: FileSystem.EncodingType.Base64,
+  //     });
+
+  //     const data = new FormData();
+  //     data.append("file", `data:image/jpeg;base64,${base64Image}`);
+  //     data.append("upload_preset", "FindeRent");
+  //     data.append("cloud_name", "finderent");
+  //     data.append("folder", "Apartments");
+
+  //     try {
+  //       const response = await fetch(
+  //         "https://api.cloudinary.com/v1_1/finderent/image/upload",
+  //         {
+  //           method: "post",
+  //           headers: {
+  //             "Content-Type": "multipart/form-data",
+  //           },
+  //           body: data,
+  //         }
+  //       );
+
+  //       const result = await response.json();
+  //       console.log("image upload: ", result.url);
+  //       imageUrls.push(result.url); // Add the image URL to the array
+  //     } catch (error) {
+  //       console.error("Error uploading image: ", error);
+  //       throw new Error("Failed to upload image");
+  //     }
+  //   }
+
+  //   return imageUrls; // Return the array of image URLs
+  // };
+
   const handleImageUpload = async (images) => {
     const imageUrls = [];
 
     for (const image of images) {
-      // Check if the file exists
-      const fileInfo = await FileSystem.getInfoAsync(image);
-      if (!fileInfo.exists) {
-        throw new Error(`File does not exist at path: ${image}`);
+      // Check if the image is a local file URI or a remote URL
+      if (image.startsWith("http")) {
+        // Skip uploading for remote URLs and add them directly to the array
+        imageUrls.push(image);
+        continue;
       }
 
-      // Convert the image to base64 format
-      const base64Image = await FileSystem.readAsStringAsync(image, {
-        encoding: FileSystem.EncodingType.Base64,
-      });
-
-      const data = new FormData();
-      data.append("file", `data:image/jpeg;base64,${base64Image}`);
-      data.append("upload_preset", "FindeRent");
-      data.append("cloud_name", "finderent");
-      data.append("folder", "Apartments");
-
       try {
+        // FileSystem.getInfoAsync only works for local file URIs, not for URLs
+        const fileInfo = await FileSystem.getInfoAsync(image);
+        if (!fileInfo.exists) {
+          throw new Error(`File does not exist at path: ${image}`);
+        }
+
+        // Convert the image to base64 format
+        const base64Image = await FileSystem.readAsStringAsync(image, {
+          encoding: FileSystem.EncodingType.Base64,
+        });
+
+        const data = new FormData();
+        data.append("file", `data:image/jpeg;base64,${base64Image}`);
+        data.append("upload_preset", "FindeRent");
+        data.append("cloud_name", "finderent");
+        data.append("folder", "Apartments");
+
         const response = await fetch(
           "https://api.cloudinary.com/v1_1/finderent/image/upload",
           {
@@ -273,7 +326,6 @@ function EditApartmentScreen({ route, navigation }) {
         );
 
         const result = await response.json();
-        console.log("image upload: ", result.url);
         imageUrls.push(result.url); // Add the image URL to the array
       } catch (error) {
         console.error("Error uploading image: ", error);
@@ -284,21 +336,58 @@ function EditApartmentScreen({ route, navigation }) {
     return imageUrls; // Return the array of image URLs
   };
 
+  // const handleEditApartment = async () => {
+  //   try {
+  //     setLoading(true);
+  //     const imageUrls = await handleImageUpload(apartmentImages);
+
+  //     const imageUrlsArray =
+  //       typeof imageUrls === "string" ? imageUrls.split(",") : imageUrls;
+
+  //     const updatedApartmentData = {
+  //       ...apartmentData,
+  //       images: imageUrlsArray,
+  //     };
+
+  //     console.log("new apartment: " + updatedApartmentData);
+  //     mutate(apartmentData);
+  //     setLoading(false);
+  //   } catch (error) {
+  //     console.error(
+  //       "Error uploading images or updating apartment data: ",
+  //       error
+  //     );
+  //     setLoading(false);
+  //   }
+  // };
   const handleEditApartment = async () => {
     try {
       setLoading(true);
-      const imageUrls = await handleImageUpload(apartmentImages);
 
-      const imageUrlsArray =
-        typeof imageUrls === "string" ? imageUrls.split(",") : imageUrls;
+      // Filter out images that are local URIs (not yet uploaded)
+      const localImages = apartmentImages.filter(
+        (image) => !image.startsWith("https://")
+      );
 
+      // Upload only the local images
+      const uploadedImageUrls = await handleImageUpload(localImages);
+
+      // Combine the uploaded image URLs with the already existing Cloudinary URLs
+      const finalImageArray = [
+        ...apartmentImages.filter((image) => image.startsWith("https://")), // Existing Cloudinary URLs
+        ...uploadedImageUrls, // New URLs from the phone upload
+      ];
+
+      // Update the apartment data with the final array of image URLs
       const updatedApartmentData = {
         ...apartmentData,
-        images: imageUrlsArray,
+        images: finalImageArray,
       };
 
-      console.log(updatedApartmentData);
-      mutate(apartmentData);
+      console.log("new apartment: ", updatedApartmentData);
+
+      // Mutate the apartment data to update the DB
+      mutate(updatedApartmentData);
       setLoading(false);
     } catch (error) {
       console.error(
