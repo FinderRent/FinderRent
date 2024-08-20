@@ -41,7 +41,7 @@ const AboutScreen = () => {
   }));
 
   const animatedFooterStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scaleFooter.value }],
+    transform: [{ scale: scaleFooter.value + 0.1 }],
   }));
 
   return (
@@ -55,7 +55,7 @@ const AboutScreen = () => {
       }}
       onScroll={(event) => {
         const offsetY = event.nativeEvent.contentOffset.y;
-        scaleFooter.value = interpolate(offsetY, [0, 150], [1, 1.2]);
+        scaleFooter.value = interpolate(offsetY, [0, 150], [1, 1.1]);
       }}
       scrollEventThrottle={16}
     >

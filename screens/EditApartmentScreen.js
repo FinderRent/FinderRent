@@ -14,7 +14,7 @@ import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { updateEditedApartment } from "../utils/http";
 import { useUsers } from "../context/UserContext";
-import { fullName } from "../utils/features";
+import { ensureHttps, fullName } from "../utils/features";
 import Input from "../components/inputs/Input";
 import DropDown from "../components/inputs/DropDown";
 import ErrorMessage from "../components/ui/ErrorMessage";
@@ -326,7 +326,8 @@ function EditApartmentScreen({ route, navigation }) {
         );
 
         const result = await response.json();
-        imageUrls.push(result.url); // Add the image URL to the array
+        const secureImageUrl = ensureHttps(result.url);
+        imageUrls.push(secureImageUrl); // Add the image URL to the array
       } catch (error) {
         console.error("Error uploading image: ", error);
         throw new Error("Failed to upload image");
