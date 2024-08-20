@@ -214,7 +214,7 @@ function LandlordHomeScreen({ navigation }) {
     >
       <StatusBar style={isDarkMode ? "light" : "dark"} />
       {token ? <LandlordHeader /> : <SignInHeader />}
-      {/* <View style={{ marginTop: 15 }}></View> */}
+      <View style={{ marginTop: Platform.OS === "ios" ? 0 : 15 }}></View>
       {apartments?.apartments.length === 0 && <NoApartments />}
       {/* <Text style={styles.PropertiesHeader}>{t("yourProperties")}</Text> */}
       {apartments?.apartments.length > 0 && isFetchingApartments ? (
