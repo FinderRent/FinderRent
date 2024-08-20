@@ -47,14 +47,18 @@ const LandlordHeader = () => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 50,
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 10, // Ensures the header stays above other elements
+    paddingTop: "15%",
+    paddingBottom: "5%",
     paddingHorizontal: 16,
-    marginTop: -35,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
   },
   contentContainer: {
-    marginBottom: -35,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
