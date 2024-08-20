@@ -12,12 +12,11 @@ import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { useUsers } from "../context/UserContext";
 import { fetchAllApartments } from "../utils/http";
-import ProfileLocation from "../components/ProfileLocation";
-import SignInHeader from "../components/SignInHeader";
-// import ExploreHeader from "../components/ExploreHeader";
+import ProfileLocationHeader from "../components/Headers/ProfileLocationHeader";
 import ListingsMap from "../components/Map/ListingsMap";
 import HouseList from "../components/House/HouseList";
 import ExploreHeader from "../components/Headers/ExploreHeader";
+import SignInHeader from "../components/Headers/SignInHeader";
 
 // function to get Permissions for PushNotifications
 async function registerForPushNotificationsAsync() {
@@ -179,7 +178,7 @@ function HomeScreen({ navigation, route }) {
       }}
     >
       <StatusBar style={isDarkMode ? "light" : "dark"} />
-      {token ? <ProfileLocation /> : <SignInHeader />}
+      {token ? <ProfileLocationHeader /> : <SignInHeader />}
 
       <ExploreHeader
         onCategoryChanged={onDataChanged}

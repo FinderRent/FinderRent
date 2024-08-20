@@ -16,6 +16,7 @@ import Carousel from "react-native-reanimated-carousel";
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { Paragraph, Text } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
@@ -25,10 +26,9 @@ import MapModal from "../modals/MapModal";
 import Map from "../components/Map/Map";
 import HouseInfo from "../components/House/HouseInfo";
 import HouseRoommates from "../components/House/HouseRoommates";
-import Seperator from "../components/Seperator";
+import Seperator from "../components/ui/Seperator";
 import HouseAssets from "../components/House/HouseAssets";
 import RoommatesInfo from "../components/House/RoommatesInfo";
-import { useTranslation } from "react-i18next";
 
 const IMG_HEIGHT = 300;
 const { width } = Dimensions.get("window");

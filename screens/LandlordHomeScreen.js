@@ -20,14 +20,14 @@ import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { useUsers } from "../context/UserContext";
 import { deleteApartment, fetchAllApartments } from "./../utils/http";
-import LandlordHeader from "../components/LandlordHeader";
-import SignInHeader from "../components/SignInHeader";
+import LandlordHeader from "../components/Headers/LandlordHeader";
+import SignInHeader from "../components/Headers/SignInHeader";
 import LandlordHouseCard from "../components/House/LandlordHouseCard";
 import AddApartmentButton from "../components/ui/AddApartmentButton";
 import AddApartmentScreen from "./AddApartmentScreen";
 import Loader from "../components/ui/Loader";
 import ErrorMessage from "../components/ui/ErrorMessage";
-import SwipeableRow from "../components/SwipeableRow";
+import SwipeableRow from "../components/ui/SwipeableRow";
 import NoApartments from "../components/House/NoApartments";
 
 async function registerForPushNotificationsAsync() {

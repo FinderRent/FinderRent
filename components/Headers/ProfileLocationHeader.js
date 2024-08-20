@@ -6,12 +6,12 @@ import {
 } from "react-native";
 import { Text } from "react-native-paper";
 import { useTranslation } from "react-i18next";
-
-import { Color } from "../constants/colors";
-import { useUsers } from "../context/UserContext";
 import { useNavigation } from "@react-navigation/native";
 
-const ProfileLocation = () => {
+import { useUsers } from "../../context/UserContext";
+import { Color } from "../../constants/colors";
+
+const ProfileLocationHeader = () => {
   const { t } = useTranslation();
   const { userData } = useUsers();
   const navigation = useNavigation();
@@ -54,6 +54,8 @@ const ProfileLocation = () => {
   );
 };
 
+export default ProfileLocationHeader;
+
 const styles = StyleSheet.create({
   profileLocationView: {
     flexDirection: "row",
@@ -85,4 +87,3 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
-export default ProfileLocation;

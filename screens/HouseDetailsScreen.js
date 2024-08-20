@@ -32,7 +32,7 @@ import MapModal from "../modals/MapModal";
 import Map from "../components/Map/Map";
 import HouseInfo from "../components/House/HouseInfo";
 import HouseRoommates from "../components/House/HouseRoommates";
-import Seperator from "../components/Seperator";
+import Seperator from "../components/ui/Seperator";
 import HouseAssets from "../components/House/HouseAssets";
 import RoommatesInfo from "../components/House/RoommatesInfo";
 import fetchChats from "../api/chats/fetchChats";

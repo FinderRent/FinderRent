@@ -13,7 +13,7 @@ import { FavoritesContext } from "../context/FavoritesContext";
 import fetchApartment from "../api/apartments/fetchApartment";
 import Loader from "../components/ui/Loader";
 import ErrorMessage from "../components/ui/ErrorMessage";
-import SwipeableRow from "../components/SwipeableRow";
+import SwipeableRow from "../components/ui/SwipeableRow";
 
 const FavoritesScreen = ({ navigation }) => {
   const { t } = useTranslation();

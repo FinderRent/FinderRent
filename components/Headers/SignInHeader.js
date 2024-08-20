@@ -4,9 +4,9 @@ import { Text } from "react-native-paper";
 import { Button } from "react-native-elements";
 import { useTranslation } from "react-i18next";
 
-import { Color } from "../constants/colors";
-import { useDarkMode } from "../context/DarkModeContext";
-import SignInModal from "../modals/SignInModal";
+import { Color } from "../../constants/colors";
+import { useDarkMode } from "../../context/DarkModeContext";
+import SignInModal from "../../modals/SignInModal";
 
 const SignInHeader = () => {
   const { t } = useTranslation();

@@ -1,10 +1,10 @@
 import React, { useRef } from "react";
-import { Animated, StyleSheet, View, I18nManager } from "react-native";
+import { Animated, StyleSheet, View } from "react-native";
 import { RectButton, Swipeable } from "react-native-gesture-handler";
 import { FontAwesome6 } from "@expo/vector-icons";
 
-import { Color } from "../constants/colors";
-import { useDarkMode } from "../context/DarkModeContext";
+import { useDarkMode } from "../../context/DarkModeContext";
+import { Color } from "../../constants/colors";
 
 const SwipeableRow = ({ children, onDelete, color }) => {
   const { isDarkMode } = useDarkMode();

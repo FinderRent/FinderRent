@@ -4,9 +4,9 @@ import { Text, Avatar } from "react-native-paper";
 import { useTranslation } from "react-i18next";
 import { LinearGradient } from "expo-linear-gradient";
 
-import { Color } from "../constants/colors";
-import { useUsers } from "../context/UserContext";
-import { useDarkMode } from "../context/DarkModeContext";
+import { Color } from "../../constants/colors";
+import { useUsers } from "../../context/UserContext";
+import { useDarkMode } from "../../context/DarkModeContext";
 
 const LandlordHeader = () => {
   const { isDarkMode } = useDarkMode();
