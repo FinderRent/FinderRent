@@ -18,7 +18,8 @@ import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import ThemeModal from "../modals/ThemeModal";
 import i18next from "../services/i18next";
-import ChangeLanguage from "../modals/ChangeLanguage";
+import ChangeLanguageModal from "../modals/ChangeLanguageModal";
+import CurrencyModal from "../modals/CurrencyModal";
 
 const SECTIONS = [
   {
@@ -26,6 +27,12 @@ const SECTIONS = [
     items: [
       { id: "language", icon: "earth", label: "language", type: "select" },
       { id: "theme", icon: "theme-light-dark", label: "theme", type: "link" },
+      {
+        id: "currency",
+        icon: "cash-multiple",
+        label: "currency",
+        type: "select",
+      },
       {
         id: "notifications",
         icon: "bell-outline",
@@ -58,11 +65,13 @@ function SettingsScreen() {
   const { t } = useTranslation();
   const navigation = useNavigation();
 
-  const [showThemeModal, setShowThemeModal] = useState(false);
   const [showLanguageModal, setShowLanguageModal] = useState(false);
+  const [showThemeModal, setShowThemeModal] = useState(false);
+  const [showCurrencyModal, setShowCurrencyModal] = useState(false);
 
   const [form, setForm] = useState({
     language: "",
+    currency: "",
     notifications: true,
   });
 
@@ -87,6 +96,7 @@ function SettingsScreen() {
     setForm((prevForm) => ({
       ...prevForm,
       language: newLang,
+      currency: "ILS",
     }));
   }, [i18next.language]);
 
@@ -95,14 +105,17 @@ function SettingsScreen() {
       case "language":
         setShowLanguageModal(true);
         break;
+      case "theme":
+        setShowThemeModal(true);
+        break;
+      case "currency":
+        setShowCurrencyModal(true);
+        break;
       case "about":
         navigation.navigate("AboutScreen");
         break;
       case "contact":
         navigation.navigate("ContactUsScreen");
-        break;
-      case "theme":
-        setShowThemeModal(true);
         break;
       default:
         break;
@@ -206,10 +219,13 @@ function SettingsScreen() {
           />
         )}
         {showLanguageModal && (
-          <ChangeLanguage
+          <ChangeLanguageModal
             showVisible={(showVisible) => setShowLanguageModal(showVisible)}
-            // handleTheme={handleTheme}
-            // appTheme={theme}
+          />
+        )}
+        {showCurrencyModal && (
+          <CurrencyModal
+            showVisible={(showVisible) => setShowCurrencyModal(showVisible)}
           />
         )}
       </ScrollView>

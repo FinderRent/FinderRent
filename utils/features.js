@@ -118,3 +118,12 @@ export const iconName = (icon) => {
 
   return iconMap[icon] || null;
 };
+
+export const convertCurrency = (fromCurrency, toCurrency, price) => {
+  const USD = 3.8;
+  if (fromCurrency === "USD" && toCurrency === "ILS") {
+    return (price * USD).toFixed(0);
+  } else if (fromCurrency === "ILS" && toCurrency === "USD") {
+    return (price / USD).toFixed(0);
+  } else return price;
+};

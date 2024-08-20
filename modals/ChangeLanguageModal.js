@@ -20,7 +20,7 @@ import i18next, { languageResources } from "../services/i18next";
 import languagesList from "../services/languagesList.json";
 import { checkRtllanguages } from "../utils/features";
 
-const ChangeLanguage = ({ showVisible }) => {
+const ChangeLanguageModal = ({ showVisible }) => {
   const { isDarkMode } = useDarkMode();
   const { t } = useTranslation();
 
@@ -138,6 +138,8 @@ const ChangeLanguage = ({ showVisible }) => {
   );
 };
 
+export default ChangeLanguageModal;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -214,5 +216,3 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
 });
-
-export default ChangeLanguage;

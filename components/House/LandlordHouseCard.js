@@ -6,10 +6,16 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { useDarkMode } from "../../context/DarkModeContext";
 import { Color } from "../../constants/colors";
+import { convertCurrency } from "../../utils/features";
 
 const LandlordHouseCard = ({ navigation, apartment, setHasFetched }) => {
   const { isDarkMode } = useDarkMode();
   const { t } = useTranslation();
+
+  // console.log("1", convertCurrency("USD", "ILS", apartment.price));
+  // console.log("2", convertCurrency("ILS", "USD", apartment.price));
+  // console.log("3", convertCurrency("USD", "USD", apartment.price));
+  // console.log("4", convertCurrency("ILS", "ILS", apartment.price));
 
   return (
     <Card
