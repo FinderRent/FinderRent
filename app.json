@@ -55,6 +55,8 @@
         "projectId": "5feb1ace-9d86-4523-b963-d9f8e0a06e36"
       }
     },
+    "supportsRTL": true,
+    "forcesRTL": true,
     "runtimeVersion": {
       "policy": "appVersion"
     },
