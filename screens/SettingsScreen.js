@@ -63,7 +63,7 @@ const SECTIONS = [
 
 function SettingsScreen() {
   const { isDarkMode, handleTheme, theme } = useDarkMode();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigation = useNavigation();
 
   const [showLanguageModal, setShowLanguageModal] = useState(false);
@@ -136,6 +136,17 @@ function SettingsScreen() {
         break;
     }
   };
+
+  useEffect(() => {
+    switch (i18n.language) {
+      case "en":
+        setCurrency("USD");
+        break;
+      case "he":
+        setCurrency("ILS");
+        break;
+    }
+  }, []);
 
   return (
     <SafeAreaView

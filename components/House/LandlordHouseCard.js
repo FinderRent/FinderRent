@@ -1,4 +1,3 @@
-import React from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Text, Card } from "react-native-paper";
 import { useTranslation } from "react-i18next";
@@ -7,15 +6,14 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { useDarkMode } from "../../context/DarkModeContext";
 import { Color } from "../../constants/colors";
 import { convertCurrency } from "../../utils/features";
+import { useCurrency } from "../../context/CurrencyContext";
 
 const LandlordHouseCard = ({ navigation, apartment, setHasFetched }) => {
-  const { isDarkMode } = useDarkMode();
   const { t } = useTranslation();
+  const { isDarkMode } = useDarkMode();
+  const { currency } = useCurrency();
 
-  // console.log("1", convertCurrency("USD", "ILS", apartment.price));
-  // console.log("2", convertCurrency("ILS", "USD", apartment.price));
-  // console.log("3", convertCurrency("USD", "USD", apartment.price));
-  // console.log("4", convertCurrency("ILS", "ILS", apartment.price));
+  // console.log(currency);
 
   return (
     <Card
@@ -50,7 +48,14 @@ const LandlordHouseCard = ({ navigation, apartment, setHasFetched }) => {
               </Text>
             </View>
             <View style={styles.infoContainer}>
-              <Text style={styles.price}>₪{apartment.price}</Text>
+              <Text style={styles.price}>
+                {currency?.symbol ?? apartment?.currency?.symbol}
+                {convertCurrency(
+                  apartment?.currency?.currency,
+                  currency?.code,
+                  apartment?.price
+                )}
+              </Text>
               <View style={styles.typeAndRooms}>
                 <View style={styles.iconTextContainer}>
                   <Icon

@@ -3,7 +3,6 @@ import { View, StyleSheet } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 
 import { useDarkMode } from "../../context/DarkModeContext";
-import { Color } from "../../constants/colors";
 
 function DropDown({
   list,
@@ -27,7 +26,6 @@ function DropDown({
     setValue(selectedValue);
     onValueChange(selectedValue);
   };
-
   return (
     <View style={styles.container}>
       <View style={[styles.view, style]}>

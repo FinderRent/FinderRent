@@ -7,11 +7,11 @@ import {
   Pressable,
   Image,
   FlatList,
-  Text,
   TouchableOpacity,
 } from "react-native";
 import { useTranslation } from "react-i18next";
 import { Ionicons } from "@expo/vector-icons";
+import { Text } from "react-native-paper";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
@@ -50,7 +50,12 @@ const CurrencyModal = ({ showVisible, handleCurrencyChange }) => {
       name: t("IsraeliShekel"),
       flag: require("../assets/images/israel.png"),
     },
-    // { code: "EUR", symbol: "€", name: "Euro", flag: require("../assets/images/flags/eu.png") },
+    {
+      code: "EUR",
+      symbol: "€",
+      name: t("Euro"),
+      flag: require("../assets/images/eu.jpg"),
+    },
   ];
   const handleCurrencySelect = async (currency) => {
     setSelectedCurrency(currency);
@@ -86,8 +91,10 @@ const CurrencyModal = ({ showVisible, handleCurrencyChange }) => {
               <TouchableOpacity
                 style={[
                   styles.currencyItem,
-                  selectedCurrency?.code === item.code &&
+                  selectedCurrency?.code === item.code && [
                     styles.selectedCurrency,
+                    isDarkMode && { backgroundColor: Color.Blue900 },
+                  ],
                 ]}
                 onPress={() => handleCurrencySelect(item)}
               >
@@ -95,7 +102,7 @@ const CurrencyModal = ({ showVisible, handleCurrencyChange }) => {
                   <Ionicons
                     name="checkmark-circle"
                     size={24}
-                    color={Color.Blue500}
+                    color={isDarkMode ? Color.Blue10 : Color.Blue500}
                     style={styles.checkmarkIcon}
                   />
                 )}
@@ -108,6 +115,19 @@ const CurrencyModal = ({ showVisible, handleCurrencyChange }) => {
               </TouchableOpacity>
             )}
           />
+          <View style={styles.confirmation}>
+            <TouchableOpacity onPress={() => showVisible(false)}>
+              <Text
+                style={{
+                  color: Color.Blue500,
+                  fontSize: 26,
+                  marginBottom: 10,
+                }}
+              >
+                {t("confirm")}
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </Modal>
     </SafeAreaView>
@@ -166,5 +186,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: "50%",
     right: 10,
+  },
+  confirmation: {
+    flexDirection: "row",
+    marginTop: 100,
+    justifyContent: "flex-end",
   },
 });

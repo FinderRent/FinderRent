@@ -114,8 +114,6 @@ function AddApartmentScreen(props) {
     ) {
       Geocoder.init("AIzaSyDYInyCvJ1WQjqJohhMx2OnxioXWAvy39s");
       const address = `${city} ${street} ${buildingNumber}`;
-      // console.log(address);
-      // console.log(coordinates);
       Geocoder.from(address)
         .then((json) => {
           const location = json.results[0].geometry.location;
@@ -126,16 +124,31 @@ function AddApartmentScreen(props) {
         })
         .catch((error) => console.warn(error));
     }
+  }, [city, street, buildingNumber, focusedInput]);
 
+  useEffect(() => {
     switch (i18n.language) {
       case "en":
+        setCurrency("USD");
         setCurrencySymbol("$");
         break;
       case "he":
+        setCurrency("ILS");
         setCurrencySymbol("₪");
         break;
     }
-  }, [city, street, buildingNumber, focusedInput]);
+  }, []);
+
+  useEffect(() => {
+    switch (currency) {
+      case "USD":
+        setCurrencySymbol("$");
+        break;
+      case "ILS":
+        setCurrencySymbol("₪");
+        break;
+    }
+  }, [currency]);
 
   const handleFocus = (input) => {
     setFocusedInput(input);
@@ -252,16 +265,7 @@ function AddApartmentScreen(props) {
 
     return imageUrls; // Return the array of image URLs
   };
-  ///------------------------
 
-  // const localUri = apartmentImage;
-  // const filename = localUri.split("/").pop();
-
-  // const localUris = apartmentImages;
-  // const filenames = localUris.map((uri) => uri.split("/").pop());
-
-  // ///------------------------
-  //object to send to the backend
   const apartmentData = {
     address: {
       street,
@@ -281,15 +285,11 @@ function AddApartmentScreen(props) {
     numberOfRooms: rooms !== "" ? parseInt(rooms) : undefined,
     apartmentContent: createApartmentContent(selected),
     tenants: selectTenants,
-    // rating: 5,
     price: price !== "" ? parseInt(price) : undefined,
+    currency: { currency, symbol: currencySymbol },
     floor: floor !== "" ? parseInt(floor) : undefined,
     owner: userData.id,
     apartmentType,
-    // images: {
-    //   public_id: publicImageURL,
-    //   url: publicImageURL,
-    // },
     images: [],
   };
   const resetForm = () => {
@@ -346,17 +346,6 @@ function AddApartmentScreen(props) {
     },
   });
 
-  // const handleAddApartment = async () => {
-  //   const imageUrl = await handleImageUpload(apartmentImage);
-  //   const updatedApartmentData = {
-  //     ...apartmentData,
-  //     images: {
-  //       public_id: imageUrl,
-  //       url: imageUrl,
-  //     },
-  //   };
-  //   mutate(updatedApartmentData);
-  // };
   const handleAddApartment = async () => {
     try {
       setLoading(true);
@@ -575,7 +564,7 @@ function AddApartmentScreen(props) {
                     dropDownDirection="TOP"
                     list={currencyList}
                     label={currencySymbol}
-                    // placeholder={currencySymbol}
+                    value={currency}
                     searchable={false}
                     listMode="SCROLLVIEW"
                     dropDownContainerStyle={{
@@ -614,7 +603,7 @@ function AddApartmentScreen(props) {
                 <Text style={styles.subHeader}>{t("type")}</Text>
                 <View>
                   <DropDown
-                    style={styles.DropDown}
+                    style={styles.dropDown}
                     dropDownDirection="TOP" // This will force the dropdown to always open to the top
                     list={apartmentTypeList}
                     label={t("houseType")}

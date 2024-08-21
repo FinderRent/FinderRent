@@ -120,10 +120,22 @@ export const iconName = (icon) => {
 };
 
 export const convertCurrency = (fromCurrency, toCurrency, price) => {
-  const USD = 3.8;
-  if (fromCurrency === "USD" && toCurrency === "ILS") {
-    return (price * USD).toFixed(0);
-  } else if (fromCurrency === "ILS" && toCurrency === "USD") {
-    return (price / USD).toFixed(0);
-  } else return price;
+  const exchangeRates = {
+    USD: {
+      ILS: 3.8,
+      EUR: 0.88,
+    },
+    ILS: {
+      USD: 1 / 3.8,
+      EUR: 0.88 / 3.8,
+    },
+    EUR: {
+      USD: 1 / 0.88,
+      ILS: 3.8 / 0.88,
+    },
+  };
+
+  const conversionRate = exchangeRates[fromCurrency]?.[toCurrency] || 1;
+
+  return (price * conversionRate).toFixed(0);
 };

@@ -16,6 +16,7 @@ import { checkRtllanguages } from "./utils/features";
 import AuthStackScreens from "./navigation/AuthStackScreens";
 import FavoritesContextProvider from "./context/FavoritesContext";
 import i18next from "./services/i18next";
+import CurrencyProvider from "./context/CurrencyContext";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -133,13 +134,15 @@ export default function App() {
               email,
             }}
           >
-            <FavoritesContextProvider userId={id}>
-              <MenuProvider>
-                <AuthStackScreens />
-              </MenuProvider>
-              <Toast />
-              <FlashMessage position="top" />
-            </FavoritesContextProvider>
+            <CurrencyProvider>
+              <FavoritesContextProvider userId={id}>
+                <MenuProvider>
+                  <AuthStackScreens />
+                </MenuProvider>
+                <Toast />
+                <FlashMessage position="top" />
+              </FavoritesContextProvider>
+            </CurrencyProvider>
           </UserContext.Provider>
         </QueryClientProvider>
       </DarkModeProvider>

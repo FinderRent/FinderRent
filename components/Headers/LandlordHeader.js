@@ -7,6 +7,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Color } from "../../constants/colors";
 import { useUsers } from "../../context/UserContext";
 import { useDarkMode } from "../../context/DarkModeContext";
+import { capitalizeWords } from "../../utils/features";
 
 const LandlordHeader = () => {
   const { isDarkMode } = useDarkMode();
@@ -26,7 +27,7 @@ const LandlordHeader = () => {
       <View style={styles.contentContainer}>
         <View style={styles.leftContainer}>
           <Text style={styles.greeting}>
-            {t("hello")},{" " + userData.firstName}
+            {t("hello")},{" " + capitalizeWords(userData.firstName)}
           </Text>
           <Text style={styles.properties}>{t("yourProperties")}</Text>
         </View>
