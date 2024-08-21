@@ -23,7 +23,7 @@ import ErrorMessage from "../components/ui/ErrorMessage";
 import ImagePickerMulti from "../components/ImagePickerMulti";
 
 function AddApartmentScreen(props) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { isDarkMode } = useDarkMode();
 
   const { userData } = useUsers();
@@ -35,6 +35,8 @@ function AddApartmentScreen(props) {
   const [floor, setFloor] = useState("");
   const [rooms, setRooms] = useState("");
   const [price, setPrice] = useState("");
+  const [currency, setCurrency] = useState("");
+  const [currencySymbol, setCurrencySymbol] = useState("");
   const [totalCapacity, setTotalCapacity] = useState("");
   const [realTimeCapacity, setRealTimeCapacity] = useState("");
   const [apartmentType, setApartmentType] = useState("");
@@ -50,9 +52,11 @@ function AddApartmentScreen(props) {
   const [apartmentImages, setApartmentImages] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // const [apartmentImage, setApartmentImage] = useState("");
-  // const [publicImageURL, setPublicImageURL] = useState("");
-  // const [publicImageURLs, setPublicImageURLs] = useState([]);
+  const currencyList = [
+    { label: "$", value: "USD" },
+    { label: "₪", value: "ILS" },
+    { label: "€", value: "EUR" },
+  ];
 
   const apartmentTypeList = [
     { label: t("landHouse"), value: "Land House" },
@@ -121,6 +125,15 @@ function AddApartmentScreen(props) {
           });
         })
         .catch((error) => console.warn(error));
+    }
+
+    switch (i18n.language) {
+      case "en":
+        setCurrencySymbol("$");
+        break;
+      case "he":
+        setCurrencySymbol("₪");
+        break;
     }
   }, [city, street, buildingNumber, focusedInput]);
 
@@ -548,7 +561,28 @@ function AddApartmentScreen(props) {
                     label={t("monthlyRent")}
                     value={price}
                     onValueChange={(price) => setPrice(price)}
-                    style={styles.input}
+                    style={[styles.input, { marginRight: -90 }]}
+                  />
+                  <DropDown
+                    style={{
+                      marginLeft: 43,
+                      width: 35,
+                      borderColor: isDarkMode
+                        ? Color.darkTheme
+                        : Color.darkTheme,
+                    }}
+                    showArrowIcon={false}
+                    dropDownDirection="TOP"
+                    list={currencyList}
+                    label={currencySymbol}
+                    // placeholder={currencySymbol}
+                    searchable={false}
+                    listMode="SCROLLVIEW"
+                    dropDownContainerStyle={{
+                      marginLeft: 43,
+                      width: 35,
+                    }}
+                    onValueChange={(currency) => setCurrency(currency)}
                   />
                 </View>
                 <View style={styles.line}>
@@ -795,6 +829,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  dropDown: {
+    padding: 20,
   },
   input: {
     flex: 1,

@@ -20,6 +20,7 @@ import ThemeModal from "../modals/ThemeModal";
 import i18next from "../services/i18next";
 import ChangeLanguageModal from "../modals/ChangeLanguageModal";
 import CurrencyModal from "../modals/CurrencyModal";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SECTIONS = [
   {
@@ -68,12 +69,17 @@ function SettingsScreen() {
   const [showLanguageModal, setShowLanguageModal] = useState(false);
   const [showThemeModal, setShowThemeModal] = useState(false);
   const [showCurrencyModal, setShowCurrencyModal] = useState(false);
+  const [currency, setCurrency] = useState("");
 
   const [form, setForm] = useState({
     language: "",
     currency: "",
     notifications: true,
   });
+
+  const handleCurrencyChange = (currencyCode) => {
+    setCurrency(currencyCode);
+  };
 
   useEffect(() => {
     let newLang = "";
@@ -93,12 +99,21 @@ function SettingsScreen() {
         break;
     }
 
+    const initializeCurrency = async () => {
+      const currencyString = await AsyncStorage.getItem("currency");
+      if (currencyString) {
+        const storedCurrency = JSON.parse(currencyString);
+        setCurrency(storedCurrency.code);
+      }
+    };
+    initializeCurrency();
+
     setForm((prevForm) => ({
       ...prevForm,
       language: newLang,
-      currency: "ILS",
+      currency: currency,
     }));
-  }, [i18next.language]);
+  }, [i18next.language, currency]);
 
   const handlePress = (id) => {
     switch (id) {
@@ -226,6 +241,7 @@ function SettingsScreen() {
         {showCurrencyModal && (
           <CurrencyModal
             showVisible={(showVisible) => setShowCurrencyModal(showVisible)}
+            handleCurrencyChange={handleCurrencyChange}
           />
         )}
       </ScrollView>

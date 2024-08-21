@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -11,39 +11,56 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useTranslation } from "react-i18next";
+import { Ionicons } from "@expo/vector-icons";
+
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const CurrencyModal = ({ showVisible }) => {
+const CurrencyModal = ({ showVisible, handleCurrencyChange }) => {
   const { isDarkMode } = useDarkMode();
   const { t } = useTranslation();
 
   const [visible, setVisible] = useState(true);
   const [selectedCurrency, setSelectedCurrency] = useState(null);
+  const [currency, setCurrency] = useState(null);
+
+  useEffect(() => {
+    const initializeCurrency = async () => {
+      const currencyString = await AsyncStorage.getItem("currency");
+      if (currencyString) {
+        const storedCurrency = JSON.parse(currencyString);
+        setCurrency(storedCurrency);
+        setSelectedCurrency(storedCurrency);
+      }
+    };
+    initializeCurrency();
+  }, []);
 
   const currencyList = [
     {
       code: "USD",
       symbol: "$",
-      name: "US Dollar",
+      name: t("USDollar"),
       flag: require("../assets/images/usa.png"),
     },
     {
       code: "ILS",
       symbol: "₪",
-      name: "Israeli Shekel",
+      name: t("IsraeliShekel"),
       flag: require("../assets/images/israel.png"),
     },
     // { code: "EUR", symbol: "€", name: "Euro", flag: require("../assets/images/flags/eu.png") },
   ];
+  const handleCurrencySelect = async (currency) => {
+    setSelectedCurrency(currency);
+    const currencyString = JSON.stringify(currency);
+    await AsyncStorage.setItem("currency", currencyString);
+    handleCurrencyChange(currency.code);
+  };
 
   const handleCancel = () => {
     showVisible(false);
-  };
-
-  const handleCurrencySelect = (currency) => {
-    setSelectedCurrency(currency);
-    // Perform any additional logic, such as updating the app's currency
   };
 
   return (
@@ -74,6 +91,15 @@ const CurrencyModal = ({ showVisible }) => {
                 ]}
                 onPress={() => handleCurrencySelect(item)}
               >
+                {selectedCurrency?.code === item.code && (
+                  <Ionicons
+                    name="checkmark-circle"
+                    size={24}
+                    color={Color.Blue500}
+                    style={styles.checkmarkIcon}
+                  />
+                )}
+
                 <Image source={item.flag} style={styles.currencyFlag} />
                 <Text style={styles.currencySymbol}>{item.symbol}</Text>
                 <Text style={styles.currencyName}>
@@ -122,7 +148,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   selectedCurrency: {
-    backgroundColor: Color.Blue300,
+    backgroundColor: Color.Blue10,
   },
   currencyFlag: {
     width: 25,
@@ -135,5 +161,10 @@ const styles = StyleSheet.create({
   },
   currencyName: {
     fontSize: 16,
+  },
+  checkmarkIcon: {
+    position: "absolute",
+    bottom: "50%",
+    right: 10,
   },
 });
