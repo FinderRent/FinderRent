@@ -5,13 +5,15 @@ import { Marker } from "react-native-maps";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { PROVIDER_GOOGLE, PROVIDER_DEFAULT } from "react-native-maps";
+import { useQuery } from "@tanstack/react-query";
 import MapView from "react-native-map-clustering";
 
 import { Color } from "../../constants/colors";
 import { useDarkMode } from "../../context/DarkModeContext";
 import { useUsers } from "../../context/UserContext";
+import { useCurrency } from "../../context/CurrencyContext";
 import { getDistances } from "../../utils/http";
-import { useQuery } from "@tanstack/react-query";
+import { convertCurrency } from "../../utils/features";
 
 const type = [
   {
@@ -37,6 +39,7 @@ const ListingsMap = memo(({ navigation, listings, coordinates }) => {
 
   const { isDarkMode } = useDarkMode();
   const { userData } = useUsers();
+  const { currency } = useCurrency();
 
   const mapRef = useRef();
   const DEFAULT_REGION = {
@@ -177,7 +180,15 @@ const ListingsMap = memo(({ navigation, listings, coordinates }) => {
                 size={24}
                 color={Color.gray}
               />
-              <Text style={styles.markerText}>₪ {apartment.price}</Text>
+              <Text style={styles.markerText}>
+                {" "}
+                {currency?.symbol || apartment?.currency?.symbol}
+                {convertCurrency(
+                  apartment?.currency?.currency,
+                  currency?.code,
+                  apartment?.price
+                )}
+              </Text>
             </View>
           </Marker>
         ))}

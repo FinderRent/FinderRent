@@ -43,6 +43,8 @@ function EditApartmentScreen({ route, navigation }) {
   const [floor, setFloor] = useState(apartment?.floor.toString());
   const [rooms, setRooms] = useState(apartment?.numberOfRooms.toString());
   const [price, setPrice] = useState(apartment?.price.toString());
+  const [currency, setCurrency] = useState("");
+  const [currencySymbol, setCurrencySymbol] = useState("");
   const [totalCapacity, setTotalCapacity] = useState(
     apartment?.totalCapacity.toString()
   );
