@@ -5,10 +5,10 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 import { useDarkMode } from "../../context/DarkModeContext";
 import { Color } from "../../constants/colors";
-import { convertCurrency } from "../../utils/features";
+import { convertCurrency, iconName } from "../../utils/features";
 import { useCurrency } from "../../context/CurrencyContext";
 
-const LandlordHouseCard = ({ navigation, apartment, setHasFetched }) => {
+const LandlordHouseCard = ({ navigation, apartment }) => {
   const { t } = useTranslation();
   const { isDarkMode } = useDarkMode();
   const { currency } = useCurrency();
@@ -28,7 +28,6 @@ const LandlordHouseCard = ({ navigation, apartment, setHasFetched }) => {
         onPress={() =>
           navigation.navigate("LandlordHouseDetailsScreen", {
             apartment,
-            setHasFetched,
           })
         }
       >
@@ -57,7 +56,7 @@ const LandlordHouseCard = ({ navigation, apartment, setHasFetched }) => {
               <View style={styles.typeAndRooms}>
                 <View style={styles.iconTextContainer}>
                   <Icon
-                    name="home-variant-outline"
+                    name={iconName(apartment?.apartmentType)}
                     size={16}
                     color={Color.extraGray}
                   />

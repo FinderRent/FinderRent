@@ -10,27 +10,26 @@ import * as Haptics from "expo-haptics";
 
 import { Color } from "../../constants/colors";
 import { useDarkMode } from "../../context/DarkModeContext";
-import { LinearGradient } from "expo-linear-gradient";
 
 const categories = [
   {
-    key: "allCategories",
+    name: "All Categories",
     icon: "check-all",
   },
   {
-    key: "landHouse",
+    name: "Land House",
     icon: "home",
   },
   {
-    key: "housingUnit",
+    name: "Housing Unit",
     icon: "home-city",
   },
   {
-    key: "tower",
+    name: "Tower",
     icon: "city",
   },
   {
-    key: "penthouse",
+    name: "Penthouse",
     icon: "city-variant",
   },
 ];
@@ -60,10 +59,11 @@ const ExploreHeader = ({ onCategoryChanged, categoryIndex, filtersValues }) => {
       scrollRef.current?.scrollTo({ x: pageX - 16, y: 0, animated: true });
     });
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    if (categories[index].key === "allCategories") {
+    if (categories[index].name === "All Categories") {
       onCategoryChanged(null);
     } else {
-      onCategoryChanged(t(`${categories[index].key}`));
+      console.log(categories[index].name);
+      onCategoryChanged(categories[index].name);
     }
   };
 
@@ -131,7 +131,7 @@ const ExploreHeader = ({ onCategoryChanged, categoryIndex, filtersValues }) => {
                   : styles.categoryText
               }
             >
-              {t(`categories.${item.key}`)}
+              {t(`${item.name}`)}
             </Text>
           </TouchableOpacity>
         ))}

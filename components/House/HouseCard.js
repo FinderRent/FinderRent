@@ -16,7 +16,11 @@ import { Color } from "../../constants/colors";
 import { useDarkMode } from "../../context/DarkModeContext";
 import { FavoritesContext } from "../../context/FavoritesContext";
 import { useCurrency } from "../../context/CurrencyContext";
-import { capitalizeWords, convertCurrency } from "../../utils/features";
+import {
+  capitalizeWords,
+  convertCurrency,
+  iconName,
+} from "../../utils/features";
 import Indicators from "./Indicators";
 
 const { width } = Dimensions.get("window");
@@ -98,7 +102,7 @@ const HouseCard = ({ navigation, apartment, userData }) => {
             >
               <View style={styles.iconTextContainer}>
                 <Icon
-                  name="home-variant-outline"
+                  name={iconName(apartment.apartmentType)}
                   size={16}
                   color={Color.extraGray}
                 />

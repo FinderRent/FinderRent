@@ -198,7 +198,6 @@ function LandlordHomeScreen({ navigation }) {
           navigation={navigation}
           apartment={apartment}
           userData={userData}
-          setHasFetched={setHasFetched}
         />
       </SwipeableRow>
     );
@@ -216,7 +215,6 @@ function LandlordHomeScreen({ navigation }) {
       {token ? <LandlordHeader /> : <SignInHeader />}
       <View style={{ marginTop: Platform.OS === "ios" ? 0 : 15 }}></View>
       {apartments?.apartments.length === 0 && <NoApartments />}
-      {/* <Text style={styles.PropertiesHeader}>{t("yourProperties")}</Text> */}
       {apartments?.apartments.length > 0 && isFetchingApartments ? (
         <Loader color={isDarkMode ? Color.defaultTheme : Color.darkTheme} />
       ) : (

@@ -103,8 +103,10 @@ const FavoritesScreen = ({ navigation }) => {
                   <Text style={{ fontWeight: "bold" }} variant="bodyLarge">
                     {t(`categories2.${apartment?.apartmentType}`)}
                   </Text>
-                  <Text>
-                    {t("address")}: {apartment?.address?.street}
+                  <Text numberOfLines={1}>
+                    {t("address")}: {apartment?.address?.street}{" "}
+                    {apartment?.address.buildingNumber}/
+                    {apartment?.address.apartmentNumber}
                   </Text>
                   <Text>
                     {t("numOfRooms")}: {apartment?.numberOfRooms}

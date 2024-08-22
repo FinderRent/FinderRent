@@ -114,6 +114,10 @@ export const iconName = (icon) => {
     refrigirator: "fridge",
     fridge: "fridge",
     freezer: "fridge-bottom",
+    "Land House": "home",
+    "Housing Unit": "home-city",
+    Tower: "city",
+    Penthouse: "city-variant",
   };
 
   return iconMap[icon] || null;

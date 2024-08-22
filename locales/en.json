@@ -107,9 +107,9 @@
   "Israel": "Israel",
   "israel": "Israel",
 
-  "signInPrompt": "Sign in to see your location",
+  "signInPrompt": "Sign In As Tenant Or Lendlord",
   "signInButton": "Sign In",
-  "loginPrompt": "Sign in to see the {{screenName}} screen.",
+  "loginPrompt": "Sign In To See The {{screenName}} Screen.",
 
   "contactUsPage": {
     "title": "Reach Us Out for Support Inquiries or Feedback",

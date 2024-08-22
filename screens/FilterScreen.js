@@ -30,7 +30,7 @@ const categories = [
     icon: "home",
   },
   {
-    name: "Houseing Unit",
+    name: "Housing Unit",
     icon: "home-city",
   },
   {
