@@ -25,8 +25,13 @@ import { useTranslation } from "react-i18next";
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { FavoritesContext } from "../context/FavoritesContext";
-import { capitalizeWords, generateTemplateMessage } from "../utils/features";
+import {
+  capitalizeWords,
+  convertCurrency,
+  generateTemplateMessage,
+} from "../utils/features";
 import { useUsers } from "../context/UserContext";
+import { useCurrency } from "../context/CurrencyContext";
 import HouseAssetsModal from "../modals/HouseAssetsModal";
 import MapModal from "../modals/MapModal";
 import Map from "../components/Map/Map";
@@ -45,6 +50,7 @@ const HouseDetailsScreen = ({ navigation, route }) => {
   const { t, i18n } = useTranslation();
   const { isDarkMode } = useDarkMode();
   const { userData } = useUsers();
+  const { currency } = useCurrency();
   const favoriteApartmentsCtx = useContext(FavoritesContext);
 
   const { apartmentWithDistance: apartment } = route.params;
@@ -323,7 +329,14 @@ const HouseDetailsScreen = ({ navigation, route }) => {
       >
         <View style={styles.BottomTabView}>
           <View style={styles.PriceView}>
-            <Text style={styles.price}>{apartment.price}₪</Text>
+            <Text style={styles.price}>
+              {currency?.symbol || apartment?.currency?.symbol}
+              {convertCurrency(
+                apartment?.currency?.currency,
+                currency?.code,
+                apartment?.price
+              )}
+            </Text>
             <Text style={styles.monthPerson}>
               {t("houseDetails.monthPerson")}
             </Text>

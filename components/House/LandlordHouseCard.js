@@ -13,8 +13,6 @@ const LandlordHouseCard = ({ navigation, apartment, setHasFetched }) => {
   const { isDarkMode } = useDarkMode();
   const { currency } = useCurrency();
 
-  // console.log(currency);
-
   return (
     <Card
       style={[
@@ -49,7 +47,7 @@ const LandlordHouseCard = ({ navigation, apartment, setHasFetched }) => {
             </View>
             <View style={styles.infoContainer}>
               <Text style={styles.price}>
-                {currency?.symbol ?? apartment?.currency?.symbol}
+                {currency?.symbol || apartment?.currency?.symbol}
                 {convertCurrency(
                   apartment?.currency?.currency,
                   currency?.code,

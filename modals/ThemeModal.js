@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 
-function ThemeModal({ showVisible, appTheme }) {
+function ThemeModal({ showVisible, appTheme, handleThemeChange }) {
   const { isDarkMode, handleTheme } = useDarkMode();
   const { t } = useTranslation();
 
@@ -26,8 +26,10 @@ function ThemeModal({ showVisible, appTheme }) {
   };
 
   const handleAppTheme = (theme) => {
+    console.log(theme);
     setTheme(theme);
     handleTheme(theme);
+    handleThemeChange(theme);
   };
 
   return (
@@ -68,7 +70,7 @@ function ThemeModal({ showVisible, appTheme }) {
                 status={theme === "SystemDefault" ? "checked" : "unchecked"}
                 onPress={() => handleAppTheme("SystemDefault")}
               />
-              <Text style={styles.textRadio}>{t("system_default")}</Text>
+              <Text style={styles.textRadio}>{t("SystemDefault")}</Text>
             </View>
             <View style={styles.radioButtom}>
               <RadioButton
@@ -76,7 +78,7 @@ function ThemeModal({ showVisible, appTheme }) {
                 status={theme === "Bright" ? "checked" : "unchecked"}
                 onPress={() => handleAppTheme("Bright")}
               />
-              <Text style={styles.textRadio}>{t("bright")}</Text>
+              <Text style={styles.textRadio}>{t("Bright")}</Text>
             </View>
             <View style={styles.radioButtom}>
               <RadioButton
@@ -84,7 +86,7 @@ function ThemeModal({ showVisible, appTheme }) {
                 status={theme === "Dark" ? "checked" : "unchecked"}
                 onPress={() => handleAppTheme("Dark")}
               />
-              <Text style={styles.textRadio}>{t("dark")}</Text>
+              <Text style={styles.textRadio}>{t("Dark")}</Text>
             </View>
             <View style={styles.confirmation}>
               {/* <TouchableOpacity style={{ right: 30 }} onPress={handleCancel}>
@@ -109,7 +111,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   modalView: {
-    margin: 10,
+    margin: 20,
     backgroundColor: "white",
     borderRadius: 20,
     padding: 40,

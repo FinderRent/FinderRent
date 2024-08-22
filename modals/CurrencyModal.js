@@ -12,10 +12,10 @@ import {
 import { useTranslation } from "react-i18next";
 import { Ionicons } from "@expo/vector-icons";
 import { Text } from "react-native-paper";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const CurrencyModal = ({ showVisible, handleCurrencyChange }) => {
   const { isDarkMode } = useDarkMode();
@@ -38,6 +38,12 @@ const CurrencyModal = ({ showVisible, handleCurrencyChange }) => {
   }, []);
 
   const currencyList = [
+    {
+      code: "",
+      symbol: "",
+      name: "   " + t("Default"),
+      flag: "",
+    },
     {
       code: "USD",
       symbol: "$",
@@ -110,7 +116,7 @@ const CurrencyModal = ({ showVisible, handleCurrencyChange }) => {
                 <Image source={item.flag} style={styles.currencyFlag} />
                 <Text style={styles.currencySymbol}>{item.symbol}</Text>
                 <Text style={styles.currencyName}>
-                  {item.name} ({item.code})
+                  {item.name} {item.code ? `(${item.code})` : ""}
                 </Text>
               </TouchableOpacity>
             )}

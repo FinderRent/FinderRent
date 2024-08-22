@@ -27,7 +27,7 @@ const SECTIONS = [
     header: "preferences",
     items: [
       { id: "language", icon: "earth", label: "language", type: "select" },
-      { id: "theme", icon: "theme-light-dark", label: "theme", type: "link" },
+      { id: "theme", icon: "theme-light-dark", label: "theme", type: "select" },
       {
         id: "currency",
         icon: "cash-multiple",
@@ -70,15 +70,21 @@ function SettingsScreen() {
   const [showThemeModal, setShowThemeModal] = useState(false);
   const [showCurrencyModal, setShowCurrencyModal] = useState(false);
   const [currency, setCurrency] = useState("");
+  const [themeChange, setThemeChange] = useState("");
 
   const [form, setForm] = useState({
     language: "",
     currency: "",
+    theme: "",
     notifications: true,
   });
 
   const handleCurrencyChange = (currencyCode) => {
     setCurrency(currencyCode);
+  };
+
+  const handleThemeChange = (theme) => {
+    setThemeChange(theme);
   };
 
   useEffect(() => {
@@ -99,6 +105,8 @@ function SettingsScreen() {
         break;
     }
 
+    setThemeChange(t(theme));
+
     const initializeCurrency = async () => {
       const currencyString = await AsyncStorage.getItem("currency");
       if (currencyString) {
@@ -112,8 +120,9 @@ function SettingsScreen() {
       ...prevForm,
       language: newLang,
       currency: currency,
+      theme: t(themeChange),
     }));
-  }, [i18next.language, currency]);
+  }, [i18next.language, currency, themeChange]);
 
   const handlePress = (id) => {
     switch (id) {
@@ -242,6 +251,7 @@ function SettingsScreen() {
             showVisible={(showVisible) => setShowThemeModal(showVisible)}
             handleTheme={handleTheme}
             appTheme={theme}
+            handleThemeChange={handleThemeChange}
           />
         )}
         {showLanguageModal && (
