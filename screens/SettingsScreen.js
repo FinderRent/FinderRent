@@ -70,7 +70,7 @@ function SettingsScreen() {
   const [showThemeModal, setShowThemeModal] = useState(false);
   const [showCurrencyModal, setShowCurrencyModal] = useState(false);
   const [currency, setCurrency] = useState("");
-  const [themeChange, setThemeChange] = useState("");
+  const [themeChange, setThemeChange] = useState(t(theme));
 
   const [form, setForm] = useState({
     language: "",
@@ -104,8 +104,6 @@ function SettingsScreen() {
         newLang = "العربية";
         break;
     }
-
-    setThemeChange(t(theme));
 
     const initializeCurrency = async () => {
       const currencyString = await AsyncStorage.getItem("currency");

@@ -61,7 +61,7 @@ const HouseCard = ({ navigation, apartment, userData }) => {
         <View style={styles.imageContainer}>
           <Carousel
             width={width - 20}
-            height={200}
+            height={300}
             autoPlay={false}
             data={apartment.images}
             onSnapToItem={(index) => setCurrentIndex(index)}
@@ -90,7 +90,12 @@ const HouseCard = ({ navigation, apartment, userData }) => {
                 apartment?.price
               )}
             </Text>
-            <View style={styles.detailsContainer}>
+            <View
+              style={[
+                styles.detailsContainer,
+                !userData.token && { bottom: 20 },
+              ]}
+            >
               <View style={styles.iconTextContainer}>
                 <Icon
                   name="home-variant-outline"
@@ -140,7 +145,7 @@ const HouseCard = ({ navigation, apartment, userData }) => {
           <FontAwesome
             name="heart"
             size={30}
-            color={apartmentIsFavorite ? Color.red200 : "#E5E1DA"}
+            color={apartmentIsFavorite ? Color.red200 : Color.defaultTheme}
           />
         </TouchableOpacity>
       )}
@@ -158,7 +163,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 3,
   },
   imageContainer: {
-    height: 200,
+    height: 230,
     width: width,
     overflow: "hidden",
     alignSelf: "center",
@@ -166,7 +171,7 @@ const styles = StyleSheet.create({
   },
   imageWrapper: {
     width: width,
-    height: 250,
+    height: 300,
     padding: 20,
     marginLeft: 10,
   },

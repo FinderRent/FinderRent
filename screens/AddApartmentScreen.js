@@ -147,6 +147,9 @@ function AddApartmentScreen(props) {
       case "ILS":
         setCurrencySymbol("₪");
         break;
+      case "EUR":
+        setCurrencySymbol("€");
+        break;
     }
   }, [currency]);
 
@@ -219,7 +222,7 @@ function AddApartmentScreen(props) {
   }
 
   const handleImageUpload = async (images) => {
-    console.log("upload images...");
+    // console.log("upload images...");
 
     const imageUrls = [];
 
@@ -255,7 +258,7 @@ function AddApartmentScreen(props) {
 
         const result = await response.json();
         const secureImageUrl = ensureHttps(result.url);
-        console.log("image upload: ", secureImageUrl);
+        // console.log("image upload: ", secureImageUrl);
         imageUrls.push(secureImageUrl); // Add the image URL to the array
       } catch (error) {
         console.error("Error uploading image: ", error);
@@ -360,7 +363,7 @@ function AddApartmentScreen(props) {
         images: imageUrlsArray, // Assign the array of URLs directly to the images field
       };
 
-      console.log(updatedApartmentData);
+      // console.log(updatedApartmentData);
       mutate(updatedApartmentData); // Send the updated apartment data to the database
       setLoading(false);
     } catch (error) {

@@ -10,9 +10,13 @@ import { useNavigation } from "@react-navigation/native";
 
 import { useUsers } from "../../context/UserContext";
 import { Color } from "../../constants/colors";
+import { LinearGradient } from "expo-linear-gradient";
+import { useDarkMode } from "../../context/DarkModeContext";
 
 const ProfileLocationHeader = () => {
   const { t } = useTranslation();
+  const { isDarkMode } = useDarkMode();
+
   const { userData } = useUsers();
   const navigation = useNavigation();
   let academic = userData.academic;
@@ -21,36 +25,51 @@ const ProfileLocationHeader = () => {
     academic = userData?.academic?.substring(0, 21) + "..";
   }
   return (
-    <View style={styles.profileLocationView}>
-      <View style={styles.midContainer}>
-        <ImageBackground
-          style={{ height: 20, width: 20, marginBottom: 25 }}
-          source={{
-            uri: "https://res.cloudinary.com/finderent/image/upload/v1719761526/placeholder_eyilhp.png",
-          }}
-        />
+    <>
+      <View style={styles.profileLocationView}>
+        <View style={styles.midContainer}>
+          <ImageBackground
+            style={{ height: 20, width: 20, marginBottom: 25 }}
+            source={{
+              uri: "https://res.cloudinary.com/finderent/image/upload/v1719761526/placeholder_eyilhp.png",
+            }}
+          />
 
-        <View>
-          <Text style={styles.location}>{t("location")}</Text>
-          <Text style={styles.locationName}>
-            {academic !== "undefined" ? academic : ""}
-          </Text>
+          <View>
+            <Text style={styles.location}>{t("location")}</Text>
+            <Text style={styles.locationName}>
+              {academic !== "undefined" ? academic : ""}
+            </Text>
+          </View>
         </View>
-      </View>
 
-      <TouchableOpacity
-        style={styles.midContainer}
-        onPress={() => navigation.navigate("ProfileStackScreen")}
-      >
-        <ImageBackground
-          style={{ height: 60, width: 60 }}
-          imageStyle={styles.profileImage}
-          source={{
-            uri: userData.avatar?.url,
-          }}
-        />
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity
+          style={styles.midContainer}
+          onPress={() => navigation.navigate("ProfileStackScreen")}
+        >
+          <ImageBackground
+            style={{ height: 60, width: 60 }}
+            imageStyle={styles.profileImage}
+            source={{
+              uri: userData.avatar?.url,
+            }}
+          />
+        </TouchableOpacity>
+      </View>
+      <LinearGradient
+        colors={[
+          isDarkMode ? Color.darkTheme : Color.defaultTheme,
+          isDarkMode ? Color.Blue500 : Color.Blue100,
+        ]}
+        start={{ x: -0.5, y: 0 }}
+        end={{ x: 1, y: -2 }}
+        style={{
+          height: 2,
+          marginHorizontal: 5,
+          borderRadius: 50,
+        }}
+      ></LinearGradient>
+    </>
   );
 };
 

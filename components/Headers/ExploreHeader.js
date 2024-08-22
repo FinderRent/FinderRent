@@ -10,6 +10,7 @@ import * as Haptics from "expo-haptics";
 
 import { Color } from "../../constants/colors";
 import { useDarkMode } from "../../context/DarkModeContext";
+import { LinearGradient } from "expo-linear-gradient";
 
 const categories = [
   {
@@ -103,7 +104,10 @@ const ExploreHeader = ({ onCategoryChanged, categoryIndex, filtersValues }) => {
             style={
               activeIndex === index
                 ? isDarkMode
-                  ? { ...styles.categoriesBtnActive, borderBottomColor: "#fff" }
+                  ? {
+                      ...styles.categoriesBtnActive,
+                      borderBottomColor: Color.Blue500,
+                    }
                   : styles.categoriesBtnActive
                 : styles.categoriesBtn
             }
@@ -166,7 +170,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    borderBottomColor: "#000",
+    borderBottomColor: Color.Blue100,
     borderBottomWidth: 2,
     paddingBottom: 8,
   },

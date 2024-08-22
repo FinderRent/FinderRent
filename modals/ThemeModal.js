@@ -26,7 +26,6 @@ function ThemeModal({ showVisible, appTheme, handleThemeChange }) {
   };
 
   const handleAppTheme = (theme) => {
-    console.log(theme);
     setTheme(theme);
     handleTheme(theme);
     handleThemeChange(theme);

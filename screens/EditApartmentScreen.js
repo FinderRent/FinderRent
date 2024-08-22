@@ -43,8 +43,12 @@ function EditApartmentScreen({ route, navigation }) {
   const [floor, setFloor] = useState(apartment?.floor.toString());
   const [rooms, setRooms] = useState(apartment?.numberOfRooms.toString());
   const [price, setPrice] = useState(apartment?.price.toString());
-  const [currency, setCurrency] = useState("");
-  const [currencySymbol, setCurrencySymbol] = useState("");
+  const [currency, setCurrency] = useState(
+    apartment?.currency?.currency.toString()
+  );
+  const [currencySymbol, setCurrencySymbol] = useState(
+    apartment?.currency?.symbol.toString()
+  );
   const [totalCapacity, setTotalCapacity] = useState(
     apartment?.totalCapacity.toString()
   );
@@ -82,6 +86,12 @@ function EditApartmentScreen({ route, navigation }) {
     { key: "Iron", value: t("iron") },
     { key: "Refrigirator", value: t("refrigirator") },
     { key: "freezer", value: t("freezer") },
+  ];
+
+  const currencyList = [
+    { label: "$", value: "USD" },
+    { label: "₪", value: "ILS" },
+    { label: "€", value: "EUR" },
   ];
 
   // const selectedFeatures = Object.keys(apartment.apartmentContent).filter(
@@ -122,6 +132,20 @@ function EditApartmentScreen({ route, navigation }) {
       keyboardDidShowListener.remove();
     };
   }, []);
+
+  useEffect(() => {
+    switch (currency) {
+      case "USD":
+        setCurrencySymbol("$");
+        break;
+      case "ILS":
+        setCurrencySymbol("₪");
+        break;
+      case "EUR":
+        setCurrencySymbol("€");
+        break;
+    }
+  }, [currency]);
 
   const handleFocus = (input) => {
     setFocusedInput(input);
@@ -212,6 +236,7 @@ function EditApartmentScreen({ route, navigation }) {
     apartmentContent: createApartmentContent(selected),
     tenants: selectTenants,
     price: price !== "" ? parseInt(price) : undefined,
+    currency: { currency, symbol: currencySymbol },
     floor: floor !== "" ? parseInt(floor) : undefined,
     owner: userData.id,
     apartmentType,
@@ -241,51 +266,6 @@ function EditApartmentScreen({ route, navigation }) {
       console.log(err.message);
     },
   });
-
-  // const handleImageUpload = async (images) => {
-  //   const imageUrls = [];
-
-  //   for (const image of images) {
-  //     // Check if the file exists
-  //     const fileInfo = await FileSystem.getInfoAsync(image);
-  //     if (!fileInfo.exists) {
-  //       throw new Error(`File does not exist at path: ${image}`);
-  //     }
-
-  //     // Convert the image to base64 format
-  //     const base64Image = await FileSystem.readAsStringAsync(image, {
-  //       encoding: FileSystem.EncodingType.Base64,
-  //     });
-
-  //     const data = new FormData();
-  //     data.append("file", `data:image/jpeg;base64,${base64Image}`);
-  //     data.append("upload_preset", "FindeRent");
-  //     data.append("cloud_name", "finderent");
-  //     data.append("folder", "Apartments");
-
-  //     try {
-  //       const response = await fetch(
-  //         "https://api.cloudinary.com/v1_1/finderent/image/upload",
-  //         {
-  //           method: "post",
-  //           headers: {
-  //             "Content-Type": "multipart/form-data",
-  //           },
-  //           body: data,
-  //         }
-  //       );
-
-  //       const result = await response.json();
-  //       console.log("image upload: ", result.url);
-  //       imageUrls.push(result.url); // Add the image URL to the array
-  //     } catch (error) {
-  //       console.error("Error uploading image: ", error);
-  //       throw new Error("Failed to upload image");
-  //     }
-  //   }
-
-  //   return imageUrls; // Return the array of image URLs
-  // };
 
   const handleImageUpload = async (images) => {
     const imageUrls = [];
@@ -339,30 +319,6 @@ function EditApartmentScreen({ route, navigation }) {
     return imageUrls; // Return the array of image URLs
   };
 
-  // const handleEditApartment = async () => {
-  //   try {
-  //     setLoading(true);
-  //     const imageUrls = await handleImageUpload(apartmentImages);
-
-  //     const imageUrlsArray =
-  //       typeof imageUrls === "string" ? imageUrls.split(",") : imageUrls;
-
-  //     const updatedApartmentData = {
-  //       ...apartmentData,
-  //       images: imageUrlsArray,
-  //     };
-
-  //     console.log("new apartment: " + updatedApartmentData);
-  //     mutate(apartmentData);
-  //     setLoading(false);
-  //   } catch (error) {
-  //     console.error(
-  //       "Error uploading images or updating apartment data: ",
-  //       error
-  //     );
-  //     setLoading(false);
-  //   }
-  // };
   const handleEditApartment = async () => {
     try {
       setLoading(true);
@@ -387,7 +343,7 @@ function EditApartmentScreen({ route, navigation }) {
         images: finalImageArray,
       };
 
-      console.log("new apartment: ", updatedApartmentData);
+      // console.log("new apartment: ", updatedApartmentData);
 
       // Mutate the apartment data to update the DB
       mutate(updatedApartmentData);
@@ -439,6 +395,7 @@ function EditApartmentScreen({ route, navigation }) {
             <Text style={styles.subHeader}>{t("address")}</Text>
             <View style={styles.line}>
               <Input
+                color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
                 mode="outlined"
                 label={t("country")}
                 defaultValue={country}
@@ -447,6 +404,7 @@ function EditApartmentScreen({ route, navigation }) {
                 style={styles.input}
               />
               <Input
+                color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
                 mode="outlined"
                 label={t("city")}
                 value={city}
@@ -456,6 +414,7 @@ function EditApartmentScreen({ route, navigation }) {
             </View>
             <View style={styles.line}>
               <Input
+                color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
                 mode="outlined"
                 label={t("street")}
                 value={street}
@@ -463,6 +422,7 @@ function EditApartmentScreen({ route, navigation }) {
                 style={styles.input}
               />
               <Input
+                color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
                 keyboardType="numeric"
                 mode="outlined"
                 label={t("buildingNumber")}
@@ -475,6 +435,7 @@ function EditApartmentScreen({ route, navigation }) {
             </View>
             <View style={styles.line}>
               <Input
+                color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
                 keyboardType="numeric"
                 mode="outlined"
                 label={t("apartmentNumber")}
@@ -485,6 +446,7 @@ function EditApartmentScreen({ route, navigation }) {
                 style={styles.input}
               />
               <Input
+                color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
                 keyboardType="numeric"
                 mode="outlined"
                 label={t("floor")}
@@ -499,6 +461,7 @@ function EditApartmentScreen({ route, navigation }) {
               </Text>
               <View style={styles.line}>
                 <Input
+                  color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
                   keyboardType="numeric"
                   mode="outlined"
                   label={t("latitude")}
@@ -509,6 +472,7 @@ function EditApartmentScreen({ route, navigation }) {
                   style={styles.input}
                 />
                 <Input
+                  color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
                   keyboardType="numeric"
                   mode="outlined"
                   label={t("longitude")}
@@ -525,6 +489,7 @@ function EditApartmentScreen({ route, navigation }) {
             <Text style={styles.subHeader}>{t("generalDetails")}</Text>
             <View style={styles.line}>
               <Input
+                color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
                 keyboardType="numeric"
                 mode="outlined"
                 label={t("numberOfRooms")}
@@ -533,16 +498,37 @@ function EditApartmentScreen({ route, navigation }) {
                 style={styles.input}
               />
               <Input
+                color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
                 keyboardType="numeric"
                 mode="outlined"
                 label={t("monthlyRent")}
                 value={price}
                 onValueChange={(price) => setPrice(price)}
-                style={styles.input}
+                style={[styles.input, { marginRight: -90 }]}
+              />
+              <DropDown
+                style={{
+                  marginLeft: 43,
+                  width: 35,
+                  borderColor: isDarkMode ? Color.darkTheme : Color.darkTheme,
+                }}
+                showArrowIcon={false}
+                dropDownDirection="TOP"
+                list={currencyList}
+                label={currencySymbol}
+                value={currency}
+                searchable={false}
+                listMode="SCROLLVIEW"
+                dropDownContainerStyle={{
+                  marginLeft: 43,
+                  width: 35,
+                }}
+                onValueChange={(currency) => setCurrency(currency)}
               />
             </View>
             <View style={styles.line}>
               <Input
+                color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
                 keyboardType="numeric"
                 mode="outlined"
                 label={t("totalCapacity")}
@@ -553,6 +539,7 @@ function EditApartmentScreen({ route, navigation }) {
                 style={styles.input}
               />
               <Input
+                color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
                 keyboardType="numeric"
                 mode="outlined"
                 label={t("RealTimeCapacity")}
