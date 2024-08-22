@@ -16,26 +16,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
+import { useCurrency } from "../context/CurrencyContext";
 
 const CurrencyModal = ({ showVisible, handleCurrencyChange }) => {
-  const { isDarkMode } = useDarkMode();
   const { t } = useTranslation();
+  const { isDarkMode } = useDarkMode();
+  const { currency, updateCurrency } = useCurrency();
 
   const [visible, setVisible] = useState(true);
-  const [selectedCurrency, setSelectedCurrency] = useState(null);
-  const [currency, setCurrency] = useState(null);
-
-  useEffect(() => {
-    const initializeCurrency = async () => {
-      const currencyString = await AsyncStorage.getItem("currency");
-      if (currencyString) {
-        const storedCurrency = JSON.parse(currencyString);
-        setCurrency(storedCurrency);
-        setSelectedCurrency(storedCurrency);
-      }
-    };
-    initializeCurrency();
-  }, []);
+  const [selectedCurrency, setSelectedCurrency] = useState(currency);
 
   const currencyList = [
     {
@@ -63,11 +52,12 @@ const CurrencyModal = ({ showVisible, handleCurrencyChange }) => {
       flag: require("../assets/images/eu.jpg"),
     },
   ];
-  const handleCurrencySelect = async (currency) => {
-    setSelectedCurrency(currency);
-    const currencyString = JSON.stringify(currency);
+  const handleCurrencySelect = async (newCurrency) => {
+    setSelectedCurrency(newCurrency);
+    const currencyString = JSON.stringify(newCurrency);
     await AsyncStorage.setItem("currency", currencyString);
-    handleCurrencyChange(currency.code);
+    handleCurrencyChange(newCurrency.code);
+    updateCurrency(newCurrency);
   };
 
   const handleCancel = () => {
@@ -126,7 +116,7 @@ const CurrencyModal = ({ showVisible, handleCurrencyChange }) => {
               <Text
                 style={{
                   color: Color.Blue500,
-                  fontSize: 26,
+                  fontSize: 23,
                   marginBottom: 10,
                 }}
               >

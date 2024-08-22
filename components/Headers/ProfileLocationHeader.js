@@ -7,11 +7,11 @@ import {
 import { Text } from "react-native-paper";
 import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/native";
-
-import { useUsers } from "../../context/UserContext";
-import { Color } from "../../constants/colors";
 import { LinearGradient } from "expo-linear-gradient";
+
+import { Color } from "../../constants/colors";
 import { useDarkMode } from "../../context/DarkModeContext";
+import { useUsers } from "../../context/UserContext";
 
 const ProfileLocationHeader = () => {
   const { t } = useTranslation();
@@ -68,7 +68,7 @@ const ProfileLocationHeader = () => {
           marginHorizontal: 5,
           borderRadius: 50,
         }}
-      ></LinearGradient>
+      />
     </>
   );
 };

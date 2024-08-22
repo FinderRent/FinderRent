@@ -12,11 +12,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { UserContext, useUsers } from "./context/UserContext";
 import { DarkModeProvider } from "./context/DarkModeContext";
+import { CurrencyProvider } from "./context/CurrencyContext";
 import { checkRtllanguages } from "./utils/features";
 import AuthStackScreens from "./navigation/AuthStackScreens";
 import FavoritesContextProvider from "./context/FavoritesContext";
 import i18next from "./services/i18next";
-import CurrencyProvider from "./context/CurrencyContext";
 
 SplashScreen.preventAutoHideAsync();
 

@@ -1,86 +1,97 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+} from "react";
 import { useColorScheme } from "react-native";
-
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const DarkModeContext = createContext();
 
+const STORAGE_KEY = {
+  THEME: "appTheme",
+  DARK_MODE: "darkMode",
+};
+
 function DarkModeProvider({ children }) {
-  const colorSchema = useColorScheme();
-
-  const darkMode = colorSchema === "dark" ? true : false;
-
-  const [isDarkMode, setIsDarkMode] = useState(darkMode);
+  const colorScheme = useColorScheme();
+  const [isDarkMode, setIsDarkMode] = useState(colorScheme === "dark");
   const [theme, setTheme] = useState("SystemDefault");
 
   useEffect(() => {
     const fetchDarkMode = async () => {
       try {
-        const appTheme = await AsyncStorage.getItem("appTheme");
-        if (appTheme !== null) {
-          if (appTheme === "SystemDefault") {
-            return;
-          } else {
-            handleTheme(JSON.parse(appTheme));
-            // const isDarkMode = await AsyncStorage.getItem("darkMode");
-            // if (isDarkMode !== null && theme !== "SystemDefault") {
-            //   setIsDarkMode(JSON.parse(isDarkMode));
-            // }
+        const storedTheme = await AsyncStorage.getItem(STORAGE_KEY.THEME);
+        if (storedTheme) {
+          const parsedTheme = JSON.parse(storedTheme);
+          setTheme(parsedTheme);
+          if (parsedTheme !== "SystemDefault") {
+            const storedDarkMode = await AsyncStorage.getItem(
+              STORAGE_KEY.DARK_MODE
+            );
+            setIsDarkMode(
+              storedDarkMode
+                ? JSON.parse(storedDarkMode)
+                : colorScheme === "dark"
+            );
           }
         }
       } catch (err) {
-        // console.log(err);
+        console.error("Error fetching dark mode:", err);
       }
     };
 
     fetchDarkMode();
-  }, [theme, colorSchema]);
+  }, [colorScheme]);
 
-  const toggleDarkMode = async (isDark) => {
+  const toggleDarkMode = useCallback(async (isDark) => {
     setIsDarkMode(isDark);
-
     try {
-      await AsyncStorage.setItem("darkMode", JSON.stringify(isDark));
-      setIsDarkMode(isDark);
+      await AsyncStorage.setItem(STORAGE_KEY.DARK_MODE, JSON.stringify(isDark));
     } catch (err) {
-      // console.log(err);
+      console.error("Error setting dark mode:", err);
     }
-  };
+  }, []);
 
-  const handleTheme = async (theme) => {
-    try {
-      await AsyncStorage.setItem("appTheme", JSON.stringify(theme));
-      setTheme(theme);
-    } catch (err) {
-      // console.log(err);
-    }
-    switch (theme) {
-      case "SystemDefault":
-        if (colorSchema === "dark") {
-          setTheme("SystemDefault");
-          toggleDarkMode(true);
-        } else {
-          setTheme("SystemDefault");
-          toggleDarkMode(false);
+  const handleTheme = useCallback(
+    async (newTheme) => {
+      try {
+        await AsyncStorage.setItem(STORAGE_KEY.THEME, JSON.stringify(newTheme));
+        setTheme(newTheme);
+
+        switch (newTheme) {
+          case "SystemDefault":
+            toggleDarkMode(colorScheme === "dark");
+            break;
+          case "Bright":
+            toggleDarkMode(false);
+            break;
+          case "Dark":
+            toggleDarkMode(true);
+            break;
         }
-        break;
-      case "Bright":
-        setTheme("Bright");
-        toggleDarkMode(false);
-        break;
-      case "Dark":
-        setTheme("Dark");
-        toggleDarkMode(true);
-        break;
-      default:
-        break;
-    }
-  };
+      } catch (err) {
+        console.error("Error handling theme:", err);
+      }
+    },
+    [colorScheme, toggleDarkMode]
+  );
+
+  const contextValue = useMemo(
+    () => ({
+      isDarkMode,
+      toggleDarkMode,
+      theme,
+      handleTheme,
+    }),
+    [isDarkMode, toggleDarkMode, theme, handleTheme]
+  );
 
   return (
-    <DarkModeContext.Provider
-      value={{ isDarkMode, toggleDarkMode, theme, handleTheme }}
-    >
+    <DarkModeContext.Provider value={contextValue}>
       {children}
     </DarkModeContext.Provider>
   );
@@ -88,8 +99,9 @@ function DarkModeProvider({ children }) {
 
 function useDarkMode() {
   const context = useContext(DarkModeContext);
-  if (context === undefined)
-    throw new Error("DarkModeContext was used outside of DarkModeProvider");
+  if (context === undefined) {
+    throw new Error("useDarkMode must be used within a DarkModeProvider");
+  }
   return context;
 }
 

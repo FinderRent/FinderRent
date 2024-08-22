@@ -1,4 +1,11 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useMemo,
+  useCallback,
+} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const CurrencyContext = createContext();
@@ -8,28 +15,45 @@ function CurrencyProvider({ children }) {
 
   useEffect(() => {
     const initializeCurrency = async () => {
-      const currencyString = await AsyncStorage.getItem("currency");
-      if (currencyString) {
-        const storedCurrency = JSON.parse(currencyString);
-        setCurrency(storedCurrency);
+      try {
+        const currencyString = await AsyncStorage.getItem("currency");
+        if (currencyString) {
+          const storedCurrency = JSON.parse(currencyString);
+          setCurrency(storedCurrency);
+        }
+      } catch (error) {
+        console.error("Error initializing currency:", error);
       }
     };
     initializeCurrency();
-  }, [currency]);
+  }, []); // Remove currency dependency
+
+  const updateCurrency = useCallback(async (newCurrency) => {
+    try {
+      await AsyncStorage.setItem("currency", JSON.stringify(newCurrency));
+      setCurrency(newCurrency);
+    } catch (error) {
+      console.error("Error updating currency:", error);
+    }
+  }, []);
+
+  const value = useMemo(
+    () => ({ currency, updateCurrency }),
+    [currency, updateCurrency]
+  );
 
   return (
-    <CurrencyContext.Provider value={{ currency }}>
+    <CurrencyContext.Provider value={value}>
       {children}
     </CurrencyContext.Provider>
   );
 }
 
-export default CurrencyProvider;
-
 function useCurrency() {
   const context = useContext(CurrencyContext);
-  if (context === undefined)
-    throw new Error("CurrencyContext was used outside of CurrencyProvider");
+  if (context === undefined) {
+    throw new Error("useCurrency must be used within a CurrencyProvider");
+  }
   return context;
 }
 

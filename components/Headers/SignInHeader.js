@@ -3,6 +3,7 @@ import { View, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
 import { Button } from "react-native-elements";
 import { useTranslation } from "react-i18next";
+import { LinearGradient } from "expo-linear-gradient";
 
 import { Color } from "../../constants/colors";
 import { useDarkMode } from "../../context/DarkModeContext";
@@ -46,7 +47,19 @@ const SignInHeader = () => {
           showVisible={(showVisible) => setShowSignInModal(showVisible)}
         />
       )}
-      <View style={styles.line}></View>
+      <LinearGradient
+        colors={[
+          isDarkMode ? Color.darkTheme : Color.defaultTheme,
+          isDarkMode ? Color.Blue500 : Color.Blue100,
+        ]}
+        start={{ x: -0.5, y: 0 }}
+        end={{ x: 1, y: -2 }}
+        style={{
+          height: 2,
+          marginHorizontal: 5,
+          borderRadius: 50,
+        }}
+      />
     </>
   );
 };

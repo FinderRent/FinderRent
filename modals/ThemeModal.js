@@ -25,10 +25,10 @@ function ThemeModal({ showVisible, appTheme, handleThemeChange }) {
     showVisible(!themeVisible);
   };
 
-  const handleAppTheme = (theme) => {
-    setTheme(theme);
-    handleTheme(theme);
-    handleThemeChange(theme);
+  const handleAppTheme = (newTheme) => {
+    setTheme(newTheme);
+    handleTheme(newTheme);
+    handleThemeChange(newTheme);
   };
 
   return (

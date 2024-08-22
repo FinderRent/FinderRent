@@ -70,7 +70,7 @@ function SettingsScreen() {
   const [showThemeModal, setShowThemeModal] = useState(false);
   const [showCurrencyModal, setShowCurrencyModal] = useState(false);
   const [currency, setCurrency] = useState("");
-  const [themeChange, setThemeChange] = useState(t(theme));
+  const [themeChange, setThemeChange] = useState("");
 
   const [form, setForm] = useState({
     language: "",
@@ -118,7 +118,7 @@ function SettingsScreen() {
       ...prevForm,
       language: newLang,
       currency: currency,
-      theme: t(themeChange),
+      theme: themeChange === "SystemDefault" ? "" : t(themeChange),
     }));
   }, [i18next.language, currency, themeChange]);
 

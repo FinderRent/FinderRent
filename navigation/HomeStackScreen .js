@@ -36,8 +36,7 @@ function HomeStackScreen({ navigation }) {
         name="FilterScreen"
         component={FilterScreen}
         options={{
-          presentation:
-            Platform.OS === "ios" ? "transparentModal" : "fullScreenModal",
+          presentation: "transparentModal",
           animation: "fade",
           headerTransparent: true,
           headerLeft: () => (
