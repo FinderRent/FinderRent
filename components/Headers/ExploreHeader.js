@@ -62,7 +62,6 @@ const ExploreHeader = ({ onCategoryChanged, categoryIndex, filtersValues }) => {
     if (categories[index].name === "All Categories") {
       onCategoryChanged(null);
     } else {
-      console.log(categories[index].name);
       onCategoryChanged(categories[index].name);
     }
   };
