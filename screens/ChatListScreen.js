@@ -119,7 +119,7 @@ function ChatListScreen({ navigation }) {
         moment.locale("ar");
         break;
     }
-  }, [navigation, isDarkMode, selectedChatIds, alertDeleteChat]);
+  }, [navigation, isDarkMode, selectedChatIds, alertDeleteChat, i18n.language]);
 
   useFocusEffect(
     useCallback(() => {
