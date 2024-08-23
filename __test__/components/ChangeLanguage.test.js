@@ -3,7 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import i18next from "../../services/i18next";
 
 import { DarkModeProvider } from "../../context/DarkModeContext";
-import ChangeLanguage from "../../modals/ChangeLanguage";
+import ChangeLanguageModal from "../../modals/ChangeLanguageModal";
 
 jest.mock("i18next", () => ({
   use: jest.fn().mockReturnThis(),
@@ -30,7 +30,7 @@ const renderWithProviders = (ui) => {
   return render(<DarkModeProvider>{ui}</DarkModeProvider>);
 };
 
-describe("ChangeLanguage", () => {
+describe("ChangeLanguageModal", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -38,7 +38,7 @@ describe("ChangeLanguage", () => {
   it("should initialize language from AsyncStorage", async () => {
     AsyncStorage.getItem.mockResolvedValue("he");
     const { getByText } = renderWithProviders(
-      <ChangeLanguage showVisible={jest.fn()} />
+      <ChangeLanguageModal showVisible={jest.fn()} />
     );
 
     await waitFor(() => {
@@ -50,7 +50,7 @@ describe("ChangeLanguage", () => {
   it("should change language without showing restart modal if direction does not change", async () => {
     AsyncStorage.getItem.mockResolvedValue("he");
     const { getByText } = renderWithProviders(
-      <ChangeLanguage showVisible={jest.fn()} />
+      <ChangeLanguageModal showVisible={jest.fn()} />
     );
 
     fireEvent.press(getByText("English"));
@@ -64,7 +64,7 @@ describe("ChangeLanguage", () => {
   it("should show and handle restart modal", async () => {
     AsyncStorage.getItem.mockResolvedValue("en");
     const { getByText } = renderWithProviders(
-      <ChangeLanguage showVisible={jest.fn()} />
+      <ChangeLanguageModal showVisible={jest.fn()} />
     );
 
     fireEvent.press(getByText("עברית"));

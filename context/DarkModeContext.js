@@ -40,7 +40,7 @@ function DarkModeProvider({ children }) {
           }
         }
       } catch (err) {
-        console.error("Error fetching dark mode:", err);
+        // console.error("Error fetching dark mode:", err);
       }
     };
 
@@ -52,7 +52,7 @@ function DarkModeProvider({ children }) {
     try {
       await AsyncStorage.setItem(STORAGE_KEY.DARK_MODE, JSON.stringify(isDark));
     } catch (err) {
-      console.error("Error setting dark mode:", err);
+      // console.error("Error setting dark mode:", err);
     }
   }, []);
 
@@ -74,7 +74,7 @@ function DarkModeProvider({ children }) {
             break;
         }
       } catch (err) {
-        console.error("Error handling theme:", err);
+        // console.error("Error handling theme:", err);
       }
     },
     [colorScheme, toggleDarkMode]

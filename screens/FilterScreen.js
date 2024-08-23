@@ -102,10 +102,10 @@ const FilterScreen = ({ navigation, route }) => {
         case "-price":
           setSort("lowToHigh");
           break;
-        case "createdAt":
+        case "-createdAt":
           setSort("NewToOld");
           break;
-        case "-createdAt":
+        case "createdAt":
           setSort("OldToNew");
           break;
       }
@@ -146,13 +146,12 @@ const FilterScreen = ({ navigation, route }) => {
         sort = "-price";
         break;
       case "NewToOld":
-        sort = "createdAt";
-        break;
-      case "OldToNew":
         sort = "-createdAt";
         break;
+      case "OldToNew":
+        sort = "createdAt";
+        break;
     }
-
     navigation.navigate("HomeScreen", {
       sort,
       distance,
