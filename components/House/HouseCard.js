@@ -26,7 +26,7 @@ import Indicators from "./Indicators";
 const { width } = Dimensions.get("window");
 
 const HouseCard = ({ navigation, apartment, userData }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { isDarkMode } = useDarkMode();
   const { currency } = useCurrency();
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -214,10 +214,9 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   detailsContainer: {
-    position: "absolute",
-    left: "75%",
-    bottom: 6,
-    alignItems: "flex-end",
+    marginTop: -40,
+    bottom: 10,
+    justifyContent: "space-between",
   },
   iconTextContainer: {
     flexDirection: "row",
