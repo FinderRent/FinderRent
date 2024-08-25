@@ -314,7 +314,7 @@
   "updatePassword": "Обновить пароль",
 
   "hello": "Привет",
-  "yourProperties": "Ваши объекты недвижимости",
+  "yourProperties": "ваши активы",
   "addYourApartment": "Добавить вашу квартиру",
   "addYourProperties": "Добавьте свои объекты",
 
@@ -344,6 +344,7 @@
   "currentTenants": "Текущие арендаторы",
   "search": "Поиск",
   "ApartmentAddedSuccessfully": "Квартира успешно добавлена!",
+  "ApartmentEditedSuccessfully": "Квартира успешно отредактирована!",
 
   "Permission to access media library is required!": "Требуется разрешение на доступ к медиатеке!",
   "Permission to access camera is required!": "Требуется разрешение на доступ к камере!",

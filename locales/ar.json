@@ -314,7 +314,7 @@
   "updatePassword": "تحديث كلمة المرور",
 
   "hello": "مرحبا",
-  "yourProperties": "عقاراتك",
+  "yourProperties": "تعليمات مفصلة",
   "addYourApartment": "أضف شقتك",
   "addYourProperties": "أضف ممتلكاتك",
 
@@ -344,6 +344,7 @@
   "currentTenants": "المستأجرين الحاليين",
   "search": "بحث",
   "ApartmentAddedSuccessfully": "تمت إضافة الشقة بنجاح!",
+  "ApartmentEditedSuccessfully": "تم تعديل الشقة بنجاح!",
 
   "Permission to access media library is required!": "يتطلب إذنًا للوصول إلى مكتبة الوسائط!",
   "Permission to access camera is required!": "يتطلب إذنًا للوصول إلى الكاميرا!",

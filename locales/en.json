@@ -107,7 +107,7 @@
   "Israel": "Israel",
   "israel": "Israel",
 
-  "signInPrompt": "Sign In As Tenant Or Lendlord",
+  "signInPrompt": "Sign In As Tenant Or Landlord",
   "signInButton": "Sign In",
   "loginPrompt": "Sign In To See The {{screenName}} Screen.",
 
@@ -342,6 +342,7 @@
   "currentTenants": "Current Tenants",
   "search": "search",
   "ApartmentAddedSuccessfully": "Apartment Added Successfully!",
+  "ApartmentEditedSuccessfully": "Apartment Edited Successfully!",
 
   "student": "Student",
   "selectHouseAssets": "Select House Assets",

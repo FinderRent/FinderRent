@@ -15,7 +15,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import AwesomeAlert from "react-native-awesome-alerts";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Color } from "../constants/colors";
 import { useDarkMode } from "../context/DarkModeContext";
 import { useUsers } from "../context/UserContext";
@@ -150,6 +150,23 @@ function LandlordHomeScreen({ navigation }) {
   const handleDeleteApartment = () => {
     mutate(apartmentId);
   };
+
+  //refetch the flatlist data after an edit apartment happend
+  useFocusEffect(
+    useCallback(() => {
+      const checkRefetchFlag = async () => {
+        const needsRefetch = await AsyncStorage.getItem("needsRefetch");
+        if (needsRefetch === "true") {
+          // Trigger the refetch
+          await refetch();
+          // Reset the flag
+          await AsyncStorage.setItem("needsRefetch", "false");
+        }
+      };
+
+      checkRefetchFlag();
+    }, [])
+  );
 
   useFocusEffect(
     useCallback(() => {
@@ -317,7 +334,7 @@ const styles = StyleSheet.create({
   },
   FlatList: {
     marginBottom: "20%",
-    paddingTop: "30%",
+    marginTop: "30%",
   },
   cardContainer: {
     padding: 10,

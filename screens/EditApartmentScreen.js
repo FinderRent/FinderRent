@@ -8,6 +8,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import Toast from "react-native-toast-message";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as FileSystem from "expo-file-system";
 
 import { Color } from "../constants/colors";
@@ -24,7 +25,7 @@ import ImagePickerMulti from "../components/ImagePickerMulti";
 function EditApartmentScreen({ route, navigation }) {
   const { t } = useTranslation();
   const { isDarkMode } = useDarkMode();
-  const { apartment, setHasFetched } = route.params;
+  const { apartment } = route.params;
 
   const { userData } = useUsers();
   const [country, setCountry] = useState(apartment?.address.country);
@@ -243,24 +244,56 @@ function EditApartmentScreen({ route, navigation }) {
     apartmentImages,
   };
 
+  // const { mutate, isPending, isError, error } = useMutation({
+  //   mutationFn: (apartmentData) => updateEditedApartment(apartmentData),
+  //   onSuccess: () => {
+  //     if (Platform.OS === "ios") {
+  //       showMessage({
+  //         message: "Success",
+  //         description: "Apartment edited successfully!",
+  //         type: "success",
+  //       });
+  //     } else {
+  //       Toast.show({
+  //         type: "success",
+  //         text1: "Apartment edited successfully!",
+  //       });
+  //     }
+
+  //     navigation.goBack();
+  //     navigation.goBack();
+  //   },
+  //   onError: (err) => {
+  //     console.log(err.message);
+  //   },
+  // });
+
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: (apartmentData) => updateEditedApartment(apartmentData),
-    onSuccess: () => {
-      if (Platform.OS === "ios") {
-        showMessage({
-          message: "Success",
-          description: "Apartment edited successfully!",
-          type: "success",
-        });
-      } else {
-        Toast.show({
-          type: "success",
-          text1: "Apartment edited successfully!",
-        });
+    onSuccess: async () => {
+      try {
+        if (Platform.OS === "ios") {
+          showMessage({
+            message: "Success",
+            description: t("ApartmentEditedSuccessfully"),
+            type: "success",
+          });
+        } else {
+          Toast.show({
+            type: "success",
+            text1: t("ApartmentEditedSuccessfully"),
+          });
+        }
+
+        // Set the flag to indicate the edit was successful
+        await AsyncStorage.setItem("needsRefetch", "true");
+
+        // Navigate back after setting the flag
+        navigation.goBack();
+        navigation.goBack();
+      } catch (error) {
+        console.error("Error setting refetch flag:", error);
       }
-      setHasFetched(false);
-      navigation.goBack();
-      navigation.goBack();
     },
     onError: (err) => {
       console.log(err.message);
@@ -668,7 +701,7 @@ function EditApartmentScreen({ route, navigation }) {
             <Text style={styles.subHeader}>{t("about")}</Text>
             <View style={styles.paragraphContainer}>
               <TextInput
-                id="paragraph"
+                color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
                 style={
                   isDarkMode
                     ? {
@@ -680,7 +713,7 @@ function EditApartmentScreen({ route, navigation }) {
                 placeholder={t("describeYourApartment")}
                 multiline={true}
                 numberOfLines={4}
-                onValueChange={(about) => setAbout(about)}
+                onChangeText={(about) => setAbout(about)}
                 value={about}
                 textAlignVertical="top"
                 onFocus={() => handleFocus("about")}
