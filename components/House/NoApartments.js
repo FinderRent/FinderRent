@@ -35,7 +35,7 @@ export default NoApartments;
 
 const styles = StyleSheet.create({
   emptyContainer: {
-    marginTop: "10%",
+    marginTop: "35%",
     justifyContent: "center",
     alignItems: "center",
   },

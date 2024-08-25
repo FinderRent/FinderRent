@@ -7,7 +7,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { useDarkMode } from "../../context/DarkModeContext";
 import { useCurrency } from "../../context/CurrencyContext";
 import { Color } from "../../constants/colors";
-import { convertCurrency } from "../../utils/features";
+import { convertCurrency, iconName } from "../../utils/features";
 
 const LandlordHouseCard = ({ navigation, apartment }) => {
   const { t } = useTranslation();
@@ -59,7 +59,7 @@ const LandlordHouseCard = ({ navigation, apartment }) => {
                 <View style={styles.typeAndRooms}>
                   <View style={styles.iconTextContainer}>
                     <Icon
-                      name="home-variant-outline"
+                      name={iconName(apartment.apartmentType)}
                       size={16}
                       color={Color.extraGray}
                     />

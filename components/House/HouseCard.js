@@ -26,9 +26,10 @@ import Indicators from "./Indicators";
 const { width } = Dimensions.get("window");
 
 const HouseCard = ({ navigation, apartment, userData }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { isDarkMode } = useDarkMode();
   const { currency } = useCurrency();
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const favoriteApartmentsCtx = useContext(FavoritesContext);
   const apartmentIsFavorite = favoriteApartmentsCtx.ids.includes(apartment._id);
