@@ -59,9 +59,12 @@ function ChatListScreen({ navigation }) {
 
   const handleRemoveChat = async () => {
     try {
-      await Promise.all(
-        selectedChatIds.map((chatId) => handleDeleteChat(chatId))
-      );
+      for (const chatId of selectedChatIds) {
+        await handleDeleteChat(chatId);
+      }
+      setAlertDeleteChat(false);
+      setSelectedChatIds([]);
+      await refetch();
     } catch (err) {
       console.log(err);
     }
