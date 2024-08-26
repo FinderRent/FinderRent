@@ -4,6 +4,8 @@ import Constants from "expo-constants";
 import { useContext, useEffect, useState } from "react";
 import {
   ImageBackground,
+  KeyboardAvoidingView,
+  Platform,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -173,231 +175,238 @@ function SignUpScreen({ navigation }) {
   // Rendering the UI components
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <ImageBackground
-        source={getBackgroundImage(isDarkMode)}
-        resizeMode="cover"
-        style={styles.image}
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+        keyboardVerticalOffset={100}
       >
-        <ScrollView>
-          {/* Header text */}
-          <View style={styles.container}>
-            <Text variant="displaySmall" style={styles.text}>
-              ── {t("signUp.header")} ──
-            </Text>
-          </View>
-
-          <SelectCountry
-            country={country}
-            onCountryChange={(selectedCountry) => setCountry(selectedCountry)}
-          />
-          <View
-            style={{
-              marginTop: 10,
-              alignItems: "center",
-            }}
-          >
-            {isLoading && <Loader color={Color.Blue700} size={16} />}
-            {isLoading && (
-              <Text style={{ color: Color.Blue700 }}>
-                {t("signUp.loadingInstitution")}
+        <ImageBackground
+          source={getBackgroundImage(isDarkMode)}
+          resizeMode="cover"
+          style={styles.image}
+        >
+          <ScrollView>
+            {/* Header text */}
+            <View style={styles.container}>
+              <Text variant="displaySmall" style={styles.text}>
+                ── {t("signUp.header")} ──
               </Text>
-            )}
-          </View>
-          <View style={styles.inputsRow}>
-            <Input
-              style={styles.textInput}
-              label={t("signUp.firstName")}
-              mode="outlined"
-              onValueChange={(selectedFirstName) =>
-                setFirstName(selectedFirstName)
-              }
-            />
-            <Input
-              style={styles.textInput}
-              label={t("signUp.lastName")}
-              mode="outlined"
-              onValueChange={(selectedLastName) =>
-                setLastName(selectedLastName)
-              }
-            />
-          </View>
+            </View>
 
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <Input
-              style={styles.textInput}
-              label={t("signUp.age")}
-              mode="outlined"
-              keyboardType="decimal-pad"
-              maxLength={2}
-              onValueChange={(selectedAge) => setAge(selectedAge)}
+            <SelectCountry
+              country={country}
+              onCountryChange={(selectedCountry) => setCountry(selectedCountry)}
             />
-
-            {/* Radio buttons for selecting gender */}
             <View
-              style={
-                isDarkMode
-                  ? { ...styles.genderView, backgroundColor: Color.darkTheme }
-                  : styles.genderView
-              }
+              style={{
+                marginTop: 10,
+                alignItems: "center",
+              }}
             >
-              <Text
-                style={{ ...styles.title, marginTop: 5 }}
-                variant="titleMedium"
-              >
-                {t("signUp.gender")}:
-              </Text>
-              <RadioButton
-                color={Color.Blue500}
-                status={gender === "Male" ? "checked" : "unchecked"}
-                onPress={() => setGender("Male")}
-              />
-              <Text style={styles.textRadio}>{t("signUp.male")}</Text>
-              <RadioButton
-                color={Color.Blue500}
-                status={gender === "Female" ? "checked" : "unchecked"}
-                onPress={() => setGender("Female")}
-              />
-              <Text style={styles.textRadio}>{t("signUp.female")}</Text>
+              {isLoading && <Loader color={Color.Blue700} size={16} />}
+              {isLoading && (
+                <Text style={{ color: Color.Blue700 }}>
+                  {t("signUp.loadingInstitution")}
+                </Text>
+              )}
             </View>
-          </View>
-
-          <Text style={styles.title} variant="titleMedium">
-            {t("signUp.role")}:
-          </Text>
-          <View style={styles.radioButtom}>
-            <RadioButton
-              color={Color.Blue500}
-              status={userType === "landlord" ? "checked" : "unchecked"}
-              onPress={() => setUserType("landlord")}
-            />
-            <Text style={styles.textRadio}>{t("signUp.landlord")}</Text>
-          </View>
-          <View style={styles.radioButtom}>
-            <RadioButton
-              color={Color.Blue500}
-              status={userType === "student" ? "checked" : "unchecked"}
-              onPress={() => setUserType("student")}
-            />
-            <Text style={styles.textRadio}>{t("signUp.student")}</Text>
-          </View>
-
-          {/* DropDown component for selecting academic institution */}
-          {userType === "student" && (
-            <View>
-              <View>
-                {t("Israel") === t(`${country}`) ? (
-                  <DropDown
-                    list={listAcademicIsrael}
-                    label={t("signUp.academicInstitution")}
-                    placeholder={academic}
-                    listMode="MODAL"
-                    searchable={true}
-                    onValueChange={(selectedAcademic) =>
-                      setAcademic(selectedAcademic)
-                    }
-                    searchPlaceholder={t("signUp.searchAcademic")}
-                  />
-                ) : (
-                  <DropDown
-                    list={listAcademic}
-                    label={t("signUp.academicInstitution")}
-                    placeholder={academic}
-                    listMode="MODAL"
-                    searchable={true}
-                    onValueChange={(selectedAcademic) =>
-                      setAcademic(selectedAcademic)
-                    }
-                    searchPlaceholder={t("signUp.searchAcademic")}
-                  />
-                )}
-              </View>
-
-              {/* Input fields for department and yearbook */}
-              <View>
-                <View style={styles.inputsRow}>
-                  <Input
-                    style={styles.textInput}
-                    label={t("signUp.department")}
-                    value={department}
-                    mode="outlined"
-                    onValueChange={(selectedDepartment) =>
-                      setDepartment(selectedDepartment)
-                    }
-                  />
-                  <DropDown
-                    list={listYear}
-                    label={t("signUp.yearbook")}
-                    placeholder={yearbook}
-                    searchable={false}
-                    listMode="SCROLLVIEW"
-                    onValueChange={(selectedYearbook) =>
-                      setYearbook(selectedYearbook)
-                    }
-                  />
-                </View>
-              </View>
+            <View style={styles.inputsRow}>
+              <Input
+                style={styles.textInput}
+                label={t("signUp.firstName")}
+                mode="outlined"
+                onValueChange={(selectedFirstName) =>
+                  setFirstName(selectedFirstName)
+                }
+              />
+              <Input
+                style={styles.textInput}
+                label={t("signUp.lastName")}
+                mode="outlined"
+                onValueChange={(selectedLastName) =>
+                  setLastName(selectedLastName)
+                }
+              />
             </View>
-          )}
 
-          {/* Input fields for email and passwords */}
-          <View style={styles.textInput}>
-            <Input
-              label={t("signUp.email")}
-              mode="outlined"
-              keyboardType="email-address"
-              onValueChange={(selectedEmail) => setEmail(selectedEmail)}
-            />
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <Input
+                style={styles.textInput}
+                label={t("signUp.age")}
+                mode="outlined"
+                keyboardType="decimal-pad"
+                maxLength={2}
+                onValueChange={(selectedAge) => setAge(selectedAge)}
+              />
 
-            <PasswordInput
-              mode="outlined"
-              label={t("signUp.password")}
-              onValueChange={(password) => setPassword(password)}
-            />
-            {password.length > 0 && password.length < 8 && (
-              <Text
+              {/* Radio buttons for selecting gender */}
+              <View
                 style={
                   isDarkMode
-                    ? { color: Color.error100, paddingLeft: 5 }
-                    : { color: Color.errorText, paddingLeft: 5 }
+                    ? { ...styles.genderView, backgroundColor: Color.darkTheme }
+                    : styles.genderView
                 }
               >
-                {t("signUp.passwordError")}
-              </Text>
+                <Text
+                  style={{ ...styles.title, marginTop: 5 }}
+                  variant="titleMedium"
+                >
+                  {t("signUp.gender")}:
+                </Text>
+                <RadioButton
+                  color={Color.Blue500}
+                  status={gender === "Male" ? "checked" : "unchecked"}
+                  onPress={() => setGender("Male")}
+                />
+                <Text style={styles.textRadio}>{t("signUp.male")}</Text>
+                <RadioButton
+                  color={Color.Blue500}
+                  status={gender === "Female" ? "checked" : "unchecked"}
+                  onPress={() => setGender("Female")}
+                />
+                <Text style={styles.textRadio}>{t("signUp.female")}</Text>
+              </View>
+            </View>
+
+            <Text style={styles.title} variant="titleMedium">
+              {t("signUp.role")}:
+            </Text>
+            <View style={styles.radioButtom}>
+              <RadioButton
+                color={Color.Blue500}
+                status={userType === "landlord" ? "checked" : "unchecked"}
+                onPress={() => setUserType("landlord")}
+              />
+              <Text style={styles.textRadio}>{t("signUp.landlord")}</Text>
+            </View>
+            <View style={styles.radioButtom}>
+              <RadioButton
+                color={Color.Blue500}
+                status={userType === "student" ? "checked" : "unchecked"}
+                onPress={() => setUserType("student")}
+              />
+              <Text style={styles.textRadio}>{t("signUp.student")}</Text>
+            </View>
+
+            {/* DropDown component for selecting academic institution */}
+            {userType === "student" && (
+              <View>
+                <View>
+                  {t("Israel") === t(`${country}`) ? (
+                    <DropDown
+                      list={listAcademicIsrael}
+                      label={t("signUp.academicInstitution")}
+                      placeholder={academic}
+                      listMode="MODAL"
+                      searchable={true}
+                      onValueChange={(selectedAcademic) =>
+                        setAcademic(selectedAcademic)
+                      }
+                      searchPlaceholder={t("signUp.searchAcademic")}
+                    />
+                  ) : (
+                    <DropDown
+                      list={listAcademic}
+                      label={t("signUp.academicInstitution")}
+                      placeholder={academic}
+                      listMode="MODAL"
+                      searchable={true}
+                      onValueChange={(selectedAcademic) =>
+                        setAcademic(selectedAcademic)
+                      }
+                      searchPlaceholder={t("signUp.searchAcademic")}
+                    />
+                  )}
+                </View>
+
+                {/* Input fields for department and yearbook */}
+                <View>
+                  <View style={styles.inputsRow}>
+                    <Input
+                      style={styles.textInput}
+                      label={t("signUp.department")}
+                      value={department}
+                      mode="outlined"
+                      onValueChange={(selectedDepartment) =>
+                        setDepartment(selectedDepartment)
+                      }
+                    />
+                    <DropDown
+                      dropDownDirection={Platform.OS === "ios" ? "TOP" : null}
+                      list={listYear}
+                      label={t("signUp.yearbook")}
+                      placeholder={yearbook}
+                      searchable={false}
+                      listMode="SCROLLVIEW"
+                      onValueChange={(selectedYearbook) =>
+                        setYearbook(selectedYearbook)
+                      }
+                    />
+                  </View>
+                </View>
+              </View>
             )}
 
-            <PasswordInput
-              mode="outlined"
-              label={t("signUp.passwordConfirm")}
-              onValueChange={(passwordConfirm) =>
-                setPasswordConfirm(passwordConfirm)
-              }
-            />
-            {isError && <ErrorMessage errorMessage={t(error.message)} />}
-            <Button
-              style={{ marginTop: 10 }}
-              buttonColor={Color.Blue700}
-              textColor={Color.defaultTheme}
-              mode="contained"
-              onPress={handleSignUp}
-              loading={isPending}
-              disabled={isPending}
-            >
-              {!isPending && t("signUp.signUp")}
-            </Button>
-            <Spacer>
-              <NavLink
-                text={t("signUp.back")}
-                style={{ marginTop: -5, fontSize: 14 }}
+            {/* Input fields for email and passwords */}
+            <View style={styles.textInput}>
+              <Input
+                label={t("signUp.email")}
+                mode="outlined"
+                keyboardType="email-address"
+                onValueChange={(selectedEmail) => setEmail(selectedEmail)}
               />
-            </Spacer>
-          </View>
-        </ScrollView>
-      </ImageBackground>
+
+              <PasswordInput
+                mode="outlined"
+                label={t("signUp.password")}
+                onValueChange={(password) => setPassword(password)}
+              />
+              {password.length > 0 && password.length < 8 && (
+                <Text
+                  style={
+                    isDarkMode
+                      ? { color: Color.error100, paddingLeft: 5 }
+                      : { color: Color.errorText, paddingLeft: 5 }
+                  }
+                >
+                  {t("signUp.passwordError")}
+                </Text>
+              )}
+
+              <PasswordInput
+                mode="outlined"
+                label={t("signUp.passwordConfirm")}
+                onValueChange={(passwordConfirm) =>
+                  setPasswordConfirm(passwordConfirm)
+                }
+              />
+              {isError && <ErrorMessage errorMessage={t(error.message)} />}
+              <Button
+                style={{ marginTop: 10 }}
+                buttonColor={Color.Blue700}
+                textColor={Color.defaultTheme}
+                mode="contained"
+                onPress={handleSignUp}
+                loading={isPending}
+                disabled={isPending}
+              >
+                {!isPending && t("signUp.signUp")}
+              </Button>
+              <Spacer>
+                <NavLink
+                  text={t("signUp.back")}
+                  style={{ marginTop: -5, fontSize: 14 }}
+                />
+              </Spacer>
+            </View>
+          </ScrollView>
+        </ImageBackground>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

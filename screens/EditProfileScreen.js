@@ -413,7 +413,7 @@ function EditProfileScreen({ navigation }) {
           </View>
         )}
 
-        {/* <View style={styles.textInput}>
+        <View style={styles.textInput}>
           <Input
             label={hobbies ? "" : t("instagram")}
             value={hobbies ? hobbies : ""}
@@ -439,7 +439,7 @@ function EditProfileScreen({ navigation }) {
             mode="outlined"
             onValueChange={(selectedFunFact) => setFunFact(selectedFunFact)}
           />
-        </View> */}
+        </View>
 
         {isError && <ErrorMessage errorMessage={t(error.message)} />}
 
