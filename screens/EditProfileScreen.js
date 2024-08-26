@@ -8,6 +8,7 @@ import React, {
 } from "react";
 import {
   ImageBackground,
+  Platform,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
@@ -36,11 +37,12 @@ import ErrorMessage from "../components/ui/ErrorMessage";
 import updateUser from "../api/users/updateUser";
 import Loader from "../components/ui/Loader";
 import SelectCountry from "../components/inputs/SelectCountry";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 function EditProfileScreen({ navigation }) {
   const { t, i18n } = useTranslation();
   const { isDarkMode } = useDarkMode();
-  const { userData, socialNetworks } = useUsers();
+  const { userData } = useUsers();
   const auth = useContext(UserContext);
 
   const listAcademicIsrael = getAcademicList(i18n.language);
@@ -65,8 +67,14 @@ function EditProfileScreen({ navigation }) {
   const [funFact, setFunFact] = useState(userData.funFact);
   const [email, setEmail] = useState(userData.email);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
-  const [studentSocialNetworks, setStudentSocialNetworks] =
-    useState(socialNetworks);
+  const [instagram, setInstagram] = useState(
+    userData?.socialNetworks.instagram
+  );
+  const [facebook, setFacebook] = useState(userData?.socialNetworks.facebook);
+  const [linkedin, setLinkedin] = useState(userData?.socialNetworks.linkedin);
+  const [studentSocialNetworks, setStudentSocialNetworks] = useState(
+    userData.socialNetworks
+  );
 
   const url =
     "https://res.cloudinary.com/dtkpp77xw/image/upload/v1701189732/default_nk5c5h.png";
@@ -136,6 +144,7 @@ function EditProfileScreen({ navigation }) {
       funFact,
       email,
       token,
+      studentSocialNetworks,
     }) =>
       updateUser({
         userType,
@@ -153,6 +162,7 @@ function EditProfileScreen({ navigation }) {
         funFact,
         email,
         token,
+        studentSocialNetworks,
       }),
     onSuccess: (user) => {
       auth.login(user.data.updatedUser, token);
@@ -168,6 +178,12 @@ function EditProfileScreen({ navigation }) {
   });
 
   const handleUpdateUser = () => {
+    setStudentSocialNetworks([
+      userData.socialNetworks._id,
+      instagram,
+      facebook,
+      linkedin,
+    ]);
     mutate({
       userType,
       avatar,
@@ -184,6 +200,7 @@ function EditProfileScreen({ navigation }) {
       funFact,
       email,
       token,
+      studentSocialNetworks,
     });
   };
 
@@ -200,296 +217,270 @@ function EditProfileScreen({ navigation }) {
     setIsBottomSheetOpen(false);
   }, []);
 
+  // setStudentSocialNetworks([instagram, facebook, linkedin]);
+  // console.log(studentSocialNetworks);
+
   return (
     <ScrollView style={styles.ScrollView}>
-      <View
-        style={
-          isBottomSheetOpen
-            ? { ...styles.container, opacity: 0.3 }
-            : styles.container
-        }
+      <KeyboardAwareScrollView
+        contentContainerStyle={styles.scrollViewContent}
+        keyboardShouldPersistTaps="handled"
+        // enableOnAndroid={true}
+        // extraScrollHeight={20} // Increased this value to move the text input further up
+        keyboardOpeningTime={0}
       >
-        <View style={{ alignItems: "center" }}>
-          <TouchableOpacity
-            onPress={
-              isBottomSheetOpen
-                ? handlePresentModalClose
-                : handlePresentModalOpen
-            }
-          >
-            <View
-              style={{
-                height: 100,
-                width: 100,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
+        <View
+          style={
+            isBottomSheetOpen
+              ? { ...styles.container, opacity: 0.3 }
+              : styles.container
+          }
+        >
+          <View style={{ alignItems: "center" }}>
+            <TouchableOpacity
+              onPress={
+                isBottomSheetOpen
+                  ? handlePresentModalClose
+                  : handlePresentModalOpen
+              }
             >
-              <ImageBackground
-                source={{ uri: avatar }}
-                style={{ height: 100, width: 100 }}
-                imageStyle={{
-                  borderRadius: 50,
-                  borderWidth: 2,
-                  borderColor: Color.gray,
-                  backgroundColor: Color.white,
+              <View
+                style={{
+                  height: 100,
+                  width: 100,
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
               >
-                <View
-                  style={{
-                    flex: 1,
-                    justifyContent: "flex-end",
-                    alignItems: "center",
+                <ImageBackground
+                  source={{ uri: avatar }}
+                  style={{ height: 100, width: 100 }}
+                  imageStyle={{
+                    borderRadius: 50,
+                    borderWidth: 2,
+                    borderColor: Color.gray,
+                    backgroundColor: Color.white,
                   }}
                 >
-                  <Icon
-                    name="camera"
-                    size={25}
-                    color={Color.darkTheme}
-                    style={{ opacity: 0.4 }}
-                  />
-                </View>
-              </ImageBackground>
-              <Text style={{ marginBottom: 30 }}>{t("update_picture")}</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-        {userData.userType === "student" && (
-          <SelectCountry
-            country={country}
-            onCountryChange={(selectedCountry) => setCountry(selectedCountry)}
-          />
-        )}
-        <View style={styles.inputsRow}>
-          <Input
-            style={styles.textInput}
-            color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
-            label={firstName ? "" : t("first_name")}
-            value={firstName}
-            left={<TextInput.Icon icon={"account-outline"} />}
-            mode="outlined"
-            onValueChange={(firstName) => setFirstName(firstName)}
-          />
-          <Input
-            style={styles.textInput}
-            color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
-            label={lastName ? "" : t("last_name")}
-            value={lastName}
-            left={<TextInput.Icon icon={"account-outline"} />}
-            mode="outlined"
-            onValueChange={(lastName) => setLastName(lastName)}
-          />
-        </View>
-        <Input
-          style={styles.textInput}
-          color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
-          label={age ? "" : t("age")}
-          value={age}
-          left={<TextInput.Icon icon={"calendar-account-outline"} />}
-          mode="outlined"
-          keyboardType="decimal-pad"
-          maxLength={2}
-          onValueChange={(selectedAge) => setAge(selectedAge)}
-        />
-        {userData.userType === "landlord" && (
-          <Input
-            style={styles.textInput}
-            color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
-            label={phone ? "" : t("phone")}
-            value={phone}
-            left={<TextInput.Icon icon={"phone-outline"} />}
-            mode="outlined"
-            keyboardType="decimal-pad"
-            onValueChange={(selectedPhone) => setPhone(selectedPhone)}
-          />
-        )}
-        {userData.userType === "student" && (
-          <View>
-            <View>
-              {isLoading ? (
-                <View
-                  style={{
-                    marginTop: 10,
-                    alignItems: "center",
-                  }}
-                >
-                  <Loader
-                    color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
-                    size={16}
-                  />
-                  <Text
+                  <View
                     style={{
-                      color: isDarkMode ? Color.defaultTheme : Color.darkTheme,
+                      flex: 1,
+                      justifyContent: "flex-end",
+                      alignItems: "center",
                     }}
                   >
-                    {t("signUp.loadingInstitution")}
-                  </Text>
-                </View>
-              ) : t("Israel") === t(`${country}`) ? (
-                <DropDown
-                  list={listAcademicIsrael}
-                  label={academic}
-                  listMode="MODAL"
-                  searchable={true}
-                  searchPlaceholder={t("academic_institution")}
-                  onValueChange={(selectedAcademic) =>
-                    setAcademic(selectedAcademic)
-                  }
-                />
-              ) : (
-                <DropDown
-                  list={listAcademic}
-                  label={academic}
-                  listMode="MODAL"
-                  searchable={true}
-                  searchPlaceholder={t("academic_institution")}
-                  onValueChange={(selectedAcademic) =>
-                    setAcademic(selectedAcademic)
-                  }
-                />
-              )}
-            </View>
-
+                    <Icon
+                      name="camera"
+                      size={25}
+                      color={Color.darkTheme}
+                      style={{ opacity: 0.4 }}
+                    />
+                  </View>
+                </ImageBackground>
+                <Text style={{ marginBottom: 30 }}>{t("update_picture")}</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          {userData.userType === "student" && (
+            <SelectCountry
+              country={country}
+              onCountryChange={(selectedCountry) => setCountry(selectedCountry)}
+            />
+          )}
+          <View style={styles.inputsRow}>
+            <Input
+              style={styles.textInput}
+              color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+              label={firstName ? "" : t("first_name")}
+              value={firstName}
+              left={<TextInput.Icon icon={"account-outline"} />}
+              mode="outlined"
+              onValueChange={(firstName) => setFirstName(firstName)}
+            />
+            <Input
+              style={styles.textInput}
+              color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+              label={lastName ? "" : t("last_name")}
+              value={lastName}
+              left={<TextInput.Icon icon={"account-outline"} />}
+              mode="outlined"
+              onValueChange={(lastName) => setLastName(lastName)}
+            />
+          </View>
+          <Input
+            style={styles.textInput}
+            color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+            label={age ? "" : t("age")}
+            value={age}
+            left={<TextInput.Icon icon={"calendar-account-outline"} />}
+            mode="outlined"
+            keyboardType="decimal-pad"
+            maxLength={2}
+            onValueChange={(selectedAge) => setAge(selectedAge)}
+          />
+          {userData.userType === "landlord" && (
+            <Input
+              style={styles.textInput}
+              color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+              label={phone ? "" : t("phone")}
+              value={phone}
+              left={<TextInput.Icon icon={"phone-outline"} />}
+              mode="outlined"
+              keyboardType="decimal-pad"
+              onValueChange={(selectedPhone) => setPhone(selectedPhone)}
+            />
+          )}
+          {userData.userType === "student" && (
             <View>
-              <View style={styles.inputsRow}>
+              <View>
+                {isLoading ? (
+                  <View
+                    style={{
+                      marginTop: 10,
+                      alignItems: "center",
+                    }}
+                  >
+                    <Loader
+                      color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+                      size={16}
+                    />
+                    <Text
+                      style={{
+                        color: isDarkMode
+                          ? Color.defaultTheme
+                          : Color.darkTheme,
+                      }}
+                    >
+                      {t("signUp.loadingInstitution")}
+                    </Text>
+                  </View>
+                ) : t("Israel") === t(`${country}`) ? (
+                  <DropDown
+                    list={listAcademicIsrael}
+                    label={academic}
+                    listMode="MODAL"
+                    searchable={true}
+                    searchPlaceholder={t("academic_institution")}
+                    onValueChange={(selectedAcademic) =>
+                      setAcademic(selectedAcademic)
+                    }
+                  />
+                ) : (
+                  <DropDown
+                    list={listAcademic}
+                    label={academic}
+                    listMode="MODAL"
+                    searchable={true}
+                    searchPlaceholder={t("academic_institution")}
+                    onValueChange={(selectedAcademic) =>
+                      setAcademic(selectedAcademic)
+                    }
+                  />
+                )}
+              </View>
+
+              <View>
+                <View style={styles.inputsRow}>
+                  <Input
+                    style={styles.textInput}
+                    color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+                    label={department ? "" : t("department")}
+                    value={department}
+                    left={<TextInput.Icon icon={"school-outline"} />}
+                    mode="outlined"
+                    onValueChange={(selectedDepartment) =>
+                      setDepartment(selectedDepartment)
+                    }
+                  />
+                  <DropDown
+                    dropDownDirection={Platform.OS === "ios" ? "TOP" : null}
+                    list={listYear}
+                    label={yearbook}
+                    searchable={false}
+                    listMode="SCROLLVIEW"
+                    onValueChange={(selectedYearbook) =>
+                      setYearbook(selectedYearbook)
+                    }
+                  />
+                </View>
+              </View>
+            </View>
+          )}
+
+          <View style={styles.textInput}>
+            <Input
+              label={email ? "" : t("email")}
+              color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+              value={email}
+              left={<TextInput.Icon icon={"email-outline"} />}
+              mode="outlined"
+              keyboardType="email-address"
+              onValueChange={(selectedemail) => setEmail(selectedemail)}
+            />
+          </View>
+
+          {userData.userType === "student" && (
+            <View>
+              <View style={styles.textInput}>
                 <Input
-                  style={styles.textInput}
+                  label={hobbies ? "" : t("addYourHobbies")}
                   color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
-                  label={department ? "" : t("department")}
-                  value={department}
-                  left={<TextInput.Icon icon={"school-outline"} />}
+                  value={hobbies ? hobbies : ""}
+                  left={<TextInput.Icon icon={"controller-classic"} />}
                   mode="outlined"
-                  onValueChange={(selectedDepartment) =>
-                    setDepartment(selectedDepartment)
+                  onValueChange={(selectedHobbies) =>
+                    setHobbies(selectedHobbies)
                   }
                 />
-                <DropDown
-                  list={listYear}
-                  label={yearbook}
-                  searchable={false}
-                  listMode="SCROLLVIEW"
-                  onValueChange={(selectedYearbook) =>
-                    setYearbook(selectedYearbook)
+              </View>
+              <View style={styles.textInput}>
+                <Input
+                  label={funFact ? "" : t("fun_fact")}
+                  color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
+                  value={funFact ? funFact : ""}
+                  left={<TextInput.Icon icon={"beer"} />}
+                  mode="outlined"
+                  onValueChange={(selectedFunFact) =>
+                    setFunFact(selectedFunFact)
                   }
                 />
               </View>
             </View>
+          )}
+
+          {/* <View style={styles.textInput}>
+            <Input
+              label={instagram ? "" : t("instagram")}
+              value={instagram ? instagram : ""}
+              left={<TextInput.Icon icon={"instagram"} />}
+              mode="outlined"
+              onValueChange={(instagram) => setInstagram(instagram)}
+            />
           </View>
-        )}
-
-        <View style={styles.textInput}>
-          <Input
-            label={email ? "" : t("email")}
-            color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
-            value={email}
-            left={<TextInput.Icon icon={"email-outline"} />}
-            mode="outlined"
-            keyboardType="email-address"
-            onValueChange={(selectedemail) => setEmail(selectedemail)}
-          />
-        </View>
-
-        {userData.userType === "student" && (
-          <View>
-            <View style={styles.textInput}>
-              <Input
-                label={hobbies ? "" : t("addYourHobbies")}
-                color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
-                value={hobbies ? hobbies : ""}
-                left={<TextInput.Icon icon={"controller-classic"} />}
-                mode="outlined"
-                onValueChange={(selectedHobbies) => setHobbies(selectedHobbies)}
-              />
-            </View>
-            <View style={styles.textInput}>
-              <Input
-                label={funFact ? "" : t("fun_fact")}
-                color={isDarkMode ? Color.defaultTheme : Color.darkTheme}
-                value={funFact ? funFact : ""}
-                left={<TextInput.Icon icon={"beer"} />}
-                mode="outlined"
-                onValueChange={(selectedFunFact) => setFunFact(selectedFunFact)}
-              />
-            </View>
+          <View style={styles.textInput}>
+            <Input
+              label={facebook ? "" : t("facebook")}
+              value={facebook ? facebook : ""}
+              left={<TextInput.Icon icon={"facebook"} />}
+              mode="outlined"
+              onValueChange={(facebook) => setFacebook(facebook)}
+            />
           </View>
-        )}
+          <View style={styles.textInput}>
+            <Input
+              label={linkedin ? "" : t("linkedin")}
+              value={linkedin ? linkedin : ""}
+              left={<TextInput.Icon icon={"linkedin"} />}
+              mode="outlined"
+              onValueChange={(linkedin) => setLinkedin(linkedin)}
+            />
+          </View> */}
 
-        <View style={styles.textInput}>
-          <Input
-            label={hobbies ? "" : t("instagram")}
-            value={hobbies ? hobbies : ""}
-            left={<TextInput.Icon icon={"instagram"} />}
-            mode="outlined"
-            onValueChange={(selectedHobbies) => setHobbies(selectedHobbies)}
-          />
-        </View>
-        <View style={styles.textInput}>
-          <Input
-            label={funFact ? "" : t("facebook")}
-            value={funFact ? funFact : ""}
-            left={<TextInput.Icon icon={"facebook"} />}
-            mode="outlined"
-            onValueChange={(selectedFunFact) => setFunFact(selectedFunFact)}
-          />
-        </View>
-        <View style={styles.textInput}>
-          <Input
-            label={funFact ? "" : t("linkedin")}
-            value={funFact ? funFact : ""}
-            left={<TextInput.Icon icon={"linkedin"} />}
-            mode="outlined"
-            onValueChange={(selectedFunFact) => setFunFact(selectedFunFact)}
-          />
-        </View>
+          {isError && <ErrorMessage errorMessage={t(error.message)} />}
 
-        {isError && <ErrorMessage errorMessage={t(error.message)} />}
-
-        <Spacer>
-          <Button
-            style={{ marginTop: 10, marginHorizontal: 15 }}
-            textColor={
-              isDarkMode ? Color.buttomSheetDarkTheme : Color.defaultTheme
-            }
-            buttonColor={
-              isDarkMode ? Color.defaultTheme : Color.buttomSheetDarkTheme
-            }
-            mode="contained"
-            onPress={handleUpdateUser}
-            loading={isPending}
-            disabled={isPending || isLoading}
-          >
-            {!isPending && t("update")}
-          </Button>
-        </Spacer>
-        <NavLink text={t("back")} style={{ marginTop: -5, fontSize: 14 }} />
-        <View style={{ marginTop: 65 }}></View>
-
-        <BottomSheetModal
-          ref={bottomSheetModalRef}
-          snapPoints={snapPoints}
-          backgroundStyle={{
-            backgroundColor: isDarkMode
-              ? Color.buttomSheetDarkTheme
-              : Color.defaultTheme,
-          }}
-          handleIndicatorStyle={{
-            backgroundColor: isDarkMode
-              ? Color.defaultTheme
-              : Color.buttomSheetDarkTheme,
-          }}
-          onDismiss={() => setIsBottomSheetOpen(false)}
-        >
-          <View style={styles.sheetContainer}>
-            <Text style={styles.panelTitle}>{t("update_picture")}</Text>
-            <Text style={styles.panelSubtitle}>
-              {t("choose_profile_picture")}
-            </Text>
-
-            <ImagePicker onPickImage={(image) => setAvatar(image)} />
-            <TakePhoto onTakeImage={(image) => setAvatar(image)} />
-
+          <Spacer>
             <Button
-              style={styles.button}
+              style={{ marginTop: 10, marginHorizontal: 15 }}
               textColor={
                 isDarkMode ? Color.buttomSheetDarkTheme : Color.defaultTheme
               }
@@ -497,24 +488,68 @@ function EditProfileScreen({ navigation }) {
                 isDarkMode ? Color.defaultTheme : Color.buttomSheetDarkTheme
               }
               mode="contained"
-              onPress={() => setAvatar(url)}
+              onPress={handleUpdateUser}
+              loading={isPending}
+              disabled={isPending || isLoading}
             >
-              {t("delete_picture")}
+              {!isPending && t("update")}
             </Button>
+          </Spacer>
+          <NavLink text={t("back")} style={{ marginTop: -5, fontSize: 14 }} />
+          <View style={{ marginTop: 65 }}></View>
 
-            <Button
-              style={{ marginTop: -10 }}
-              onPress={handlePresentModalClose}
-              mode="text"
-              textColor={
-                isDarkMode ? Color.defaultTheme : Color.buttomSheetDarkTheme
-              }
-            >
-              {t("cancel")}
-            </Button>
-          </View>
-        </BottomSheetModal>
-      </View>
+          <BottomSheetModal
+            ref={bottomSheetModalRef}
+            snapPoints={snapPoints}
+            backgroundStyle={{
+              backgroundColor: isDarkMode
+                ? Color.buttomSheetDarkTheme
+                : Color.defaultTheme,
+            }}
+            handleIndicatorStyle={{
+              backgroundColor: isDarkMode
+                ? Color.defaultTheme
+                : Color.buttomSheetDarkTheme,
+            }}
+            onDismiss={() => setIsBottomSheetOpen(false)}
+          >
+            <View style={styles.sheetContainer}>
+              <Text style={styles.panelTitle}>{t("update_picture")}</Text>
+              <Text style={styles.panelSubtitle}>
+                {t("choose_profile_picture")}
+              </Text>
+
+              <ImagePicker onPickImage={(image) => setAvatar(image)} />
+              <TakePhoto onTakeImage={(image) => setAvatar(image)} />
+
+              <Button
+                style={styles.button}
+                textColor={
+                  isDarkMode ? Color.buttomSheetDarkTheme : Color.defaultTheme
+                }
+                buttonColor={
+                  isDarkMode ? Color.defaultTheme : Color.buttomSheetDarkTheme
+                }
+                mode="contained"
+                onPress={() => setAvatar(url)}
+              >
+                {t("delete_picture")}
+              </Button>
+
+              <Button
+                style={{ marginTop: -10 }}
+                onPress={handlePresentModalClose}
+                mode="text"
+                textColor={
+                  isDarkMode ? Color.defaultTheme : Color.buttomSheetDarkTheme
+                }
+              >
+                {t("cancel")}
+              </Button>
+            </View>
+          </BottomSheetModal>
+        </View>
+      </KeyboardAwareScrollView>
     </ScrollView>
   );
 }

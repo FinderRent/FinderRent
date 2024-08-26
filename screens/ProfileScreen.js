@@ -145,7 +145,7 @@ const ProfileScreen = ({ navigation }) => {
           </View>
         )}
 
-        {userData.userType === "student" && userData?.socialNetworks && (
+        {/* {userData.userType === "student" && userData?.socialNetworks && (
           <View>
             <View style={styles.info}>
               <Text style={styles.infoTitle}>{t("socialNetworks")}</Text>
@@ -182,7 +182,7 @@ const ProfileScreen = ({ navigation }) => {
               </View>
             </View>
           </View>
-        )}
+        )} */}
 
         <View style={styles.info}>
           <Text style={styles.infoTitle}>{t("Other")}</Text>

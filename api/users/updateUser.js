@@ -16,6 +16,7 @@ async function updateUser({
   funFact,
   email,
   token,
+  studentSocialNetworks: socialNetworks,
 }) {
   try {
     const formData = new FormData();
@@ -31,6 +32,17 @@ async function updateUser({
       formData.append("academic", academic);
       formData.append("department", department);
       formData.append("yearbook", yearbook);
+      if (socialNetworks) {
+        formData.append(
+          "socialNetworks",
+          JSON.stringify({
+            _id: socialNetworks[0],
+            instagram: socialNetworks[1],
+            facebook: socialNetworks[2],
+            linkedin: socialNetworks[3],
+          })
+        );
+      }
     }
 
     if (hobbies) {
@@ -42,7 +54,9 @@ async function updateUser({
     if (phone) {
       formData.append("phone", phone);
     }
+
     if (avatar) {
+      console.log("check");
       const localUri = avatar;
       const filename = localUri.split("/").pop();
 
@@ -57,7 +71,7 @@ async function updateUser({
     }
     const response = await axios.patch(
       `https://finder-rent-backend.vercel.app/api/v1/users/updateMe`,
-      // ` http://192.168.1.214:3000/api/v1/users/updateMe`,
+      // `http://172.20.10.3:3000/api/v1/users/updateMe`,
       formData,
       {
         headers: {
