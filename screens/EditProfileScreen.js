@@ -67,6 +67,7 @@ function EditProfileScreen({ navigation }) {
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [studentSocialNetworks, setStudentSocialNetworks] =
     useState(socialNetworks);
+
   const url =
     "https://res.cloudinary.com/dtkpp77xw/image/upload/v1701189732/default_nk5c5h.png";
 
@@ -417,25 +418,25 @@ function EditProfileScreen({ navigation }) {
           <Input
             label={hobbies ? "" : t("instagram")}
             value={hobbies ? hobbies : ""}
-            left={<TextInput.Icon icon={"controller-classic"} />}
+            left={<TextInput.Icon icon={"instagram"} />}
             mode="outlined"
             onValueChange={(selectedHobbies) => setHobbies(selectedHobbies)}
           />
         </View>
         <View style={styles.textInput}>
           <Input
-            label={funFact ? "" : t("fun_fact")}
+            label={funFact ? "" : t("facebook")}
             value={funFact ? funFact : ""}
-            left={<TextInput.Icon icon={"beer"} />}
+            left={<TextInput.Icon icon={"facebook"} />}
             mode="outlined"
             onValueChange={(selectedFunFact) => setFunFact(selectedFunFact)}
           />
         </View>
         <View style={styles.textInput}>
           <Input
-            label={funFact ? "" : t("fun_fact")}
+            label={funFact ? "" : t("linkedin")}
             value={funFact ? funFact : ""}
-            left={<TextInput.Icon icon={"beer"} />}
+            left={<TextInput.Icon icon={"linkedin"} />}
             mode="outlined"
             onValueChange={(selectedFunFact) => setFunFact(selectedFunFact)}
           />

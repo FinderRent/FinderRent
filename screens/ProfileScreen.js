@@ -16,7 +16,7 @@ const ProfileScreen = ({ navigation }) => {
   const { t } = useTranslation();
   const auth = useContext(UserContext);
 
-  const { userData, socialNetworks } = useUsers();
+  const { userData } = useUsers();
   const isFocused = useIsFocused();
   const userType =
     userData?.userType?.charAt(0).toUpperCase() +
@@ -145,7 +145,7 @@ const ProfileScreen = ({ navigation }) => {
           </View>
         )}
 
-        {userData.userType === "student" && socialNetworks && (
+        {userData.userType === "student" && userData?.socialNetworks && (
           <View>
             <View style={styles.info}>
               <Text style={styles.infoTitle}>{t("socialNetworks")}</Text>
@@ -156,8 +156,8 @@ const ProfileScreen = ({ navigation }) => {
                 <Icon name="instagram" color={Color.icon} size={20} />
                 <Text style={styles.text}>
                   {t("instagram")}:{" "}
-                  {socialNetworks.instagram
-                    ? socialNetworks.instagram
+                  {userData?.socialNetworks.instagram
+                    ? userData?.socialNetworks.instagram
                     : t("Add your profile link")}
                 </Text>
               </View>
@@ -166,8 +166,8 @@ const ProfileScreen = ({ navigation }) => {
                 <Icon name="facebook" color={Color.icon} size={20} />
                 <Text style={styles.text}>
                   {t("facebook")}:{" "}
-                  {socialNetworks.facebook
-                    ? socialNetworks.facebook
+                  {userData?.socialNetworks.facebook
+                    ? userData?.socialNetworks.facebook
                     : t("Add your profile link")}
                 </Text>
               </View>
@@ -175,8 +175,8 @@ const ProfileScreen = ({ navigation }) => {
                 <Icon name="linkedin" color={Color.icon} size={20} />
                 <Text style={styles.text}>
                   {t("linkedin")}:{" "}
-                  {socialNetworks.linkedin
-                    ? socialNetworks.linkedin
+                  {userData?.socialNetworks.linkedin
+                    ? userData?.socialNetworks.linkedin
                     : t("Add your profile link")}
                 </Text>
               </View>
