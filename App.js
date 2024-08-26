@@ -54,6 +54,7 @@ export default function App() {
     hobbies,
     funFact,
     email,
+    socialNetworks,
   } = useUsers();
 
   useEffect(() => {
@@ -132,6 +133,7 @@ export default function App() {
               hobbies,
               funFact,
               email,
+              socialNetworks,
             }}
           >
             <CurrencyProvider>
