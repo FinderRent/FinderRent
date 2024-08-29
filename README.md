@@ -31,7 +31,14 @@ FindeRent is a mobile app platform developed as a final project at SCE College. 
 <hr>
 <div align="center">
    <h3 style="font-size: 28px; font-weight: bold;">
-      TenantSide
+      SignUp And EditProfile
+   </h3>
+   <img src="images/SignUp.png" style="width: 100%; height: auto; padding-top: -30px">
+</div>
+<hr>
+<div align="center">
+   <h3 style="font-size: 28px; font-weight: bold;">
+      Tenant Side
    </h3>
    <img src="images/TenantSide.png" style="width: 100%; height: auto; padding-top: -30px">
 </div>
@@ -45,15 +52,21 @@ FindeRent is a mobile app platform developed as a final project at SCE College. 
 <hr>
 <div align="center">
    <h3 style="font-size: 24px; font-weight: bold;">
+      Chats
+   </h3>
+   <img src="images/Chats.png" style="width: 100%; height: auto;padding-top: -30px">
+</div>
+<hr>
+<div align="center">
+   <h3 style="font-size: 24px; font-weight: bold;">
      Settings
    </h3>
    <img src="images/Settings.png" style="width: 100%; height: auto; padding-top: -30px">
 </div>
-<hr>
 
 ## App Demo
 <div align="center">
-  <a href="https://www.youtube.com/watch?v=qAoGZq1lOSU">
+  <a href="https://www.youtube.com/watch?v=qAoGZq1lOSU" target="_blank">
     <img src="https://img.youtube.com/vi/qAoGZq1lOSU/0.jpg" alt="Watch the demo on YouTube" style="width: 75%; max-width: 480px; height: 480px;">
   </a>
 </div>
