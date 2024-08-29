@@ -30,35 +30,35 @@ FindeRent is a mobile app platform developed as a final project at SCE College. 
 
 <hr>
 <div align="center">
-   <h3 style="font-size: 28px; font-weight: bold;">
+   <h3 style="font-size: 36; font-weight: bold;">
       SignUp And EditProfile
    </h3>
    <img src="images/SignUp.png" style="width: 100%; height: auto; padding-top: -30px">
 </div>
 <hr>
 <div align="center">
-   <h3 style="font-size: 28px; font-weight: bold;">
+   <h3 style="font-size: 36; font-weight: bold;">
       Tenant Side
    </h3>
    <img src="images/TenantSide.png" style="width: 100%; height: auto; padding-top: -30px">
 </div>
 <hr>
 <div align="center">
-   <h3 style="font-size: 24px; font-weight: bold;">
+   <h3 style="font-size: 36; font-weight: bold;">
       LandlordSide
    </h3>
-   <img src="images/LandlordSide.png" style="width: 100%; height: auto;padding-top: -30px">
+   <img src="images/LandlordSide.png" style="width: 100%; height: auto; padding-top: -30px">
 </div>
 <hr>
 <div align="center">
-   <h3 style="font-size: 24px; font-weight: bold;">
+   <h3 style="font-size: 36; font-weight: bold;">
       Chats
    </h3>
-   <img src="images/Chats.png" style="width: 100%; height: auto;padding-top: -30px">
+   <img src="images/Chats.png" style="width: 100%; height: auto; padding-top: -30px">
 </div>
 <hr>
 <div align="center">
-   <h3 style="font-size: 24px; font-weight: bold;">
+   <h3 style="font-size: 36; font-weight: bold;">
      Settings
    </h3>
    <img src="images/Settings.png" style="width: 100%; height: auto; padding-top: -30px">
