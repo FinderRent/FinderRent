@@ -28,55 +28,66 @@ FindeRent is a mobile app platform developed as a final project at SCE College. 
 
 ## App Screenshots
 
+<hr>
 <div align="center">
    <h3 style="font-size: 28px; font-weight: bold;">
-      FindeRent - TenantSide
+      TenantSide
    </h3>
-   <img src="images/TenantSide.png" style="width: 100%; height: auto; margin-top: -10px">
+   <img src="images/TenantSide.png" style="width: 100%; height: auto; padding-top: -30px">
 </div>
-<br>
+<hr>
 <div align="center">
    <h3 style="font-size: 24px; font-weight: bold;">
-      Landlord
+      LandlordSide
    </h3>
-   <img src="images/LandlordSide.png" style="width: 100%; height: auto; margin-top: -10px">
+   <img src="images/LandlordSide.png" style="width: 100%; height: auto;padding-top: -30px">
 </div>
+<hr>
 <div align="center">
    <h3 style="font-size: 24px; font-weight: bold;">
-      Settings
+     Settings
    </h3>
-   <img src="images/Settings.png" style="width: 100%; height: auto; margin-top: -10px">
+   <img src="images/Settings.png" style="width: 100%; height: auto; padding-top: -30px">
 </div>
+<hr>
 
+## App Demo
+<div align="center">
+  <a href="https://www.youtube.com/watch?v=qAoGZq1lOSU">
+    <img src="https://img.youtube.com/vi/qAoGZq1lOSU/0.jpg" alt="Watch the demo on YouTube" style="width: 75%; max-width: 480px; height: 480px;">
+  </a>
+</div>
 
 ## Built With
-<table style="width: 100%; border-collapse: collapse;">
-  <tr>
-    <td style="border: none; text-align: center; padding: 10px;">
-      <img src="https://img.shields.io/badge/Expo-000020?style=for-the-badge&logo=expo&logoColor=white" alt="Expo">
-    </td>
-   <td style="border: none; text-align: center; padding: 10px;">
-      <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript">
-    </td>
-   <td style="border: none; text-align: center; padding: 10px;">
-      <img src="https://img.shields.io/badge/React%20Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React Native">
-    </td>
-   <td style="border: none; text-align: center; padding: 10px;">
-      <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js">
-    </td>
-  </tr>
-  <tr>
-   <td style="border: none; text-align: center; padding: 10px;">
-      <img src="https://img.shields.io/badge/Express.js-404D59?style=for-the-badge" alt="Express.js">
-    </td>
-    <td style="border: none; text-align: center; padding: 10px;">
-      <img src="https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB">
-    </td>
-   <td style="border: none; text-align: center; padding: 10px;">
-      <img src="https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white" alt="React_Router">
-    </td>
-       <td style="border: none; text-align: center; padding: 10px;">
-      <img src="https://img.shields.io/badge/Jest-323330?style=for-the-badge&logo=Jest&logoColor=white" alt="Jest">
-    </td>
-  </tr>
-</table>
+<div align="center">
+  <table style="width: 100%; border-collapse: collapse;">
+    <tr>
+      <td style="border: none; text-align: center; padding: 10px;">
+        <img src="https://img.shields.io/badge/Expo-000020?style=for-the-badge&logo=expo&logoColor=white" alt="Expo">
+      </td>
+      <td style="border: none; text-align: center; padding: 10px;">
+        <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript">
+      </td>
+      <td style="border: none; text-align: center; padding: 10px;">
+        <img src="https://img.shields.io/badge/React%20Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React Native">
+      </td>
+      <td style="border: none; text-align: center; padding: 10px;">
+        <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js">
+      </td>
+    </tr>
+    <tr>
+      <td style="border: none; text-align: center; padding: 10px;">
+        <img src="https://img.shields.io/badge/Express.js-404D59?style=for-the-badge" alt="Express.js">
+      </td>
+      <td style="border: none; text-align: center; padding: 10px;">
+        <img src="https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB">
+      </td>
+      <td style="border: none; text-align: center; padding: 10px;">
+        <img src="https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white" alt="React_Router">
+      </td>
+      <td style="border: none; text-align: center; padding: 10px;">
+        <img src="https://img.shields.io/badge/Jest-323330?style=for-the-badge&logo=Jest&logoColor=white" alt="Jest">
+      </td>
+    </tr>
+  </table>
+</div>
