@@ -32,18 +32,21 @@ FindeRent is a mobile app platform developed as a final project at SCE College. 
    <h3 style="font-size: 28px; font-weight: bold;">
       FindeRent - TenantSide
    </h3>
-   <img src="images/TenantSide.png" style="width: 95%; height: auto;">
+   <img src="images/TenantSide.png" style="width: 100%; height: auto; margin-top: -10px">
 </div>
-
 <br>
-
 <div align="center">
    <h3 style="font-size: 24px; font-weight: bold;">
       Landlord
    </h3>
-   <img src="images/Landlord.png" style="width: 60%; height: auto;">
+   <img src="images/LandlordSide.png" style="width: 100%; height: auto; margin-top: -10px">
 </div>
-<br>
+<div align="center">
+   <h3 style="font-size: 24px; font-weight: bold;">
+      Settings
+   </h3>
+   <img src="images/Settings.png" style="width: 100%; height: auto; margin-top: -10px">
+</div>
 
 
 ## Built With
