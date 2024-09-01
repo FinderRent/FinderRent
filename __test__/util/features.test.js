@@ -1,6 +1,8 @@
 import {
+  addSpaceBeforeUppercase,
   capitalizeWords,
   checkRtllanguages,
+  ensureHttps,
   fullName,
   iconName,
 } from "../../utils/features";
@@ -92,5 +94,43 @@ describe("iconName function", () => {
     expect(iconName("")).toEqual(null);
     expect(iconName(null)).toEqual(null);
     expect(iconName(undefined)).toEqual(null);
+  });
+});
+
+describe("ensureHttps", () => {
+  it('should replace "http://" with "https://" if the URL starts with "http://"', () => {
+    expect(ensureHttps("http://example.com")).toBe("https://example.com");
+  });
+
+  it('should return the same URL if it already starts with "https://"', () => {
+    expect(ensureHttps("https://example.com")).toBe("https://example.com");
+  });
+
+  it('should return the same URL if it does not start with "http://" or "https://"', () => {
+    expect(ensureHttps("ftp://example.com")).toBe("ftp://example.com");
+  });
+});
+
+describe("addSpaceBeforeUppercase", () => {
+  it("should add a space before each uppercase letter", () => {
+    expect(addSpaceBeforeUppercase("HelloWorld")).toBe("Hello World");
+  });
+
+  it("should handle strings without uppercase letters correctly", () => {
+    expect(addSpaceBeforeUppercase("helloworld")).toBe("helloworld");
+  });
+
+  it("should handle strings with multiple uppercase letters correctly", () => {
+    expect(addSpaceBeforeUppercase("ThisIsATestString")).toBe(
+      "This Is A Test String"
+    );
+  });
+
+  it("should return an empty string if input is empty", () => {
+    expect(addSpaceBeforeUppercase("")).toBe("");
+  });
+
+  it("should not add space before the first character if it is uppercase", () => {
+    expect(addSpaceBeforeUppercase("UpperCase")).toBe("Upper Case");
   });
 });

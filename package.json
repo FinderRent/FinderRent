@@ -18,7 +18,7 @@
     "setupFiles": [
       "./__mocks__/mock-async-storage.js"
     ],
-    "verbose": true
+    "verbose": false
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^4.5.1",

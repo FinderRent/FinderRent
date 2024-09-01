@@ -56,7 +56,6 @@ async function updateUser({
     }
 
     if (avatar) {
-      console.log("check");
       const localUri = avatar;
       const filename = localUri.split("/").pop();
 
